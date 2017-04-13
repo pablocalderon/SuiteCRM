@@ -1,11 +1,11 @@
 <?php
- if(!defined('sugarEntry'))define('sugarEntry', true);
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -36,8 +36,12 @@
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
- 
+ */
+
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
 @session_start();
 if(isset($_REQUEST['clear_session']) || !empty($_SESSION['loginAttempts'])) {
 	session_destroy();
@@ -354,7 +358,6 @@ $web_root = str_replace("/install.php", "", $web_root);
 $web_root = "http://$web_root";
 
 if (!isset($_SESSION['oc_install']) || $_SESSION['oc_install'] == false) {
-    //$workflow[] = 'siteConfig_a.php';
     if (isset($_SESSION['install_type']) && !empty($_SESSION['install_type']) &&
          $_SESSION['install_type'] == 'custom') {
             $workflow[] = 'siteConfig_b.php';
@@ -394,12 +397,10 @@ if (!isset($_SESSION['cache_dir']) || empty($_SESSION['cache_dir'])) {
     $_SESSION['cache_dir'] = isset($sugar_config['cache_dir']) ? $sugar_config['cache_dir'] : 'cache/';
 }
 
-  //$workflow[] = 'confirmSettings.php';
 $workflow[] = 'performSetup.php';
 
   if(!isset($_SESSION['oc_install']) ||  $_SESSION['oc_install'] == false){
     if(isset($_SESSION['install_type'])  && !empty($_SESSION['install_type'])  && $_SESSION['install_type']=='custom'){
-        //$workflow[] = 'download_patches.php';
         $workflow[] = 'download_modules.php';
     }
   }
@@ -554,7 +555,6 @@ if($next_clicked) {
             }
             //break;
 
-        //case 'siteConfig_a.php':
             if(isset($_REQUEST['setup_site_url'])){$_SESSION['setup_site_url']          = $_REQUEST['setup_site_url'];}
             if(isset($_REQUEST['setup_system_name'])){$_SESSION['setup_system_name']    = $_REQUEST['setup_system_name'];}
             if(isset($_REQUEST['setup_db_collation'])) {
@@ -696,11 +696,6 @@ EOQ;
         $validation_errors = validate_dbConfig('a');
         if(count($validation_errors) > 0) {
             $the_file = 'dbConfig_a.php';
-            $si_errors = true;
-        }
-        $validation_errors = validate_siteConfig('a');
-        if(count($validation_errors) > 0) {
-            $the_file = 'siteConfig_a.php';
             $si_errors = true;
         }
         $validation_errors = validate_siteConfig('b');
