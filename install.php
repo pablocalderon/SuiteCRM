@@ -341,9 +341,6 @@ $workflow = array(  'welcome.php',
                     //'installType.php',
 );
 $workflow[] = 'installConfig.php';
-//$workflow[] =  'systemOptions.php';
-//$workflow[] = 'dbConfig_a.php';
-//$workflow[] = 'dbConfig_b.php';
 
 //define web root, which will be used as default for site_url
 if($_SERVER['SERVER_PORT']=='80'){
@@ -355,7 +352,6 @@ $web_root = str_replace("/install.php", "", $web_root);
 $web_root = "http://$web_root";
 
 if (!isset($_SESSION['oc_install']) || $_SESSION['oc_install'] == false) {
-    //$workflow[] = 'siteConfig_a.php';
     if (isset($_SESSION['install_type']) && !empty($_SESSION['install_type']) &&
          $_SESSION['install_type'] == 'custom') {
             $workflow[] = 'siteConfig_b.php';
@@ -395,12 +391,10 @@ if (!isset($_SESSION['cache_dir']) || empty($_SESSION['cache_dir'])) {
     $_SESSION['cache_dir'] = isset($sugar_config['cache_dir']) ? $sugar_config['cache_dir'] : 'cache/';
 }
 
-  //$workflow[] = 'confirmSettings.php';
 $workflow[] = 'performSetup.php';
 
   if(!isset($_SESSION['oc_install']) ||  $_SESSION['oc_install'] == false){
     if(isset($_SESSION['install_type'])  && !empty($_SESSION['install_type'])  && $_SESSION['install_type']=='custom'){
-        //$workflow[] = 'download_patches.php';
         $workflow[] = 'download_modules.php';
     }
   }
@@ -536,7 +530,6 @@ if($next_clicked) {
 
         case 'installConfig.php':
 
-        //case 'systemOptions.php':
             if(isset($_REQUEST['setup_db_type'])) {
               $_SESSION['setup_db_type'] = $_REQUEST['setup_db_type'];
             }
@@ -546,7 +539,6 @@ if($next_clicked) {
             }
             //break;
 
-        //case 'dbConfig_a.php':
             //validation is now done through ajax call to checkDBSettings.php
             if(isset($_REQUEST['setup_db_drop_tables'])){
                 $_SESSION['setup_db_drop_tables'] = $_REQUEST['setup_db_drop_tables'];
@@ -556,7 +548,6 @@ if($next_clicked) {
             }
             //break;
 
-        //case 'siteConfig_a.php':
             if(isset($_REQUEST['setup_site_url'])){$_SESSION['setup_site_url']          = $_REQUEST['setup_site_url'];}
             if(isset($_REQUEST['setup_system_name'])){$_SESSION['setup_system_name']    = $_REQUEST['setup_system_name'];}
             if(isset($_REQUEST['setup_db_collation'])) {
@@ -695,14 +686,8 @@ EOQ;
             $sugar_config['unique_key'] = md5(create_guid());
         }
 
-        $validation_errors = validate_dbConfig('a');
-        if(count($validation_errors) > 0) {
-            $the_file = 'dbConfig_a.php';
-            $si_errors = true;
-        }
         $validation_errors = validate_siteConfig('a');
         if(count($validation_errors) > 0) {
-            $the_file = 'siteConfig_a.php';
             $si_errors = true;
         }
         $validation_errors = validate_siteConfig('b');
