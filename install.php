@@ -341,7 +341,6 @@ $workflow = array(  'welcome.php',
                     //'installType.php',
 );
 $workflow[] = 'installConfig.php';
-//$workflow[] =  'systemOptions.php';
 //$workflow[] = 'dbConfig_a.php';
 //$workflow[] = 'dbConfig_b.php';
 
@@ -536,7 +535,6 @@ if($next_clicked) {
 
         case 'installConfig.php':
 
-        //case 'systemOptions.php':
             if(isset($_REQUEST['setup_db_type'])) {
               $_SESSION['setup_db_type'] = $_REQUEST['setup_db_type'];
             }
