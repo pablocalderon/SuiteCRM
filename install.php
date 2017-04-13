@@ -402,7 +402,6 @@ $workflow[] = 'performSetup.php';
     //$workflow[] = 'register.php';
     $workflow[] = 'complete_install.php';
 
-
 // increment/decrement the workflow pointer
 if(!empty($_REQUEST['goto'])) {
     switch($_REQUEST['goto']) {
