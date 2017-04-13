@@ -25,3 +25,4 @@ branches:
     - hotfix
     - develop
     - /feature.*/
+    - issue-3257_2
