@@ -1,11 +1,11 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -36,15 +36,11 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ */
 
-
-/*********************************************************************************
-
- * Description:  Contains a variety of utility functions used to display UI
- * components such as form headers and footers.  Intended to be modified on a per
- * theme basis.
- ********************************************************************************/
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 if(!defined('JSMIN_AS_LIB'))
     define('JSMIN_AS_LIB', true);
@@ -912,7 +908,7 @@ EOHTML;
         elseif (($filename = $this->_getImageFileName($this->getImagePath().'/'.$imageName)) != '')
             $imagePath = $filename;
         elseif (isset($this->parentTheme)
-                && SugarThemeRegistry::get($this->parentTheme) instanceOf SugarTheme
+                && SugarThemeRegistry::get($this->parentTheme) instanceof SugarTheme
                 && ($filename = SugarThemeRegistry::get($this->parentTheme)->getImageURL($imageName,false)) != '')
             $imagePath = $filename;
         elseif (($filename = $this->_getImageFileName('custom/'.$this->getDefaultImagePath().'/'.$imageName)) != '')
@@ -922,7 +918,7 @@ EOHTML;
 		elseif (($filename = $this->_getImageFileName('include/images/'.$imageName)) != '')
 			$imagePath = $filename;
         else {
-            $GLOBALS['log']->warn("Image $imageName not found");
+            $GLOBALS['log']->info("Image $imageName not found");
             return false;
         }
 
