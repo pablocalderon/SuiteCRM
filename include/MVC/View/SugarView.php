@@ -655,14 +655,8 @@ class SugarView
                         "URL" => $menu_item[0],
                         "LABEL" => $menu_item[1],
                         "MODULE_NAME" => $menu_item[2],
-                        "IMAGE" => $themeObject->getImage(
-                            $menu_item[2],
-                            "border='0' align='absmiddle'",
-                            null,
-                            null,
-                            '.gif',
-                            $menu_item[1]
-                        ),
+                        // removing customisable icon insert, setting it to default ''
+                        "IMAGE" => '',
                         "ID" => $menu_item[2] . "_link",
                     );
                 }
@@ -691,14 +685,8 @@ class SugarView
                         "URL" => $menu_item[0],
                         "LABEL" => $menu_item[1],
                         "MODULE_NAME" => $menu_item[2],
-                        "IMAGE" => $themeObject->getImage(
-                            $menu_item[2],
-                            "border='0' align='absmiddle'",
-                            null,
-                            null,
-                            '.gif',
-                            $menu_item[1]
-                        ),
+                        // removing customisable icon insert, setting it to default ''
+                        "IMAGE" => '',
                         "ID" => $menu_item[2] . "_link",
                     );
                 }
