@@ -39,28 +39,77 @@
  */
 -->
 
-
 <!-- BEGIN: history -->
+<script type="text/javascript">
+  SUGAR.util.doWhen("typeof get_module_name != 'undefined'", function()
+  {
+    SUGAR.subpanelUtils.currentSubpanelGroup = 'Overview';
+
+    SUGAR.subpanelUtils.subpanelMoreTab = 'Notes';
+
+    SUGAR.subpanelUtils.subpanelMaxSubtabs = '';
+
+    SUGAR.subpanelUtils.subpanelHtml = new Array();
+
+    SUGAR.subpanelUtils.loadedGroups = Array();
+    SUGAR.subpanelUtils.loadedGroups.push('Overview');
+
+    SUGAR.subpanelUtils.subpanelSubTabs = new Array();
+    SUGAR.subpanelUtils.subpanelGroups = new Array();
+    SUGAR.subpanelUtils.subpanelGroups['Overview'] = ['activities', 'history', 'documents', 'contacts', 'opportunities', 'campaigns', 'leads', 'accounts', 'cases', 'account_aos_quotes', 'account_aos_invoices', 'account_aos_contracts', 'products_services_purchased', 'spots_accounts_1', 'accounts_am_projecttemplates_1', 'bugs', 'project', 'securitygroups'];
+    SUGAR.subpanelUtils.subpanelGroups['Meetings'] = ['contacts', 'opportunities', 'leads', 'accounts'];
+    SUGAR.subpanelUtils.subpanelGroups['Calls'] = ['contacts', 'leads', 'accounts'];
+    SUGAR.subpanelUtils.subpanelGroups['Emails'] = ['contacts', 'accounts', 'cases', 'bugs'];
+    SUGAR.subpanelUtils.subpanelGroups['Notes'] = ['activities', 'history', 'campaigns', 'account_aos_quotes', 'account_aos_invoices', 'account_aos_contracts', 'products_services_purchased', 'spots_accounts_1', 'accounts_am_projecttemplates_1', 'securitygroups'];
+
+    SUGAR.subpanelUtils.subpanelTitles = {"activities":"Activities","history":"History","documents":"Documents","contacts":"Contacts","opportunities":"Opportunities","campaigns":"Campaigns","leads":"Leads","accounts":"Member Organizations","cases":"Cases","account_aos_quotes":"Quotes","account_aos_invoices":"Invoices","account_aos_contracts":"Contracts","products_services_purchased":"Products and Services Purchased","spots_accounts_1":"Spots","accounts_am_projecttemplates_1":"Project Templates","bugs":"Bugs","project":"Projects","securitygroups":"Security Groups"};
+
+    SUGAR.subpanelUtils.tabCookieName = get_module_name() + '_sp_tab';
+
+    SUGAR.subpanelUtils.showLinks = false;
+
+    SUGAR.subpanelUtils.requestUrl = 'index.php?to_pdf=1&module=MySettings&action=LoadTabSubpanels&loadModule={$smarty.request.module}&record={$smarty.request.record}&subpanels=';
+  });
+</script>
+
 <table cellpadding="0" cellspacing="0" width="100%" border="0" class="list view">
     <tr height="20">
         <th width="2%"><img src="include/images/blank.gif" width="1" height="1" alt=""></th>
-        <th width="28%"><a href='javascript:sListView.order_checks("DESC", "billing_address_city" , "Accounts2_ACCOUNT_ORDER_BY")' class="listViewThLinkS1">
+        <th width="28%"><a href='javascript:sListView.order_checks("")' class="listView">
             Subject
             &nbsp;&nbsp;  																																										<img border="0" src="themes/SuiteP/images/arrow.png" width="8" height="10" align="absmiddle" alt="Sort">
         </a></th>
-        <th width="10%"><a href='javascript:sListView.order_checks("DESC", "billing_address_city" , "Accounts2_ACCOUNT_ORDER_BY")' class="listViewThLinkS1">
+        <th width="10%"><a href='javascript:sListView.order_checks("")' class="listView">
             Status
             &nbsp;&nbsp;  																																										<img border="0" src="themes/SuiteP/images/arrow.png" width="8" height="10" align="absmiddle" alt="Sort">
         </a></th>
-        <th width="20%"><a href='javascript:sListView.order_checks("DESC", "billing_address_city" , "Accounts2_ACCOUNT_ORDER_BY")' class="listViewThLinkS1">
+        <th width="20%"><a href='javascript:sListView.order_checks("")' class="listView">
             Contact
             &nbsp;&nbsp;  																																										<img border="0" src="themes/SuiteP/images/arrow.png" width="8" height="10" align="absmiddle" alt="Sort">
         </a></th>
-        <th width="10%" nowrap="nowrap"><a href='javascript:sListView.order_checks("DESC", "billing_address_city" , "Accounts2_ACCOUNT_ORDER_BY")' class="listViewThLinkS1">
+        <th width="10%" nowrap="nowrap"><a href='javascript:sListView.order_checks("")' class="listView">
             Date
             &nbsp;&nbsp;
         </a></th>
     </tr>
+
+    <ul id="groupTabs" class="nav nav-tabs">
+        <li id="Overview_tab" class="active">
+            <a class="current" href="javascript:SUGAR.subpanelUtils.loadSubpanelGroup('Overview');">Overview</a>
+        </li>
+        <li id="Meetings_tab" class="">
+            <a class="" href="javascript:SUGAR.subpanelUtils.loadSubpanelGroup('Meetings');">Meetings</a>
+        </li>
+        <li id="Calls_tab" class="">
+            <a class="" href="javascript:SUGAR.subpanelUtils.loadSubpanelGroup('Calls');">Calls</a>
+        </li>
+        <li id="Emails_tab" class="">
+            <a class="" href="javascript:SUGAR.subpanelUtils.loadSubpanelGroup('Emails');">Emails</a>
+        </li>
+        <li id="Notes_tab" class="">
+            <a class="" href="javascript:SUGAR.subpanelUtils.loadSubpanelGroup('Notes');">Notes</a>
+        </li>
+    </ul>
 
     <!-- BEGIN: row -->
     <tr height="20" class="{ROW_COLOR}S1">
@@ -71,8 +120,8 @@
         <td nowrap="nowrap" valign="top">{ACTIVITY.DATE_TYPE}<img src="include/images/blank.gif" width="3"
                                                                   height="1" alt="">{ACTIVITY.DATE}
         </td>
-
     </tr>
+
     <!--  BEGIN: description -->
     <tr class="{ROW_COLOR}S1">
         <td colspan="1" valign="top"></td>
@@ -92,3 +141,4 @@
 
 </table>
 <!-- END: history -->
+
