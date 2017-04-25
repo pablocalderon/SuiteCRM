@@ -40,38 +40,6 @@
 -->
 
 <!-- BEGIN: history -->
-<script type="text/javascript">
-  SUGAR.util.doWhen("typeof get_module_name != 'undefined'", function()
-  {
-    SUGAR.subpanelUtils.currentSubpanelGroup = 'Overview';
-
-    SUGAR.subpanelUtils.subpanelMoreTab = 'Notes';
-
-    SUGAR.subpanelUtils.subpanelMaxSubtabs = '';
-
-    SUGAR.subpanelUtils.subpanelHtml = new Array();
-
-    SUGAR.subpanelUtils.loadedGroups = Array();
-    SUGAR.subpanelUtils.loadedGroups.push('Overview');
-
-    SUGAR.subpanelUtils.subpanelSubTabs = new Array();
-    SUGAR.subpanelUtils.subpanelGroups = new Array();
-    SUGAR.subpanelUtils.subpanelGroups['Overview'] = ['meetings', 'calls', 'emails', 'notes'];
-    SUGAR.subpanelUtils.subpanelGroups['Meetings'] = ['meetings'];
-    SUGAR.subpanelUtils.subpanelGroups['Calls'] = ['calls'];
-    SUGAR.subpanelUtils.subpanelGroups['Emails'] = ['emails'];
-    SUGAR.subpanelUtils.subpanelGroups['Notes'] = ['notes'];
-
-    SUGAR.subpanelUtils.subpanelTitles = {"activities":"Activities","history":"History","documents":"Documents","contacts":"Contacts","opportunities":"Opportunities","campaigns":"Campaigns","leads":"Leads","accounts":"Member Organizations","cases":"Cases","account_aos_quotes":"Quotes","account_aos_invoices":"Invoices","account_aos_contracts":"Contracts","products_services_purchased":"Products and Services Purchased","spots_accounts_1":"Spots","accounts_am_projecttemplates_1":"Project Templates","bugs":"Bugs","project":"Projects","securitygroups":"Security Groups"};
-
-    SUGAR.subpanelUtils.tabCookieName = get_module_name() + '';
-
-    SUGAR.subpanelUtils.showLinks = false;
-
-    SUGAR.subpanelUtils.requestUrl = 'index.php?to_pdf=1&module=MySettings&action=LoadTabSubpanels&loadModule={$smarty.request.module}&record={$smarty.request.record}&subpanels=';
-  });
-</script>
-
 <table cellpadding="0" cellspacing="0" width="100%" border="0" class="list view">
     <tr height="20">
         <th width="2%"><img src="include/images/blank.gif" width="1" height="1" alt=""></th>
