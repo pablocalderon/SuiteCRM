@@ -39,8 +39,32 @@
  */
 -->
 
-
 <!-- BEGIN: history -->
+
+<div>
+
+    <nav role="navigation">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a>
+            </li>
+            <li role="presentation"><a href="#meetings" aria-controls="meetings" role="tab"
+                                       data-toggle="tab">Meetings</a></li>
+            <li role="presentation"><a href="#calls" aria-controls="calls" role="tab" data-toggle="tab">Calls</a></li>
+            <li role="presentation"><a href="#emails" aria-controls="emails" role="tab" data-toggle="tab">Emails</a>
+            </li>
+            <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+        </ul>
+    </nav>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">...</div>
+        <div role="tabpanel" class="tab-pane" id="meetings">...</div>
+        <div role="tabpanel" class="tab-pane" id="calls">...</div>
+        <div role="tabpanel" class="tab-pane" id="emails">...</div>
+        <div role="tabpanel" class="tab-pane" id="notes">...</div>
+    </div>
+
+</div>
 
 <table cellpadding="0" cellspacing="0" width="100%" border="0" class="list view">
     <!-- BEGIN: list_nav_row -->
@@ -53,23 +77,6 @@
         <th width="20%">{MOD.LBL_LIST_CONTACT}</th>
         <th width="10%" nowrap="nowrap">{MOD.LBL_LIST_DATE}</th>
     </tr>
-
-    <ul class="nav nav-tabs" role="navigation">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
-        <li role="presentation"><a href="#meetings" aria-controls="meetings" role="tab" data-toggle="tab">Meetings</a></li>
-        <li role="presentation"><a href="#calls" aria-controls="calls" role="tab" data-toggle="tab">Calls</a></li>
-        <li role="presentation"><a href="#emails" aria-controls="emails" role="tab" data-toggle="tab">Emails</a></li>
-        <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
-    </ul>
-
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="home">...</div>
-        <div role="tabpanel" class="tab-pane" id="meetings">...</div>
-        <div role="tabpanel" class="tab-pane" id="calls">...</div>
-        <div role="tabpanel" class="tab-pane" id="emails">...</div>
-        <div role="tabpanel" class="tab-pane" id="notes">...</div>
-    </div>
-
 
     <!-- BEGIN: row -->
     <tr height="20" class="{ROW_COLOR}S1">
