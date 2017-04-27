@@ -110,7 +110,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {foreach from=$historyList key=k item=activity}
+                {foreach from=$meetingList key=k item=activity}
 
                     <!-- BEGIN: row -->
                     <tr>
@@ -156,7 +156,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {foreach from=$historyList key=k item=activity}
+                {foreach from=$callsList key=k item=activity}
 
                     <!-- BEGIN: row -->
                     <tr>
@@ -202,7 +202,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {foreach from=$historyList key=k item=activity}
+                {foreach from=$emailsList key=k item=activity}
 
                     <!-- BEGIN: row -->
                     <tr>
@@ -248,7 +248,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {foreach from=$historyList key=k item=activity}
+                {foreach from=$notesList key=k item=activity}
 
                     <!-- BEGIN: row -->
                     <tr>
