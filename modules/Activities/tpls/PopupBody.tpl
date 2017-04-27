@@ -50,6 +50,7 @@
         </li>
         <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
     </ul>
+
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="home">
             <table class="list view table-responsive subpanel-table">
@@ -62,9 +63,6 @@
                     <th>{$mod.LBL_LIST_DATE}</th>
                 </tr>
                 </thead>
-                <!-- BEGIN: list_nav_row -->
-                {*{PAGINATION}*}
-                <!-- END: list_nav_row -->
 
                 <tbody>
                 {foreach from=$historyList key=k item=activity}
@@ -99,14 +97,191 @@
                 <!-- END: row -->
             </table>
         </div>
-        <div role="tabpanel" class="tab-pane" id="meetings"></div>
-        <div role="tabpanel" class="tab-pane" id="calls"></div>
-        <div role="tabpanel" class="tab-pane" id="emails"></div>
-        <div role="tabpanel" class="tab-pane" id="notes"></div>
+
+        <div role="tabpanel" class="tab-pane" id="meetings">
+            <table class="list view table-responsive subpanel-table">
+                <thead>
+                <tr class="footable-header">
+                    <th><img src="include/images/blank.gif" width="1" height="1" alt=""></th>
+                    <th>{$mod.LBL_LIST_SUBJECT}</th>
+                    <th>{$mod.LBL_LIST_STATUS}</th>
+                    <th>{$mod.LBL_LIST_CONTACT}</th>
+                    <th>{$mod.LBL_LIST_DATE}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach from=$historyList key=k item=activity}
+
+                    <!-- BEGIN: row -->
+                    <tr>
+                        <td>{$activity_module_png}</td>
+                        <td>{$activity.name} {$activity.attachment}</td>
+                        <td>{$activity.type} {$activity.status}</td>
+                        <td>{$activity.contact_name}</td>
+                        <td>{$activity.date_type}</td>
+                    </tr>
+                    <!--  BEGIN: description -->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td></td>
+                                    <td>{$activity.description}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!--  END: description -->
+
+
+                {/foreach}
+
+                </tbody>
+                <!-- END: row -->
+            </table>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="calls">
+            <table class="list view table-responsive subpanel-table">
+                <thead>
+                <tr class="footable-header">
+                    <th><img src="include/images/blank.gif" width="1" height="1" alt=""></th>
+                    <th>{$mod.LBL_LIST_SUBJECT}</th>
+                    <th>{$mod.LBL_LIST_STATUS}</th>
+                    <th>{$mod.LBL_LIST_CONTACT}</th>
+                    <th>{$mod.LBL_LIST_DATE}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach from=$historyList key=k item=activity}
+
+                    <!-- BEGIN: row -->
+                    <tr>
+                        <td>{$activity_module_png}</td>
+                        <td>{$activity.name} {$activity.attachment}</td>
+                        <td>{$activity.type} {$activity.status}</td>
+                        <td>{$activity.contact_name}</td>
+                        <td>{$activity.date_type}</td>
+                    </tr>
+                    <!--  BEGIN: description -->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td></td>
+                                    <td>{$activity.description}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!--  END: description -->
+
+
+                {/foreach}
+
+                </tbody>
+                <!-- END: row -->
+            </table>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="emails">
+            <table class="list view table-responsive subpanel-table">
+                <thead>
+                <tr class="footable-header">
+                    <th><img src="include/images/blank.gif" width="1" height="1" alt=""></th>
+                    <th>{$mod.LBL_LIST_SUBJECT}</th>
+                    <th>{$mod.LBL_LIST_STATUS}</th>
+                    <th>{$mod.LBL_LIST_CONTACT}</th>
+                    <th>{$mod.LBL_LIST_DATE}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach from=$historyList key=k item=activity}
+
+                    <!-- BEGIN: row -->
+                    <tr>
+                        <td>{$activity_module_png}</td>
+                        <td>{$activity.name} {$activity.attachment}</td>
+                        <td>{$activity.type} {$activity.status}</td>
+                        <td>{$activity.contact_name}</td>
+                        <td>{$activity.date_type}</td>
+                    </tr>
+                    <!--  BEGIN: description -->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td></td>
+                                    <td>{$activity.description}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!--  END: description -->
+
+
+                {/foreach}
+
+                </tbody>
+                <!-- END: row -->
+            </table>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="notes">
+            <table class="list view table-responsive subpanel-table">
+                <thead>
+                <tr class="footable-header">
+                    <th><img src="include/images/blank.gif" width="1" height="1" alt=""></th>
+                    <th>{$mod.LBL_LIST_SUBJECT}</th>
+                    <th>{$mod.LBL_LIST_STATUS}</th>
+                    <th>{$mod.LBL_LIST_CONTACT}</th>
+                    <th>{$mod.LBL_LIST_DATE}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach from=$historyList key=k item=activity}
+
+                    <!-- BEGIN: row -->
+                    <tr>
+                        <td>{$activity_module_png}</td>
+                        <td>{$activity.name} {$activity.attachment}</td>
+                        <td>{$activity.type} {$activity.status}</td>
+                        <td>{$activity.contact_name}</td>
+                        <td>{$activity.date_type}</td>
+                    </tr>
+                    <!--  BEGIN: description -->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td></td>
+                                    <td>{$activity.description}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!--  END: description -->
+
+
+                {/foreach}
+
+                </tbody>
+                <!-- END: row -->
+            </table>
+
+        </div>
     </div>
-</div>
-
-
 </div>
 
 {sugar_include type="smarty" file="modules/Activities/tpls/PopupFooter.tpl"}
