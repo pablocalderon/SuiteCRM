@@ -417,7 +417,6 @@ class Popup_Picker
 
         } // end Notes
 
-
         $template = new Sugar_Smarty();
         $template->assign('app', $app_strings);
         $template->assign('mod', $mod_strings);
