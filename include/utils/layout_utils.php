@@ -257,10 +257,7 @@ EOHTML;
  * @param  $theme string the name of the current theme, ignorred to use SugarThemeRegistry::current() instead.
  * @return string HTML
  */
-function insert_popup_header(
-    $theme = null,
-    $includeJS = true
-    )
+function insert_popup_header($theme = null, $includeJS = true)
 {
     global $app_strings, $sugar_config;
 

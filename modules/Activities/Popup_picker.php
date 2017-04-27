@@ -92,7 +92,6 @@ class Popup_Picker
         global $app_list_strings;
         global $odd_bg;
         global $even_bg;
-
         global $timedate;
 
         $history_list = array();
@@ -378,124 +377,26 @@ class Popup_Picker
 
         } // end Notes
 
-        $xtpl = new XTemplate('modules/Activities/Popup_picker.html');
 
-        $xtpl->assign('MOD', $mod_strings);
-        $xtpl->assign('APP', $app_strings);
-        insert_popup_header();
-
-        //output header
-        echo "<table width='100%' cellpadding='0' cellspacing='0'><tr><td>";
-        echo getClassicModuleTitle(
-            $focus->module_dir,
-            array(translate('LBL_MODULE_NAME', $focus->module_dir), $focus->name),
-            false
-        );
-        echo "</td><td align='right' class='moduleTitle'>";
-        echo "<A href='javascript:print();' class='utilsLink'>" . SugarThemeRegistry::current()->getImage(
-                'print',
-                "border='0' align='absmiddle'",
-                13,
-                13,
-                '.gif',
-                $app_strings['LNK_PRINT']
-            ) . "</a>&nbsp;<A href='javascript:print();' class='utilsLink'>" . $app_strings['LNK_PRINT'] . "</A>\n";
-        echo '</td></tr></table>';
-
-        $oddRow = true;
-        if (count($history_list) > 0) {
-            $history_list = array_csort($history_list, 'sort_value', SORT_DESC);
+        $template = new Sugar_Smarty();
+        $template->assign('app', $app_strings);
+        $template->assign('mod', $mod_strings);
+        $template->assign('theme', SugarThemeRegistry::current());
+        $template->assign('langHeader', get_language_header());
+        $template->assign('historyList', $history_list);
+        $ieCompatMode = false;
+        if (isset($sugar_config['meta_tags']) && isset($sugar_config['meta_tags']['ieCompatMode']))
+        {
+            $ieCompatMode = $sugar_config['meta_tags']['ieCompatMode'];
         }
-        foreach ($history_list as $activity) {
-            $activity_fields = array(
-                'ID' => $activity['id'],
-                'NAME' => $activity['name'],
-                'MODULE' => $activity['module'],
-                'CONTACT_NAME' => $activity['contact_name'],
-                'CONTACT_ID' => $activity['contact_id'],
-                'PARENT_TYPE' => $activity['parent_type'],
-                'PARENT_NAME' => $activity['parent_name'],
-                'PARENT_ID' => $activity['parent_id'],
-                'DATE' => $activity['date_modified'],
-                'DESCRIPTION' => $activity['description'],
-                'DATE_TYPE' => $activity['date_type']
-            );
-            if (empty($activity['direction'])) {
-                $activity_fields['TYPE'] = $app_list_strings['activity_dom'][$activity['type']];
-            } else {
-                $activity_fields['TYPE'] =
-                    $app_list_strings['call_direction_dom'][$activity['direction']] .
-                    ' ' .
-                    $app_list_strings['activity_dom'][$activity['type']];
-            }
 
-            switch ($activity['type']) {
-                case 'Call':
-                    $activity_fields['STATUS'] = $app_list_strings['call_status_dom'][$activity['status']];
-                    break;
-                case 'Meeting':
-                    $activity_fields['STATUS'] = $app_list_strings['meeting_status_dom'][$activity['status']];
-                    break;
-                case 'Task':
-                    $activity_fields['STATUS'] = $app_list_strings['task_status_dom'][$activity['status']];
-                    break;
-            }
+        $template->assign('ieCompatMode', $ieCompatMode);
+        $charset = isset($app_strings['LBL_CHARSET']) ? $app_strings['LBL_CHARSET'] : $sugar_config['default_charset'];
+        $template->assign('charset', $charset);
 
-            if (isset($activity['location'])) {
-                $activity_fields['LOCATION'] = $activity['location'];
-            }
-            if (isset($activity['filename'])) {
-                $activity_fields['ATTACHMENT'] =
-                    "<a href='index.php?entryPoint=download&id=" .
-                    $activity['id'] .
-                    "&type=Notes' target='_blank'>" .
-                    SugarThemeRegistry::current()->getImage(
-                        'attachment',
-                        "border='0' align='absmiddle'",
-                        null,
-                        null,
-                        '.gif',
-                        $activity['filename']
-                    ) .
-                    '</a>';
-            }
 
-            if (isset($activity['parent_type'])) {
-                $activity_fields['PARENT_MODULE'] = $activity['parent_type'];
-            }
+        return $template->fetch('modules/Activities/tpls/PopupBody.tpl');
 
-            $xtpl->assign('ACTIVITY', $activity_fields);
-            $xtpl->assign(
-                'ACTIVITY_MODULE_PNG',
-                SugarThemeRegistry::current()->getImage(
-                    $activity_fields['MODULE'] . '',
-                    'border="0"',
-                    null,
-                    null,
-                    '.gif',
-                    $activity_fields['NAME']
-                )
-            );
-
-            if ($oddRow) {
-                //todo move to themes
-                $xtpl->assign('ROW_COLOR', 'oddListRow');
-                $xtpl->assign('BG_COLOR', $odd_bg);
-            } else {
-                //todo move to themes
-                $xtpl->assign('ROW_COLOR', 'evenListRow');
-                $xtpl->assign('BG_COLOR', $even_bg);
-            }
-            $oddRow = !$oddRow;
-            if (!empty($activity_fields['DESCRIPTION'])) {
-                $xtpl->parse('history.row.description');
-            }
-            $xtpl->parse('history.row');
-            // Put the rows in.
-        }
-        $xtpl->parse('history');
-        $xtpl->out('history');
-        insert_popup_footer();
     }
 
     /**
