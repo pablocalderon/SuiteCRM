@@ -65,7 +65,7 @@
                 </thead>
 
                 <tbody>
-                {foreach from=$historyList key=k item=activity}
+                {foreach from=$summaryList key=k item=activity}
 
                     <!-- BEGIN: row -->
                     <tr>
