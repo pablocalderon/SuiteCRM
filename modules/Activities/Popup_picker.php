@@ -94,7 +94,7 @@ class Popup_Picker
         global $even_bg;
         global $timedate;
 
-        $history_list = array();
+        $summary_list = array();
         $meeting_list = array();
         $calls_list = array();
         $emails_list = array();
@@ -333,14 +333,14 @@ class Popup_Picker
 
         } // end Notes
 
-        $history_list = array_merge_recursive($meeting_list, $calls_list, $emails_list, $notes_list);
+        $summary_list = array_merge_recursive($meeting_list, $calls_list, $emails_list, $notes_list);
 
         $template = new Sugar_Smarty();
         $template->assign('app', $app_strings);
         $template->assign('mod', $mod_strings);
         $template->assign('theme', SugarThemeRegistry::current());
         $template->assign('langHeader', get_language_header());
-        $template->assign('historyList', $history_list);
+        $template->assign('summaryList', $summary_list);
         $template->assign('meetingList', $meeting_list);
         $template->assign('callsList', $calls_list);
         $template->assign('emailsList', $emails_list);
