@@ -1346,16 +1346,14 @@ EOQ;
 				'&return_action='.$ret_action.
 				'&return_id='.$ret_id;
 
+            require_once('modules/Emails/EmailUI.php');
+            $eUi = new EmailUI();
+            $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl, true);
 
-            $emailLinkUrltest = $focus->email1;
+            $emailLink = "<a href='javascript:void(0);' data-action=\"emails-show-compose-modal\" class='$class'>";
 
-			//Generate the compose package for the quick create options.
-            $emailLink = "<a href='javascript:void(0)' " .
-                "class=\"$class\" id=\"composeemail_listview_" ."\"".
-                'data-action="emails-show-compose-modal"'.
-                '>'. $emailLinkUrltest . '</a>';
 
-		} else {
+        } else {
 			// straight mailto:
 			$emailLink = '<a href="mailto:'.$focus->$attribute.'" class="'.$class.'">';
 		}
