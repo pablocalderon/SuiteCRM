@@ -1346,10 +1346,6 @@ EOQ;
 				'&return_action='.$ret_action.
 				'&return_id='.$ret_id;
 
-            require_once('modules/Emails/EmailUI.php');
-            $eUi = new EmailUI();
-            $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl, true);
-
             $emailLink = "<a href='javascript:void(0);' data-action=\"emails-show-compose-modal\" class='$class'>";
 
 
