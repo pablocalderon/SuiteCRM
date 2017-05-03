@@ -1287,10 +1287,6 @@ EOQ;
 	 * @return string	link
 	 * @param attribute the email addy
 	 * @param focus the parent bean
-	 * @param contact_id
-	 * @param return_module
-	 * @param return_action
-	 * @param return_id
 	 * @param class
 	 */
 	function getEmailLink($attribute, &$focus, $class='') {
