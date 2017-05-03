@@ -1346,11 +1346,14 @@ EOQ;
 				'&return_action='.$ret_action.
 				'&return_id='.$ret_id;
 
+
+            $emailLinkUrltest = $focus->email1;
+
 			//Generate the compose package for the quick create options.
-    		require_once('modules/Emails/EmailUI.php');
-            $eUi = new EmailUI();
-            $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl, true);
-    		$emailLink = "<a href='javascript:void(0);' onclick='SUGAR.quickCompose.init($j_quickComposeOptions);' class='$class'>";
+            $emailLink = "<a href='javascript:void(0)' " .
+                "class=\"$class\" id=\"composeemail_listview_" ."\"".
+                'data-action="emails-show-compose-modal"'.
+                '>'. $emailLinkUrltest . '</a>';
 
 		} else {
 			// straight mailto:
