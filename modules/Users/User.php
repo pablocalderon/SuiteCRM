@@ -1216,7 +1216,7 @@ EOQ;
 	 * @param return_id
 	 * @param class
 	 */
-	function getEmailLink2($emailAddress, &$focus, $contact_id='', $ret_module='', $ret_action='DetailView', $ret_id='', $class='') {
+	function getEmailLink2($emailAddress, &$focus, $contact_id='', $ret_module='', $ret_action='DetailView', $ret_id='', $class='', $jsonOnly = false) {
 		$emailLink = '';
 		global $sugar_config;
 
@@ -1270,7 +1270,9 @@ EOQ;
 			require_once('modules/Emails/EmailUI.php');
             $eUi = new EmailUI();
             $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl, true);
-
+            if($jsonOnly) {
+                return $j_quickComposeOptions;
+            }
     		$emailLink = "<a href='javascript:void(0);' onclick='SUGAR.quickCompose.init($j_quickComposeOptions);' class='$class'>";
 
 		} else {
@@ -1280,6 +1282,16 @@ EOQ;
 
 		return $emailLink;
 	}
+	
+	private function getEmailEditPopupData(&$focus) {
+	    // TODO: change this fake data!!!
+        // {"fullComposeUrl":"contact_id=\u0026parent_type=Accounts\u0026parent_id=24d78e6a-60d5-dbef-0bee-58d9124182a8\u0026parent_name=TJ+O%26%23039%3BRourke+Inc\u0026to_addrs_ids=\u0026to_addrs_names=\u0026to_addrs_emails=\u0026to_email_addrs=TJ+O%26%23039%3BRourke+Inc%26nbsp%3B%26lt%3Bsales.sales.vegan%40example.info%26gt%3B\u0026return_module=Accounts\u0026return_action=DetailView\u0026return_id=24d78e6a-60d5-dbef-0bee-58d9124182a8","composePackage":{"contact_id":"","parent_type":"Accounts","parent_id":"24d78e6a-60d5-dbef-0bee-58d9124182a8","parent_name":"TJ O\u0027Rourke Inc","to_addrs_ids":"","to_addrs_names":"","to_addrs_emails":"","to_email_addrs":"TJ O\u0027Rourke Inc \u003Csales.sales.vegan@example.info\u003E","return_module":"Accounts","return_action":"DetailView","return_id":"24d78e6a-60d5-dbef-0bee-58d9124182a8"}}
+        $sugarEmailField = BeanFactory::getBean('SugarEmailField');
+        //$prefillData = $sugarEmailField->getAddressesByGUID($focus->id, $focus->module_dir);
+        //$json = $this->getEmailLink2($emailAddress, $focus, '', '', 'DetailView', '', '', true);
+
+        return "SUGAR.quickCompose.init($json);";
+    }
 
 	/**
 	 * returns opening <a href=xxxx for a contact, account, etc
@@ -1305,7 +1317,8 @@ EOQ;
 		}
 
 		if($client == 'sugar') {
-            $emailLink = "<a href='javascript:void(0);' data-action=\"emails-show-compose-modal\" class='$class'>";
+		    $emailEditPopopData = $this->getEmailEditPopupData($focus);
+            $emailLink = "<a href='javascript:void(0);' data-action=\"emails-show-compose-modal\" class='$class' data-popup=\"$emailEditPopopData\">";
 
         } else {
 			// straight mailto:
