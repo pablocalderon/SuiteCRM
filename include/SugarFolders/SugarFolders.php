@@ -205,12 +205,17 @@ class SugarFolder
     /**
      * Sets a user's preferences for subscribe folders (Sugar only)
      * @param array subs Array of IDs for subscribed folders
+     * @param User - Specify which user to set the subscriptions
      */
-    public function setSubscriptions($subs)
+    public function setSubscriptions($subs, $user = null)
     {
         global $current_user;
 
-        if (empty($current_user->id)) {
+        if(empty($user)) {
+            $focusUser = $current_user;
+        }
+
+        if (empty($focusUser->id)) {
             $GLOBALS['log']->fatal("*** FOLDERS: tried to update folder subscriptions for a user with no ID");
 
             return false;
@@ -236,7 +241,7 @@ class SugarFolder
         $this->clearSubscriptions();
 
         foreach ($cleanSubscriptions as $id) {
-            $this->insertFolderSubscription($id, $current_user->id);
+            $this->insertFolderSubscription($id, $focusUser->id);
         }
     }
 
@@ -1120,8 +1125,8 @@ class SugarFolder
                 $this->$k = $v;
             }
 
-            return true;
             $new_with_id  = false;
+            return true;
         }
 
         return false;
