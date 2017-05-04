@@ -1233,47 +1233,17 @@ EOQ;
 		}
 
 		if($client == 'sugar') {
-			$email = '';
-			$to_addrs_ids = '';
-			$to_addrs_names = '';
-			$to_addrs_emails = '';
-
-			$fullName = !empty($focus->name) ? $focus->name : '';
-
-			if(empty($ret_module)) $ret_module = $focus->module_dir;
-			if(empty($ret_id)) $ret_id = $focus->id;
-			if($focus->object_name == 'Contact') {
-				$contact_id = $focus->id;
-				$to_addrs_ids = $focus->id;
-				// Bug #48555 Not User Name Format of User's locale.
-				$focus->_create_proper_name_field();
-			    $fullName = $focus->name;
-			    $to_addrs_names = $fullName;
-				$to_addrs_emails = $focus->email1;
-			}
-
-			$emailLinkUrl = 'contact_id='.$contact_id.
-				'&parent_type='.$focus->module_dir.
-				'&parent_id='.$focus->id.
-				'&parent_name='.urlencode($fullName).
-				'&to_addrs_ids='.$to_addrs_ids.
-				'&to_addrs_names='.urlencode($to_addrs_names).
-				'&to_addrs_emails='.urlencode($to_addrs_emails).
-				'&to_email_addrs='.urlencode($fullName . '&nbsp;&lt;' . $emailAddress . '&gt;').
-				'&return_module='.$ret_module.
-				'&return_action='.$ret_action.
-				'&return_id='.$ret_id;
-
-    		//Generate the compose package for the quick create options.
-    		//$json = getJSONobj();
-    		//$composeOptionsLink = $json->encode( array('composeOptionsLink' => $emailLinkUrl,'id' => $focus->id) );
 			require_once('modules/Emails/EmailUI.php');
-            $eUi = new EmailUI();
-            $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl, true);
-            if($jsonOnly) {
-                return $j_quickComposeOptions;
+            $emailUI = new EmailUI();
+            for($i = 0; $i < count($focus->emailAddress->addresses); $i++) {
+                $emailField = 'email'. (string)($i + 1);
+                if($focus->emailAddress->addresses[$i]['email_address'] === $emailAddress) {
+                    $focus->$emailField = $emailAddress;
+                    $emailLink = $emailUI->populateComposeViewFields($focus, $emailField);
+                    break;
+                }
             }
-    		$emailLink = "<a href='javascript:void(0);' onclick='SUGAR.quickCompose.init($j_quickComposeOptions);' class='$class'>";
+
 
 		} else {
 			// straight mailto:
@@ -1282,16 +1252,6 @@ EOQ;
 
 		return $emailLink;
 	}
-	
-	private function getEmailEditPopupData(&$focus) {
-	    // TODO: change this fake data!!!
-        // {"fullComposeUrl":"contact_id=\u0026parent_type=Accounts\u0026parent_id=24d78e6a-60d5-dbef-0bee-58d9124182a8\u0026parent_name=TJ+O%26%23039%3BRourke+Inc\u0026to_addrs_ids=\u0026to_addrs_names=\u0026to_addrs_emails=\u0026to_email_addrs=TJ+O%26%23039%3BRourke+Inc%26nbsp%3B%26lt%3Bsales.sales.vegan%40example.info%26gt%3B\u0026return_module=Accounts\u0026return_action=DetailView\u0026return_id=24d78e6a-60d5-dbef-0bee-58d9124182a8","composePackage":{"contact_id":"","parent_type":"Accounts","parent_id":"24d78e6a-60d5-dbef-0bee-58d9124182a8","parent_name":"TJ O\u0027Rourke Inc","to_addrs_ids":"","to_addrs_names":"","to_addrs_emails":"","to_email_addrs":"TJ O\u0027Rourke Inc \u003Csales.sales.vegan@example.info\u003E","return_module":"Accounts","return_action":"DetailView","return_id":"24d78e6a-60d5-dbef-0bee-58d9124182a8"}}
-        $sugarEmailField = BeanFactory::getBean('SugarEmailField');
-        //$prefillData = $sugarEmailField->getAddressesByGUID($focus->id, $focus->module_dir);
-        //$json = $this->getEmailLink2($emailAddress, $focus, '', '', 'DetailView', '', '', true);
-
-        return "SUGAR.quickCompose.init($json);";
-    }
 
 	/**
 	 * returns opening <a href=xxxx for a contact, account, etc
@@ -1302,7 +1262,11 @@ EOQ;
 	 * @param class
 	 */
 	function getEmailLink($attribute, &$focus, $class='') {
+	    require_once('modules/Emails/EmailUI.php');
+
 		global $sugar_config;
+
+
 
 		if(!isset($sugar_config['email_default_client'])) {
 			$this->setDefaultsInConfig();
@@ -1317,8 +1281,8 @@ EOQ;
 		}
 
 		if($client == 'sugar') {
-		    $emailEditPopopData = $this->getEmailEditPopupData($focus);
-            $emailLink = "<a href='javascript:void(0);' data-action=\"emails-show-compose-modal\" class='$class' data-popup=\"$emailEditPopopData\">";
+            $emailUI = new EmailUI();
+            $emailLink = $emailUI->populateComposeViewFields($focus);
 
         } else {
 			// straight mailto:
