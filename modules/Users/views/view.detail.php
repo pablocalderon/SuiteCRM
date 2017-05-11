@@ -82,19 +82,18 @@ class UsersViewDetail extends ViewDetail {
 
         $errors = "";
         $msgGood = false;
-        if (isset($_REQUEST['pwd_set']) && $_REQUEST['pwd_set']!= 0){
-            if ($_REQUEST['pwd_set']=='4'){
+        if (isset($_REQUEST['pwd_set']) && $_REQUEST['pwd_set']!= 0) {
+            if ($_REQUEST['pwd_set']=='4') {
                 require_once('modules/Users/password_utils.php');
                 $errors.=canSendPassword();
-            }
-            else {
-                $errors.=translate('LBL_NEW_USER_PASSWORD_'.$_REQUEST['pwd_set'],'Users');
+            } else {
+                $errors.=translate('LBL_NEW_USER_PASSWORD_3'.$_REQUEST['pwd_set'], 'Users');
                 $msgGood = true;
             }
-        } else{
+        } else {
             //IF BEAN USER IS LOCKOUT
-            if($this->bean->getPreference('lockout')=='1') {
-                $errors.=translate('ERR_USER_IS_LOCKED_OUT','Users');
+            if ($this->bean->getPreference('lockout')=='1') {
+                $errors.=translate('ERR_USER_IS_LOCKED_OUT', 'Users');
             }
         }
         $this->ss->assign("ERRORS", $errors);
