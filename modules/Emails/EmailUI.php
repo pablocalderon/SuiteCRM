@@ -357,6 +357,7 @@ eoq;
     }
 
     /**
+     * @deprecated
      * Given an email link url (eg. index.php?action=Compose&parent_type=Contacts...) break up the
      * request components and create a compose package that can be used by the quick compose UI. The
      * result is typically passed into the js call SUGAR.quickCompose.init which initalizes the quick compose
@@ -367,6 +368,14 @@ eoq;
      */
     function generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl, $lazyLoad=false)
     {
+        $deprecatedMessage = 'EmailUI.php: generateComposePackageForQuickCreateFromComposeUrl() is deprecated. Redirecting to new function';
+        if(isset($GLOBALS['log'])) {
+            $GLOBALS['log']->deprecated($deprecatedMessage);
+        }
+        else {
+            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
+        }
+
         $composeData = explode("&",$emailLinkUrl);
         $a_composeData = array();
     	foreach ($composeData as $singleRequest)
