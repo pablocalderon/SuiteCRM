@@ -88,12 +88,10 @@ class SugarWidgetSubPanelTopComposeEmailButton extends SugarWidgetSubPanelTopBut
 				$button = "<input class='button' type='button'  value='$value'  id='". $this->getWidgetId() ."'  name='".preg_replace('[ ]', '', $value)."'  title='$title' onclick=\"location.href='mailto:';return false;\" />";
 			}
 		} else {
-			//Generate the compose package for the quick create options.
+            //Generate the compose package for the quick create options.
             require_once 'modules/Emails/EmailUI.php';
-            $emailUI = new EmailUI();
-            $emailLink = $emailUI->populateComposeViewFields($focus);
-
-            $button = "<input title='$title'  id='". $this->getWidgetId()."'  onclick='$emailLink' class='button' type='submit' name='".preg_replace('[ ]', '', $value)."_button' value='$value' />";
+            $emailUI =  new EmailUI();
+            $button = $emailUI->populateComposeViewFields(). $app_strings['LBL_EMAIL_COMPOSE'];
 		}
 		return $button;
 	}
