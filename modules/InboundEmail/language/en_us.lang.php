@@ -209,7 +209,6 @@ $mod_strings = array(
     'LNK_QUICK_REPLY' => 'Reply',
     'LNK_MY_ARCHIVED_LIST' => 'My Archives',
     'LNK_SENT_EMAIL_LIST' => 'Sent Emails',
-	'LBL_EDIT_LAYOUT' => 'Edit Layout' /*for 508 compliance fix*/,
 
 	'LBL_MODIFIED_BY' => 'Modified By',
 	'LBL_SERVICE' => 'Service',
