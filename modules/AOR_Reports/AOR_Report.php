@@ -1534,7 +1534,7 @@ class AOR_Report extends Basic
                             $value = '"' . $current_user->id . '"';
                             break;
                         case 'Value':
-                            global $timedate;
+                            /*global $timedate;
                             $hours = $timedate->getUserUTCOffset() / 60;
                             $utc = new DateTimeZone("UTC");
                             $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $condition->value, $utc);
@@ -1545,26 +1545,53 @@ class AOR_Report extends Basic
                             }
                             //If its a datetime field, then modify the query to meet difference in UTC
                             if ($dateTime !== false) {
-
-                                $field = $this->db->convert(
-                                    $this->db->convert($field, "add_time", array($hours, "00")),
-                                    "date_cast"
-                                );
                                 $value = $this->db->convert(
                                     $this->db->convert($this->db->quoted($dateTime->format('Y-m-d H:i:s')), "add_time",
                                         array($hours, "00")),
                                     "date_cast"
                                 );
 
-                            }
+                            }*/
 
                             if ($condition->operator == 'Less_Than_or_Equal_To') {
-                                $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . str_replace('00:00:00',
-                                        '23:59:59', $value);
-                                $where_set = true;
+
+                                $utc = new DateTimeZone("UTC");
+                                if ($condition->value != '1000') {
+                                    $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $condition->value, $utc);
+
+                                    $compare = $dateTime->format('Y-m-d H:i:s');
+
+                                    if ($compare === $condition->value) {
+                                        // DateTime object
+                                        /**
+                                         * Need Less Than Query
+                                         */
+                                        $equal_less_than_query = "( $field < '" . $this->db->quote($condition->value) . "'";
+
+                                        /*
+                                         * New the Equal To Query for Date
+                                         * Between two date ranges
+                                         */
+
+                                        $day_ahead = $dateTime->modify('+1 day');
+
+                                        $equal_less_than_query .= " OR $field  BETWEEN '" . $this->db->quote($condition->value) . "' AND '" . $this->db->quote($day_ahead->format('Y-m-d H:i:s')) . "' ) ";
+
+                                        $query['where'][] = $equal_less_than_query;
+
+                                    } else {
+                                        // Could be a Date or anything else.
+                                    }
+                                    $where_set = true;
+                                }
+                                $value = "'" . $this->db->quote($condition->value) . "'";
+                               // $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . str_replace('00:00:00',
+                                        //'23:59:59', $value);
+
                             } else {
                                 $value = "'" . $this->db->quote($condition->value) . "'";
                             }
+                            break;
 
                         default:
                             $value = "'" . $this->db->quote($condition->value) . "'";
