@@ -52,7 +52,7 @@ if($json->decode(html_entity_decode($_REQUEST['forQuotes']))){
     $returnArray['forQuotes']="quotes";
 
 }else{
-    $returnArray['forQuotes']="favicon";
+    $returnArray['forQuotes']="company";
 }
 
 $upload_ok = false;

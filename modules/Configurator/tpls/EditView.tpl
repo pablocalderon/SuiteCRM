@@ -109,7 +109,7 @@
                 {$MOD.CURRENT_FAVICON}&nbsp;{sugar_help text=$MOD.CURRENT_FAVICON_HELP}
             </td>
             <td width='35%'>
-                <img id="favicon_image" src='themes\SuiteP\images\sugar_icon.ico'>
+                <img id="favicon_image" src='{$favicon}'>
             </td>
         </tr>
         <tr>
@@ -228,6 +228,7 @@
         var callback = {
           upload: function (r) {
             eval("var file_type = " + r.responseText);
+            debugger;
             var forQuotes = file_type['forQuotes'];
             document.getElementById('loading_img_' + forQuotes).style.display = "none";
             bad_image = SUGAR.language.get('Configurator', (forQuotes == 'quotes') ? 'LBL_ALERT_TYPE_JPEG' : 'LBL_ALERT_TYPE_IMAGE');

@@ -123,6 +123,7 @@ class ConfiguratorViewEdit extends ViewEdit
         $this->ss->assign('LANGUAGES', get_languages());
         $this->ss->assign("JAVASCRIPT",get_set_focus_js(). get_configsettings_js());
         $this->ss->assign('company_logo', SugarThemeRegistry::current()->getImageURL('company_logo.png'));
+        $this->ss->assign('favicon', SugarThemeRegistry::current()->getImageURL('sugar_icon.ico'));
         $this->ss->assign("settings", $focus->settings);
         $this->ss->assign("mail_sendtype_options", get_select_options_with_id($app_list_strings['notifymail_sendtype'], $focus->settings['mail_sendtype']));
         if(!empty($focus->settings['proxy_on'])){
