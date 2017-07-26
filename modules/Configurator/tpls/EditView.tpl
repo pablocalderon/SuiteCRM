@@ -228,7 +228,6 @@
         var callback = {
           upload: function (r) {
             eval("var file_type = " + r.responseText);
-            debugger;
             var forQuotes = file_type['forQuotes'];
             document.getElementById('loading_img_' + forQuotes).style.display = "none";
             bad_image = SUGAR.language.get('Configurator', (forQuotes == 'quotes') ? 'LBL_ALERT_TYPE_JPEG' : 'LBL_ALERT_TYPE_IMAGE');

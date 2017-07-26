@@ -4958,6 +4958,9 @@ function getUrls($string)
 function verify_image_file($path, $jpeg = false)
 {
     if (function_exists('imagepng') && function_exists('imagejpeg') && function_exists('imagecreatefromstring')) {
+        $img_size = getimagesize($path);
+        $filetype = $img_size['mime'];
+
         $img = imagecreatefromstring(file_get_contents($path));
         if (!$img) {
             return false;
@@ -5024,6 +5027,7 @@ function verify_uploaded_image($path, $jpeg_only = false)
     $supportedExtensions = array('jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg');
     if (!$jpeg_only) {
         $supportedExtensions['png'] = 'image/png';
+        $supportedExtensions['x-icon'] = 'image/vnd.microsoft.icon';
     }
 
     if (!file_exists($path) || !is_file($path)) {
