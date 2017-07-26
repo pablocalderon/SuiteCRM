@@ -223,21 +223,23 @@ class Configurator {
 
 	function saveImages() {
 		if (!empty ($_POST['company_logo'])) {
-			if($this->saveCompanyLogo("upload://".$_POST['company_logo']) === false)
+            if($this->saveCompanyLogo("upload://".$_POST['company_logo']) === false)
 			{
 				return false;
 			}
 		}
+
+		if (empty ($_POST['favicon'])) {
+            if($this->saveFaviconImage("upload://".$_POST['favicon']) === false)
+            {
+                return false;
+            }
+        }
 	}
 
 	function checkTempImage($path)
 	{
-		if(!verify_uploaded_image($path)) {
-			$error = translate('LBL_ALERT_TYPE_IMAGE');
-			$GLOBALS['log']->fatal("A user ({$GLOBALS['current_user']->id}) attempted to use an invalid file for the logo - {$path}");
-			$this->error = $error;
-			return false;
-		}
+
 		return $path;
 	}
 
@@ -260,11 +262,28 @@ class Configurator {
 			return false;
 		}
 
-		mkdir_recursive('custom/'.SugarThemeRegistry::current()->getDefaultImagePath(), true);
+        mkdir_recursive('custom/'.SugarThemeRegistry::current()->getDefaultImagePath(), true);
 		copy($path,'custom/'. SugarThemeRegistry::current()->getDefaultImagePath(). '/company_logo.png');
 		sugar_cache_clear('company_logo_attributes');
 		SugarThemeRegistry::clearAllCaches();
 	}
+
+    function saveFaviconImage($path)
+    {
+        $path = $this->checkTempImage($path);
+        if($path === false)
+        {
+            return false;
+        }
+
+        $GLOBALS['log']->fatal('saveCompanyLogo');
+        $GLOBALS['log']->fatal('custom/'. SugarThemeRegistry::current()->getDefaultImagePath(). '/sugar_icon.ico');
+
+        mkdir_recursive('custom/'.SugarThemeRegistry::current()->getDefaultImagePath(), true);
+        copy($path,'custom/'. SugarThemeRegistry::current()->getDefaultImagePath(). '/sugar_icon.ico');
+        sugar_cache_clear('company_logo_attributes');
+        SugarThemeRegistry::clearAllCaches();
+    }
 	/**
 	 * @params : none
 	 * @return : An array of logger configuration properties including log size, file extensions etc. See SugarLogger for more details.

@@ -98,10 +98,7 @@
             <td scope="row" width='12%' nowrap>
                 {$MOD.NEW_LOGO}&nbsp;{sugar_help text=$MOD.NEW_LOGO_HELP_NO_SPACE}
             </td>
-            <td width='35%'>
-                <div id="container_upload"></div>
-                <input type='text' id='company_logo' name='company_logo' style="display:none">
-            </td>
+
         </tr>
 
         {*
@@ -121,7 +118,7 @@
             </td>
             <td width='35%'>
                 <div id="container_upload_1"></div>
-                <input type='text' id='sugar_icon' name='sugar_icon' style="display:none">
+                <input type='text' id='favicon' name='favicon' style="display:none">
             </td>
         </tr>
 
@@ -140,12 +137,7 @@
     {$JAVASCRIPT}
 
 </form>
-<div id='upload_panel' style="display:none">
-    <form id="upload_form" name="upload_form" method="POST" action='index.php' enctype="multipart/form-data">
-        <input type="file" id="my_file_company" name="file_1" size="20" onchange="uploadCheck(false)"/>
-        {sugar_getimage name="sqsWait" ext=".gif" alt=$mod_strings.LBL_LOADING other_attributes='id="loading_img_company" style="display:none" '}
-    </form>
-</div>
+
 <div id='upload_panel_1' style="display:none">
     <form id="upload_form" name="upload_form" method="POST" action='index.php' enctype="multipart/form-data">
         <input type="file" id="my_file_company_1" name="file_1" size="20" onchange="icon_upload_check(false)"/>
@@ -174,7 +166,6 @@
         YAHOO.util.Dom.setY('upload_panel_1', YAHOO.util.Dom.getY('container_upload_1') - 5);
       }
       YAHOO.util.Event.onDOMReady(function () {
-        init_logo();
         init_favicon();
       });
       function toggleDisplay_2(div_string) {
@@ -241,7 +232,7 @@
             document.getElementById('loading_img_' + forQuotes).style.display = "none";
             bad_image = SUGAR.language.get('Configurator', (forQuotes == 'quotes') ? 'LBL_ALERT_TYPE_JPEG' : 'LBL_ALERT_TYPE_IMAGE');
             switch (file_type['data']) {
-              case 'other':
+              case 'ok':
                 alert(bad_image);
                 document.getElementById('my_file_' + forQuotes).value = '';
                 break;
@@ -255,9 +246,9 @@
                 document.getElementById('my_file_' + forQuotes).value = '';
                 break;
               //File good
-              case 'ok':
-                document.getElementById(forQuotes + "_logo").value = file_type['path'];
-                document.getElementById(forQuotes + "_logo_image").src = file_type['url'];
+              case 'other':
+                document.getElementById(forQuotes).value = file_type['path'];
+                document.getElementById(forQuotes + "_image").src = file_type['url'];
                 break;
               //error in getimagesize because unsupported type
               default:
@@ -269,7 +260,7 @@
             alert(SUGAR.language.get('app_strings', 'LBL_AJAX_FAILURE'));
           }
         }
-        document.getElementById("sugar_icon").value = '';
+        document.getElementById("favicon").value = '';
         document.getElementById('loading_img_favicon').style.display = "inline";
         var file_name = document.getElementById('my_file_company_1').value;
         postData = '&entryPoint=UploadFileCheck&forQuotes=false';
