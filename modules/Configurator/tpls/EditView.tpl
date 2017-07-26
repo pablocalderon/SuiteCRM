@@ -120,7 +120,8 @@
                 {$MOD.NEW_FAVICON}&nbsp;{sugar_help text=$MOD.NEW_NEW_FAVICON_HELP_NO_SPAC}
             </td>
             <td width='35%'>
-
+                <div id="container_upload_1"></div>
+                <input type='text' id='sugar_icon' name='sugar_icon' style="display:none">
             </td>
         </tr>
 
@@ -145,11 +146,17 @@
         {sugar_getimage name="sqsWait" ext=".gif" alt=$mod_strings.LBL_LOADING other_attributes='id="loading_img_company" style="display:none" '}
     </form>
 </div>
+<div id='upload_panel_1' style="display:none">
+    <form id="upload_form" name="upload_form" method="POST" action='index.php' enctype="multipart/form-data">
+        <input type="file" id="my_file_company_1" name="file_1" size="20" onchange="icon_upload_check(false)"/>
+        {sugar_getimage name="sqsWait" ext=".gif" alt=$mod_strings.LBL_LOADING other_attributes='id="loading_img_favicon" style="display:none" '}
+    </form>
+</div>
 {if $error.company_logo}
     <script type='text/javascript'>
-      {literal}$(function () {
-        alert('{/literal}{$error.company_logo}{literal}');
-      });{/literal}
+        {literal}$(function () {
+          alert('{/literal}{$error.company_logo}{literal}');
+        });{/literal}
     </script>
 {/if}
 {literal}
@@ -160,10 +167,18 @@
         YAHOO.util.Dom.setX('upload_panel', YAHOO.util.Dom.getX('container_upload'));
         YAHOO.util.Dom.setY('upload_panel', YAHOO.util.Dom.getY('container_upload') - 5);
       }
+      function init_favicon() {
+        document.getElementById('upload_panel_1').style.display = "inline";
+        document.getElementById('upload_panel_1').style.position = "absolute";
+        YAHOO.util.Dom.setX('upload_panel_1', YAHOO.util.Dom.getX('container_upload_1'));
+        YAHOO.util.Dom.setY('upload_panel_1', YAHOO.util.Dom.getY('container_upload_1') - 5);
+      }
       YAHOO.util.Event.onDOMReady(function () {
         init_logo();
+        init_favicon();
       });
       function toggleDisplay_2(div_string) {
+        alert('toggledisplay');
         toggleDisplay(div_string);
         init_logo();
       }
@@ -216,6 +231,57 @@
           YAHOO.util.Connect.asyncRequest('POST', 'index.php', callback, postData);
         }
       }
+
+      function icon_upload_check(quotes) {
+        //AJAX call for checking the file size and comparing with php.ini settings.
+        var callback = {
+          upload: function (r) {
+            eval("var file_type = " + r.responseText);
+            var forQuotes = file_type['forQuotes'];
+            document.getElementById('loading_img_' + forQuotes).style.display = "none";
+            bad_image = SUGAR.language.get('Configurator', (forQuotes == 'quotes') ? 'LBL_ALERT_TYPE_JPEG' : 'LBL_ALERT_TYPE_IMAGE');
+            switch (file_type['data']) {
+              case 'other':
+                alert(bad_image);
+                document.getElementById('my_file_' + forQuotes).value = '';
+                break;
+              case 'size':
+                alert(SUGAR.language.get('Configurator', 'LBL_ALERT_SIZE_RATIO'));
+                document.getElementById(forQuotes + "_logo").value = file_type['path'];
+                document.getElementById(forQuotes + "_logo_image").src = file_type['url'];
+                break;
+              case 'file_error':
+                alert(SUGAR.language.get('Configurator', 'ERR_ALERT_FILE_UPLOAD'));
+                document.getElementById('my_file_' + forQuotes).value = '';
+                break;
+              //File good
+              case 'ok':
+                document.getElementById(forQuotes + "_logo").value = file_type['path'];
+                document.getElementById(forQuotes + "_logo_image").src = file_type['url'];
+                break;
+              //error in getimagesize because unsupported type
+              default:
+                alert(bad_image);
+                document.getElementById('my_file_' + forQuotes).value = '';
+            }
+          },
+          failure: function (r) {
+            alert(SUGAR.language.get('app_strings', 'LBL_AJAX_FAILURE'));
+          }
+        }
+        document.getElementById("sugar_icon").value = '';
+        document.getElementById('loading_img_favicon').style.display = "inline";
+        var file_name = document.getElementById('my_file_company_1').value;
+        postData = '&entryPoint=UploadFileCheck&forQuotes=false';
+        YAHOO.util.Connect.setForm(document.getElementById('upload_form'), true, true);
+        if (file_name) {
+          if (postData.substring(0, 1) == '&') {
+            postData = postData.substring(1);
+          }
+          YAHOO.util.Connect.asyncRequest('POST', 'index.php', callback, postData);
+        }
+      }
+
 
     </script>
 {/literal}
