@@ -114,7 +114,7 @@ function send_back(module, id)
 	}
 	var form_name = request_data.form_name;
 	var field_to_name_array = request_data.field_to_name_array;
-	
+
 	var call_back_function = eval("window.opener." + request_data.call_back_function);
 	var array_contents = Array();
 
@@ -164,6 +164,47 @@ function send_back(module, id)
 
 	var result_data = {"form_name":form_name,"name_to_value_array":name_to_value_array,"passthru_data":passthru_data,"popupConfirm":popupConfirm};
 	call_back_function(result_data);
+}
+
+function process_return_data (result_data)
+{
+  var contact_name = result_data.name_to_value_array.qtip_bar_name;
+  var contact_email_address = result_data.name_to_value_array.qtip_bar_email_address;
+  var to_addrs = document.getElementById('to_addrs_names');
+
+    if (trim(contact_email_address) === '') {
+      var mb = messageBox();
+      mb.hideHeader();
+      mb.setBody(SUGAR.language.translate('Emails', 'LBL_INSERT_ERROR_BLANK_EMAIL'));
+      mb.show();
+
+      mb.on('ok', function () {
+        "use strict";
+        mb.remove();
+      });
+
+      mb.on('cancel', function () {
+        "use strict";
+        mb.remove();
+      });
+    } else {
+      var formatted_email_address = '';
+      if (trim(contact_name) !== '') {
+        // use name <email address> format
+        formatted_email_address = contact_name + ' <' + contact_email_address + '>';
+      } else {
+        // use email address
+        formatted_email_address = contact_email_address;
+      }
+
+      if (to_addrs.value === '') {
+        to_addrs.value = formatted_email_address
+      } else {
+        to_addrs.value = (to_addrs.value + ', ' + formatted_email_address
+        );
+      }
+    }
+
 }
 
 function send_back_teams(module, form, field, error_message, request_data, form_team_id)
