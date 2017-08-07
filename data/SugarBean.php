@@ -16,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,8 +34,8 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -979,11 +979,13 @@ class SugarBean
                 $submodule = new $submoduleclass();
                 $subwhere = $where_definition;
 
-                if($subpanel_def->search_query != '') {
-                    if($_REQUEST['collection_basic'][0] != 'null') {
-                        $subwhere = $subwhere . ' AND ' . str_replace(strtolower($_REQUEST['collection_basic'][0]),strtolower($submodulename),$subpanel_def->search_query);
+                if ($subpanel_def->search_query !== '') {
+                    if ($_REQUEST['collection_basic'][0] != 'null') {
+                        $subwhere = $subwhere . ' AND ' . str_replace(strtolower($_REQUEST['collection_basic'][0]),
+                                strtolower($submodulename), $subpanel_def->search_query);
                     } else {
-                        $subwhere = $subwhere . ' AND ' . str_replace('meetings',strtolower($submodulename),$subpanel_def->search_query);
+                        $subwhere = $subwhere . ' AND ' . str_replace('meetings', strtolower($submodulename),
+                                $subpanel_def->search_query);
                     }
                 }
 
