@@ -223,10 +223,14 @@ class SubPanel
 
         if ($this->subpanel_defs->search_query === '') {
             $this->subpanel_defs->search_query = $this->search_query;
+
+            $query=$ListView->process_dynamic_listview($this->collections, $this->parent_bean,$this->subpanel_defs);
+            $this->subpanel_query=$query;
+        } else {
+            $query=$ListView->process_dynamic_listview($this->parent_module, $this->parent_bean,$this->subpanel_defs);
+            $this->subpanel_query=$query;
         }
 
-		$query=$ListView->process_dynamic_listview($this->parent_module, $this->parent_bean,$this->subpanel_defs);
-		$this->subpanel_query=$query;
 		$ob_contents = ob_get_contents();
 		ob_end_clean();
 		return $ob_contents;
@@ -427,6 +431,9 @@ class SubPanel
 		$searchForm->populateFromRequest();
 
 		$where_clauses = $searchForm->generateSearchWhere(true, $seed->module_dir);
+
+		if ($module === $collection) {
+		}
 
 		if (count($where_clauses) > 0 ) {
 			$this->search_query = '('. implode(' ) AND ( ', $where_clauses) . ')';
