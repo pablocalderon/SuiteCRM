@@ -103,9 +103,18 @@ echo getClassicModuleTitle($focus->module_dir, $params, true);
 
 $GLOBALS['log']->info("EmailTemplate detail view");
 
-$xtpl=new XTemplate ('modules/EmailTemplates/DetailView.html');
-$xtpl->assign("MOD", $mod_strings);
-$xtpl->assign("APP", $app_strings);
+
+
+
+
+
+
+// create object
+$ss = new Sugar_Smarty;
+$ss->assign('MOD', $mod_strings);
+$ss->assign('APP', $app_strings);
+
+
 $buttons = array(
     <<<EOD
             <input type="submit" class="button" id="editEmailTemplatesButton" title="{$app_strings['LBL_EDIT_BUTTON_TITLE']}" accessKey="{$app_strings['LBL_EDIT_BUTTON_KEY']}" onclick="this.form.return_module.value='EmailTemplates'; this.form.return_action.value='DetailView'; this.form.return_id.value='{$focus->id}'; this.form.action.value='EditView'" value="{$app_strings['LBL_EDIT_BUTTON_LABEL']}">
@@ -124,88 +133,36 @@ $action_button = smarty_function_sugar_action_menu(array(
     'id' => 'detail_header_action_menu',
     'buttons' => $buttons,
     'class' => 'clickMenu fancymenu',
-), $xtpl);
+), $ss);
 
-$xtpl->assign("ACTION_BUTTON", $action_button);
+$ss->assign("ACTION_BUTTON", $action_button);
 
-if(isset($_REQUEST['return_module'])) $xtpl->assign("RETURN_MODULE", $_REQUEST['return_module']);
-if(isset($_REQUEST['return_action'])) $xtpl->assign("RETURN_ACTION", $_REQUEST['return_action']);
-if(isset($_REQUEST['return_id'])) $xtpl->assign("RETURN_ID", $_REQUEST['return_id']);
-$xtpl->assign("GRIDLINE", $gridline);
-$xtpl->assign("PRINT_URL", "index.php?".$GLOBALS['request_string']);
-$xtpl->assign("ID", $focus->id);
-$xtpl->assign("CREATED_BY", $focus->created_by_name);
-$xtpl->assign("MODIFIED_BY", $focus->modified_by_name);
+if(isset($_REQUEST['return_module'])) $ss->assign("RETURN_MODULE", $_REQUEST['return_module']);
+if(isset($_REQUEST['return_action'])) $ss->assign("RETURN_ACTION", $_REQUEST['return_action']);
+if(isset($_REQUEST['return_id'])) $ss->assign("RETURN_ID", $_REQUEST['return_id']);
+$ss->assign("GRIDLINE", $gridline);
+$ss->assign("PRINT_URL", "index.php?".$GLOBALS['request_string']);
+$ss->assign("ID", $focus->id);
+$ss->assign("CREATED_BY", $focus->created_by_name);
+$ss->assign("MODIFIED_BY", $focus->modified_by_name);
 //if text only is set to true, then make sure input is checked and value set to 1
-if(isset($focus->text_only) && $focus->text_only){
-    $xtpl->assign("TEXT_ONLY_CHECKED","CHECKED");
+if (isset($focus->text_only) && $focus->text_only) {
+    $ss->assign("TEXT_ONLY_CHECKED", "CHECKED");
 }
-$xtpl->assign("NAME", $focus->name);
-$xtpl->assign("DESCRIPTION", $focus->description);
-$xtpl->assign("SUBJECT", $focus->subject);
-$xtpl->assign("BODY", $focus->body);
-$xtpl->assign("BODY_HTML", json_encode(from_html($focus->body_html)));
-$xtpl->assign("DATE_MODIFIED", $focus->date_modified);
-$xtpl->assign("DATE_ENTERED", $focus->date_entered);
-$xtpl->assign("ASSIGNED_USER_NAME", $focus->assigned_user_name);
+$ss->assign("NAME", $focus->name);
+$ss->assign("DESCRIPTION", $focus->description);
+$ss->assign("SUBJECT", $focus->subject);
+$ss->assign("BODY", $focus->body);
+$ss->assign("BODY_HTML", json_encode(from_html($focus->body_html)));
+$ss->assign("DATE_MODIFIED", $focus->date_modified);
+$ss->assign("DATE_ENTERED", $focus->date_entered);
+$ss->assign("ASSIGNED_USER_NAME", $focus->assigned_user_name);
 
-if ($focus-type === 'workflow') {
-    $xtpl->assign("TYPE", $app_list_strings['emailTemplates_type_list'][$focus->type]);
-} else {
-    $xtpl->assign("TYPE", $app_list_strings['emailTemplates_type_list_no_workflow'][$focus->type]);
-}
+// assign some content. This would typically come from
+// a database or other source, but we'll use static
+// values for the purpose of this example.
+$ss->assign('name', 'george smith');
+$ss->assign('address', '45th & Harris');
 
-if($focus->ACLAccess('EditView')) {
-	$xtpl->parse("main.edit");
-	//$xtpl->out("EDIT");
-
-}
-if(!empty($focus->body)) {
-	$xtpl->assign('ALT_CHECKED', 'CHECKED');
-} 
-else 
-	$xtpl->assign('ALT_CHECKED', '');
-if( $focus->published == 'on')
-{
-$xtpl->assign("PUBLISHED","CHECKED");
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-////	NOTES (attachements, etc.)
-///////////////////////////////////////////////////////////////////////////////
-$note = new Note();
-$where = "notes.parent_id='{$focus->id}'";
-$notes_list = $note->get_full_list("notes.name", $where,true);
-
-if(! isset($notes_list)) {
-	$notes_list = array();
-}
-
-$attachments = '';
-for($i=0; $i<count($notes_list); $i++) {
-	$the_note = $notes_list[$i];
-	$attachments .= "<a href=\"index.php?entryPoint=download&id={$the_note->id}&type=Notes\">".$the_note->name."</a><br />";
-}
-
-$xtpl->assign("ATTACHMENTS", $attachments);
-
-
-global $current_user;
-if(is_admin($current_user) && $_REQUEST['module'] != 'DynamicLayout' && !empty($_SESSION['editinplace'])) {
-
-	$xtpl->assign("ADMIN_EDIT","<a href='index.php?action=index&module=DynamicLayout&from_action=".$_REQUEST['action'] ."&from_module=".$_REQUEST['module'] ."&record=".$_REQUEST['record']. "'>".SugarThemeRegistry::current()->getImage("EditLayout","border='0' align='bottom'",null,null,'.gif',$mod_strings['LBL_EDIT_LAYOUT'])."</a>");
-}
-
-$xtpl->assign("DESCRIPTION", $focus->description);
-
-$detailView->processListNavigation($xtpl, "EMAIL_TEMPLATE", $offset);
-// adding custom fields:
-require_once('modules/DynamicFields/templates/Files/DetailView.php');
-
-
-$xtpl->parse("main");
-
-$xtpl->out("main");
-
-?>
+// display it
+$ss->display('modules/EmailTemplates/tpls/DetailView.tpl');
