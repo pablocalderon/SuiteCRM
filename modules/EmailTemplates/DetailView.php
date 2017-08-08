@@ -149,7 +149,11 @@ $xtpl->assign("DATE_MODIFIED", $focus->date_modified);
 $xtpl->assign("DATE_ENTERED", $focus->date_entered);
 $xtpl->assign("ASSIGNED_USER_NAME", $focus->assigned_user_name);
 
-$xtpl->assign("TYPE", $app_list_strings['emailTemplates_type_list'][$focus->type]);
+if ($focus-type === 'workflow') {
+    $xtpl->assign("TYPE", $app_list_strings['emailTemplates_type_list'][$focus->type]);
+} else {
+    $xtpl->assign("TYPE", $app_list_strings['emailTemplates_type_list_no_workflow'][$focus->type]);
+}
 
 if($focus->ACLAccess('EditView')) {
 	$xtpl->parse("main.edit");
