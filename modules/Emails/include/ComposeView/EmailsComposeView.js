@@ -331,7 +331,7 @@
 
     self.updateSignature = function () {
       var inboundId = $('#from_addr_name').find('option:selected').attr('inboundId');
-      if(inboundId === undefined) {
+      if (inboundId === undefined) {
         console.warn('Unable to retrieve selected inbound id in the "From" field.');
         return false;
       }
@@ -354,7 +354,7 @@
         }
       });
 
-      if(
+      if (
         htmlSignature === null &&
         plainTextSignature === null
       ) {
@@ -362,32 +362,32 @@
         return false;
       }
 
-      if(htmlSignature === null) {
+      if (htmlSignature === null) {
         // use plain signature instead
         $(plainTextSignature).appendTo(signatureElement);
-      } else if(plainTextSignature === null) {
+      } else if (plainTextSignature === null) {
         // use html signature
         $(htmlSignature).appendTo(signatureElement);
       } else {
         $(htmlSignature).appendTo(signatureElement);
       }
 
-      if(tinymce.editors.length < 1) {
+      if (tinymce.editors.length < 1) {
         console.warn('unable to find tinymce editor');
         return false;
       }
 
       var body = tinymce.activeEditor.getContent();
       if (body === '') {
-        tinymce.activeEditor.setContent('<p></p>' + signatureElement[0].outerHTML , {format: 'html'});
-      } else if($(body).hasClass('email-signature')) {
+        tinymce.activeEditor.setContent('<p></p>' + signatureElement[0].outerHTML, {format: 'html'});
+      } else if ($(body).hasClass('email-signature')) {
         var newBody = $('<div></div>');
         $(body).appendTo(newBody);
         $(newBody).find('.email-signature').replaceWith(signatureElement[0].outerHTML);
         tinymce.activeEditor.setContent(newBody.html(), {format: 'html'});
       } else {
         // reply to / forward
-        if(self.prependSignature === true) {
+        if (self.prependSignature === true) {
           tinymce.activeEditor.setContent('<p></p>' + signatureElement[0].outerHTML + body, {format: 'html'});
         } else {
           tinymce.activeEditor.setContent(body + signatureElement[0].outerHTML, {format: 'html'});
@@ -516,28 +516,28 @@
 
           // If the user is viewing the form in the standard view
           if ($(self).find('input[type="hidden"][name="return_module"]').val() !== '') {
-            mb.on('ok', function() {
+            mb.on('ok', function () {
               var url = 'index.php?';
 
               var module = $('#' + self.attr('id') + ' input[type="hidden"][name="return_module"]').val();
-              if(module !== undefined) {
+              if (module !== undefined) {
                 url = url + 'module=' + module;
               }
 
-              var action =  $('#' + self.attr('id') + ' input[type="hidden"][name="return_action"]').val();
-              if(action !== undefined) {
+              var action = $('#' + self.attr('id') + ' input[type="hidden"][name="return_action"]').val();
+              if (action !== undefined) {
                 url = url + '&action=' + action;
               }
 
-              var record =  $('#' + self.attr('id') + ' input[type="hidden"][name="return_id"]').val();
-              if(record !== undefined) {
+              var record = $('#' + self.attr('id') + ' input[type="hidden"][name="return_id"]').val();
+              if (record !== undefined) {
                 url = url + '&record=' + record;
               }
 
               location.href = url;
             });
           } else {
-            mb.on('ok', function() {
+            mb.on('ok', function () {
               // The user is viewing in the modal view
               $(self).trigger("sentEmail", [self, response]);
             });
@@ -1074,7 +1074,7 @@
                 .attr('data-inbound-email-id', v.id)
                 .appendTo(self);
 
-              if(typeof v.prepend !== "undefined" && v.prepend === true) {
+              if (typeof v.prepend !== "undefined" && v.prepend === true) {
                 self.prependSignature = true;
               }
               self.updateSignature();
@@ -1096,7 +1096,7 @@
           }
 
           if ($(self).find('#is_only_plain_text').length === 1) {
-            $(self).find('#is_only_plain_text').click(function() {
+            $(self).find('#is_only_plain_text').click(function () {
               var tinemceToolbar = $(tinymce.EditorManager.activeEditor.getContainer()).find('.mce-toolbar');
               if ($('#is_only_plain_text').prop('checked')) {
                 tinemceToolbar.hide();
@@ -1153,9 +1153,9 @@
       } else {
         $(self).find('[data-label="description_html"]').closest('.edit-view-row-item').addClass('hidden');
 
-        var intervalCheckTinymce = window.setInterval(function(){
+        var intervalCheckTinymce = window.setInterval(function () {
           var isFromPopulated = $('#from_addr_name').prop("tagName").toLowerCase() === 'select';
-          if(tinymce.editors.length > 0 && isFromPopulated === true) {
+          if (tinymce.editors.length > 0 && isFromPopulated === true) {
             self.updateSignature();
             clearInterval(intervalCheckTinymce);
           }
@@ -1227,7 +1227,7 @@
   $.fn.EmailsComposeView.onTemplateSelect = function (args) {
 
     var confirmed = function (args) {
-      var self = $('[name="'+args.form_name+'"]');
+      var self = $('[name="' + args.form_name + '"]');
       $.post('index.php?entryPoint=emailTemplateData', {
         emailTemplateId: args.name_to_value_array.emails_email_templates_idb
       }, function (resp) {
@@ -1240,8 +1240,8 @@
     };
 
     var mb = messageBox();
-    mb.setTitle(SUGAR.language.translate('Emails', 'LBL_CONFIRM_APPLY_EMAIL_TEMPLATE_TITLE'));
-    mb.setBody(SUGAR.language.translate('Emails', 'LBL_CONFIRM_APPLY_EMAIL_TEMPLATE_BODY'));
+    mb.setTitle(SUGAR.language.translate('', 'LBL_CONFIRM_APPLY_EMAIL_TEMPLATE_TITLE'));
+    mb.setBody(SUGAR.language.translate('', 'LBL_CONFIRM_APPLY_EMAIL_TEMPLATE_BODY'));
     mb.show();
 
     mb.on('ok', function () {
@@ -1259,14 +1259,13 @@
 
   $.fn.EmailsComposeView.onParentSelect = function (args) {
     set_return(args);
-    console.log(args);
-    if(isValidEmail(args.name_to_value_array.email1)) {
+    if (isValidEmail(args.name_to_value_array.email1)) {
       var emailAddress = args.name_to_value_array.email1;
-      var self = $('[name="'+args.form_name+'"]');
+      var self = $('[name="' + args.form_name + '"]');
       var toField = $(self).find('[name=to_addrs_names]');
-      if(toField.val().indexOf(emailAddress) === -1) {
+      if (toField.val().indexOf(emailAddress) === -1) {
         var toFieldVal = toField.val();
-        if(toFieldVal === '') {
+        if (toFieldVal === '') {
           toField.val(emailAddress);
         } else {
           toField.val(toFieldVal + ', ' + emailAddress);
