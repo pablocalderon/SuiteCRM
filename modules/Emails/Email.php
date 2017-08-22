@@ -4022,8 +4022,9 @@ eoq;
             // Strip out name from email address
             // eg Angel Mcmahon <sales.vegan@example.it>
             if (count($matches) > 3) {
-                $display = trim($matches[1]);
                 $email = $matches[2];
+                $display = (str_replace($email, '', $address));
+                $display = (trim(str_replace('"', '', $display)));
             } else {
                 $email = $address;
                 $display = '';
@@ -4037,7 +4038,7 @@ eoq;
 
             $bean->to_addrs_arr[] = array(
                 'email' => $email,
-                'display' => $display,
+                'display' => mb_encode_mimeheader($display, 'UTF-8', 'Q')
             );
         }
 
