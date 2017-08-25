@@ -1070,7 +1070,7 @@ function get_decoded($object){
  */
     function decrypt_string($string)
     {
-        if (function_exists('mcrypt_cbc')) {
+        if (function_exists('openssl_decrypt')) {
 
             $focus = new Administration();
             $focus->retrieveSettings();
