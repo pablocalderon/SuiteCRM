@@ -1095,30 +1095,36 @@ function validate_user($user_name, $password){
 	 *
 	 * @return a decrypted string if we can decrypt, the original string otherwise
 	 */
-	function decrypt_string($string){
-		$GLOBALS['log']->info('Begin: SoapHelperWebServices->decrypt_string');
-		if(function_exists('mcrypt_cbc')){
-			require_once('modules/Administration/Administration.php');
-			$focus = new Administration();
-			$focus->retrieveSettings();
-			$key = '';
-			if(!empty($focus->settings['ldap_enc_key'])){
-				$key = $focus->settings['ldap_enc_key'];
-			}
-			if(empty($key)) {
-				$GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string - empty key');
-				return $string;
-			} // if
-			$buffer = $string;
-			$key = substr(md5($key),0,24);
-		    $iv = "password";
-			$GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string');
-		    return mcrypt_cbc(MCRYPT_3DES, $key, pack("H*", $buffer), MCRYPT_DECRYPT, $iv);
-		}else{
-			$GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string');
-			return $string;
-		}
-	} // fn
+    function decrypt_string($string)
+    {
+        $GLOBALS['log']->info('Begin: SoapHelperWebServices->decrypt_string');
+        if (function_exists('openssl_decrypt')) {
+            require_once('modules/Administration/Administration.php');
+            $focus = new Administration();
+            $focus->retrieveSettings();
+            $key = '';
+            if (!empty($focus->settings['ldap_enc_key'])) {
+                $key = $focus->settings['ldap_enc_key'];
+            }
+            if (empty($key)) {
+                $GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string - empty key');
+
+                return $string;
+            }
+            $buffer = $string;
+            $key = substr(md5($key), 0, 24);
+            $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('DES-EDE3-CBC'), $isStrong);
+            if ($isStrong === false || $iv === false) {
+                throw new RuntimeException('IV generation failed');
+            }
+            $GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string');
+
+            return openssl_decrypt(pack("H*", $buffer), 'DES-EDE3-CBC', $key, $iv);
+        }
+        $GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string');
+
+        return $string;
+    }
 
 	function isLogLevelDebug() {
 		if (isset($GLOBALS['sugar_config']['logger'])) {
