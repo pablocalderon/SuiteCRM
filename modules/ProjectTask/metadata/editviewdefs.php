@@ -159,6 +159,11 @@ title="" tabindex="0" onChange="update_status(this.value);" /></tr>',
                           'name' => 'duration',
                           'label' => 'LBL_DURATION',
                       ),
+                  2 =>
+                      array (
+                          'name' => 'actual_duration',
+                          'label' => 'LBL_ACTUAL_DURATION',
+                      ),
               ),
       ),
       'LBL_PANEL_TIMELINE' =>
