@@ -261,6 +261,12 @@ div.noBullet li,
 }
 
 .pagecontent:after {
+
+/** Reminders **/
+#EditView #reminder_view input[type="button"].add-btn {
+  padding: 0px 20px 20px 32px;
+}
+
   clear: both;
 }
 
@@ -1195,6 +1201,7 @@ p.error {
 
 .error:empty {
   padding: 0;
+  color: #222;
 }
 
 div.content p.error {
