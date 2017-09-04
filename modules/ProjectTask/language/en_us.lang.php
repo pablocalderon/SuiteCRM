@@ -60,14 +60,14 @@ $mod_strings = array (
 	'LBL_TIME_DUE' => 'Due Time:',
     'LBL_PREDECESSORS' => 'Predecessor',
 	'LBL_DATE_START' => 'Start Date:',
-    'LBL_DATE_FINISH' => 'Finish Date:',    
+    'LBL_DATE_FINISH' => 'Finish Date:',
 	'LBL_TIME_START' => 'Start Time:',
     'LBL_TIME_FINISH' => 'Finish Time:',
     'LBL_DURATION' => 'Duration:',
     'LBL_DURATION_UNIT' => 'Duration Unit:',
     'LBL_ACTUAL_DURATION' => 'Actual Duration:',
 	'LBL_PARENT_ID' => 'Project:',
-    'LBL_PARENT_TASK_ID' => 'Parent Task Id:',    
+    'LBL_PARENT_TASK_ID' => 'Parent Task Id:',
     'LBL_PERCENT_COMPLETE' => '% Cpl',
 	'LBL_PRIORITY' => 'Priority:',
 	'LBL_DESCRIPTION' => 'Notes:',
@@ -79,6 +79,7 @@ $mod_strings = array (
 	'LBL_ACTUAL_EFFORT' => 'Actual Effort (hrs):',
 	'LBL_UTILIZATION' => 'Utilization (%):',
 	'LBL_DELETED' => 'Deleted:',
+    'LBL_PROJECT_PREDECESSOR_NONE' => 'None',
 
 	'LBL_LIST_NAME' => 'Name',
 	'LBL_LIST_PARENT_NAME' => 'Project',
@@ -101,7 +102,7 @@ $mod_strings = array (
 
 	'LBL_HISTORY_TITLE'=>'History',
 	'LBL_ACTIVITIES_SUBPANEL_TITLE'=>'Activities',
-	'LBL_HISTORY_SUBPANEL_TITLE'=>'History', 
+	'LBL_HISTORY_SUBPANEL_TITLE'=>'History',
 
     'LBL_ASSIGNED_USER_NAME' => 'Assigned To',
     'LBL_PARENT_NAME' => 'Project Name',
@@ -114,5 +115,3 @@ $mod_strings = array (
 	'LBL_HOURS' => 'Hours',
 	'LBL_RELATIONSHIP_TYPE' => 'Relationship Type',
 );
-
-?>
