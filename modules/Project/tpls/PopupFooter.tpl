@@ -38,23 +38,5 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 *}
-<!DOCTYPE HTML>
-<html {$langHeader}>
-<head>
-
-    {$ieCompatMode}
-    <meta http-equiv="Content-Type" content="text/html; charset="{$charset}">
-
-    <link rel="stylesheet" type="text/css" href="modules/Project/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="modules/Project/qtip/jquery.qtip.min.css" />
-    <script type="text/javascript" src="modules/Project/js/main_lib.js"></script>
-    <script type="text/javascript" src="modules/Project/js/splitter.js"></script>
-    <script type="text/javascript" src="modules/Project/js/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="modules/Project/js/jquery.validate.min.js"></script>
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
-
-</head>
-
-<body>
+</body>
+</html>
