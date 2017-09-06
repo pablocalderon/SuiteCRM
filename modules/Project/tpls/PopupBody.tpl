@@ -122,9 +122,12 @@
                             <select id="Resources" name="Resources" class="text ui-widget-content ui-corner-all">
                                 <option value="0">{$mod.LBL_UNASSIGNED}</option>
                                 {foreach from=$resources item=resource}
-                                <option rel="{$resources}" value="{$resources}">{$resources}</option>
-                            {/foreach}
+                                    {foreach from=$resource item=item}
+                                    <option rel="{$item}" value="{$resourceID}">{$resourceName}</option>
+                                    {/foreach}
+                                {/foreach}
                             </select>
+
 
                             <label for="Complete">{$mod.LBL_PERCENT_COMPLETE}</label>
                             <input type="text" name="Complete" id="Complete" value="0"

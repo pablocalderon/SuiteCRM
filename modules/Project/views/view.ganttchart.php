@@ -70,6 +70,9 @@ class ProjectViewGanttChart extends ViewDetail
         );
         $ss->assign('durationDropDown', get_select_options_with_id($app_list_strings['duration_unit_dom'], ''));
         $ss->assign('resources', $resource_array);
+        $ss->assign('resourceType', $resource->type);
+        $ss->assign('resourceID', $resource->id);
+        $ss->assign('resourceName', $resource->name);
         $ss->assign('projectTasks', $_REQUEST['record']);
         $ieCompatMode = false;
         if (isset($sugar_config['meta_tags']['meta_tags']['ieCompatMode'])) {
