@@ -45,39 +45,41 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/ListView/ListViewData.php');
 require_once('include/MassUpdate.php');
 
-class ListViewDisplay {
+class ListViewDisplay
+{
     static $listViewCounter = 0;
 
-	var $show_mass_update_form = false;
-	var $show_action_dropdown = true;
+	public $show_mass_update_form = false;
+    public $show_action_dropdown = true;
 
 	/**
 	 * @var bool Show Bulk Action button as Delete link
 	 */
-	var $show_action_dropdown_as_delete = false;
+    public $show_action_dropdown_as_delete = false;
 
-	var $rowCount;
-	var $mass = null;
-	var $seed;
-	var $multi_select_popup;
-	var $lvd;
-	var $moduleString;
-	var $export = true;
-	var $multiSelect = true;
-	var $mailMerge = true;
-	var $should_process = true;
-	var $show_plus = false;
+    public $rowCount;
+    public $mass = null;
+    public $seed;
+    public $multi_select_popup;
+    public $lvd;
+    public $moduleString;
+    public $export = true;
+    public $multiSelect = true;
+    public $mailMerge = true;
+    public $should_process = true;
+    public $show_plus = false;
 	/*
 	 * Used in view.popup.php. Sometimes there are fields on the search form that are not referenced in the listviewdefs. If this
 	 * is the case, then the filterFields will be set and the related fields will not be referenced when calling create_new_list_query.
 	 */
-	var $mergeDisplayColumns = false;
+    public $mergeDisplayColumns = false;
     public $actionsMenuExtraItems = array();
 
 	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	public function __construct()
+    {
 		$this->lvd = new ListViewData();
 		$this->searchColumns = array () ;
 	}
@@ -457,7 +459,7 @@ class ListViewDisplay {
         $return_string.= isset($_REQUEST['action']) ? "&return_action={$_REQUEST['action']}" : "";
         $return_string.= isset($_REQUEST['record']) ? "&return_id={$_REQUEST['record']}" : "";
         //need delete and edit access.
-		if (!(ACLController::checkAccess($this->seed->module_dir, 'edit', true)) or !(ACLController::checkAccess($this->seed->module_dir, 'delete', true))) {
+		if (!(ACLController::checkAccess($this->seed->module_dir, 'edit', true)) || !(ACLController::checkAccess($this->seed->module_dir, 'delete', true))) {
 			return "";
 		}
 

@@ -81,7 +81,7 @@ if ($linked_field === 'aclroles') {
     }
 }
 
-if($bean_name == 'Team')
+if($bean_name === 'Team')
  {
  	$focus->retrieve($record);
  	$focus->remove_user_from_team($linked_id);
@@ -90,11 +90,11 @@ if($bean_name == 'Team')
  {
  	// cut it off:
  	$focus->load_relationship($linked_field);
- 	if($focus->$linked_field->_relationship->relationship_name == 'quotes_contacts_shipto')
+ 	if($focus->$linked_field->_relationship->relationship_name === 'quotes_contacts_shipto')
  		unset($focus->$linked_field->_relationship->relationship_role_column);
  	$focus->$linked_field->delete($record,$linked_id);
  }
- if ($bean_name == 'Campaign' and $linked_field=='prospectlists' ) {
+ if ($bean_name === 'Campaign' && $linked_field === 'prospectlists' ) {
 
  	$query="SELECT email_marketing_prospect_lists.id from email_marketing_prospect_lists ";
  	$query.=" left join email_marketing on email_marketing.id=email_marketing_prospect_lists.email_marketing_id";
@@ -109,7 +109,7 @@ if($bean_name == 'Team')
 	}
  	$focus->db->query($query);
  }
-if ($bean_name == "Meeting") {
+if ($bean_name === "Meeting") {
     $focus->retrieve($record);
     $user = new User();
     $user->retrieve($linked_id);
@@ -121,7 +121,7 @@ if ($bean_name == "Meeting") {
     	}
     }
 }
-if ($bean_name == "User" && $linked_field == 'eapm') {
+if ($bean_name === "User" && $linked_field === 'eapm') {
     $eapm = new EAPM();
     $eapm->mark_deleted($linked_id);
 }
