@@ -292,20 +292,15 @@ class ViewConvertLead extends SugarView
 
     /**
      * Returns the javascript to enable/disable validation of each module's sub-form
-     * //TODO: This should probably be on the smarty template
-     * @param $module String the target module name.
-     * @param $focus SugarBean instance of the target module.
-     * @param $focus EditView def for the module.
+     * @param string $module String the target module name.
+     * @param SugarBean $focus SugarBean instance of the target module.
+     * @param EditView $viewdef EditView def for the module.
      * @return String, javascript to echo to page.
      */
-    protected function getValidationJS(
-        $module,
-        $focus,
-        $viewdef
-        )
+    protected function getValidationJS($module, $focus, $viewdef)
     {
         $validateSelect = isset($viewdef['required']) && $viewdef['required'] && !empty($viewdef['select']);
-        $jsOut  = "
+        $jsOut = "
         <script type='text/javascript'>
             if (!SUGAR.convert)  SUGAR.convert = {requiredFields: {}};
             SUGAR.convert.toggle$module = function(){
@@ -315,11 +310,12 @@ class ViewConvertLead extends SugarView
                 {
                     for(var i in SUGAR.convert.requiredFields.$module)
                     {
-                        addToValidate('ConvertLead', '$module' + i, 'varchar', true, SUGAR.convert.requiredFields.{$module}[i]);
+                        addToValidate('ConvertLead', '$module' + i, 'varchar', 
+                        true, SUGAR.convert.requiredFields.{$module}[i]);
                     }
                     ";
         if ($validateSelect) {
-        	$jsOut  .= "
+            $jsOut .= "
                     removeFromValidate('ConvertLead', '{$viewdef['select']}');";
         }
 
@@ -331,9 +327,9 @@ class ViewConvertLead extends SugarView
                         removeFromValidate('ConvertLead', '$module' + i);
                     }";
         if ($validateSelect) {
-            $jsOut  .= "
+            $jsOut .= "
                 addToValidate('ConvertLead', '{$viewdef['select']}', 'varchar', true, '"
-            . translate($this->contact->field_defs[$viewdef['select']]['vname']) . "');";
+                . translate($this->contact->field_defs[$viewdef['select']]['vname']) . "');";
         }
         $jsOut .= "
                     SUGAR.convert.{$module}Enabled = false;
@@ -341,28 +337,26 @@ class ViewConvertLead extends SugarView
                 YAHOO.util.Dom.get('convert_create_{$module}').value = SUGAR.convert.{$module}Enabled;
             };\n";
 
-        if (isset($viewdef['required']) && $viewdef['required'])
-        {
-            if (!empty($viewdef['select']) && (empty($viewdef['default_action']) || $viewdef['default_action'] != 'create'))
-            {
+        if (isset($viewdef['required']) && $viewdef['required']) {
+            if (!empty($viewdef['select']) && (empty($viewdef['default_action']) ||
+                    $viewdef['default_action'] != 'create')) {
                 $jsOut .= "
             SUGAR.convert.{$module}Enabled = true;";
             }
             $jsOut .= "
             YAHOO.util.Event.onDOMReady(SUGAR.convert.toggle$module);";
-        } else if (isset($viewdef['default_action'])  && $viewdef['default_action'] == "create")
-        {
-             $jsOut .= "\n            SUGAR.convert.{$module}Enabled = true;";
+        } else {
+            if (isset($viewdef['default_action']) && $viewdef['default_action'] == "create") {
+                $jsOut .= "\n            SUGAR.convert.{$module}Enabled = true;";
+            }
         }
         $jsOut .= "
             YAHOO.util.Event.addListener('new$module', 'click', SUGAR.convert.toggle$module);
             SUGAR.convert.requiredFields.$module = {};";
-        foreach($focus->field_defs as $field => $def)
-        {
-            if (isset($def['required']) && $def['required'])
-            {
+        foreach ($focus->field_defs as $field => $def) {
+            if (isset($def['required']) && $def['required']) {
                 $jsOut .= "
-            SUGAR.convert.requiredFields.$module.$field = '". translate($def['vname'], $module) . "';\n";
+            SUGAR.convert.requiredFields.$module.$field = '" . translate($def['vname'], $module) . "';\n";
             }
         }
 

@@ -58,12 +58,5 @@ $themedef = array(
             'type' => 'bool',
             'default' => true,
         ),
-        // TODO : add theme settings here.. for e.g:
-        //        'navbar' => array(
-        //            'vname' => 'LBL_COLOUR_ADMIN_BASE',
-        //            'type' => 'colour',
-        //            'default' => '#3C8DBC',
-        //        ),
-
     ),
 );

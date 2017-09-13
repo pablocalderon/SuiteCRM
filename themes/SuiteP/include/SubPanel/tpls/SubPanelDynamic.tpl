@@ -38,6 +38,7 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 *}
+
 {*
  /*
   * This template is now displays to the sub panel
@@ -66,7 +67,6 @@
             {/foreach}
             <th data-type="html"><!-- extra th for the button --></th>
         </tr>
-        {* TODO: Break $pagination so that it can be fully customisable *}
         {$PAGINATION}
         <tr id="activities_search" class="pagination" style="display:none" colspan="0">
             <td align="right" colspan="0"></td>

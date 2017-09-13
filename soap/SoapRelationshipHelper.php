@@ -44,14 +44,21 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('soap/SoapError.php');
 
-function check_for_relationship($relationships, $module){
-	foreach($relationships as $table=>$rel){
-		if( $rel['rhs_key'] == $module){
-			return $table;
+/**
+ * @param array $relationships
+ * @param string $module
+ * @return bool
+ */
+function check_for_relationship($relationships, $module)
+{
+    foreach ($relationships as $table => $rel) {
+        if ($rel['rhs_key'] === $module) {
+            return $table;
 
-		}
-	}
-	return false;
+        }
+    }
+
+    return false;
 }
 
 /*
@@ -223,7 +230,6 @@ function retrieve_modified_relationships($module_name, $related_module, $relatio
                     	LEFT JOIN email_addresses ON email_addresses.id = email_addr_bean_rel.email_address_id Where {$mod->table_name}.id = m1.ID) email1";
 			    } elseif($alias == "email2") {
                     // special case for non-primary emails
-                    // FIXME: This is not a DB-safe code. Does not work on SQL Server & Oracle.
                     // Using dirty hack here.
                     $field_select .= "(SELECT email_addresses.email_address FROM {$mod->table_name}
                     	LEFT JOIN  email_addr_bean_rel on {$mod->table_name}.id = email_addr_bean_rel.bean_id
@@ -511,5 +517,3 @@ function get_linked_records($get_module, $from_module, $get_id) {
 
 	return $id_arr;
 }
-
-?>

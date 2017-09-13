@@ -640,6 +640,11 @@ class Reminder extends Basic
         return $ret;
     }
 
+    /**
+     * @param array $invitee
+     * @return string
+     * @throws Exception Thrown if invitee module type is unknown
+     */
     private static function getRelatedInviteeModuleFromInviteeArray($invitee)
     {
         if (array_key_exists('user_id', $invitee)) {
@@ -651,11 +656,14 @@ class Reminder extends Basic
         if (array_key_exists('contact_id', $invitee)) {
             return 'Contacts';
         }
-        // TODO:!!!!
         throw new Exception('Unknown invitee module type');
-        //return null;
     }
 
+    /**
+     * @param $invitee
+     * @return mixed
+     * @throws Exception Thrown if invitee module type is unknown
+     */
     private static function getRelatedInviteeModuleIdFromInviteeArray($invitee)
     {
         if (array_key_exists('user_id', $invitee)) {
@@ -667,9 +675,7 @@ class Reminder extends Basic
         if (array_key_exists('contact_id', $invitee)) {
             return $invitee['contact_id'];
         }
-        // TODO:!!!!
         throw new Exception('Unknown invitee type');
-        //return null;
     }
 
     /**
@@ -706,17 +712,15 @@ class Reminder extends Basic
         return $tpl->fetch('modules/Reminders/tpls/reminders.tpl');
     }
 
-    /*
-     * @todo implenent it
+    /**
+     * @param SugarBean $event
+     * @throws Exception
      */
     public static function getRemindersListInlineEditView(SugarBean $event)
     {
-        // TODO: getEditFieldHTML() function in InlineEditing.php:218 doesn't pass the Bean ID to this custom inline edit view function but we have to know which Bean are in the focus to editing.
         if (!$event->id) {
-            throw new Exception("No GUID for edit.");
+            throw new Exception('No GUID for edit.');
         }
     }
 
 }
-
-?>

@@ -38,7 +38,11 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-    header('Content-Type: text/css');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
+header('Content-Type: text/css');
 // config|_override.php
 if (is_file('../../../config.php')) {
     require_once '../../../config.php';
@@ -55,12 +59,3 @@ if (!isset($sugar_config['theme_settings']['SuiteP'])) {
 
 //set file type back to css from php
 header('Content-type: text/css; charset: UTF-8');
-
-?>
-
-<?php
-// TODO add theme color settings here: for e.g:
-//.navbar-inverse {
-//background:#< ? php echo $sugar_config['theme_settings']['SuiteP']['navbar']; ? > !important;
-//}
-?>

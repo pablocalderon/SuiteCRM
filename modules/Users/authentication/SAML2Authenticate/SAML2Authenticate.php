@@ -42,14 +42,14 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-require_once dirname(dirname(__FILE__)).'/SAML2Authenticate/lib/onelogin/php-saml/_toolkit_loader.php';
-
+require_once dirname(dirname(__FILE__)) . '/SAML2Authenticate/lib/onelogin/php-saml/_toolkit_loader.php';
 require_once('modules/Users/authentication/SugarAuthenticate/SugarAuthenticate.php');
 
 /**
  * Class SAML2Authenticate for SAML2 auth
  */
-class SAML2Authenticate extends SugarAuthenticate {
+class SAML2Authenticate extends SugarAuthenticate
+{
     public $userAuthenticateClass = 'SAML2AuthenticateUser';
     public $authenticationDir = 'SAML2Authenticate';
 
@@ -114,17 +114,16 @@ class SAML2Authenticate extends SugarAuthenticate {
      * @param SugarApplication $app
      * @return bool
      */
-    public function redirectToLogin(SugarApplication $app) {
-        if(isset($_SESSION['samlNameId']) && !empty($_SESSION['samlNameId'])) {
-            if( $this->userAuthenticate->loadUserOnLogin($_SESSION['samlNameId'], null) ) {
+    public function redirectToLogin(SugarApplication $app)
+    {
+        if (isset($_SESSION['samlNameId']) && !empty($_SESSION['samlNameId'])) {
+            if ($this->userAuthenticate->loadUserOnLogin($_SESSION['samlNameId'], null)) {
                 global $authController;
                 $authController->login($_SESSION['samlNameId'], null);
             }
             SugarApplication::redirect('index.php');
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /**
@@ -173,7 +172,7 @@ class SAML2Authenticate extends SugarAuthenticate {
         }
 
         $this->samlLogoutAuth = $auth;
-        $this->samlLogoutArgs = array('returnTo' => $returnTo, 'parameters' => $paramters, 'nameId' => $nameId, 'sessionIndex' => $sessionIndex, 'false' => false, 'nameIdFormat' => $nameIdFormat);
+        $this->samlLogoutArgs = array('returnTo' => $returnTo, 'parameters' => $paramters, 'nameId' => $nameId,
+            'sessionIndex' => $sessionIndex, 'false' => false, 'nameIdFormat' => $nameIdFormat);
     }
-
 }

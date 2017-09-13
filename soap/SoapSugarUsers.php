@@ -45,12 +45,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('soap/SoapHelperFunctions.php');
 require_once('soap/SoapTypes.php');
 
-/*************************************************************************************
-
-THIS IS FOR SUGARCRM USERS
-
-
-*************************************************************************************/
 $disable_date_format = true;
 
 $server->register(
@@ -466,16 +460,20 @@ $server->register(
 /**
  * Retrieve a list of SugarBean's based on provided IDs.
  *
- * @param String $session -- Session ID returned by a previous call to login.
- * @param String $module_name -- The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
- * @param Array $ids -- An array of SugarBean IDs.
- * @param Array $select_fields -- A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
- * @return Array 'field_list' -- Var def information about the returned fields
+ * @param string $session Session ID returned by a previous call to login.
+ * @param string $module_name The name of the module to return records from.
+ * This name should be the name the module was developed under
+ * (changing a tab name is studio does not affect the name that should be passed into this method)..
+ * @param array $ids An array of SugarBean IDs.
+ * @param array $select_fields A list of the fields to be included in the results.
+ * This optional parameter allows for only needed fields to be retrieved.
+ * @return array 'field_list' -- Var def information about the returned fields
  *               'entry_list' -- The records that were retrieved
  *               'error' -- The SOAP error, if any
  */
-function get_entries($session, $module_name, $ids,$select_fields ){
-	global  $beanList, $beanFiles;
+function get_entries($session, $module_name, $ids, $select_fields)
+{
+    global $beanList, $beanFiles;
 	$error = new SoapError();
 	$field_list = array();
 	$output_list = array();
@@ -501,10 +499,6 @@ function get_entries($session, $module_name, $ids,$select_fields ){
 	$class_name = $beanList[$module_name];
 	require_once($beanFiles[$class_name]);
 
-	//todo can modify in there to call bean->get_list($order_by, $where, 0, -1, -1, $deleted);
-	//that way we do not have to call retrieve for each bean
-	//perhaps also add a select_fields to this, so we only get the fields we need
-	//and not do a select *
 	foreach($ids as $id){
 		$seed = new $class_name();
 
@@ -2389,4 +2383,3 @@ function handle_set_entries($module_name, $name_value_lists, $select_fields = FA
 		);
 	}
 }
-

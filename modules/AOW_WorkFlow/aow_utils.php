@@ -278,10 +278,6 @@ function getModuleField($module, $fieldname, $aow_field, $view='EditView',$value
             unset($vardef['precision']);
         }
 
-        //$vardef['precision'] = $locale->getPrecedentPreference('default_currency_significant_digits', $current_user);
-
-        //TODO Fix datetimecomebo
-        //temp work around
         if( $vardef['type'] == 'datetimecombo') {
             $vardef['type'] = 'datetime';
         }
