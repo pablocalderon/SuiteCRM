@@ -42,7 +42,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-
 require_once('modules/ModuleBuilder/parsers/views/ListLayoutMetaDataParser.php');
 require_once('modules/ModuleBuilder/parsers/views/SearchViewMetaDataParser.php');
 require_once 'modules/ModuleBuilder/parsers/constants.php';
