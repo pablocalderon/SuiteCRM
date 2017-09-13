@@ -45,8 +45,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('include/EditView/QuickCreate.php');
 
 class AccountsQuickCreate extends QuickCreate {
-    
-    var $javascript;
+
+    public $javascript;
     
     function process() {
         global $current_user, $timedate, $app_list_strings, $current_language, $mod_strings;
@@ -71,4 +71,3 @@ class AccountsQuickCreate extends QuickCreate {
         $this->ss->assign('additionalScripts', $this->javascript->getScript(false));
     }   
 }
-?>

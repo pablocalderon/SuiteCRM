@@ -53,8 +53,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 require_once('modules/Users/authentication/SugarAuthenticate/SugarAuthenticate.php');
 class EmailAuthenticate extends SugarAuthenticate {
-	var $userAuthenticateClass = 'EmailAuthenticateUser';
-	var $authenticationDir = 'EmailAuthenticate';
+    public $userAuthenticateClass = 'EmailAuthenticateUser';
+    public $authenticationDir = 'EmailAuthenticate';
 	/**
 	 * Constructs EmailAuthenticate
 	 * This will load the user authentication class

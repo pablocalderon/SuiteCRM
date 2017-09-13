@@ -47,7 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/Studio/DropDowns/DropDownHelper.php');
 class EditDropDownWizard extends StudioWizard {
-	var $wizard = 'EditDropDownWizard';
+    public $wizard = 'EditDropDownWizard';
     function welcome(){
 		return 'You can rename the global dropdown list here.';
 	}

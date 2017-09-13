@@ -47,7 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('modules/Administration/Common.php');
 class TabGroupHelper{
-    var $modules = array();
+    public $modules = array();
     function getAvailableModules($lang = ''){
        static $availableModules = array();
        if(!empty($availableModules))return $availableModules;

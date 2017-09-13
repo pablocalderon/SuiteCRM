@@ -43,7 +43,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 class SugarSecure{
-	var $results = array();
+	public $results = array();
 	function display(){
 		echo '<table>';
 		foreach($this->results as $result){
@@ -132,7 +132,7 @@ class ScanFileIncludes extends SugarSecure{
 
 
 class SugarSecureManager{
-	var $scanners = array();
+    public $scanners = array();
 	function registerScan($class){
 		$this->scanners[] = new $class();
 	}
