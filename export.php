@@ -42,7 +42,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-//Bug 30094, If zlib is enabled, it can break the calls to header() due to output buffering. This will only work php5.2+
 ini_set('zlib.output_compression', 'Off');
 
 ob_start();
@@ -54,7 +53,8 @@ global $app_list_strings;
 
 $the_module = clean_string($_REQUEST['module']);
 
-if ($sugar_config['disable_export'] || (!empty($sugar_config['admin_export_only']) && !(is_admin($current_user) || (ACLController::moduleSupportsACL($the_module) && ACLAction::getUserAccessLevel($current_user->id,
+if ($sugar_config['disable_export'] || (!empty($sugar_config['admin_export_only']) && !(is_admin($current_user) ||
+            (ACLController::moduleSupportsACL($the_module) && ACLAction::getUserAccessLevel($current_user->id,
                     $the_module, 'access') == ACL_ALLOW_ENABLED &&
                 (ACLAction::getUserAccessLevel($current_user->id, $the_module, 'admin') == ACL_ALLOW_ADMIN ||
                     ACLAction::getUserAccessLevel($current_user->id, $the_module, 'admin') == ACL_ALLOW_ADMIN_DEV))))

@@ -58,5 +58,3 @@ if (method_exists($pmc, $requestedMethod)) {
 } else {
     echo 'no method';
 }
-// sugar_cleanup();
-?>

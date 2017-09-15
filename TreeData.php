@@ -150,5 +150,3 @@ if (!empty($modulename) && !empty($func_name) && isset($beanList[$modulename])) 
 if (!empty($ret)) {
     echo $ret;
 }
-
-?>

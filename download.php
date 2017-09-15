@@ -44,15 +44,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 global $db;
 
-if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUEST['type']) || !isset($_SESSION['authenticated_user_id'])) {
+if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUEST['type']) ||
+    !isset($_SESSION['authenticated_user_id'])
+) {
     die("Not a Valid Entry Point");
 } else {
     require_once("data/BeanFactory.php");
-    $file_type = ''; // bug 45896
+    $file_type = '';
     require_once("data/BeanFactory.php");
     ini_set('zlib.output_compression',
-        'Off');//bug 27089, if use gzip here, the Content-Length in header may be incorrect.
-    // cn: bug 8753: current_user's preferred export charset not being honored
+        'Off');
     $GLOBALS['current_user']->retrieve($_SESSION['authenticated_user_id']);
     $GLOBALS['current_language'] = $_SESSION['authenticated_user_language'];
     $app_strings = return_application_language($GLOBALS['current_language']);
@@ -125,7 +126,9 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
         $local_location = "upload://{$_REQUEST['id']}";
     }
 
-    if (isset($_REQUEST['isTempFile']) && ($_REQUEST['type'] == "SugarFieldImage") && (isset($_REQUEST['isProfile'])) && empty($_REQUEST['id'])) {
+    if (isset($_REQUEST['isTempFile']) && ($_REQUEST['type'] == "SugarFieldImage") &&
+        (isset($_REQUEST['isProfile'])) && empty($_REQUEST['id'])
+    ) {
         $local_location = "include/images/default-profile.png";
     }
 
@@ -147,7 +150,6 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
         $doQuery = true;
 
         if ($file_type == 'documents') {
-            // cn: bug 9674 document_revisions table has no 'name' column.
             $query = "SELECT filename name FROM document_revisions INNER JOIN documents ON documents.id = document_revisions.document_id ";
             $query .= "WHERE document_revisions.id = '" . $db->quote($_REQUEST['id']) . "' ";
         } elseif ($file_type == 'kbdocuments') {
@@ -156,19 +158,18 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
         } elseif ($file_type == 'notes') {
             $query = "SELECT filename name, file_mime_type FROM notes ";
             $query .= "WHERE notes.id = '" . $db->quote($_REQUEST['id']) . "'";
-        } elseif (!isset($_REQUEST['isTempFile']) && !isset($_REQUEST['tempName']) && isset($_REQUEST['type']) && $file_type != 'temp' && isset($image_field)) { //make sure not email temp file.
+            //make sure not email temp file.
+        } elseif (!isset($_REQUEST['isTempFile']) && !isset($_REQUEST['tempName']) && isset($_REQUEST['type']) &&
+            $file_type != 'temp' && isset($image_field)
+        ) {
             $file_type = ($file_type == "employees") ? "users" : $file_type;
-            //$query = "SELECT " . $image_field ." FROM " . $file_type . " LEFT JOIN " . $file_type . "_cstm cstm ON cstm.id_c = " . $file_type . ".id ";
-
-            // Fix for issue #1195: because the module was created using Module Builder and it does not create any _cstm table,
-            // there is a need to check whether the field has _c extension.
+            // Fix for issue #1195: because the module was created using Module Builder and
+            // it does not create any _cstm table, there is a need to check whether the field has _c extension.
             $query = "SELECT " . $image_field . " FROM " . $file_type . " ";
             if (substr($image_field, -2) == "_c") {
                 $query .= "LEFT JOIN " . $file_type . "_cstm cstm ON cstm.id_c = " . $file_type . ".id ";
             }
             $query .= "WHERE " . $file_type . ".id= '" . $db->quote($image_id) . "'";
-
-            //$query .= "WHERE " . $file_type . ".id= '" . $db->quote($image_id) . "'";
         } elseif (!isset($_REQUEST['isTempFile']) && !isset($_REQUEST['tempName']) && isset($_REQUEST['type']) && $file_type != 'temp') { //make sure not email temp file.
             $query = "SELECT filename name FROM " . $file_type . " ";
             $query .= "WHERE " . $file_type . ".id= '" . $db->quote($_REQUEST['id']) . "'";
@@ -176,7 +177,8 @@ if ((!isset($_REQUEST['isProfile']) && empty($_REQUEST['id'])) || empty($_REQUES
             $doQuery = false;
         }
 
-        // Fix for issue 1506 and issue 1304 : IE11 and Microsoft Edge cannot display generic 'application/octet-stream' (which is defined as "arbitrary binary data" in RFC 2046).
+        // Fix for issue 1506 and issue 1304 : IE11 and Microsoft Edge
+        // cannot display generic 'application/octet-stream' (which is defined as "arbitrary binary data" in RFC 2046).
         $mime_type = mime_content_type($local_location);
         if ($mime_type == null || $mime_type == '') {
             $mime_type = 'application/octet-stream';

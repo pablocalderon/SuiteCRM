@@ -38,8 +38,8 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+if (!defined('sugarEntry')) {
+    define('sugarEntry', true);
 }
 
 //change directories to where this file is located.
@@ -85,7 +85,8 @@ global $current_user;
 $current_user = new User();
 $current_user->getSystemUser();
 
-$GLOBALS['log']->debug('--------------------------------------------> at cron.php <--------------------------------------------');
+$GLOBALS['log']->debug('--------------------------------------------> at cron.php 
+<--------------------------------------------');
 $cron_driver = !empty($sugar_config['cron_class']) ? $sugar_config['cron_class'] : 'SugarCronJobs';
 $GLOBALS['log']->debug("Using $cron_driver as CRON driver");
 

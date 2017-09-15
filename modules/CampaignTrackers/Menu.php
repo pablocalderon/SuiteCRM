@@ -42,10 +42,14 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
 global $mod_strings;
-$module_menu = Array();
+$module_menu = array();
 if (ACLController::checkAccess('Campaigns', 'list', true)) {
-    $module_menu[] = Array(
+    $module_menu[] = array(
         "index.php?module=Campaigns&action=index&return_module=Campaigns&return_action=index",
         $mod_strings['LNK_CAMPAIGN_LIST'],
         "List"
