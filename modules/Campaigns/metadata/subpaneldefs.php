@@ -1,11 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2016 Salesagility Ltd.
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,10 +34,13 @@ if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 $layout_defs['Campaigns'] = array(
     // list of what Subpanels to show in the DetailView
@@ -82,7 +85,11 @@ $layout_defs['Campaigns'] = array(
             'order' => 100,
             'module' => 'EmailMan',
             'get_subpanel_data' => 'function:get_queue_items',
-            'function_parameters' => array('EMAIL_MARKETING_ID_VALUE' => '', 'distinct' => 'emailman.id', 'group_by' => 'emailman.related_id,emailman.marketing_id'),
+            'function_parameters' => array(
+                'EMAIL_MARKETING_ID_VALUE' => '',
+                'distinct' => 'emailman.id',
+                'group_by' => 'emailman.related_id,emailman.marketing_id'
+            ),
             'subpanel_name' => 'default',
             'title_key' => 'LBL_MESSAGE_QUEUE_TITLE',
             'sort_order' => 'desc',
@@ -91,7 +98,10 @@ $layout_defs['Campaigns'] = array(
             'order' => 110,
             'module' => 'CampaignLog',
             'get_subpanel_data' => "function:track_log_entries",
-            'function_parameters' => array(0 => 'targeted', 'EMAIL_MARKETING_ID_VALUE' => '',/*'distinct'=>'campaign_log.target_id','group_by'=>'campaign_log.target_id, campaign_log.marketing_id'*/),
+            'function_parameters' => array(
+                0 => 'targeted',
+                'EMAIL_MARKETING_ID_VALUE' => '',
+            ),
             'subpanel_name' => 'default',
             'title_key' => 'LBL_LOG_ENTRIES_TARGETED_TITLE',
             'sort_order' => 'desc',
@@ -102,7 +112,10 @@ $layout_defs['Campaigns'] = array(
             'module' => 'CampaignLog',
             'get_subpanel_data' => "function:track_log_entries",
             'subpanel_name' => 'default',
-            'function_parameters' => array(0 => 'viewed', 'EMAIL_MARKETING_ID_VALUE' => '',/*'group_by'=>'campaign_log.target_id','distinct'=>'campaign_log.target_id'*/),
+            'function_parameters' => array(
+                0 => 'viewed',
+                'EMAIL_MARKETING_ID_VALUE' => '',
+            ),
             'title_key' => 'LBL_LOG_ENTRIES_VIEWED_TITLE',
             'sort_order' => 'desc',
             'sort_by' => 'campaign_log.id'
@@ -111,7 +124,10 @@ $layout_defs['Campaigns'] = array(
             'order' => 130,
             'module' => 'CampaignLog',
             'get_subpanel_data' => "function:track_log_entries",
-            'function_parameters' => array(0 => 'link', 'EMAIL_MARKETING_ID_VALUE' => '',/*'group_by'=>'campaign_log.target_id','distinct'=>'campaign_log.target_id'*/),
+            'function_parameters' => array(
+                0 => 'link',
+                'EMAIL_MARKETING_ID_VALUE' => '',
+            ),
             'subpanel_name' => 'default',
             'title_key' => 'LBL_LOG_ENTRIES_LINK_TITLE',
             'sort_order' => 'desc',
@@ -133,7 +149,10 @@ $layout_defs['Campaigns'] = array(
             'order' => 150,
             'module' => 'CampaignLog',
             'get_subpanel_data' => "function:track_log_entries",
-            'function_parameters' => array(0 => 'contact', 'EMAIL_MARKETING_ID_VALUE' => '',/*'group_by'=>'campaign_log.target_id','distinct'=>'campaign_log.target_id'*/),
+            'function_parameters' => array(
+                0 => 'contact',
+                'EMAIL_MARKETING_ID_VALUE' => '',
+            ),
             'subpanel_name' => 'default',
             'title_key' => 'LBL_LOG_ENTRIES_CONTACT_TITLE',
             'sort_order' => 'desc',
@@ -143,7 +162,10 @@ $layout_defs['Campaigns'] = array(
             'order' => 160,
             'module' => 'CampaignLog',
             'get_subpanel_data' => "function:track_log_entries",
-            'function_parameters' => array(0 => 'invalid email', 'EMAIL_MARKETING_ID_VALUE' => '',/*'group_by'=>'campaign_log.target_id','distinct'=>'campaign_log.target_id'*/),
+            'function_parameters' => array(
+                0 => 'invalid email',
+                'EMAIL_MARKETING_ID_VALUE' => '',
+            ),
             'subpanel_name' => 'default',
             'title_key' => 'LBL_LOG_ENTRIES_INVALID_EMAIL_TITLE',
             'sort_order' => 'desc',
@@ -153,7 +175,10 @@ $layout_defs['Campaigns'] = array(
             'order' => 170,
             'module' => 'CampaignLog',
             'get_subpanel_data' => "function:track_log_entries",
-            'function_parameters' => array(0 => 'send error', 'EMAIL_MARKETING_ID_VALUE' => '',/*'group_by'=>'campaign_log.target_id','distinct'=>'campaign_log.target_id'*/),
+            'function_parameters' => array(
+                0 => 'send error',
+                'EMAIL_MARKETING_ID_VALUE' => '',
+            ),
             'subpanel_name' => 'default',
             'title_key' => 'LBL_LOG_ENTRIES_SEND_ERROR_TITLE',
             'sort_order' => 'desc',
@@ -163,7 +188,10 @@ $layout_defs['Campaigns'] = array(
             'order' => 180,
             'module' => 'CampaignLog',
             'get_subpanel_data' => "function:track_log_entries",
-            'function_parameters' => array(0 => 'removed', 'EMAIL_MARKETING_ID_VALUE' => '',/*'group_by'=>'campaign_log.target_id','distinct'=>'campaign_log.target_id'*/),
+            'function_parameters' => array(
+                0 => 'removed',
+                'EMAIL_MARKETING_ID_VALUE' => '',
+            ),
             'subpanel_name' => 'default',
             'title_key' => 'LBL_LOG_ENTRIES_REMOVED_TITLE',
             'sort_order' => 'desc',
@@ -173,7 +201,10 @@ $layout_defs['Campaigns'] = array(
             'order' => 185,
             'module' => 'CampaignLog',
             'get_subpanel_data' => "function:track_log_entries",
-            'function_parameters' => array(0 => 'blocked', 'EMAIL_MARKETING_ID_VALUE' => '',/*'group_by'=>'campaign_log.target_id','distinct'=>'campaign_log.target_id'*/),
+            'function_parameters' => array(
+                0 => 'blocked',
+                'EMAIL_MARKETING_ID_VALUE' => '',
+            ),
             'subpanel_name' => 'default',
             'title_key' => 'LBL_LOG_ENTRIES_BLOCKEDD_TITLE',
             'sort_order' => 'desc',
@@ -210,7 +241,13 @@ $layout_defs['Campaigns'] = array(
             'top_buttons' => array(),
         ),
         'securitygroups' => array(
-            'top_buttons' => array(array('widget_class' => 'SubPanelTopSelectButton', 'popup_module' => 'SecurityGroups', 'mode' => 'MultiSelect'),),
+            'top_buttons' => array(
+                array(
+                    'widget_class' => 'SubPanelTopSelectButton',
+                    'popup_module' => 'SecurityGroups',
+                    'mode' => 'MultiSelect'
+                ),
+            ),
             'order' => 900,
             'sort_by' => 'name',
             'sort_order' => 'asc',
@@ -223,4 +260,3 @@ $layout_defs['Campaigns'] = array(
         ),
     ),
 );
-?>

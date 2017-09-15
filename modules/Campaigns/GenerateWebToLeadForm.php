@@ -43,10 +43,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 require_once('include/formbase.php');
-
-
 require_once('include/utils/db_utils.php');
-
 
 global $app_list_strings, $app_strings, $mod_strings;
 
@@ -64,7 +61,6 @@ $web_assigned_user = '';
 $web_team_user = '';
 $web_form_footer = '';
 $regex = "/^\w+(['\.\-\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+\$/";
-//_ppd($web_required_symbol);
 
 $moduleDir = '';
 if (!empty($_REQUEST['moduleDir'])) {
@@ -133,7 +129,8 @@ $tiny = new SugarTinyMCE();
 $tiny->defaultConfig['height'] = 700;
 $tiny->defaultConfig['apply_source_formatting'] = true;
 $tiny->defaultConfig['cleanup'] = false;
-$tiny->defaultConfig['extended_valid_elements'] .= ',input[name|id|type|value|onclick|required|placeholder|title],select[name|id|multiple|tabindex|onchange|required|title],option[value|selected|title]';
+$tiny->defaultConfig['extended_valid_elements'] .= ',input[name|id|type|value|onclick|required|placeholder|title],
+select[name|id|multiple|tabindex|onchange|required|title],option[value|selected|title]';
 $ed = $tiny->getInstance('body_html');
 $xtpl->assign("tiny", $ed);
 
@@ -158,5 +155,3 @@ function ifRadioButton($customFieldName)
 
     return $custRow;
 }
-
-?>

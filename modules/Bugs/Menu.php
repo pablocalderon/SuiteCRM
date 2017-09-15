@@ -44,7 +44,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 global $mod_strings, $app_strings;
 if (ACLController::checkAccess('Bugs', 'edit', true)) {
-    $module_menu [] = Array(
+    $module_menu [] = array(
         "index.php?module=Bugs&action=EditView&return_module=Bugs&return_action=DetailView",
         $mod_strings['LNK_NEW_BUG'],
         "Create",
@@ -52,7 +52,7 @@ if (ACLController::checkAccess('Bugs', 'edit', true)) {
     );
 }
 if (ACLController::checkAccess('Bugs', 'list', true)) {
-    $module_menu [] = Array(
+    $module_menu [] = array(
         "index.php?module=Bugs&action=index&return_module=Bugs&return_action=DetailView",
         $mod_strings['LNK_BUG_LIST'],
         "List",
@@ -60,7 +60,7 @@ if (ACLController::checkAccess('Bugs', 'list', true)) {
     );
 }
 if (ACLController::checkAccess('Bugs', 'import', true)) {
-    $module_menu[] = Array(
+    $module_menu[] = array(
         "index.php?module=Import&action=Step1&import_module=Bugs&return_module=Bugs&return_action=index",
         $mod_strings['LNK_IMPORT_BUGS'],
         "Import",

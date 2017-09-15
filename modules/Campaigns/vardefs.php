@@ -1,11 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2016 Salesagility Ltd.
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,11 +34,16 @@ if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-$dictionary['Campaign'] = array('audited' => true,
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
+$dictionary['Campaign'] = array(
+    'audited' => true,
     'comment' => 'Campaigns are a series of operations undertaken to accomplish a purpose, usually acquiring leads',
     'table' => 'campaigns',
     'unified_search' => true,
@@ -82,7 +87,12 @@ $dictionary['Campaign'] = array('audited' => true,
             'default' => 'http://',
             'comment' => 'The URL referenced in the tracker URL; no longer used as of 4.2 (see campaign_trkrs)'
         ),
-        'description' => array('name' => 'description', 'type' => 'none', 'comment' => 'inhertied but not used', 'source' => 'non-db'),
+        'description' => array(
+            'name' => 'description',
+            'type' => 'none',
+            'comment' => 'inhertied but not used',
+            'source' => 'non-db'
+        ),
         'tracker_text' => array(
             'name' => 'tracker_text',
             'vname' => 'LBL_TRACKER_TEXT',
@@ -233,7 +243,6 @@ $dictionary['Campaign'] = array('audited' => true,
             'name' => 'frequency',
             'vname' => 'LBL_CAMPAIGN_FREQUENCY',
             'type' => 'enum',
-            //'options' => 'campaign_status_dom',
             'len' => 100,
             'comment' => 'Frequency of the campaign',
             'options' => 'newsletter_frequency_dom',
@@ -291,47 +300,109 @@ $dictionary['Campaign'] = array('audited' => true,
     ),
 
     'relationships' => array(
-        'campaign_accounts' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'Accounts', 'rhs_table' => 'accounts', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_accounts' => array(
+            'lhs_module' => 'Campaigns',
+            'lhs_table' => 'campaigns',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Accounts',
+            'rhs_table' => 'accounts',
+            'rhs_key' => 'campaign_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_contacts' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'Contacts', 'rhs_table' => 'contacts', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_contacts' => array(
+            'lhs_module' => 'Campaigns',
+            'lhs_table' => 'campaigns',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Contacts',
+            'rhs_table' => 'contacts',
+            'rhs_key' => 'campaign_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_leads' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'Leads', 'rhs_table' => 'leads', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_leads' => array(
+            'lhs_module' => 'Campaigns',
+            'lhs_table' => 'campaigns',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Leads',
+            'rhs_table' => 'leads',
+            'rhs_key' => 'campaign_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_prospects' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'Prospects', 'rhs_table' => 'prospects', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_prospects' => array(
+            'lhs_module' => 'Campaigns',
+            'lhs_table' => 'campaigns',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Prospects',
+            'rhs_table' => 'prospects',
+            'rhs_key' => 'campaign_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_opportunities' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'Opportunities', 'rhs_table' => 'opportunities', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_opportunities' => array(
+            'lhs_module' => 'Campaigns',
+            'lhs_table' => 'campaigns',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Opportunities',
+            'rhs_table' => 'opportunities',
+            'rhs_key' => 'campaign_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_email_marketing' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'EmailMarketing', 'rhs_table' => 'email_marketing', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_email_marketing' => array(
+            'lhs_module' => 'Campaigns',
+            'lhs_table' => 'campaigns',
+            'lhs_key' => 'id',
+            'rhs_module' => 'EmailMarketing',
+            'rhs_table' => 'email_marketing',
+            'rhs_key' => 'campaign_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_emailman' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'EmailMan', 'rhs_table' => 'emailman', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_emailman' => array(
+            'lhs_module' => 'Campaigns',
+            'lhs_table' => 'campaigns',
+            'lhs_key' => 'id',
+            'rhs_module' => 'EmailMan',
+            'rhs_table' => 'emailman',
+            'rhs_key' => 'campaign_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_campaignlog' => array('lhs_module' => 'Campaigns', 'lhs_table' => 'campaigns', 'lhs_key' => 'id',
-            'rhs_module' => 'CampaignLog', 'rhs_table' => 'campaign_log', 'rhs_key' => 'campaign_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_campaignlog' => array(
+            'lhs_module' => 'Campaigns',
+            'lhs_table' => 'campaigns',
+            'lhs_key' => 'id',
+            'rhs_module' => 'CampaignLog',
+            'rhs_table' => 'campaign_log',
+            'rhs_key' => 'campaign_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_assigned_user' => array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
-            'rhs_module' => 'Campaigns', 'rhs_table' => 'campaigns', 'rhs_key' => 'assigned_user_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_assigned_user' => array(
+            'lhs_module' => 'Users',
+            'lhs_table' => 'users',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Campaigns',
+            'rhs_table' => 'campaigns',
+            'rhs_key' => 'assigned_user_id',
+            'relationship_type' => 'one-to-many'
+        ),
 
-        'campaign_modified_user' => array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
-            'rhs_module' => 'Campaigns', 'rhs_table' => 'campaigns', 'rhs_key' => 'modified_user_id',
-            'relationship_type' => 'one-to-many'),
+        'campaign_modified_user' => array(
+            'lhs_module' => 'Users',
+            'lhs_table' => 'users',
+            'lhs_key' => 'id',
+            'rhs_module' => 'Campaigns',
+            'rhs_table' => 'campaigns',
+            'rhs_key' => 'modified_user_id',
+            'relationship_type' => 'one-to-many'
+        ),
     )
 );
-VardefManager::createVardef('Campaigns', 'Campaign', array('default', 'assignable', 'security_groups',
+VardefManager::createVardef('Campaigns', 'Campaign', array(
+    'default',
+    'assignable',
+    'security_groups',
 ));
-?>

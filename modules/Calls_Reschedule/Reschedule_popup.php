@@ -64,23 +64,34 @@ if ($user_real_names == 'on') {
     $Name = $current_user->user_name;
 }
 
-$time_format = $current_user->getPreference('timef'); //get the current users time format setting
-$dateformat = $current_user->getPreference('datef');//get the current users date format
-$call->retrieve($id); //get the call fields
+// Get the current users time format setting
+$time_format = $current_user->getPreference('timef');
+// Get the current users date format
+$dateformat = $current_user->getPreference('datef');
+// Get the call fields
+$call->retrieve($id);
 
-$time_stamp = $call->date_start; //get the time stamp for the current call
+// Get the time stamp for the current call
+$time_stamp = $call->date_start;
 
-//Set the date and time input fields on the pop-up based on the current users time format setting
+// Set the date and time input fields on the pop-up based on the current users time format setting
 switch ($time_format) {
     case 'H:i':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $time = explode(":", $time);//splits the time into hours and minutes
-        $hour = $time[0];//gets the hour
-        $min = $time[1];//gets the time
+        // Splits the date from the time
+        $existing_date = explode(" ", $time_stamp);
+        // Gets the time
+        $time = $existing_date[1];
+        // Gets the date
+        $date = $existing_date[0];
+        // Splits the time into hours and minutes
+        $time = explode(":", $time);
+        // Gets the hour
+        $hour = $time[0];
+        // Gets the time
+        $min = $time[1];
         $period = '';
-        $format = '23:00';//set time format for the javascript live update of date/time
+        // Set time format for the javascript live update of date/time
+        $format = '23:00';
         break;
     case 'H.i':
         $existing_date = explode(" ", $time_stamp);
@@ -93,84 +104,132 @@ switch ($time_format) {
         $format = '23.00';
         break;
     case 'h:ia':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $time = explode(":", $time);//splits the time into hours and minutes
-        $hour = $time[0];//gets the hour
-        $min = $time[1];//gets the time
-        $period = substr($min, -2);//gets only the 'pm' from the time
-        $min = substr($min, 0, 2);//gets only the minutes from the time
+        // Splits the date from the time
+        $existing_date = explode(" ", $time_stamp);
+        // Gets the time
+        $time = $existing_date[1];
+        // Gets the date
+        $date = $existing_date[0];
+        // Splits the time into hours and minutes
+        $time = explode(":", $time);
+        // Gets the hour
+        $hour = $time[0];
+        // Gets the time
+        $min = $time[1];
+        // Gets only the 'pm' from the time
+        $period = substr($min, -2);
+        // Gets only the minutes from the time
+        $min = substr($min, 0, 2);
         $format = '11:00pm';
         break;
     case 'h:i a':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time and the period from time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $period = $existing_date[2];//gets the period
+        // Splits the date from the time and the period from time
+        $existing_date = explode(" ", $time_stamp);
+        // Gets the time
+        $time = $existing_date[1];
+        // Gets the date
+        $date = $existing_date[0];
+        // Gets the period
+        $period = $existing_date[2];
         $time = explode(":", $time);
         $hour = $time[0];
         $min = $time[1];
         $format = '11:00 pm';
         break;
     case 'h:iA':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $time = explode(":", $time);//splits the time into hours and minutes
-        $hour = $time[0];//gets the hour
-        $min = $time[1];//gets the time
-        $period = substr($min, -2);//gets only the 'pm' from the time
-        $min = substr($min, 0, 2);//gets only the minutes from the time
+        // Splits the date from the time
+        $existing_date = explode(" ", $time_stamp);
+        // Gets the time
+        $time = $existing_date[1];
+        // Gets the date
+        $date = $existing_date[0];
+        // Splits the time into hours and minutes
+        $time = explode(":", $time);
+        // Gets the hour
+        $hour = $time[0];
+        // Gets the time
+        $min = $time[1];
+        // Gets only the 'pm' from the time
+        $period = substr($min, -2);
+        // Gets only the minutes from the time
+        $min = substr($min, 0, 2);
         $format = '11:00PM';
         break;
     case 'h:i A':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time and the period from time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $period = $existing_date[2];//gets the period
+        // Splits the date from the time and the period from time
+        $existing_date = explode(" ", $time_stamp);
+        // Gets the time
+        $time = $existing_date[1];
+        // Gets the date
+        $date = $existing_date[0];
+        // Gets the period
+        $period = $existing_date[2];
         $time = explode(":", $time);
         $hour = $time[0];
         $min = $time[1];
         $format = '11:00 PM';
         break;
     case 'h.ia':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $time = explode(".", $time);//splits the time into hours and minutes
-        $hour = $time[0];//gets the hour
-        $min = $time[1];//gets the time
-        $period = substr($min, -2);//gets only the 'pm' from the time
-        $min = substr($min, 0, 2);//gets only the minutes from the time
+        // Splits the date from the time
+        $existing_date = explode(" ", $time_stamp);
+        // Gets the time
+        $time = $existing_date[1];
+        // Gets the date
+        $date = $existing_date[0];
+        // Splits the time into hours and minutes
+        $time = explode(".", $time);
+        // Gets the hour
+        $hour = $time[0];
+        // Gets the time
+        $min = $time[1];
+        // Gets only the 'pm' from the time
+        $period = substr($min, -2);
+        // Gets only the minutes from the time
+        $min = substr($min, 0, 2);
         $format = '11.00pm';
         break;
     case 'h.i a':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time and the period from time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $period = $existing_date[2];//gets the period
+        // Splits the date from the time and the period from time
+        $existing_date = explode(" ", $time_stamp);
+        // Gets the time
+        $time = $existing_date[1];
+        // Gets the date
+        $date = $existing_date[0];
+        // Gets the period
+        $period = $existing_date[2];
         $time = explode(".", $time);
         $hour = $time[0];
         $min = $time[1];
         $format = '11.00 pm';
         break;
     case 'h.iA':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $time = explode(".", $time);//splits the time into hours and minutes
-        $hour = $time[0];//gets the hour
-        $min = $time[1];//gets the time
-        $period = substr($min, -2);//gets only the 'pm' from the time
-        $min = substr($min, 0, 2);//gets only the minutes from the time
+        //Splits the date from the time
+        $existing_date = explode(" ", $time_stamp);
+        //Gets the time
+        $time = $existing_date[1];
+        //Gets the date
+        $date = $existing_date[0];
+        // Splits the time into hours and minutes
+        $time = explode(".", $time);
+        //Gets the hour
+        $hour = $time[0];
+        //Gets the time
+        $min = $time[1];
+        // Gets only the 'pm' from the time
+        $period = substr($min, -2);
+        // Gets only the minutes from the time
+        $min = substr($min, 0, 2);
         $format = '11.00PM';
         break;
     case 'h.i A':
-        $existing_date = explode(" ", $time_stamp);//splits the date from the time and the period from time
-        $time = $existing_date[1];//gets the time
-        $date = $existing_date[0];//gets the date
-        $period = $existing_date[2];//gets the period
+        // Splits the date from the time and the period from time
+        $existing_date = explode(" ", $time_stamp);
+        // Gets the time
+        $time = $existing_date[1];
+        // Gets the date
+        $date = $existing_date[0];
+        // Gets the period
+        $period = $existing_date[2];
         $time = explode(".", $time);
         $hour = $time[0];
         $min = $time[1];
@@ -193,9 +252,9 @@ switch ($time_format) {
             <img id="date_start_trigger" border="0" style="position:relative; top:2px" alt="Enter Date"
                  src="themes/Suite7/images/jscalendar.gif"/>
             <?php
-            //$mins is the minutes option
+            // $mins is the minutes option
             $mins = '<select id="date_start_minutes" name="date_start_minutes" class="datetimecombo_time" size="1">';
-            //$mins .= '<option></option>';
+            // $mins .= '<option></option>';
             if ($min == '00') {
                 $mins .= '<option selected="selected" value="00">00</option>';
             } else {
@@ -218,9 +277,9 @@ switch ($time_format) {
             }
             $mins .= '</select>';
 
-            //$merm1 is lower case am / pm
+            // $merm1 is lower case am / pm
             $merm1 = '<select id="date_start_meridiem" name="date_start_meridiem" class="datetimecombo_time" size="1">';
-            //$merm1 .= '<option></option>';
+            // $merm1 .= '<option></option>';
 
             if ($period == 'am') {
                 $merm1 .= '<option selected="selected" value="am">am</option>';
@@ -233,7 +292,7 @@ switch ($time_format) {
                 $merm1 .= '<option value="pm">pm</option>';
             }
             $merm1 .= '</select>';
-            //$merm2 is used for upper case: AM / PM
+            // $merm2 is used for upper case: AM / PM
             $merm2 = '<select id="date_start_meridiem" name="date_start_meridiem" class="datetimecombo_time" size="1">';
             if ($period == 'AM') {
                 $merm2 .= '<option selected="selected" value="AM">AM</option>';
@@ -247,11 +306,11 @@ switch ($time_format) {
             }
             $merm2 .= '</select>';
 
-            //$hours1 is used when sugar's time/date settings are set to 24 hours
+            // $hours1 is used when sugar's time/date settings are set to 24 hours
             $hours1 = '<select id="date_start_hours" name="date_start_hours" class="datetimecombo_time"  tabindex="0" size="1">';
-            //$hours1 .= '<option></option>';
+            // $hours1 .= '<option></option>';
 
-            //Generate the options for the hours select box when sugar's time/date settings are set to 24 hours
+            // Generate the options for the hours select box when sugar's time/date settings are set to 24 hours
             for ($i = 0; $i <= 23; $i++) {
                 if ($i < 10) {
                     $val = '0' . $i;
@@ -268,11 +327,11 @@ switch ($time_format) {
             $hours1 .= '</select>';
 
 
-            //$hours2 is used when sugar's time/date settings are set to am/pm
+            // $hours2 is used when sugar's time/date settings are set to am/pm
             $hours2 = '<select id="date_start_hours" name="date_start_hours" class="datetimecombo_time"  tabindex="0" size="1">';
-            //$hours2 .= '<option></option>';
+            // $hours2 .= '<option></option>';
 
-            //Generate the options for the hours select box when sugar's time/date settings are set to am/pm
+            // Generate the options for the hours select box when sugar's time/date settings are set to am/pm
             for ($i = 1; $i <= 12; $i++) {
                 if ($i < 10) {
                     $val = '0' . $i;
@@ -289,7 +348,7 @@ switch ($time_format) {
             }
             $hours2 .= '</select>';
 
-            //Generate date and time form inputs based on the time format settings in sugar
+            // Generate date and time form inputs based on the time format settings in sugar
             switch ($time_format) {
                 case 'H:i':
                     echo $hours1 . ' : ' . $mins;

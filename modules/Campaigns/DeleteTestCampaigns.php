@@ -42,7 +42,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-
 /**
  * DeleteTestCampaigns.php
  *
@@ -64,7 +63,8 @@ class DeleteTestCampaigns
             return;
         }
 
-        $res = $focus->db->query("SELECT DISTINCT campaign_log.related_id emailid, prospect_lists.id as listid FROM campaign_log
+        $res = $focus->db->query(
+            "SELECT DISTINCT campaign_log.related_id emailid, prospect_lists.id as listid FROM campaign_log
             JOIN prospect_lists on campaign_log.list_id = prospect_lists.id
             WHERE campaign_log.campaign_id = '{$focus->id}' AND prospect_lists.list_type='test'");
         $test_ids = array();
@@ -84,11 +84,11 @@ class DeleteTestCampaigns
                     $test_list_ids) . "')";
             $focus->db->query($query);
 
-            $query = "UPDATE campaign_log SET deleted=1 WHERE campaign_id = '{$focus->id}' AND list_id IN ('" . join("','",
+            $query = "UPDATE campaign_log SET deleted=1 WHERE campaign_id = '{$focus->id}' AND list_id IN ('" .
+                join("','",
                     $test_list_ids) . "')";
 
             $focus->db->query($query);
         }
     }
-
 }

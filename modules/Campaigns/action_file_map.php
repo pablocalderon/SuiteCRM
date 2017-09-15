@@ -43,5 +43,3 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 $action_file_map['subpanelviewer'] = 'modules/Campaigns/SubPanelViewer.php';
-
-?>
