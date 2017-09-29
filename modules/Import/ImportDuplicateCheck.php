@@ -1,12 +1,11 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -17,7 +16,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -35,16 +34,13 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
-
- * Description: Handles getting a list of fields to duplicate check and doing the duplicate checks
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- ********************************************************************************/
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 class ImportDuplicateCheck
 {
@@ -169,7 +165,7 @@ class ImportDuplicateCheck
                 $newfocus = loadBean($this->_focus->module_dir);
                 $result = $newfocus->retrieve_by_string_fields($index_fields,true);
 
-                if ( !is_null($result) )
+                if (null !== $result)
                     return true;
             }
         }
@@ -225,7 +221,7 @@ class ImportDuplicateCheck
             $newfocus = loadBean($this->_focus->module_dir);
             $result = $newfocus->retrieve_by_string_fields(array('deleted' =>'0', 'first_name'=>$this->_focus->first_name, 'last_name'=>$this->_focus->last_name),true);
 
-            if ( !is_null($result) ){
+            if (null !== $result){
                 //set dupe field to full_name and name fields
                 $this->_dupedFields[] = 'full_name';
                 $this->_dupedFields[] = 'first_name';
@@ -278,7 +274,7 @@ class ImportDuplicateCheck
                 $newfocus = loadBean($this->_focus->module_dir);
                 $result = $newfocus->retrieve_by_string_fields($index_fields,true);
 
-                if ( !is_null($result) ){
+                if (null !== $result){
                     //remove deleted as a duped field
                     unset($index_fields['deleted']);
 
@@ -348,5 +344,3 @@ class ImportDuplicateCheck
         return $index_array;
     }
 }
-
-?>

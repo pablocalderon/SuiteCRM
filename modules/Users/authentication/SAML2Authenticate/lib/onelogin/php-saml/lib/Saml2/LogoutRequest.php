@@ -125,7 +125,7 @@ LOGOUTREQUEST;
     {
         $subject = $this->_logoutRequest;
 
-        if (is_null($deflate)) {
+        if (null === $deflate) {
             $deflate = $this->_settings->shouldCompressRequests();
         }
 

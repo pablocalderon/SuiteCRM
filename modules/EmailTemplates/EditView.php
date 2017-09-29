@@ -70,17 +70,17 @@ if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 //setting default flag value so due date and time not required
 if (!isset($focus->id)) $focus->date_due_flag = 1;
 
-//needed when creating a new case with default values passed in
-if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) {
+// Needed when creating a new case with default values passed in
+if (isset($_REQUEST['contact_name']) && null === $focus->contact_name) {
     $focus->contact_name = htmlspecialchars($_REQUEST['contact_name'], ENT_QUOTES);
 }
-if (isset($_REQUEST['contact_id']) && is_null($focus->contact_id)) {
+if (isset($_REQUEST['contact_id']) && null === $focus->contact_id) {
     $focus->contact_id = htmlspecialchars($_REQUEST['contact_id'], ENT_QUOTES);
 }
-if (isset($_REQUEST['parent_name']) && is_null($focus->parent_name)) {
+if (isset($_REQUEST['parent_name']) && null === $focus->parent_name) {
     $focus->parent_name = htmlspecialchars($_REQUEST['parent_name'], ENT_QUOTES);
 }
-if (isset($_REQUEST['parent_id']) && is_null($focus->parent_id)) {
+if (isset($_REQUEST['parent_id']) && null === $focus->parent_id) {
     $focus->parent_id = htmlspecialchars($_REQUEST['parent_id'], ENT_QUOTES);
 }
 if (isset($_REQUEST['parent_type'])) {
@@ -88,7 +88,7 @@ if (isset($_REQUEST['parent_type'])) {
 } elseif (!isset($focus->parent_type)) {
     $focus->parent_type = $app_list_strings['record_type_default_key'];
 }
-if (isset($_REQUEST['filename']) && $_REQUEST['isDuplicate'] != 'true') {
+if (isset($_REQUEST['filename']) && $_REQUEST['isDuplicate'] !== 'true') {
     $focus->filename = htmlspecialchars($_REQUEST['filename'], ENT_QUOTES);
 }
 
@@ -386,4 +386,3 @@ $javascript->setFormName('EditView');
 $javascript->setSugarBean($focus);
 $javascript->addAllFields('');
 echo $javascript->getScript();
-?>

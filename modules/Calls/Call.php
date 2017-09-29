@@ -1,11 +1,11 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,18 +34,13 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
-
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 class Call extends SugarBean {
 	var $field_name_map;
@@ -431,14 +426,16 @@ class Call extends SugarBean {
 
         global $timedate;
         //setting default date and time
-		if (is_null($this->date_start)) {
-			$this->date_start = $timedate->now();
-		}
+        if (null === $this->date_start) {
+            $this->date_start = $timedate->now();
+        }
 
-		if (is_null($this->duration_hours))
-			$this->duration_hours = "0";
-		if (is_null($this->duration_minutes))
-			$this->duration_minutes = "1";
+        if (null === $this->duration_hours) {
+            $this->duration_hours = "0";
+        }
+        if (null === $this->duration_minutes) {
+            $this->duration_minutes = "1";
+        }
 
 		$this->fill_in_additional_parent_fields();
 
@@ -472,14 +469,14 @@ class Call extends SugarBean {
 			if(isset($reminder_t))
 		    		$this->email_reminder_time = $reminder_t;
 		}
-		$this->email_reminder_checked = $this->email_reminder_time == -1 ? false : true;
+        $this->email_reminder_checked = $this->email_reminder_time == -1 ? false : true;
 
         if (isset ($_REQUEST['parent_type']) && empty($this->parent_type)) {
-                $this->parent_type = $_REQUEST['parent_type'];
-		} elseif (is_null($this->parent_type)) {
-			$this->parent_type = $app_list_strings['record_type_default_key'];
-		}
-	}
+            $this->parent_type = $_REQUEST['parent_type'];
+        } elseif (null === $this->parent_type) {
+            $this->parent_type = $app_list_strings['record_type_default_key'];
+        }
+    }
 
 
 	function get_list_view_data(){

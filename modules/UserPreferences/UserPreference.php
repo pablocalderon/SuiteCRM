@@ -1,8 +1,11 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -13,7 +16,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -30,18 +33,14 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo. If the display of the logo is not reasonably feasible for
- * technical reasons, the Appropriate Legal Notices must display the words
- * "Powered by SugarCRM".
- ********************************************************************************/
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
-
- * Description: Handles the User Preferences and stores them in a separate table.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 class UserPreference extends SugarBean
 {
@@ -91,26 +90,28 @@ class UserPreference extends SugarBean
     public function getPreference(
         $name,
         $category = 'global'
-        )
-    {
+    ) {
         global $sugar_config;
 
         $user = $this->_userFocus;
 
         // if the unique key in session doesn't match the app or prefereces are empty
-        if(!isset($_SESSION[$user->user_name.'_PREFERENCES'][$category]) || (!empty($_SESSION['unique_key']) && $_SESSION['unique_key'] != $sugar_config['unique_key'])) {
+        if (!isset($_SESSION[$user->user_name . '_PREFERENCES'][$category]) || (!empty($_SESSION['unique_key']) &&
+                $_SESSION['unique_key'] != $sugar_config['unique_key'])
+        ) {
             $this->loadPreferences($category);
         }
-        if(isset($_SESSION[$user->user_name.'_PREFERENCES'][$category][$name])) {
-            return $_SESSION[$user->user_name.'_PREFERENCES'][$category][$name];
+        if (isset($_SESSION[$user->user_name . '_PREFERENCES'][$category][$name])) {
+            return $_SESSION[$user->user_name . '_PREFERENCES'][$category][$name];
         }
 
         // check to see if a default preference ( i.e. $sugar_config setting ) exists for this value )
         // if so, return it
-        $value = $this->getDefaultPreference($name,$category);
-        if ( !is_null($value) ) {
+        $value = $this->getDefaultPreference($name, $category);
+        if (null !== $value) {
             return $value;
         }
+
         return null;
     }
 

@@ -18,8 +18,9 @@
  * @author Andrew Mclaughlan <andrew@mclaughlan.info>
  */
 
-
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 class ProjectController extends SugarController {
     //Loads the gantt view
@@ -444,11 +445,13 @@ class ProjectController extends SugarController {
             $taskarr = array();
             $t = 0;
 			$skipped = 0;
-            if(!is_null($tasks)){
-                foreach($tasks as $task){
-                    if( $this->count_days($start, $task->date_start) == -1 && $this->count_days($start, $task->date_finish) == -1 )
-						$skipped++;	
-					else{
+            if (null !== $tasks) {
+                foreach ($tasks as $task) {
+                    if ($this->count_days($start, $task->date_start) == -1 && $this->count_days($start,
+                            $task->date_finish) == -1
+                    )
+                        $skipped++;
+                    else {
 						$taskarr[$t]['id'] = $task->id;
 						$taskarr[$t]['name'] = $task->name;
 						$taskarr[$t]['status'] = $task->status;
@@ -536,4 +539,3 @@ class ProjectController extends SugarController {
     }
 
 }
-

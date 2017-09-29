@@ -1,11 +1,11 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,13 +34,13 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-
-
-
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 require_once('include/utils/activity_utils.php');
 require_once('modules/Calendar/CalendarUtils.php');
@@ -151,17 +151,17 @@ class Calendar {
 		$this->date_time = $GLOBALS['timedate']->fromString($current_date_db);	
         
 		$this->show_tasks = $current_user->getPreference('show_tasks');
-		if(is_null($this->show_tasks))
+		if(null === $this->show_tasks)
 			$this->show_tasks = SugarConfig::getInstance()->get('calendar.show_tasks_by_default',true);
-        
-		$this->show_calls = $current_user->getPreference('show_calls');
-		if(is_null($this->show_calls))
-			$this->show_calls = SugarConfig::getInstance()->get('calendar.show_calls_by_default',true);
+
+        $this->show_calls = $current_user->getPreference('show_calls');
+        if (null === $this->show_calls) {
+            $this->show_calls = SugarConfig::getInstance()->get('calendar.show_calls_by_default', true);
+        }
         
 		// Show completed Meetings, Calls, Tasks
         $this->show_completed = $current_user->getPreference('show_completed');
-        if(is_null($this->show_completed))
-        {
+        if (null === $this->show_completed) {
             $this->show_completed = SugarConfig::getInstance()->get('calendar.show_completed_by_default', true);
         }
         
@@ -171,9 +171,9 @@ class Calendar {
 			$this->style = "basic";	
 		}else{
 			$displayTimeslots = $GLOBALS['current_user']->getPreference('calendar_display_timeslots');
-			if (is_null($displayTimeslots)) {
-				$displayTimeslots = SugarConfig::getInstance()->get('calendar.display_timeslots', true);
-			}
+            if (null === $displayTimeslots) {
+                $displayTimeslots = SugarConfig::getInstance()->get('calendar.display_timeslots', true);
+            }
 			if (!$displayTimeslots) {
 				switch($this->view) {
 					case "agendaDay":
@@ -194,13 +194,15 @@ class Calendar {
 				}
 			}
 		}
-		
-		$this->day_start_time = $current_user->getPreference('day_start_time');
-		if(is_null($this->day_start_time))
-			$this->day_start_time = SugarConfig::getInstance()->get('calendar.default_day_start',"08:00");
-		$this->day_end_time = $current_user->getPreference('day_end_time');
-		if(is_null($this->day_end_time))
-			$this->day_end_time = SugarConfig::getInstance()->get('calendar.default_day_end',"19:00");
+
+        $this->day_start_time = $current_user->getPreference('day_start_time');
+        if (null === $this->day_start_time) {
+            $this->day_start_time = SugarConfig::getInstance()->get('calendar.default_day_start', "08:00");
+        }
+        $this->day_end_time = $current_user->getPreference('day_end_time');
+        if (null === $this->day_end_time) {
+            $this->day_end_time = SugarConfig::getInstance()->get('calendar.default_day_end', "19:00");
+        }
 			
 		if($this->view == "day"){
 			$this->time_step = SugarConfig::getInstance()->get('calendar.day_timestep',15);
@@ -228,9 +230,10 @@ class Calendar {
 		foreach($this->acts_arr as $user_id => $acts){
 			if(isset($acts) && empty($acts)){
 				$shared_calendar_separate = $GLOBALS['current_user']->getPreference('calendar_display_shared_separate');
-				if(is_null($shared_calendar_separate)) {
-					$shared_calendar_separate = SugarConfig::getInstance()->get('calendar.calendar_display_shared_separate', true);
-				}
+                if (null === $shared_calendar_separate) {
+                    $shared_calendar_separate = SugarConfig::getInstance()->get('calendar.calendar_display_shared_separate',
+                        true);
+                }
 				//if no calendar items we add the user to the list.
 				if($shared_calendar_separate){
 					//$this->items[ $item['user_id'] ][] = $item;
@@ -305,10 +308,11 @@ class Calendar {
 					}
 
 
-				$shared_calendar_separate = $GLOBALS['current_user']->getPreference('calendar_display_shared_separate');
-				if(is_null($shared_calendar_separate)) {
-					$shared_calendar_separate = SugarConfig::getInstance()->get('calendar.calendar_display_shared_separate', true);
-				}
+                $shared_calendar_separate = $GLOBALS['current_user']->getPreference('calendar_display_shared_separate');
+                if (null === $shared_calendar_separate) {
+                    $shared_calendar_separate = SugarConfig::getInstance()->get('calendar.calendar_display_shared_separate',
+                        true);
+                }
 				//if no calendar items we add the user to the list.
 				if($shared_calendar_separate){
 					$this->items[ $item['user_id'] ][] = $item;
@@ -441,5 +445,3 @@ class Calendar {
     }
 
 }
-
-?>

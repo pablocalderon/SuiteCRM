@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,10 +34,13 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 /**
  * @param $focus
@@ -57,12 +61,15 @@ function getDurationMinutesOptions($focus, $field, $value, $view) {
     
     global $timedate;
     //setting default date and time
-	if (is_null($focus->date_start))
-		$focus->date_start = $timedate->to_display_date(gmdate($timedate->get_date_time_format()));
-	if (is_null($focus->duration_hours))
-		$focus->duration_hours = "0";
-	if (is_null($focus->duration_minutes))
-		$focus->duration_minutes = "1";
+    if (null === $focus->date_start) {
+        $focus->date_start = $timedate->to_display_date(gmdate($timedate->get_date_time_format()));
+    }
+    if (null === $focus->duration_hours) {
+        $focus->duration_hours = '0';
+    }
+    if (null === $focus->duration_minutes) {
+        $focus->duration_minutes = '1';
+    }
 	
     if($view == 'EditView' || $view == 'MassUpdate' || $view == "QuickCreate"
     ) {
@@ -118,5 +125,3 @@ function getReminderTime($focus, $field, $value, $view) {
        
     return translate('reminder_time_options', '', $reminder_t);    
 }
-
-?>

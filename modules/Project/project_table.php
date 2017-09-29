@@ -55,8 +55,8 @@ class ProjectTable {
 
         $task_count = 0;
 
-        if(!is_null($tasks)){
-            foreach($tasks as $task){
+        if (null !== $tasks) {
+            foreach ($tasks as $task) {
                 //Get resources
                 $project = new Project();
                 $project->retrieve($task->project_id);

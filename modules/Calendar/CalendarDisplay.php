@@ -1,11 +1,11 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,12 +34,13 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-
-
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 class CalendarDisplay {
 
@@ -151,15 +152,15 @@ class CalendarDisplay {
 		$ss->assign('a_str',json_encode($cal->items));
 
 		$start = $current_user->getPreference('day_start_time');
-		if(is_null($start)) {
-			$start = SugarConfig::getInstance()->get('calendar.default_day_start',"08:00");
-		}
-		$ss->assign('day_start_time',$start);
+        if (null === $start) {
+            $start = SugarConfig::getInstance()->get('calendar.default_day_start', "08:00");
+        }
+        $ss->assign('day_start_time', $start);
 
-		$end = $current_user->getPreference('day_end_time');
-		if(is_null($end)) {
-			$end = SugarConfig::getInstance()->get('calendar.default_day_end',"19:00");
-		}
+        $end = $current_user->getPreference('day_end_time');
+        if (null === $end) {
+            $end = SugarConfig::getInstance()->get('calendar.default_day_end', "19:00");
+        }
 		$ss->assign('day_end_time',$end);
 
 		$ss->assign('sugar_body_only',(isset($_REQUEST['to_pdf']) && $_REQUEST['to_pdf'] || isset($_REQUEST['sugar_body_only']) && $_REQUEST['sugar_body_only']));
@@ -328,15 +329,16 @@ class CalendarDisplay {
 		$TIME_END_HOUR_OPTIONS = get_select_options_with_id($hours_arr, $d_end_hour);
 		$TIME_END_MINUTES_OPTIONS = get_select_options_with_id(array('0'=>'00','15'=>'15','30'=>'30','45'=>'45'), $d_end_min);
 
-		$displayTimeslots = $GLOBALS['current_user']->getPreference('calendar_display_timeslots');
-		if(is_null($displayTimeslots)) {
-			$displayTimeslots = SugarConfig::getInstance()->get('calendar.display_timeslots', true);
-		}
+        $displayTimeslots = $GLOBALS['current_user']->getPreference('calendar_display_timeslots');
+        if (null === $displayTimeslots) {
+            $displayTimeslots = SugarConfig::getInstance()->get('calendar.display_timeslots', true);
+        }
 
-		$shared_calendar_separate = $GLOBALS['current_user']->getPreference('calendar_display_shared_separate');
-		if(is_null($shared_calendar_separate)) {
-			$shared_calendar_separate = SugarConfig::getInstance()->get('calendar.calendar_display_shared_separate', true);
-		}
+        $shared_calendar_separate = $GLOBALS['current_user']->getPreference('calendar_display_shared_separate');
+        if (null === $shared_calendar_separate) {
+            $shared_calendar_separate = SugarConfig::getInstance()->get('calendar.calendar_display_shared_separate',
+                true);
+        }
 		$ss->assign('week',$_REQUEST['week']);
 		$ss->assign('activity', $this->checkActivity($this->activity_colors) );
 		$ss->assign('display_timeslots', $displayTimeslots);
@@ -673,5 +675,3 @@ class CalendarDisplay {
 	}
 
 }
-
-?>

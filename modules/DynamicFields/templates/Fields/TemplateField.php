@@ -1,11 +1,11 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +34,13 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
+
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 $GLOBALS['studioReadOnlyFields'] = array('date_entered'=>1, 'date_modified'=>1, 'created_by'=>1, 'id'=>1, 'modified_user_id'=>1);
 class TemplateField{
@@ -235,21 +239,24 @@ class TemplateField{
         return " $type({$this->len})";
 	}
 
-	function get_db_default($modify=false){
-		$GLOBALS['log']->debug('get_db_default(): default_value='.$this->default_value);
-		if (!$modify or empty($this->new_field_definition['default_value']) or $this->new_field_definition['default_value'] != $this->default_value ) {
-			if(!is_null($this->default_value)){ // add a default value if it is not null - we want to set a default even if default_value is '0', which is not null, but which is empty()
-				if(NULL == trim($this->default_value)){
-					return " DEFAULT NULL";
-				}
-				else {
-					return " DEFAULT '$this->default_value'";
-				}
-			}else{
-				return '';
-			}
-		}
-	}
+    function get_db_default($modify = false)
+    {
+        $GLOBALS['log']->debug('get_db_default(): default_value=' . $this->default_value);
+        if (!$modify or empty($this->new_field_definition['default_value']) ||
+            $this->new_field_definition['default_value'] != $this->default_value
+        ) {
+            // Add a default value if it is not null -
+            // we want to set a default even if default_value is '0', which is not null, but which is empty()
+            if (null !== $this->default_value) {
+                if (null == trim($this->default_value)) {
+                    return " DEFAULT NULL";
+                }
+
+                return " DEFAULT '$this->default_value'";
+            }
+            return '';
+        }
+    }
 
 	/*
 	 * Return the required clause for this field
@@ -542,14 +549,14 @@ class TemplateField{
      */
     protected function get_field_name($module, $name)
     {
-       $bean = loadBean($module);
-       if(empty($bean) || is_null($bean))
-       {
-       	  return $name;
-       }
+        $bean = loadBean($module);
+        if (empty($bean) || null === $bean) {
+            return $name;
+        }
 
-       $field_defs = $bean->field_defs;
-       return isset($field_defs[$name]['name']) ? $field_defs[$name]['name'] : $name;
+        $field_defs = $bean->field_defs;
+
+        return isset($field_defs[$name]['name']) ? $field_defs[$name]['name'] : $name;
     }
 
     /**
@@ -577,6 +584,3 @@ class TemplateField{
 	}
 
 }
-
-
-?>
