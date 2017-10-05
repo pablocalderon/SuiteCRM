@@ -1,10 +1,11 @@
 <!--
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,13 +34,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
-
-/*********************************************************************************
-
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 -->
 <!-- BEGIN: main -->
 <input type="hidden" name="return_module" value="{RETURN_MODULE}"/>
@@ -54,29 +51,52 @@
 	<input title="{MOD.LBL_SCHEDULE_BUTTON_TITLE}" class="button" onclick="this.form.module.value='Campaigns';this.form.action.value='QueueCampaign';" type="submit" name="Schedule" value="  {MOD.LBL_SCHEDULE_BUTTON_LABEL}  ">
 	<input title="{APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{APP.LBL_CANCEL_BUTTON_KEY}" class="button" onclick="this.form.module.value='{RETURN_MODULE}';this.form.action.value='DetailView';this.form.record.value='{RETURN_ID}';" type="submit" name="Schedule" value="  {APP.LBL_CANCEL_BUTTON_LABEL}  ">
 </p>
-<table cellpadding="0" cellspacing="0" width="100%" border="0" class="list view">
+<div class="list-view-rounded-corners">
+	<table cellpadding="0" cellspacing="0" border="0" class="list view table-responsive">
+		<thead>
+		<tr height="20">
+			<th scope='col' nowrap>
+			</th>
+			<th scope="col"><div>&nbsp;</div></th>
+			<th scope="col"><div><a href="{ORDER_BY}name" class="listViewThLinkS1">
+				{MOD.LBL_LIST_NAME}{arrow_start}{name_arrow}{arrow_end}</a></div></th>
+			<th scope="col"><div><a href="{ORDER_BY}is_personal" class="listViewThLinkS1">
+				{MOD.LBL_STATUS}{arrow_start}{name_arrow}{arrow_end}</a></div></th>
+			<th scope="col"><div><a href="{ORDER_BY}mailbox_type" class="listViewThLinkS1">
+				{MOD.LBL_LIST_PROSPECT_LIST_NAME}{arrow_start}{mailbox_type_arrow}{arrow_end}</a></div></th>
+			<th></th>
+		</tr>
 <!-- BEGIN: list_nav_row -->
-{PAGINATION}
-	<!-- END: list_nav_row -->
-	<tr height="20" >
-	<td scope="col"  NOWRAP>{CHECKALL}</td>	
-	<td scope="col" width="35%"  NOWRAP><slot>{MOD.LBL_LIST_NAME}</slot></td>
-	<td scope="col" width="15%"  NOWRAP><slot>{MOD.LBL_STATUS}</slot></td>
-	<td scope="col" width="50%"  NOWRAP><slot>{MOD.LBL_LIST_PROSPECT_LIST_NAME}</slot></td>
-	</tr>
+	{PAGINATION}
+<!-- END: list_nav_row -->
 
-<!-- BEGIN: row -->
-<tr height="20"  class="{ROW_COLOR}S1">
-		<td>{PREROW}</td>
-		<td scope="row" valign=TOP ><slot>{EMAILMARKETING.NAME}</slot></td>
-		<td valign=TOP ><slot>{EMAILMARKETING.STATUS}</slot></td>
-		<td valign=TOP ><slot>{EMAILMARKETING.PROSPECT_LIST_NAME}</slot></td>
-</tr>
+		</thead>
 
-<!-- END: row -->
-{PAGINATION}
-</table>
-</form>
+
+
+
+		<tbody>
+		<!-- BEGIN: row -->
+		<tr height="20" class="{ROW_COLOR}S1">
+			<td scope='row' valign=TOP class="inline-email-td"><slot>{PREROW}</slot></td>
+			<td valign=TOP class="inline-email-td">
+				<a class="listViewTdToolsS1" href="{URL_PREFIX}index.php?action=EditView&module=InboundEmail&record={InboundEmail.ID}">{EDIT_INLINE_IMG}</a></td>
+			<td scope='row' valign=TOP class="inline-email-td">
+				<slot><a href="{URL_PREFIX}index.php?action=DetailView&module=InboundEmail&record={InboundEmail.ID}" >
+					{InboundEmail.NAME}</a></slot></td>
+			<td valign=TOP class="inline-email-td"><slot>{InboundEmail.GLOBAL_PERSONAL_STRING}</slot></td>
+			<td valign=TOP class="inline-email-td"><slot>{InboundEmail.MAILBOX_TYPE_NAME}</slot></td>
+			<td valign=TOP class="inline-email-td"><slot>{InboundEmail.SERVER_URL}</slot></td>
+			<td valign=TOP class="inline-email-td"><slot>{InboundEmail.STATUS}</slot></td>
+		</tr>
+		<!-- END: row -->
+		</tbody>
+		<tfoot>
+		{PAGINATION}
+		</tfoot>
+	</table>
+</div>
+
 <script type="text/javascript">
 function save_checks(offset, module)
 {
