@@ -48,17 +48,17 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 // User is used to store customer information.
 class UserSignature extends SugarBean {
-	var $id;
-	var $date_entered;
-	var $date_modified;
-	var $deleted;
-	var $user_id;
-	var $name;
-	var $signature;
-	var $table_name = 'users_signatures';
-	var $module_dir = 'Users';
-	var $object_name ='UserSignature';
-	var $disable_custom_fields = true;
+	public $id;
+	public $date_entered;
+	public $date_modified;
+	public $deleted;
+	public $user_id;
+	public $name;
+	public $signature;
+	public $table_name = 'users_signatures';
+	public $module_dir = 'Users';
+	public $object_name ='UserSignature';
+	public $disable_custom_fields = true;
 
     public function __construct() {
 		//Ensure the vardefs get loaded.

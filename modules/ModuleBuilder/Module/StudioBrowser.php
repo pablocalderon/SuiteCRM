@@ -45,7 +45,7 @@ function cmp($a,$b)
 }
 
 class StudioBrowser{
-	var $modules = array();
+	public $modules = array();
 	
 	function loadModules(){
 	    global $current_user;

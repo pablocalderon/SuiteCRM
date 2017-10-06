@@ -15,56 +15,56 @@ class jjwg_MapsController extends SugarController {
     /**
      * @var settings array
      */
-    var $settings = array();
+    public $settings = array();
 
     /**
      * $map_marker_data_points is used to store temporary data and prevent duplicate points
      * @var array
      */
-    var $map_marker_data_points = array();
+    public $map_marker_data_points = array();
 
     /**
      * @var google_maps_response_codes
      *
      */
-    var $google_maps_response_codes = array('OK', 'ZERO_RESULTS', 'INVALID_REQUEST', 'OVER_QUERY_LIMIT', 'REQUEST_DENIED');
+    public $google_maps_response_codes = array('OK', 'ZERO_RESULTS', 'INVALID_REQUEST', 'OVER_QUERY_LIMIT', 'REQUEST_DENIED');
 
     /**
      * Last Geocoding Status Message
      * @var string
      */
-    var $last_status = '';
+    public $last_status = '';
 
     /**
      * display_object - display module's object (dom field)
      * @var object
      */
-    var $display_object;
+    public $display_object;
 
     /**
      * relate_object - relate module's object
      * @var object
      */
-    var $relate_object;
+    public $relate_object;
 
     /**
      * jjwg_Maps - Maps module's object
      * @var object
      */
-    var $bean;
-    var $jjwg_Maps; // Deprecated reference
+    public $bean;
+    public $jjwg_Maps; // Deprecated reference
 
     /**
      * jjwg_Address_Cache - Address cache module's object
      * @var object
      */
-    var $jjwg_Address_Cache;
+    public $jjwg_Address_Cache;
 
     /**
      * smarty object for the generic configuration template
      * @var object
      */
-    var $sugarSmarty;
+    public $sugarSmarty;
 
 
     /**

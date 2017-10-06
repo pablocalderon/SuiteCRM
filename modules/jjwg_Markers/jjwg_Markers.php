@@ -12,7 +12,7 @@ class jjwg_Markers extends jjwg_Markers_sugar {
     /**
      * @var settings array
      */
-    var $settings = array();
+    public $settings = array();
 
     function __construct($init=true) {
 

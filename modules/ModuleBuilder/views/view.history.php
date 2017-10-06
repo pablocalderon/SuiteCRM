@@ -44,7 +44,7 @@ require_once ('modules/ModuleBuilder/parsers/ParserFactory.php') ;
 
 class ViewHistory extends SugarView
 {
-    var $pageSize = 10 ;
+    public $pageSize = 10 ;
 
     /**
 	 * @see SugarView::_getModuleTitleParams()

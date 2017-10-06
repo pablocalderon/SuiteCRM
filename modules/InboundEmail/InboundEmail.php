@@ -52,65 +52,65 @@ function this_callback($str) {
  * Stub for certain interactions;
  */
 class temp {
-	var $name;
+	public $name;
 }
 
 class InboundEmail extends SugarBean {
 	// module specific
-	var $conn;
-	var $purifier; // HTMLPurifier object placeholder
-	var $email;
+	public $conn;
+	public $purifier; // HTMLPurifier object placeholder
+	public $email;
 
 	// fields
-	var $id;
-	var $deleted;
-	var $date_entered;
-	var $date_modified;
-	var $modified_user_id;
-	var $created_by;
-	var $created_by_name;
-	var $modified_by_name;
-	var $name;
-	var $status;
-	var $server_url;
-	var $email_user;
-	var $email_password;
-	var $port;
-	var $service;
-	var $mailbox;
-	var $mailboxarray;
-	var $delete_seen;
-	var $mailbox_type;
-	var $template_id;
-	var $stored_options;
-	var $group_id;
-	var $is_personal;
-	var $groupfolder_id;
+	public $id;
+	public $deleted;
+	public $date_entered;
+	public $date_modified;
+	public $modified_user_id;
+	public $created_by;
+	public $created_by_name;
+	public $modified_by_name;
+	public $name;
+	public $status;
+	public $server_url;
+	public $email_user;
+	public $email_password;
+	public $port;
+	public $service;
+	public $mailbox;
+	public $mailboxarray;
+	public $delete_seen;
+	public $mailbox_type;
+	public $template_id;
+	public $stored_options;
+	public $group_id;
+	public $is_personal;
+	public $groupfolder_id;
 
 	// email 2.0
-	var $pop3socket;
-	var $outboundInstance; // id to outbound_email instance
-	var $autoImport;
-	var $iconFlagged = "F";
-	var $iconDraft = "D";
-	var $iconAnswered = "A";
-	var $iconDeleted = "del";
-	var $isAutoImport = false;
-	var $smarty;
-	var $attachmentCount = 0;
-	var $tempAttachment = array();
-	var $unsafeChars = array("&", "!", "'", '"', '\\', '/', '<', '>', '|', '$',);
-	var $currentCache;
-	var $defaultSort = 'date';
-	var $defaultDirection = "DESC";
-	var $hrSort = array(
+	public $pop3socket;
+	public $outboundInstance; // id to outbound_email instance
+	public $autoImport;
+	public $iconFlagged = "F";
+	public $iconDraft = "D";
+	public $iconAnswered = "A";
+	public $iconDeleted = "del";
+	public $isAutoImport = false;
+	public $smarty;
+	public $attachmentCount = 0;
+	public $tempAttachment = array();
+	public $unsafeChars = array("&", "!", "'", '"', '\\', '/', '<', '>', '|', '$',);
+	public $currentCache;
+	public $defaultSort = 'date';
+	public $defaultDirection = "DESC";
+	public $hrSort = array(
 			0 => 'flagged',
 			1 => 'status',
 			2 => 'from',
 			3 => 'subj',
 			4 => 'date',
 		);
-	var $hrSortLocal = array(
+	public $hrSortLocal = array(
 			'flagged' => 'flagged',
 			'status'  => 'answered',
 			'from'    => 'fromaddr',
@@ -119,7 +119,7 @@ class InboundEmail extends SugarBean {
 		);
 
 	// default attributes
-	var $transferEncoding				  = array(0 => '7BIT',
+	public $transferEncoding				  = array(0 => '7BIT',
 												1 => '8BIT',
 												2 => 'BINARY',
 												3 => 'BASE64',
@@ -127,39 +127,39 @@ class InboundEmail extends SugarBean {
 												5 => 'OTHER'
 											);
 	// object attributes
-	var $compoundMessageId; // concatenation of messageID and deliveredToEmail
-	var $serverConnectString;
-	var $disable_row_level_security	= true;
-	var $InboundEmailCachePath;
-	var $InboundEmailCacheFile			= 'InboundEmail.cache.php';
-	var $object_name					= 'InboundEmail';
-	var $module_dir					= 'InboundEmail';
-	var $table_name					= 'inbound_email';
-	var $new_schema					= true;
-	var $process_save_dates 			= true;
-	var $order_by;
-	var $dbManager;
-	var $field_defs;
-	var $column_fields;
-	var $required_fields				= array('name'			=> 'name',
+	public $compoundMessageId; // concatenation of messageID and deliveredToEmail
+	public $serverConnectString;
+	public $disable_row_level_security	= true;
+	public $InboundEmailCachePath;
+	public $InboundEmailCacheFile			= 'InboundEmail.cache.php';
+	public $object_name					= 'InboundEmail';
+	public $module_dir					= 'InboundEmail';
+	public $table_name					= 'inbound_email';
+	public $new_schema					= true;
+	public $process_save_dates 			= true;
+	public $order_by;
+	public $dbManager;
+	public $field_defs;
+	public $column_fields;
+	public $required_fields				= array('name'			=> 'name',
 												'server_url' 	=> 'server_url',
 												'mailbox'		=> 'mailbox',
 												'user'			=> 'user',
 												'port'			=> 'port',
 											);
-	var $imageTypes					= array("JPG", "JPEG", "GIF", "PNG");
-	var $inlineImages					= array();  // temporary space to store ID of inlined images
-	var $defaultEmailNumAutoreplies24Hours = 10;
-	var $maxEmailNumAutoreplies24Hours = 10;
+	public $imageTypes					= array("JPG", "JPEG", "GIF", "PNG");
+	public $inlineImages					= array();  // temporary space to store ID of inlined images
+	public $defaultEmailNumAutoreplies24Hours = 10;
+	public $maxEmailNumAutoreplies24Hours = 10;
 	// custom ListView attributes
-	var $mailbox_type_name;
-	var $global_personal_string;
+	public $mailbox_type_name;
+	public $global_personal_string;
 	// service attributes
-	var $tls;
-	var $ca;
-	var $ssl;
-	var $protocol;
-	var $keyForUsersDefaultIEAccount = 'defaultIEAccount';
+	public $tls;
+	public $ca;
+	public $ssl;
+	public $protocol;
+	public $keyForUsersDefaultIEAccount = 'defaultIEAccount';
 	// prefix to use when importing inlinge images in emails
 	public $imagePrefix;
 

@@ -38,8 +38,8 @@
  ********************************************************************************/
 
 class AjaxCompose{
-	var $sections = array();
-	var $crumbs = array('Home'=>'ModuleBuilder.main("Home")',/* 'Assistant'=>'Assistant.mbAssistant.xy=Array("650, 40"); Assistant.mbAssistant.show();'*/);
+	public $sections = array();
+	public $crumbs = array('Home'=>'ModuleBuilder.main("Home")',/* 'Assistant'=>'Assistant.mbAssistant.xy=Array("650, 40"); Assistant.mbAssistant.show();'*/);
 	function addSection($name, $title, $content, $action='activate'){
 		$crumb = '';
 		if($name == 'center'){

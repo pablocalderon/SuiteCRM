@@ -43,9 +43,9 @@ require_once('include/Dashlets/Dashlet.php');
 
 
 class ChartsDashlet extends Dashlet {
-    var $width = '400';
-    var $height = '480';
-    var $report_id;
+    public $width = '400';
+    public $height = '480';
+    public $report_id;
 
     /**
      * Constructor

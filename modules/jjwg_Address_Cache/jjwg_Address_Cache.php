@@ -11,7 +11,7 @@ class jjwg_Address_Cache extends jjwg_Address_Cache_sugar {
     /**
      * @var settings array
      */
-    var $settings = array();
+    public $settings = array();
 
 
     /**

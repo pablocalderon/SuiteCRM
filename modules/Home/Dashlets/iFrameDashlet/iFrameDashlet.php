@@ -43,10 +43,10 @@ require_once('include/Dashlets/Dashlet.php');
 
 
 class iFrameDashlet extends Dashlet {
-    var $displayTpl = 'modules/Home/Dashlets/iFrameDashlet/display.tpl';
-    var $configureTpl = 'modules/Home/Dashlets/iFrameDashlet/configure.tpl';
-    var $defaultURL = 'http://apps.sugarcrm.com/dashlet/sugarcrm-news-dashlet.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@';
-    var $url;
+    public $displayTpl = 'modules/Home/Dashlets/iFrameDashlet/display.tpl';
+    public $configureTpl = 'modules/Home/Dashlets/iFrameDashlet/configure.tpl';
+    public $defaultURL = 'http://apps.sugarcrm.com/dashlet/sugarcrm-news-dashlet.html?lang=@@LANG@@&edition=@@EDITION@@&ver=@@VER@@';
+    public $url;
     protected $allowed_schemes = array("http", "https");
 
     function __construct($id, $options = null) {

@@ -41,16 +41,16 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 class MailMerge
 {
-	var $mm_data_dir;
-	var $obj;
-	var $datasource_file = 'ds.doc';
-	var $header_file = 'header.doc';
-	var $fieldcnt;
-	var $rowcnt;
-	var $template;
-	var $visible = false;
-	var $list;
-	var $fieldList;
+	public $mm_data_dir;
+	public $obj;
+	public $datasource_file = 'ds.doc';
+	public $header_file = 'header.doc';
+	public $fieldcnt;
+	public $rowcnt;
+	public $template;
+	public $visible = false;
+	public $list;
+	public $fieldList;
 
 	function __construct($list = NULL, $fieldList = null, $data_dir = 'data') {
 		// this is the path to your data dir.

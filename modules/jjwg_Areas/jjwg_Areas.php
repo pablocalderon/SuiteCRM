@@ -11,31 +11,31 @@ class jjwg_Areas extends jjwg_Areas_sugar {
     /**
      * @var settings array
      */
-    var $settings = array();
+    public $settings = array();
     /**
      * coords processed from coordinates string
      * @var array of strings ('lng,lat,elv')
      */
-    var $coords = array();
+    public $coords = array();
     /**
      * polygon processed from coordinates strings
      * @var array of arrays (keys: lng, lat, elv)
      */
-    var $polygon = null;
+    public $polygon = null;
     /**
      * Point in Area/Polygon check on vertices
      * @var boolean
      */
-    var $point_on_vertex = true;
+    public $point_on_vertex = true;
     /**
      * @area Polygon Area
      */
-    var $area = 0;
+    public $area = 0;
     /**
      * Polygon Centroid (Area Balance Center)
      * @var array (keys: lng, lat, elv)
      */
-    var $centroid = null;
+    public $centroid = null;
 
     function __construct($init=true) {
 

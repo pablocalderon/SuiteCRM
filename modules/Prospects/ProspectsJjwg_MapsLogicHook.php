@@ -6,7 +6,7 @@ if (!defined('sugarEntry') || !sugarEntry)
 class ProspectsJjwg_MapsLogicHook
 {
 
-    var $jjwg_Maps;
+    public $jjwg_Maps;
 
     function __construct()
     {

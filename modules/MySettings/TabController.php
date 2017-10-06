@@ -41,7 +41,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 class TabController{
 
-var $required_modules = array('Home');
+public $required_modules = array('Home');
 
     /**
      * @var bool flag of validation of the cache

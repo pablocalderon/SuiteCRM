@@ -14,7 +14,7 @@ class jjwg_Maps extends jjwg_Maps_sugar {
      * @var settings array
      *
      */
-    var $settings = array(
+    public $settings = array(
         'google_maps_api_key' => '',
         /**
          * 'valid_geocode_modules' defines the valid module names used with geocoding.
@@ -159,68 +159,68 @@ class jjwg_Maps extends jjwg_Maps_sugar {
      * relate_object - related module's object (flex relate field)
      * @var object
      */
-    var $relate_object;
+    public $relate_object;
 
     /**
      * jjwg_Address_Cache - Address cache module's object
      * @var object
      */
-    var $jjwg_Address_Cache;
+    public $jjwg_Address_Cache;
 
 
     /**
      * geocoded_counts - Geocoding totals
      * @var array
      */
-    var $geocoded_counts = null;
+    public $geocoded_counts = null;
 
     /**
      * geocoded_headings - Display headings
      * @var array
      */
-    var $geocoded_headings = null;
+    public $geocoded_headings = null;
 
     /**
      * geocoded_module_totals - Geocoded module totals
      * @var array
      */
-    var $geocoded_module_totals = null;
+    public $geocoded_module_totals = null;
 
     /**
      * geocoding_results - Google Geocoding API Results
      * @var array
      */
-    var $geocoding_results = null;
+    public $geocoding_results = null;
 
     /**
      * map_center - Map Center (Related)
      * @var array
      */
-    var $map_center = null;
+    public $map_center = null;
 
     /**
      * map_markers - Map Marker Data (Display)
      * @var array
      */
-    var $map_markers = null;
+    public $map_markers = null;
 
     /**
      * map_markers_groups - Sets the array of map groups
      * @var array
      */
-    var $map_markers_groups = array();
+    public $map_markers_groups = array();
 
     /**
      * map_markers - Custom Markers Data (jjwg_Markers)
      * @var array
      */
-    var $custom_markers = null;
+    public $custom_markers = null;
 
     /**
      * custom_areas - Custom Areas Data (jjwg_Areas)
      * @var array
      */
-    var $custom_areas = null;
+    public $custom_areas = null;
 
 
 

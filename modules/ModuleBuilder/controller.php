@@ -44,7 +44,7 @@ require_once 'modules/ModuleBuilder/parsers/constants.php' ;
 
 class ModuleBuilderController extends SugarController
 {
-    var $action_remap = array ( ) ;
+    public $action_remap = array ( ) ;
 
     /**
      * Used by the _getModuleTitleParams() method calls in ModuleBuilder views to get the correct string
