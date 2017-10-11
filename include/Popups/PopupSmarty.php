@@ -284,13 +284,26 @@ class PopupSmarty extends ListViewSmarty{
 		return $str;
 	}
 
-	/*
-	 * Setup up the smarty template. we added an extra step here to add the order by from the popupdefs.
-	 */
-	function setup($seed, $file = null, $where = null, $params = Array(), $offset = 0, $limit = -1, $filter_fields = Array(), $id_field = 'id') {
-		$args = func_get_args();
-		return call_user_func_array(array($this, '_setup'), $args);
-	}
+    /**
+     * Setup up the smarty template. we added an extra step here to add the order by from the popupdefs.
+     *
+     * @see ListViewDisplay::setup
+     */
+    function setup(
+        $seed,
+        $file = null,
+        $where = null,
+        $params = array(),
+        $offset = 0,
+        $limit = -1,
+        $filter_fields = array(),
+        $id_field = 'id',
+		$id = null
+    ) {
+        $args = func_get_args();
+
+        return call_user_func_array(array($this, '_setup'), $args);
+    }
 	function _setup($file) {
 
 	    if(isset($this->_popupMeta)){
