@@ -54,16 +54,15 @@
 
 .panel-default > .panel-heading > a {
   display: block;
-  font-size: 12px ;
+  font-size: 12px;
   font-weight: 500;
   color: $default-btn-color;
-  padding: 15px/$panel-height-divisor 10px 0 10px/$panel-height-divisor;
+  padding: 0 10px 0 10px/$panel-height-divisor;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   height: 40px;
   text-decoration: none;
   text-decoration: none;
-  //background-color: $panel-expanded-bg;
 }
 
 #EditView_tabs .panel-default > .panel-heading > a {
