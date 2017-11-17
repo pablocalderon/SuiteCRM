@@ -1223,12 +1223,13 @@ div.content p.error {
 
 .error a {
   font-weight: 600;
-  color: $navbar-alert-body-color;
+  color: $default-btn-color;
   text-decoration: underline;
 }
 
 .error a:link {
   font-weight: 600;
+  color: $default-btn-color;
   text-decoration: underline;
 }
 
