@@ -1,5 +1,5 @@
 /*** MAIN ***/
-@import 'variables';
+@import 'variables.scss';
 
 html {
   height: 100%;
@@ -32,6 +32,7 @@ a {
 a:hover {
   color: $link-color-hover;
 }
+
 
 
 h4 {
@@ -95,7 +96,7 @@ a:hover {
 // Fix ajax loader in the edit view
 // Since the z-index is inline the only way to override it is to use the !important
 .mask {
-  z-index: 10 !important;
+  z-index: 3 !important;
 }
 
 #ajaxloading_c {
@@ -126,3 +127,15 @@ a:hover {
   }
 
 }
+
+.content {
+  margin: 0 0 0 0;
+}
+
+@media (max-width: 750px) {
+  .content {
+    margin: 0 0 0 0;
+    width: 100%;
+  }
+}
+

@@ -1,5 +1,22 @@
 /**** Edit view ***/
-@import 'variables';
+@import 'variables.scss';
+
+/*Import VCard*/
+.import-vcard {
+  background-color: $main-alternate-bg;
+  padding: 16px;
+  border-radius: 4px;
+
+  #vcard_file {
+    margin-top: 10px;
+    margin-buttom: 10px;
+  }
+
+  .button {
+    margin-top: 10px;
+    margin-buttom: 10px;
+  }
+}
 
 div#searchResults {
   padding-bottom: 50px;
@@ -239,6 +256,15 @@ div.noBullet li,
   padding: $page-content-spacing 3% 40px 3%;
   width: 100%;
 }
+
+
+
+@media (max-width: 750px) {
+  .content {
+    padding-top:50px;
+  }
+}
+
 
 .bootstrap-container.col-md-offset-2 {
 }
@@ -508,26 +534,28 @@ table.view {
 
 .detail-view-row {
   margin: 0 0 2px 0;
+  margin:0;
   min-width: 48px;
-  min-height: 24px;
+  /*min-height: 24px;*/
 }
 
 .detail-view-row-item {
-  margin: 0 0 2px 0;
+  /*margin: 0 0 2px 0;*/
+  margin:0;
   min-width: 48px;
-  min-height: 24px;
+  min-height: 30px;
 }
 
 .edit-view-row {
   margin: 0 0 8px 0;
   min-width: 48px;
-  min-height: 24px;
+  min-height: 30px;
 }
 
 .edit-view-row-item {
   margin: 0 0 8px 0;
   min-width: 48px;
-  min-height: 24px;
+  min-height: 30px;
 }
 
 .detail-view-row .label {
@@ -535,11 +563,10 @@ table.view {
   font-size: 14px;
   font-weight: 700;
   color: $main-font-color;
-  padding: 0 0 0 8px;
-  line-height: 48px;
+  padding: 0 0 10px 8px;
   text-align: left;
   vertical-align: baseline;
-  white-space: nowrap;
+  white-space: pre-wrap;
 }
 
 .edit-view-row .label {
@@ -547,11 +574,11 @@ table.view {
   font-size: 14px;
   font-weight: 700;
   color: $main-font-color;
-  padding: 0 0 0 8px;
-  line-height: 48px;
+  padding: 0;
   text-align: left;
   vertical-align: baseline;
-  white-space: nowrap;
+  white-space: pre-wrap;
+  line-height: 10px;
 }
 
 #lineItems {
@@ -579,18 +606,19 @@ slot {
   font-size: 14px;
   font-weight: 700;
   color: $main-font-color;
-  line-height: 48px;
+  line-height: 30px;
   text-align: left;
   vertical-align: baseline;
 }
 
 #html_div {
   white-space: normal;
+  background-color: $table-header-bg;
 }
 
 .dataField {
-  line-height: 48px;
-  min-height: 48px;
+  line-height: 30px;
+  min-height: 30px;
 }
 
 .detail-view-field {
@@ -599,14 +627,14 @@ slot {
   font-weight: 400;
   background-color: $detail-view-field-bg;
   color: $main-font-color;
-  padding: 12px;
+  padding: 0px 10px;
   border: 1px solid transparent;
   border-radius: 4px;
-  line-height: 20px;
+  line-height: 38px;
   text-align: left;
-  min-height: 48px;
+  min-height: 38px;
   vertical-align: baseline;
-  white-space: nowrap;
+  white-space: inherit;
 }
 
 .detail-view-field a {
@@ -734,7 +762,7 @@ option[selected] {
 }
 
 .edit tr td[scope=row] {
-  padding: 0 10px 0 10px;
+  padding: 0 10px 0 0;
   line-height: 40px;
   text-align: left;
   height: 40px;
@@ -1152,7 +1180,8 @@ li.noBullet {
 .error {
   background-color: $danger-btn-bg;
   color: $default-btn-color;
-  padding: 10px;
+  padding: 7px 10px;
+  font-size:12px;
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -2024,6 +2053,10 @@ ul.clickMenu li a {
   text-decoration: none;
 }
 
+ul.clickMenu li a.clearSearchIcon {
+  margin: 3px 0px 0px 8px;
+}
+
 ul.clickMenu li.single a {
   padding-right: 8px;
 }
@@ -2042,8 +2075,13 @@ ul.clickMenu > li > span {
   margin-top: 9px;
   width: 16px;
   height: 16px;
+}
 
-
+@-moz-document url-prefix() {
+  ul.clickMenu:first-child > li > span {
+    /*margin-right: -7px;*/
+    margin-right:0;
+  }
 }
 
 .inlineButtons ul.clickMenu > li > span {
@@ -2549,6 +2587,12 @@ dl {
   top: 10px;
 }
 
+
+.search .col-xs-12 label {
+  margin-bottom: 0;
+  line-height: 30px;
+}
+
 #EditView_tabs span.id-ff.multiple [type="button"] img {
   content: none;
 }
@@ -2597,19 +2641,19 @@ input#btn_ActionLine.button[type="button"] {
 }
 
 #billing_address_street{
-  height: 54px;
+  height: 100px;
 }
 
 #shipping_address_street{
-  height: 54px;
+  height: 100px;
 }
 
 #primary_address_street{
-  height: 54px;
+  height: 100px;
 }
 
 #alt_address_street {
-  height: 54px;
+  height: 100px;
 }
 
 #primary_address_street,
@@ -4063,7 +4107,7 @@ select#sales_stage_advanced {
   background: #E6E6E6;
   border: 1px solid #778591;
   border-radius: 4px;
-  height: 48px;
+  height: 30px;
 
 }
 
@@ -4139,10 +4183,6 @@ hr {
     max-height: 50%;
   }
 
-}
-
-#forgotpasslink {
-  margin: 10px 0 0 0;
 }
 
 .teamNoticeBox {
@@ -4330,18 +4370,8 @@ td.inlineEditActive {
 
 #editAccountDialogue {
   overflow: auto;
-  height: 90%;
+  height: auto;
 }
-
-#settingsDialog .yui-content {
-  overflow-y: auto;
-}
-
-#settingsDialog_c {
-  top: 120px;
-  z-index: 20000;
-}
-
 
 .edit-view-pagination .btn-pagination[disabled] {
   background-color: $disabled-btn-bg;
@@ -4394,27 +4424,6 @@ td.inlineEditActive {
 
   .edit-view-pagination .glyphicon-chevron-right {
     margin-left: 0px;
-  }
-}
-
-
-@media (max-width: 992px) {
-  #settingsDialog_c {
-    left: 1%;
-  }
-
-  #settingsDialog .yui-content {
-    height: 320px;
-  }
-}
-
-@media (min-width: 993px) {
-  #settingsDialog_c {
-    left: 22.5%;
-  }
-
-  #settingsDialog .yui-content {
-    height: 384px;
   }
 }
 
@@ -4965,10 +4974,7 @@ object {
     font-size: 1em;
   }
 
-  .content {
-    margin: 0 0 0 0;
-    width: 100%;
-  }
+
 
   #pageContainer {
     margin: 0 0 0 0;
@@ -5492,51 +5498,51 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td {
   padding-bottom: 5px;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span {
   display: block;
   float: none;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[type="text"] {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="text"] {
   width: 90%;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[name="filter_domain"] {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[name="filter_domain"] {
   width: 90%;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[name="email_num_autoreplies_24_hours"] {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[name="email_num_autoreplies_24_hours"] {
   width: 90%;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[type="text"][name="mailbox"]#mailbox {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="text"][name="mailbox"]#mailbox {
   width: 70%;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[type="text"][name="trashFolder"]#trashFolder {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="text"][name="trashFolder"]#trashFolder {
   width: 70%;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[type="text"][name="sentFolder"]#sentFolder {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="text"][name="sentFolder"]#sentFolder {
   width: 70%;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[type="button"]#subscribeFolderButton.button {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="button"]#subscribeFolderButton.button {
   width: 18%;
   min-width: 71px;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[type="button"]#trashFolderButton.button {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="button"]#trashFolderButton.button {
   width: 18%;
   min-width: 71px;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[type="button"]#sentFolderButton.button {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="button"]#sentFolderButton.button {
   width: 18%;
   min-width: 71px;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input.button {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input.button {
   color: white;
 }
 
@@ -5544,11 +5550,11 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td select
   border: 3px solid #A5E8D6;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[name="from_name"]#from_name {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[name="from_name"]#from_name {
   width: 80%;
 }
 
-div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[name="from_addr"]#from_addr {
+div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[name="from_addr"]#from_addr {
   width: 80%;
 }
 
@@ -5576,7 +5582,7 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td input[
     width: 28%;
   }
 
-  div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot {
+  div.content div.pagecontent form#EditView div.edit.view table tbody tr td span {
     display: block;
     float: left;
     line-height: 16px;
@@ -5584,15 +5590,15 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td input[
     white-space: initial;
   }
 
-  div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[type="text"] {
+  div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[type="text"] {
     width: 96%;
   }
 
-  div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[name="filter_domain"] {
+  div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[name="filter_domain"] {
     width: 96%;
   }
 
-  div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input[name="email_num_autoreplies_24_hours"] {
+  div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input[name="email_num_autoreplies_24_hours"] {
     width: 96%;
   }
 
@@ -5627,20 +5633,20 @@ div.content div.pagecontent form#EditView div.edit.view table tbody tr td input[
     height: initial;
   }
 
-  div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot {
+  div.content div.pagecontent form#EditView div.edit.view table tbody tr td span {
     width: 100%;
   }
 }
 
 @media (max-width: 380px) {
-  div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot input {
+  div.content div.pagecontent form#EditView div.edit.view table tbody tr td span input {
     font-size: 12px;
     line-height: initial;
     height: 40px;
     min-height: 40px;
   }
 
-  div.content div.pagecontent form#EditView div.edit.view table tbody tr td slot select {
+  div.content div.pagecontent form#EditView div.edit.view table tbody tr td span select {
     font-size: 12px;
     line-height: initial;
     height: 40px;

@@ -200,7 +200,7 @@ class Person extends Basic
             $this->in_workflow = false;
         }
         if ($ori_in_workflow === false || !empty($override_email)) {
-            $this->emailAddress->save(
+            $this->emailAddress->saveEmail(
                 $this->id,
                 $this->module_dir,
                 $override_email,
@@ -210,6 +210,13 @@ class Person extends Basic
                 '',
                 $this->in_workflow
             );
+        }
+
+        // User Profile specific save for Email addresses
+
+        if(!$this->emailAddress->saveAtUserProfile($_REQUEST)) {
+            $GLOBALS['log']->error('Email address save error');
+            return false;
         }
 
         return $this->id;
@@ -318,7 +325,7 @@ class Person extends Basic
 
         $where_auto = " $table.deleted=0 ";
 
-        if ($where !== '') {
+        if ($where != '') {
             $query .= "WHERE ($where) AND " . $where_auto;
         } else {
             $query .= 'WHERE ' . $where_auto;
