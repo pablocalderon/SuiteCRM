@@ -96,6 +96,7 @@ class security_utilsTest extends PHPUnit_Framework_TestCase
             'Surveys' => 'Surveys'
         );
 
+
         $allowed = query_module_access_list(new User('1'));
         $actual = get_user_disallowed_modules('1', $allowed);
 
