@@ -118,8 +118,11 @@ class templateParser
                 $value = rtrim(rtrim(format_number($value), '0'), $sep[1]) . $app_strings['LBL_PERCENTAGE_SYMBOL'];
             }
             if ($focus->field_defs[$name][dbType] == 'datetime' &&
-                (strpos($name, 'date') > 0 || strpos($name, 'expiration') > 0) ) {
-                if ($value != '') {
+                (strpos($name, 'date') > 0 || strpos($name, 'expiration') > 0)
+            ) {
+                if (strpos($name, 'dates') > 0) {
+                    break;
+                } elseif ($value != '') {
                     $dt = explode(' ', $value);
                     $value = $dt[0];
                 }
@@ -140,5 +143,3 @@ class templateParser
         return $string;
     }
 }
-
-?>
