@@ -697,11 +697,11 @@ class SugarView
                 $groupTabs[$tabIdx]['modules'] = $topTabs;
                 $groupTabs[$tabIdx]['extra'] = $extraTabs;
             }
-        }
 
-        foreach($groupTabs as $key => $tabGroup) {
-            if (count($topTabs) >= $max_tabs - 1 && $key !== 'All' && in_array($tabGroup['modules'][$moduleTab], $tabGroup['extra'])) {
-                unset($groupTabs[$key]['modules'][$moduleTab]);
+            foreach($groupTabs as $key => $tabGroup) {
+                if (count($topTabs) >= $max_tabs - 1 && $key !== 'All' && in_array($tabGroup['modules'][$moduleTab], $tabGroup['extra'])) {
+                    unset($groupTabs[$key]['modules'][$moduleTab]);
+                }
             }
         }
 
