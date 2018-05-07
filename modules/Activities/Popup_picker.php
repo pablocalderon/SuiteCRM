@@ -393,6 +393,7 @@ class Popup_Picker
 
         } // end Notes
 
+        $xtpl=new \SuiteCRM\XTemplate ('modules/Activities/Popup_picker.html');
 
         if (count($summary_list) > 0) {
             array_multisort(array_column($summary_list, 'sort_value'), SORT_DESC, $summary_list);

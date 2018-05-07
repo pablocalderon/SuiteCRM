@@ -44,7 +44,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 
 require_once('include/Dashlets/Dashlet.php');
-require_once('include/Sugar_Smarty.php');
+require_once('include/Smarty/Sugar_Smarty.php');
 
 class RSSDashlet extends Dashlet
 {

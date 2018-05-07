@@ -1,4 +1,6 @@
 <?php
+use SuiteCRM\SugarLogger\LoggerManager;
+
 /*
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -37,13 +39,6 @@
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
-/*********************************************************************************
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- * *******************************************************************************/
-
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -119,6 +114,7 @@ require_once 'include/modules.php'; // provides $moduleList, $beanList, $beanFil
 
 require_once 'include/utils/autoloader.php';
 spl_autoload_register(array('SugarAutoLoader', 'autoload'));
+require_once 'vendor/autoload.php';
 require_once 'data/SugarBean.php';
 require_once 'include/utils/mvc_utils.php';
 require 'include/SugarObjects/LanguageManager.php';
@@ -128,7 +124,6 @@ require 'modules/DynamicFields/templates/Fields/TemplateText.php';
 
 require_once 'include/utils/file_utils.php';
 require_once 'include/SugarEmailAddress/SugarEmailAddress.php';
-require_once 'include/SugarLogger/LoggerManager.php';
 require_once 'modules/Trackers/BreadCrumbStack.php';
 require_once 'modules/Trackers/Tracker.php';
 require_once 'modules/Trackers/TrackerManager.php';

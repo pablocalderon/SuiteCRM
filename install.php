@@ -1,6 +1,8 @@
 <?php
- /**
-*
+use SuiteCRM\SugarLogger\LoggerManager;
+
+ if(!defined('sugarEntry'))define('sugarEntry', true);
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
 *
@@ -79,7 +81,7 @@ if(empty($session_id)){
 $GLOBALS['installing'] = true;
 define('SUGARCRM_IS_INSTALLING', $GLOBALS['installing']);
 $GLOBALS['sql_queries'] = 0;
-require_once('include/SugarLogger/LoggerManager.php');
+require_once('vendor/autoload.php');
 require_once('sugar_version.php');
 require_once('suitecrm_version.php');
 require_once('install/install_utils.php');
@@ -116,7 +118,7 @@ if(get_magic_quotes_gpc() == 1) {
 }
 
 
-$GLOBALS['log'] = LoggerManager::getLogger('SugarCRM');
+$GLOBALS['log'] = LoggerManager::getLogger();
 $setup_sugar_version = $suitecrm_version;
 $install_script = true;
 

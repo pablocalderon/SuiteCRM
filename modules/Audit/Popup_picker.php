@@ -97,9 +97,8 @@ class Popup_Picker
         global $audit;
         global $current_language;
 
-        $auditObject = new Audit();
-        $audit_list =  $auditObject->get_audit_list();
-        $xtpl=new XTemplate ('modules/Audit/Popup_picker.html');
+		$audit_list =  Audit::get_audit_list();
+        $xtpl=new \SuiteCRM\XTemplate ('modules/Audit/Popup_picker.html');
 
 		$xtpl->assign('MOD', $mod_strings);
 		$xtpl->assign('APP', $app_strings);
