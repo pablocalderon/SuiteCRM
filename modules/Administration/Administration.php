@@ -168,6 +168,9 @@ class Administration extends SugarBean
                     $this->settings[$def] = '';
                 }
 
+                $this->settings['smtp_from_name'] = '';
+                $this->settings['smtp_from_addr'] = '';
+
                 if (strpos($def, "mail_") !== false) {
                     $this->settings[$def] = $oe->$def;
                 }
