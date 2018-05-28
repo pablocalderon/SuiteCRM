@@ -82,6 +82,8 @@ class OutboundEmail
     var $mail_smtpport = 25;
     var $mail_smtpuser;
     var $mail_smtppass;
+    public $smtp_from_name;
+    public $smtp_from_addr;
     var $mail_smtpauth_req; // bool
     var $mail_smtpssl; // bool
     var $mail_smtpdisplay; // calculated value, not in DB
