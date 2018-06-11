@@ -202,29 +202,29 @@ function getPostToForm($ignore='', $isRegularExpression=false)
 function getGetToForm($ignore='', $usePostAsAuthority = false)
 {
     global $log;
-	$fields = '';
-	foreach ($_GET as $key => $value)
-	{
-	    if(!is_string($key) || !is_int($key)) {
+    $fields = '';
+    foreach ($_GET as $key => $value)
+    {
+        if(is_array($key)) {
             if(!empty($key)) {
                 $log->warn('$key must be a string or an integer');
             }
-	        continue;
+            continue;
         }
 
-        if (!is_string($value)) {
+        if (is_array($value)) {
             if(!empty($value)) {
                 $log->warn('$value must be a string');
             }
-	        continue;
+            continue;
         }
-		if($key != $ignore){
-			if(!$usePostAsAuthority || !isset($_POST[$key])){
-				$fields.= "<input type='hidden' name='$key' value='$value'>";
-			}
-		}
-	}
-	return $fields;
+        if($key != $ignore){
+            if(!$usePostAsAuthority || !isset($_POST[$key])){
+                $fields.= "<input type='hidden' name='$key' value='$value'>";
+            }
+        }
+    }
+    return $fields;
 
 }
 function getAnyToForm($ignore='', $usePostAsAuthority = false)
