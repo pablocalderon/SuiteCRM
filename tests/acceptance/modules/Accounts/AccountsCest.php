@@ -129,8 +129,8 @@ class AccountsCest
         $accounts->gotoAccounts();
         $listView->waitForListViewVisible();
         $I->doubleClick('.inlineEdit');
-        $I->fillField('#name', 'Inline');
-        $I->clickWithLeftButton('span.suitepicon suitepicon-action-confirm');
-        $I->wait(10);
+        $I->fillField('#name', 'InlineAccountNameEdit');
+        $I->clickWithLeftButton('.suitepicon-action-confirm');
+        $I->see('InlineAccountNameEdit');
     }
 }
