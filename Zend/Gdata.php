@@ -232,10 +232,9 @@ class Zend_Gdata extends Zend_Gdata_App
         $client = parent::getHttpClient();
         if ($client->getClientLoginToken() ||
             $client->getAuthSubToken()) {
-                return true;
+            return true;
         }
 
         return false;
     }
-
 }

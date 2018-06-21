@@ -326,22 +326,24 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['allow'] = array_shift($options);
-            if (!empty($options)) {
-                $temp['idn'] = array_shift($options);
-            }
+        } else {
+            if (!is_array($options)) {
+                $options = func_get_args();
+                $temp['allow'] = array_shift($options);
+                if (!empty($options)) {
+                    $temp['idn'] = array_shift($options);
+                }
 
-            if (!empty($options)) {
-                $temp['tld'] = array_shift($options);
-            }
+                if (!empty($options)) {
+                    $temp['tld'] = array_shift($options);
+                }
 
-            if (!empty($options)) {
-                $temp['ip'] = array_shift($options);
-            }
+                if (!empty($options)) {
+                    $temp['ip'] = array_shift($options);
+                }
 
-            $options = $temp;
+                $options = $temp;
+            }
         }
 
         $options += $this->_options;
@@ -518,7 +520,6 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
                 if (preg_match('/([^.]{2,10})$/i', end($domainParts), $matches) ||
                     (end($domainParts) == 'ایران') || (end($domainParts) == '中国') ||
                     (end($domainParts) == '公司') || (end($domainParts) == '网络')) {
-
                     reset($domainParts);
 
                     // Hostname characters are: *(label dot)(label dot label); max 254 chars
@@ -565,14 +566,14 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
                         if ((strpos($domainPart, '-') === 0)
                             || ((strlen($domainPart) > 2) && (strpos($domainPart, '-', 2) == 2) && (strpos($domainPart, '-', 3) == 3))
                             || (strpos($domainPart, '-') === (strlen($domainPart) - 1))) {
-                                $this->_error(self::INVALID_DASH);
+                            $this->_error(self::INVALID_DASH);
                             $status = false;
                             break 2;
                         }
 
                         // Check each domain part
                         $checked = false;
-                        foreach($regexChars as $regexKey => $regexChar) {
+                        foreach ($regexChars as $regexKey => $regexChar) {
                             $status = @preg_match($regexChar, $domainPart);
                             if ($status > 0) {
                                 $length = 63;
@@ -613,8 +614,10 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
             if ($status && ($this->_options['allow'] & self::ALLOW_DNS)) {
                 return true;
             }
-        } else if ($this->_options['allow'] & self::ALLOW_DNS) {
-            $this->_error(self::INVALID_HOSTNAME);
+        } else {
+            if ($this->_options['allow'] & self::ALLOW_DNS) {
+                $this->_error(self::INVALID_HOSTNAME);
+            }
         }
 
         // Check input against local network name schema; last chance to pass validation

@@ -80,10 +80,10 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
      * @param string $value The nickname to filter search results by, or null
      *          to  disable.
      */
-     public function setNickname($value)
-     {
-         $this->_nickname = $value;
-     }
+    public function setNickname($value)
+    {
+        $this->_nickname = $value;
+    }
 
     /**
      * Get the nickname to query for. If no nickname is set, null will be
@@ -110,8 +110,7 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
     {
         if ($value !== null) {
             $this->_params['username'] = $value;
-        }
-        else {
+        } else {
             unset($this->_params['username']);
         }
     }
@@ -173,7 +172,6 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
      */
     public function getQueryUrl()
     {
-
         $uri = $this->getBaseUrl();
         $uri .= Zend_Gdata_Gapps::APPS_NICKNAME_PATH;
         if ($this->_nickname !== null) {
@@ -182,5 +180,4 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
         $uri .= $this->getQueryString();
         return $uri;
     }
-
 }

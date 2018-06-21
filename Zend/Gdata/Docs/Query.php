@@ -224,5 +224,4 @@ class Zend_Gdata_Docs_Query extends Zend_Gdata_Query
         $uri .= $this->getQueryString();
         return $uri;
     }
-
 }

@@ -143,5 +143,4 @@ class Zend_Gdata_Gapps_UserQuery extends Zend_Gdata_Gapps_Query
         $uri .= $this->getQueryString();
         return $uri;
     }
-
 }

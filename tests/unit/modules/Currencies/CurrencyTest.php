@@ -42,8 +42,6 @@ class CurrencyTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(62.5, $currency->convertToDollar(100, 2));
         
         // clean up
-        
-        
     }
 
     public function testconvertFromDollar()
@@ -155,7 +153,6 @@ class CurrencyTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsave()
     {
-        
         $state = new SuiteCRM\StateSaver();
         $state->pushTable('aod_index');
         $state->pushTable('currencies');

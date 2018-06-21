@@ -92,7 +92,7 @@ abstract class Zend_Gdata_App_Base
      * @see registerAllNamespaces()
      * @var array
      */
-   protected $_namespaces = array(
+    protected $_namespaces = array(
         'atom'      => array(
             1 => array(
                 0 => 'http://www.w3.org/2005/Atom'
@@ -377,8 +377,9 @@ abstract class Zend_Gdata_App_Base
         $key = $prefix . ' ' .
                (is_null($majorVersion) ? 'NULL' : $majorVersion) .
                ' '. (is_null($minorVersion) ? 'NULL' : $minorVersion);
-        if (array_key_exists($key, self::$_namespaceLookupCache))
-          return self::$_namespaceLookupCache[$key];
+        if (array_key_exists($key, self::$_namespaceLookupCache)) {
+            return self::$_namespaceLookupCache[$key];
+        }
         // If no match, return the prefix by default
         $result = $prefix;
 
@@ -456,8 +457,8 @@ abstract class Zend_Gdata_App_Base
      */
     public function registerAllNamespaces($namespaceArray)
     {
-        foreach($namespaceArray as $namespace) {
-                $this->registerNamespace(
+        foreach ($namespaceArray as $namespace) {
+            $this->registerNamespace(
                     $namespace[0], $namespace[1], $namespace[2], $namespace[3]);
         }
     }
@@ -477,12 +478,14 @@ abstract class Zend_Gdata_App_Base
         $method = 'get'.ucfirst($name);
         if (method_exists($this, $method)) {
             return call_user_func(array(&$this, $method));
-        } else if (property_exists($this, "_${name}")) {
-            return $this->{'_' . $name};
         } else {
-            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
-            throw new Zend_Gdata_App_InvalidArgumentException(
+            if (property_exists($this, "_${name}")) {
+                return $this->{'_' . $name};
+            } else {
+                require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+                throw new Zend_Gdata_App_InvalidArgumentException(
                     'Property ' . $name . ' does not exist');
+            }
         }
     }
 
@@ -503,12 +506,14 @@ abstract class Zend_Gdata_App_Base
         $method = 'set'.ucfirst($name);
         if (method_exists($this, $method)) {
             return call_user_func(array(&$this, $method), $val);
-        } else if (isset($this->{'_' . $name}) || ($this->{'_' . $name} === null)) {
-            $this->{'_' . $name} = $val;
         } else {
-            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
-            throw new Zend_Gdata_App_InvalidArgumentException(
+            if (isset($this->{'_' . $name}) || ($this->{'_' . $name} === null)) {
+                $this->{'_' . $name} = $val;
+            } else {
+                require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+                throw new Zend_Gdata_App_InvalidArgumentException(
                     'Property ' . $name . '  does not exist');
+            }
         }
     }
 
@@ -568,5 +573,4 @@ abstract class Zend_Gdata_App_Base
     {
         return $this->getText();
     }
-
 }

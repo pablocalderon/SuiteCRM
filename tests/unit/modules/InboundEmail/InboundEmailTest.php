@@ -51,7 +51,7 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
         $this->assertAttributeEquals(0, 'attachmentCount', $inboundEmail);
     }
-// --------------------------------------- [OK]
+    // --------------------------------------- [OK]
 //    public function testsaveAndOthers()
 //    {
 //        self::markTestIncomplete('Segmentation fault');
@@ -116,7 +116,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function getSingularRelatedId()
     {
-
         $inboundEmail = new InboundEmail();
 
         $result = $inboundEmail->getSingularRelatedId('test', 'inbound_email');
@@ -760,16 +759,15 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testemptyTrash()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
-	// save state
+        // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushTable('aod_index');
         $state->pushTable('inbound_email');
 
-	// test
+        // test
         
         $inboundEmail = new InboundEmail();
 
@@ -785,12 +783,10 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         
         $state->popTable('inbound_email');
         $state->popTable('aod_index');
-
     }
 
     public function testdeleteCache()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -970,7 +966,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetPop3NewMessagesToDownloadForCron()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1001,7 +996,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testpop3_getUIDL()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1033,7 +1027,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testpop3_checkPartialEmail()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1069,7 +1062,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testpop3_checkEmail()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1100,7 +1092,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMessagesInEmailCache()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1139,7 +1130,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckEmailOneMailbox()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1161,7 +1151,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckEmailOneMailboxPartial()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1186,7 +1175,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetCachedIMAPSearch()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1209,7 +1197,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckEmailIMAPPartial()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1231,7 +1218,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckEmail2_meta()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1253,7 +1239,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMailboxProcessCount()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1272,7 +1257,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckEmail()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1310,7 +1294,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsyncEmail()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1339,7 +1322,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdeleteCachedMessages()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1368,7 +1350,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     
     public function testgetOverviewsFromCacheFile()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1423,7 +1404,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsetReadFlagOnFolderCache()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1455,7 +1435,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testfetchCheckedEmails()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1503,7 +1482,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testmarkEmails()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1534,7 +1512,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdeleteFolder()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1563,7 +1540,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsaveNewFolder()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1590,7 +1566,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetImapMboxFromSugarProprietary()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1625,7 +1600,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testrepairAccount()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1642,12 +1616,10 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // clean up
         
         //
-        
     }
 
     public function testgetTeamSetIdForTeams()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1726,7 +1698,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function handleIsPersonal($id)
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1759,7 +1730,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function getUserPersonalAccountCount()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1792,7 +1762,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function retrieveByGroupFolderId()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1829,7 +1798,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function getUserNameFromGroupId($id)
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1862,7 +1830,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function deletePersonalEmailAccount($id)
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 
@@ -1894,7 +1861,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetFoldersListForMailBox()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1912,7 +1878,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testfindOptimumSettings()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1936,7 +1901,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetSessionConnectionString()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1962,7 +1926,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsetSessionConnectionString()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -1982,7 +1945,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetSessionInboundDelimiterString()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2008,7 +1970,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsetSessionInboundDelimiterString()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2028,7 +1989,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetSessionInboundFoldersString()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2054,7 +2014,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsetSessionInboundFoldersString()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2075,7 +2034,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgroupUserDupeCheck()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2102,7 +2060,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetGroupsWithSelectOptions()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2130,7 +2087,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleAutoresponse()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2164,7 +2120,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleCaseAssignment()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2190,7 +2145,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleMailboxType()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2223,7 +2177,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testisMailBoxTypeCreateCase()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2253,7 +2206,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleCreateCase()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2284,7 +2236,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleLinking()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2310,7 +2261,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetEncodingFromBreadCrumb()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2346,7 +2296,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetCharsetFromBreadCrumb()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2390,7 +2339,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMessageTextFromSingleMimePart()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2416,7 +2364,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testaddBreadCrumbOffset()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2446,7 +2393,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMessageText()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2473,7 +2419,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdecodeHeader()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2506,7 +2451,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleCharsetTranslation()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2532,7 +2476,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testbuildBreadCrumbs()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2559,7 +2502,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testbuildBreadCrumbsHTML()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2587,7 +2529,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testconvertImapToSugarEmailAddress()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2613,7 +2554,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleEncodedFilename()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2635,7 +2575,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMimeType()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2658,7 +2597,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsaveAttachments()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2686,7 +2624,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetNoteBeanForAttachment()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2709,7 +2646,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testretrieveAttachmentNameFromStructure()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2754,7 +2690,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsaveAttachmentBinaries()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2784,7 +2719,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleTranserEncoding()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -2806,7 +2740,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMessageId()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2830,7 +2763,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testimportDupeCheck()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2852,7 +2784,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testhandleMimeHeaderDecode()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2873,7 +2804,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetUnixHeaderDate()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2894,7 +2824,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetDuplicateEmailId()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2924,7 +2853,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testimportOneEmail()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2943,12 +2871,10 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         
         $state->popGlobals();
         //
-
     }
 
     public function testisUuencode()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -2966,12 +2892,10 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         
         $state->popGlobals();
         //
-
     }
 
     public function testhandleUUEncodedEmailBody()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3014,7 +2938,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckFilterDomain()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3039,7 +2962,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckOutOfOffice()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3060,7 +2982,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsetAndgetAutoreplyStatus()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
 
@@ -3112,7 +3033,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetSystemSettingsForm()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3145,7 +3065,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetCaseIdFromCaseNumber()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3165,7 +3084,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testget_stored_options()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3188,7 +3106,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetRelatedId()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3214,7 +3131,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetNewMessageIds()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3236,7 +3152,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetConnectString()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3259,7 +3174,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisconnectMailserver()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3286,7 +3200,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testconnectMailserver()
     {
-
         self::markTestIncomplete('This test changes the error level');
         return ;
         
@@ -3311,7 +3224,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckImap()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3338,7 +3250,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testget_summary_text()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3362,7 +3273,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcreate_export_query()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3389,7 +3299,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testget_list_view_data()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3426,7 +3335,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testfill_in_additional_list_fields()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3452,7 +3360,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testfill_in_additional_detail_fields()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3478,7 +3385,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testisAutoImport()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3506,7 +3412,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcleanOutCache()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3532,7 +3437,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcopyEmails()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3561,7 +3465,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testmoveEmails()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3586,7 +3489,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetTempFilename()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3614,7 +3516,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdeleteMessageOnMailServer()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3636,7 +3537,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdeleteMessageOnMailServerForPop3()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3664,7 +3564,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testisPop3Protocol()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3689,7 +3588,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testSetAndGetUsersDefaultOutboundServerId()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3712,7 +3610,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsetEmailForDisplay()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3742,7 +3639,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisplayOneEmail()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3796,7 +3692,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcollapseLongMailingList()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3821,7 +3716,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsortFetchedOverview()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3867,7 +3761,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisplayFolderContents()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3892,7 +3785,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcreateUserSubscriptionsForGroupAccount()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3914,7 +3806,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcreateAutoImportSugarFolder()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3941,7 +3832,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMailboxes()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3971,7 +3861,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMailBoxesForGroupAccount()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -3996,7 +3885,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testretrieveMailBoxFolders()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4047,7 +3935,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testretrieveDelimiter()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4068,7 +3955,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgenerateFlatArrayFromMultiDimArray()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4093,7 +3979,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgenerateMultiDimArrayFromFlatArray()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4116,7 +4001,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgenerateArrayData()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4141,7 +4025,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsortMailboxes()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4164,7 +4047,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetServiceString()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4187,7 +4069,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetNewEmailsForSyncedMailbox()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4213,7 +4094,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testimportMessages()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         $state = new SuiteCRM\StateSaver();
@@ -4241,7 +4121,6 @@ class InboundEmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testOverview()
     {
-
         self::markTestIncomplete('This test changes the error level');
         
         // save state 

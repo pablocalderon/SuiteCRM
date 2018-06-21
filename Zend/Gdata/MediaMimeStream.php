@@ -107,7 +107,6 @@ class Zend_Gdata_MediaMimeStream
         $fileSize = filesize($filePath);
         $this->_totalSize = $entry->getSize() + $fileSize
           + $closingBoundary->getSize();
-
     }
 
     /**
@@ -135,20 +134,20 @@ class Zend_Gdata_MediaMimeStream
      */
     public function read($bytesRequested)
     {
-        if($this->_currentPart >= count($this->_parts)) {
-          return FALSE;
+        if ($this->_currentPart >= count($this->_parts)) {
+            return FALSE;
         }
 
         $activePart = $this->_parts[$this->_currentPart];
         $buffer = $activePart->read($bytesRequested);
 
-        while(strlen($buffer) < $bytesRequested) {
-          $this->_currentPart += 1;
-          $nextBuffer = $this->read($bytesRequested - strlen($buffer));
-          if($nextBuffer === FALSE) {
-            break;
-          }
-          $buffer .= $nextBuffer;
+        while (strlen($buffer) < $bytesRequested) {
+            $this->_currentPart += 1;
+            $nextBuffer = $this->read($bytesRequested - strlen($buffer));
+            if ($nextBuffer === FALSE) {
+                break;
+            }
+            $buffer .= $nextBuffer;
         }
 
         return $buffer;
@@ -186,5 +185,4 @@ class Zend_Gdata_MediaMimeStream
         return 'multipart/related;boundary="' .
             $this->_boundaryString . '"' . "\r\n";
     }
-
 }

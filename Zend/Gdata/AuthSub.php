@@ -45,7 +45,6 @@ require_once 'Zend/Version.php';
  */
 class Zend_Gdata_AuthSub
 {
-
     const AUTHSUB_REQUEST_URI      = 'https://www.google.com/accounts/AuthSubRequest';
 
     const AUTHSUB_SESSION_TOKEN_URI = 'https://www.google.com/accounts/AuthSubSessionToken';
@@ -54,37 +53,37 @@ class Zend_Gdata_AuthSub
 
     const AUTHSUB_TOKEN_INFO_URI    = 'https://www.google.com/accounts/AuthSubTokenInfo';
 
-     /**
-      * Creates a URI to request a single-use AuthSub token.
-      *
-      * @param string $next (required) URL identifying the service to be
-      *                     accessed.
-      *  The resulting token will enable access to the specified service only.
-      *  Some services may limit scope further, such as read-only access.
-      * @param string $scope (required) URL identifying the service to be
-      *                      accessed.  The resulting token will enable
-      *                      access to the specified service only.
-      *                      Some services may limit scope further, such
-      *                      as read-only access.
-      * @param int $secure (optional) Boolean flag indicating whether the
-      *                    authentication transaction should issue a secure
-      *                    token (1) or a non-secure token (0). Secure tokens
-      *                    are available to registered applications only.
-      * @param int $session (optional) Boolean flag indicating whether
-      *                     the one-time-use  token may be exchanged for
-      *                     a session token (1) or not (0).
-      * @param string $request_uri (optional) URI to which to direct the
-      *                            authentication request.
-      */
-     public static function getAuthSubTokenUri($next, $scope, $secure=0, $session=0,
+    /**
+     * Creates a URI to request a single-use AuthSub token.
+     *
+     * @param string $next (required) URL identifying the service to be
+     *                     accessed.
+     *  The resulting token will enable access to the specified service only.
+     *  Some services may limit scope further, such as read-only access.
+     * @param string $scope (required) URL identifying the service to be
+     *                      accessed.  The resulting token will enable
+     *                      access to the specified service only.
+     *                      Some services may limit scope further, such
+     *                      as read-only access.
+     * @param int $secure (optional) Boolean flag indicating whether the
+     *                    authentication transaction should issue a secure
+     *                    token (1) or a non-secure token (0). Secure tokens
+     *                    are available to registered applications only.
+     * @param int $session (optional) Boolean flag indicating whether
+     *                     the one-time-use  token may be exchanged for
+     *                     a session token (1) or not (0).
+     * @param string $request_uri (optional) URI to which to direct the
+     *                            authentication request.
+     */
+    public static function getAuthSubTokenUri($next, $scope, $secure=0, $session=0,
                                                $request_uri = self::AUTHSUB_REQUEST_URI)
-     {
-         $querystring = '?next=' . urlencode($next)
+    {
+        $querystring = '?next=' . urlencode($next)
              . '&scope=' . urldecode($scope)
              . '&secure=' . urlencode($secure)
              . '&session=' . urlencode($session);
-         return $request_uri . $querystring;
-     }
+        return $request_uri . $querystring;
+    }
 
 
     /**
@@ -242,5 +241,4 @@ class Zend_Gdata_AuthSub
         $client->setAuthSubToken($token);
         return $client;
     }
-
 }

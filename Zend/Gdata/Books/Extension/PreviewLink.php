@@ -56,5 +56,4 @@ class Zend_Gdata_Books_Extension_PreviewLink extends
         $this->registerAllNamespaces(Zend_Gdata_Books::$namespaces);
         parent::__construct($href, $rel, $type, $hrefLang, $title, $length);
     }
-
 }

@@ -165,7 +165,6 @@ class OneLogin_Saml2_Utils
             if ($heads) {
                 $x509cert = "-----BEGIN CERTIFICATE-----\n".chunk_split($x509cert, 64, "\n")."-----END CERTIFICATE-----\n";
             }
-
         }
         return $x509cert;
     }
@@ -190,18 +189,20 @@ class OneLogin_Saml2_Utils
                 if ($heads) {
                     $key = "-----BEGIN PRIVATE KEY-----\n".chunk_split($key, 64, "\n")."-----END PRIVATE KEY-----\n";
                 }
-            } else if (strpos($key, '-----BEGIN RSA PRIVATE KEY-----') !== false) {
-                $key = OneLogin_Saml2_Utils::getStringBetween($key, '-----BEGIN RSA PRIVATE KEY-----', '-----END RSA PRIVATE KEY-----');
-                $key = str_replace(' ', '', $key);
-
-                if ($heads) {
-                    $key = "-----BEGIN RSA PRIVATE KEY-----\n".chunk_split($key, 64, "\n")."-----END RSA PRIVATE KEY-----\n";
-                }
             } else {
-                $key = str_replace(' ', '', $key);
+                if (strpos($key, '-----BEGIN RSA PRIVATE KEY-----') !== false) {
+                    $key = OneLogin_Saml2_Utils::getStringBetween($key, '-----BEGIN RSA PRIVATE KEY-----', '-----END RSA PRIVATE KEY-----');
+                    $key = str_replace(' ', '', $key);
 
-                if ($heads) {
-                    $key = "-----BEGIN RSA PRIVATE KEY-----\n".chunk_split($key, 64, "\n")."-----END RSA PRIVATE KEY-----\n";
+                    if ($heads) {
+                        $key = "-----BEGIN RSA PRIVATE KEY-----\n".chunk_split($key, 64, "\n")."-----END RSA PRIVATE KEY-----\n";
+                    }
+                } else {
+                    $key = str_replace(' ', '', $key);
+
+                    if ($heads) {
+                        $key = "-----BEGIN RSA PRIVATE KEY-----\n".chunk_split($key, 64, "\n")."-----END RSA PRIVATE KEY-----\n";
+                    }
                 }
             }
         }
@@ -271,16 +272,18 @@ class OneLogin_Saml2_Utils
         foreach ($parameters as $name => $value) {
             if ($value === null) {
                 $param = urlencode($name);
-            } else if (is_array($value)) {
-                $param = "";
-                foreach ($value as $val) {
-                    $param .= urlencode($name) . "[]=" . urlencode($val). '&';
-                }
-                if (!empty($param)) {
-                    $param = substr($param, 0, -1);
-                }
             } else {
-                $param = urlencode($name) . '=' . urlencode($value);
+                if (is_array($value)) {
+                    $param = "";
+                    foreach ($value as $val) {
+                        $param .= urlencode($name) . "[]=" . urlencode($val). '&';
+                    }
+                    if (!empty($param)) {
+                        $param = substr($param, 0, -1);
+                    }
+                } else {
+                    $param = urlencode($name) . '=' . urlencode($value);
+                }
             }
 
             if (!empty($param)) {
@@ -332,10 +335,10 @@ class OneLogin_Saml2_Utils
                 self::setBaseURLPath($baseurlpath);
             }
         } else {
-                self::$_host = null;
-                self::$_protocol = null;
-                self::$_port = null;
-                self::$_baseurlpath = null;
+            self::$_host = null;
+            self::$_protocol = null;
+            self::$_port = null;
+            self::$_baseurlpath = null;
         }
     }
 
@@ -397,10 +400,12 @@ class OneLogin_Saml2_Utils
     {
         if (empty($baseurlpath)) {
             self::$_baseurlpath = null;
-        } else if ($baseurlpath == '/') {
-            self::$_baseurlpath = '/';
         } else {
-            self::$_baseurlpath = '/' . trim($baseurlpath, '/') . '/';
+            if ($baseurlpath == '/') {
+                self::$_baseurlpath = '/';
+            } else {
+                self::$_baseurlpath = '/' . trim($baseurlpath, '/') . '/';
+            }
         }
     }
 
@@ -494,18 +499,22 @@ class OneLogin_Saml2_Utils
         $portnumber = null;
         if (self::$_port) {
             $portnumber = self::$_port;
-        } else if (self::getProxyVars() && isset($_SERVER["HTTP_X_FORWARDED_PORT"])) {
-            $portnumber = $_SERVER["HTTP_X_FORWARDED_PORT"];
-        } else if (isset($_SERVER["SERVER_PORT"])) {
-            $portnumber = $_SERVER["SERVER_PORT"];
         } else {
-            $currentHost = self::getRawHost();
+            if (self::getProxyVars() && isset($_SERVER["HTTP_X_FORWARDED_PORT"])) {
+                $portnumber = $_SERVER["HTTP_X_FORWARDED_PORT"];
+            } else {
+                if (isset($_SERVER["SERVER_PORT"])) {
+                    $portnumber = $_SERVER["SERVER_PORT"];
+                } else {
+                    $currentHost = self::getRawHost();
 
-            // strip the port
-            if (false !== strpos($currentHost, ':')) {
-                list($currentHost, $port) = explode(':', $currentHost, 2);
-                if (is_numeric($port)) {
-                    $portnumber = $port;
+                    // strip the port
+                    if (false !== strpos($currentHost, ':')) {
+                        list($currentHost, $port) = explode(':', $currentHost, 2);
+                        if (is_numeric($port)) {
+                            $portnumber = $port;
+                        }
+                    }
                 }
             }
         }
@@ -874,7 +883,6 @@ class OneLogin_Saml2_Utils
      */
     public static function deleteLocalSession()
     {
-
         if (OneLogin_Saml2_Utils::isSessionStarted()) {
             session_destroy();
         }
@@ -957,7 +965,6 @@ class OneLogin_Saml2_Utils
      */
     public static function generateNameId($value, $spnq, $format, $cert = null, $nq = null)
     {
-
         $doc = new DOMDocument();
 
         $nameId = $doc->createElement('saml:NameID');
@@ -1039,9 +1046,11 @@ class OneLogin_Saml2_Utils
             if ($subCodeEntry->length == 1) {
                 $status['msg'] = $subCodeEntry->item(0)->getAttribute('Value');
             }
-        } else if ($messageEntry->length == 1) {
-            $msg = $messageEntry->item(0)->textContent;
-            $status['msg'] = $msg;
+        } else {
+            if ($messageEntry->length == 1) {
+                $msg = $messageEntry->item(0)->textContent;
+                $status['msg'] = $msg;
+            }
         }
 
         return $status;
@@ -1059,7 +1068,6 @@ class OneLogin_Saml2_Utils
      */
     public static function decryptElement(DOMElement $encryptedData, XMLSecurityKey $inputKey)
     {
-
         $enc = new XMLSecEnc();
 
         $enc->setNode($encryptedData);
@@ -1163,17 +1171,17 @@ class OneLogin_Saml2_Utils
         return $decryptedElement;
     }
 
-     /**
-      * Converts a XMLSecurityKey to the correct algorithm.
-      *
-      * @param XMLSecurityKey $key The key.
-      * @param string $algorithm The desired algorithm.
-      * @param string $type Public or private key, defaults to public.
-      *
-      * @return XMLSecurityKey The new key.
-      *
-      * @throws Exception
-      */
+    /**
+     * Converts a XMLSecurityKey to the correct algorithm.
+     *
+     * @param XMLSecurityKey $key The key.
+     * @param string $algorithm The desired algorithm.
+     * @param string $type Public or private key, defaults to public.
+     *
+     * @return XMLSecurityKey The new key.
+     *
+     * @throws Exception
+     */
     public static function castKey(XMLSecurityKey $key, $algorithm, $type = 'public')
     {
         assert('is_string($algorithm)');
@@ -1278,11 +1286,13 @@ class OneLogin_Saml2_Utils
     {
         if ($xml instanceof DOMDocument) {
             $dom = clone $xml;
-        } else if ($xml instanceof DOMElement) {
-            $dom = clone $xml->ownerDocument;
         } else {
-            $dom = new DOMDocument();
-            $dom = self::loadXML($dom, $xml);
+            if ($xml instanceof DOMElement) {
+                $dom = clone $xml->ownerDocument;
+            } else {
+                $dom = new DOMDocument();
+                $dom = self::loadXML($dom, $xml);
+            }
         }
 
         $objXMLSecDSig = new XMLSecurityDSig();

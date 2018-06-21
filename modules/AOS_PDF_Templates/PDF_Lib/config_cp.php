@@ -1,16 +1,19 @@
 <?php
 
 
-function GetLangOpts($llcc, $adobeCJK) {
-	if (strlen($llcc) == 5) {
-		$lang = substr(strtolower($llcc),0,2);
-		$country = substr(strtoupper($llcc),3,2);
-	}
-	else { $lang = strtolower($llcc); $country = ''; }
-	$unifonts = "";
-	$coreSuitable = false;
+function GetLangOpts($llcc, $adobeCJK)
+{
+    if (strlen($llcc) == 5) {
+        $lang = substr(strtolower($llcc),0,2);
+        $country = substr(strtoupper($llcc),3,2);
+    } else {
+        $lang = strtolower($llcc);
+        $country = '';
+    }
+    $unifonts = "";
+    $coreSuitable = false;
 
-	switch($lang){
+    switch ($lang) {
 	  CASE "en":
 	  CASE "ca":
 	  CASE "cy":
@@ -50,7 +53,9 @@ function GetLangOpts($llcc, $adobeCJK) {
 
 	  // Sindhi (can be Arabic or Devanagari)
 	  CASE "sd":
-		if ($country == "IN") { $unifonts = "ind_hi_1_001"; }
+		if ($country == "IN") {
+		    $unifonts = "ind_hi_1_001";
+		}
 	//	else if ($country == "PK") { $unifonts = ""; }
 	//	else { $unifonts = ""; }
 		break;
@@ -92,7 +97,7 @@ function GetLangOpts($llcc, $adobeCJK) {
 	  // CJK Langauges
 	  CASE "ja":  
 		if ($adobeCJK) {
-			$unifonts = "sjis,sjisB,sjisI,sjisBI";
+		    $unifonts = "sjis,sjisB,sjisI,sjisBI";
 		}
 /* Uncomment these lines if CJK fonts available */
 //		else {
@@ -102,7 +107,7 @@ function GetLangOpts($llcc, $adobeCJK) {
 
 	  CASE "ko":  
 		if ($adobeCJK) {
-			$unifonts = "uhc,uhcB,uhcI,uhcBI";
+		    $unifonts = "uhc,uhcB,uhcI,uhcBI";
 		}
 /* Uncomment these lines if CJK fonts available */
 //		else {
@@ -111,43 +116,43 @@ function GetLangOpts($llcc, $adobeCJK) {
 		break;
 
 	  CASE "zh":
-		if ($country == "HK" || $country == "TW") { 
-			if ($adobeCJK) {
-				$unifonts = "big5,big5B,big5I,big5BI"; 
-			}
-/* Uncomment these lines if CJK fonts available */
+		if ($country == "HK" || $country == "TW") {
+		    if ($adobeCJK) {
+		        $unifonts = "big5,big5B,big5I,big5BI";
+		    }
+		    /* Uncomment these lines if CJK fonts available */
 //			else {
 //				$unifonts = "sun-exta,sun-extb,hannoma,hannomb";
 //			}
-		}
-		else if ($country == "CN") { 
-			if ($adobeCJK) {
-				$unifonts = "gb,gbB,gbI,gbBI";  
-			}
-/* Uncomment these lines if CJK fonts available */
+		} else {
+		    if ($country == "CN") {
+		        if ($adobeCJK) {
+		            $unifonts = "gb,gbB,gbI,gbBI";
+		        }
+		        /* Uncomment these lines if CJK fonts available */
 //			else {
 //				$unifonts = "sun-exta,sun-extb,hannoma,hannomb";
 //			}
-		}
-	  	else { 
-			if ($adobeCJK) {
-				$unifonts = "gb,gbB,gbI,gbBI"; 
-			}
-/* Uncomment these lines if CJK fonts available */
+		    } else {
+		        if ($adobeCJK) {
+		            $unifonts = "gb,gbB,gbI,gbBI";
+		        }
+		        /* Uncomment these lines if CJK fonts available */
 //			else {
 //				$unifonts = "sun-exta,sun-extb,hannoma,hannomb";
 //			}
+		    }
 		}
 		break;
 
 	}
 
 
-	$unifonts_arr = array();
-	if ($unifonts) {
-		$unifonts_arr = preg_split('/\s*,\s*/',$unifonts);
-	}
-	return array($coreSuitable ,$unifonts_arr);
+    $unifonts_arr = array();
+    if ($unifonts) {
+        $unifonts_arr = preg_split('/\s*,\s*/',$unifonts);
+    }
+    return array($coreSuitable ,$unifonts_arr);
 }
 
 ?>

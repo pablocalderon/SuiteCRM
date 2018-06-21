@@ -56,7 +56,6 @@ require_once 'Zend/Gdata/Docs/DocumentListEntry.php';
  */
 class Zend_Gdata_Docs extends Zend_Gdata
 {
-
     const DOCUMENTS_LIST_FEED_URI = 'https://docs.google.com/feeds/default/private/full';
     const AUTH_SERVICE_NAME = 'writely';
     const DEFAULT_MAJOR_PROTOCOL_VERSION = 3;
@@ -123,8 +122,9 @@ class Zend_Gdata_Docs extends Zend_Gdata
      * @return string The mime type to be sent to the server to tell it how the
      *          multipart mime data should be interpreted.
      */
-    public static function lookupMimeType($fileExtension) {
-      return self::$SUPPORTED_FILETYPES[strtoupper($fileExtension)];
+    public static function lookupMimeType($fileExtension)
+    {
+        return self::$SUPPORTED_FILETYPES[strtoupper($fileExtension)];
     }
 
     /**
@@ -137,10 +137,12 @@ class Zend_Gdata_Docs extends Zend_Gdata
     {
         if ($location === null) {
             $uri = self::DOCUMENTS_LIST_FEED_URI;
-        } else if ($location instanceof Zend_Gdata_Query) {
-            $uri = $location->getQueryUrl();
         } else {
-            $uri = $location;
+            if ($location instanceof Zend_Gdata_Query) {
+                $uri = $location->getQueryUrl();
+            } else {
+                $uri = $location;
+            }
         }
         return parent::getFeed($uri, 'Zend_Gdata_Docs_DocumentListFeed');
     }
@@ -157,10 +159,12 @@ class Zend_Gdata_Docs extends Zend_Gdata
             require_once 'Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
                     'Location must not be null');
-        } else if ($location instanceof Zend_Gdata_Query) {
-            $uri = $location->getQueryUrl();
         } else {
-            $uri = $location;
+            if ($location instanceof Zend_Gdata_Query) {
+                $uri = $location->getQueryUrl();
+            } else {
+                $uri = $location;
+            }
         }
         return parent::getEntry($uri, 'Zend_Gdata_Docs_DocumentListEntry');
     }
@@ -173,9 +177,10 @@ class Zend_Gdata_Docs extends Zend_Gdata
          *     pdf:asdf89hfjjddfg
          * @return Zend_Gdata_Docs_DocumentListEntry
          */
-        public function getResource($resourceId) {
-                $uri = 'https://docs.google.com/feeds/documents/private/full/' . $resourceId;
-                return $this->getDocumentListEntry($uri);
+    public function getResource($resourceId)
+    {
+        $uri = 'https://docs.google.com/feeds/documents/private/full/' . $resourceId;
+        return $this->getDocumentListEntry($uri);
     }
 
     /**
@@ -190,7 +195,8 @@ class Zend_Gdata_Docs extends Zend_Gdata
      * @return Zend_Gdata_Docs_DocumentListEntry
      * @deprecated Use getResource($resourceId) instead.
      */
-    public function getDoc($docId, $docType) {
+    public function getDoc($docId, $docType)
+    {
         $location = 'https://docs.google.com/feeds/documents/private/full/' .
             $docType . '%3A' . $docId;
         return $this->getDocumentListEntry($location);
@@ -203,7 +209,8 @@ class Zend_Gdata_Docs extends Zend_Gdata
      *     dcmg89gw_62hfjj8m
      * @deprecated Use getResource($resourceId) instead.
      */
-    public function getDocument($id) {
+    public function getDocument($id)
+    {
         return $this->getDoc('document%3A' . $id);
     }
 
@@ -214,7 +221,8 @@ class Zend_Gdata_Docs extends Zend_Gdata
      *     pKq0CzjiF3YmGd0AIlHKqeg
      * @deprecated Use getResource($resourceId) instead.
      */
-    public function getSpreadsheet($id) {
+    public function getSpreadsheet($id)
+    {
         return $this->getDoc('spreadsheet%3A' . $id);
     }
 
@@ -225,7 +233,8 @@ class Zend_Gdata_Docs extends Zend_Gdata
      *     dcmg89gw_21gtrjcn
      * @deprecated Use getResource($resourceId) instead.
      */
-    public function getPresentation($id) {
+    public function getPresentation($id)
+    {
         return $this->getDoc('presentation%3A' . $id);
     }
 
@@ -274,10 +283,10 @@ class Zend_Gdata_Docs extends Zend_Gdata
 
         // Set the mime type of the data.
         if ($mimeType === null) {
-          $slugHeader =  $fs->getSlug();
-          $filenameParts = explode('.', $slugHeader);
-          $fileExtension = end($filenameParts);
-          $mimeType = self::lookupMimeType($fileExtension);
+            $slugHeader =  $fs->getSlug();
+            $filenameParts = explode('.', $slugHeader);
+            $fileExtension = end($filenameParts);
+            $mimeType = self::lookupMimeType($fileExtension);
         }
 
         // Set the mime type for the upload request.
@@ -312,8 +321,8 @@ class Zend_Gdata_Docs extends Zend_Gdata
      * @return array
      * @author Andreas Sandberg
      */
-    public static function getSupportedMimeTypes() {
-      return self::$SUPPORTED_FILETYPES;
+    public static function getSupportedMimeTypes()
+    {
+        return self::$SUPPORTED_FILETYPES;
     }
-
 }

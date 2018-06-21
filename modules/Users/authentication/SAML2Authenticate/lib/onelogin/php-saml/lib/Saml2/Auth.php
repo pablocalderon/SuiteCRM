@@ -228,60 +228,64 @@ class OneLogin_Saml2_Auth
             if (!$logoutResponse->isValid($requestId, $retrieveParametersFromServer)) {
                 $this->_errors[] = 'invalid_logout_response';
                 $this->_errorReason = $logoutResponse->getError();
-            } else if ($logoutResponse->getStatus() !== OneLogin_Saml2_Constants::STATUS_SUCCESS) {
-                $this->_errors[] = 'logout_not_success';
             } else {
-                $this->_lastMessageId = $logoutResponse->id;
-                if (!$keepLocalSession) {
-                    if ($cbDeleteSession === null) {
-                        OneLogin_Saml2_Utils::deleteLocalSession();
-                    } else {
-                        call_user_func($cbDeleteSession);
+                if ($logoutResponse->getStatus() !== OneLogin_Saml2_Constants::STATUS_SUCCESS) {
+                    $this->_errors[] = 'logout_not_success';
+                } else {
+                    $this->_lastMessageId = $logoutResponse->id;
+                    if (!$keepLocalSession) {
+                        if ($cbDeleteSession === null) {
+                            OneLogin_Saml2_Utils::deleteLocalSession();
+                        } else {
+                            call_user_func($cbDeleteSession);
+                        }
                     }
                 }
-            }
-        } else if (isset($_GET) && isset($_GET['SAMLRequest'])) {
-            $logoutRequest = new OneLogin_Saml2_LogoutRequest($this->_settings, $_GET['SAMLRequest']);
-            $this->_lastRequest = $logoutRequest->getXML();
-            if (!$logoutRequest->isValid($retrieveParametersFromServer)) {
-                $this->_errors[] = 'invalid_logout_request';
-                $this->_errorReason = $logoutRequest->getError();
-            } else {
-                if (!$keepLocalSession) {
-                    if ($cbDeleteSession === null) {
-                        OneLogin_Saml2_Utils::deleteLocalSession();
-                    } else {
-                        call_user_func($cbDeleteSession);
-                    }
-                }
-                $inResponseTo = $logoutRequest->id;
-                $this->_lastMessageId = $logoutRequest->id;
-                $responseBuilder = new OneLogin_Saml2_LogoutResponse($this->_settings);
-                $responseBuilder->build($inResponseTo);
-                $this->_lastResponse = $responseBuilder->getXML();
-
-                $logoutResponse = $responseBuilder->getResponse();
-
-                $parameters = array('SAMLResponse' => $logoutResponse);
-                if (isset($_GET['RelayState'])) {
-                    $parameters['RelayState'] = $_GET['RelayState'];
-                }
-
-                $security = $this->_settings->getSecurityData();
-                if (isset($security['logoutResponseSigned']) && $security['logoutResponseSigned']) {
-                    $signature = $this->buildResponseSignature($logoutResponse, isset($parameters['RelayState'])? $parameters['RelayState']: null, $security['signatureAlgorithm']);
-                    $parameters['SigAlg'] = $security['signatureAlgorithm'];
-                    $parameters['Signature'] = $signature;
-                }
-
-                return $this->redirectTo($this->getSLOurl(), $parameters, $stay);
             }
         } else {
-            $this->_errors[] = 'invalid_binding';
-            throw new OneLogin_Saml2_Error(
+            if (isset($_GET) && isset($_GET['SAMLRequest'])) {
+                $logoutRequest = new OneLogin_Saml2_LogoutRequest($this->_settings, $_GET['SAMLRequest']);
+                $this->_lastRequest = $logoutRequest->getXML();
+                if (!$logoutRequest->isValid($retrieveParametersFromServer)) {
+                    $this->_errors[] = 'invalid_logout_request';
+                    $this->_errorReason = $logoutRequest->getError();
+                } else {
+                    if (!$keepLocalSession) {
+                        if ($cbDeleteSession === null) {
+                            OneLogin_Saml2_Utils::deleteLocalSession();
+                        } else {
+                            call_user_func($cbDeleteSession);
+                        }
+                    }
+                    $inResponseTo = $logoutRequest->id;
+                    $this->_lastMessageId = $logoutRequest->id;
+                    $responseBuilder = new OneLogin_Saml2_LogoutResponse($this->_settings);
+                    $responseBuilder->build($inResponseTo);
+                    $this->_lastResponse = $responseBuilder->getXML();
+
+                    $logoutResponse = $responseBuilder->getResponse();
+
+                    $parameters = array('SAMLResponse' => $logoutResponse);
+                    if (isset($_GET['RelayState'])) {
+                        $parameters['RelayState'] = $_GET['RelayState'];
+                    }
+
+                    $security = $this->_settings->getSecurityData();
+                    if (isset($security['logoutResponseSigned']) && $security['logoutResponseSigned']) {
+                        $signature = $this->buildResponseSignature($logoutResponse, isset($parameters['RelayState'])? $parameters['RelayState']: null, $security['signatureAlgorithm']);
+                        $parameters['SigAlg'] = $security['signatureAlgorithm'];
+                        $parameters['Signature'] = $signature;
+                    }
+
+                    return $this->redirectTo($this->getSLOurl(), $parameters, $stay);
+                }
+            } else {
+                $this->_errors[] = 'invalid_binding';
+                throw new OneLogin_Saml2_Error(
                 'SAML LogoutRequest/LogoutResponse not found. Only supported HTTP_REDIRECT Binding',
                 OneLogin_Saml2_Error::SAML_LOGOUTMESSAGE_NOT_FOUND
             );
+            }
         }
     }
 

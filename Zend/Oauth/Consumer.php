@@ -104,7 +104,7 @@ class Zend_Oauth_Consumer extends Zend_Oauth
     ) {
         if ($request === null) {
             $request = new Zend_Oauth_Http_RequestToken($this, $customServiceParameters);
-        } elseif($customServiceParameters !== null) {
+        } elseif ($customServiceParameters !== null) {
             $request->setParameters($customServiceParameters);
         }
         if ($httpMethod !== null) {
@@ -136,7 +136,7 @@ class Zend_Oauth_Consumer extends Zend_Oauth
     ) {
         if ($redirect === null) {
             $redirect = new Zend_Oauth_Http_UserAuthorization($this, $customServiceParameters);
-        } elseif($customServiceParameters !== null) {
+        } elseif ($customServiceParameters !== null) {
             $redirect->setParameters($customServiceParameters);
         }
         if ($token !== null) {

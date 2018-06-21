@@ -44,7 +44,6 @@ require_once('Zend/Gdata/Query.php');
  */
 class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
 {
-
     const SPREADSHEETS_FEED_URI = 'http://spreadsheets.google.com/feeds';
 
     protected $_defaultFeedUri = self::SPREADSHEETS_FEED_URI;
@@ -259,16 +258,18 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
             if ($this->_spreadsheetKey != null) {
                 $uri .= '/'.$this->_spreadsheetKey;
             }
-        } else if ($this->_documentType == 'worksheets') {
-            if ($this->_spreadsheetKey != null) {
-                $uri .= '/'.$this->_spreadsheetKey;
-            } else {
-                require_once 'Zend/Gdata/App/Exception.php';
-                throw new Zend_Gdata_App_Exception('A spreadsheet key must be provided for worksheet document queries.');
-            }
-            $uri .= $this->appendVisibilityProjection();
-            if ($this->_worksheetId != null) {
-                $uri .= '/'.$this->_worksheetId;
+        } else {
+            if ($this->_documentType == 'worksheets') {
+                if ($this->_spreadsheetKey != null) {
+                    $uri .= '/'.$this->_spreadsheetKey;
+                } else {
+                    require_once 'Zend/Gdata/App/Exception.php';
+                    throw new Zend_Gdata_App_Exception('A spreadsheet key must be provided for worksheet document queries.');
+                }
+                $uri .= $this->appendVisibilityProjection();
+                if ($this->_worksheetId != null) {
+                    $uri .= '/'.$this->_worksheetId;
+                }
             }
         }
 
@@ -284,5 +285,4 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
     {
         return parent::getQueryString();
     }
-
 }

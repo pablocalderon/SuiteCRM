@@ -110,9 +110,11 @@ class Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter extends Zend_Search_
                             $this->_termDictionary[$termKey] = $term;
                             $this->_termDocs[$termKey] = array();
                             $this->_termDocs[$termKey][$this->_docCount] = array();
-                        } else if (!isset($this->_termDocs[$termKey][$this->_docCount])) {
-                            // Existing term, but new term entry
-                            $this->_termDocs[$termKey][$this->_docCount] = array();
+                        } else {
+                            if (!isset($this->_termDocs[$termKey][$this->_docCount])) {
+                                // Existing term, but new term entry
+                                $this->_termDocs[$termKey][$this->_docCount] = array();
+                            }
                         }
                         $position += $token->getPositionIncrement();
                         $this->_termDocs[$termKey][$this->_docCount][] = $position;
@@ -128,28 +130,32 @@ class Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter extends Zend_Search_
                                                                                $document->boost*
                                                                                $field->boost ));
                     }
-                } else if (($fieldUtf8Value = $field->getUtf8Value()) == '') {
-                    // Field contains empty value. Treat it as non-indexed and non-tokenized
-                    $field = clone($field);
-                    $field->isIndexed = $field->isTokenized = false;
                 } else {
-                    $term = new Zend_Search_Lucene_Index_Term($fieldUtf8Value, $field->name);
-                    $termKey = $term->key();
+                    if (($fieldUtf8Value = $field->getUtf8Value()) == '') {
+                        // Field contains empty value. Treat it as non-indexed and non-tokenized
+                        $field = clone($field);
+                        $field->isIndexed = $field->isTokenized = false;
+                    } else {
+                        $term = new Zend_Search_Lucene_Index_Term($fieldUtf8Value, $field->name);
+                        $termKey = $term->key();
 
-                    if (!isset($this->_termDictionary[$termKey])) {
-                        // New term
-                        $this->_termDictionary[$termKey] = $term;
-                        $this->_termDocs[$termKey] = array();
-                        $this->_termDocs[$termKey][$this->_docCount] = array();
-                    } else if (!isset($this->_termDocs[$termKey][$this->_docCount])) {
-                        // Existing term, but new term entry
-                        $this->_termDocs[$termKey][$this->_docCount] = array();
-                    }
-                    $this->_termDocs[$termKey][$this->_docCount][] = 0; // position
+                        if (!isset($this->_termDictionary[$termKey])) {
+                            // New term
+                            $this->_termDictionary[$termKey] = $term;
+                            $this->_termDocs[$termKey] = array();
+                            $this->_termDocs[$termKey][$this->_docCount] = array();
+                        } else {
+                            if (!isset($this->_termDocs[$termKey][$this->_docCount])) {
+                                // Existing term, but new term entry
+                                $this->_termDocs[$termKey][$this->_docCount] = array();
+                            }
+                        }
+                        $this->_termDocs[$termKey][$this->_docCount][] = 0; // position
 
-                    $docNorms[$field->name] = chr($similarity->encodeNorm( $similarity->lengthNorm($field->name, 1)*
+                        $docNorms[$field->name] = chr($similarity->encodeNorm( $similarity->lengthNorm($field->name, 1)*
                                                                            $document->boost*
                                                                            $field->boost ));
+                    }
                 }
             }
 
@@ -170,7 +176,7 @@ class Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter extends Zend_Search_
                                                        $this->_docCount);
             }
 
-            if (isset($docNorms[$fieldName])){
+            if (isset($docNorms[$fieldName])) {
                 $this->_norms[$fieldName] .= $docNorms[$fieldName];
             } else {
                 $this->_norms[$fieldName] .= chr($similarity->encodeNorm( $similarity->lengthNorm($fieldName, 0) ));
@@ -225,6 +231,5 @@ class Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter extends Zend_Search_
                                                         true,
                                                         true);
     }
-
 }
 
