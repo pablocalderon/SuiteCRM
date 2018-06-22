@@ -33,7 +33,6 @@ before_install:
        -d microsoft/mssql-server-linux:2017-latest
   - docker ps -a
 
-
   # Install chrome driver#
   - whereis google-chrome-stable
   - wget https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip
@@ -74,6 +73,8 @@ script:
   - echo "using install wizard"
   - ./vendor/bin/codecept run install --env travis-ci-hub -f -vvv -d
   - ./build/push_output.sh
+
+  - docker exec -it sql1 "bash"
 
   # Run the unit tests
   - ./vendor/bin/codecept run unit --steps
