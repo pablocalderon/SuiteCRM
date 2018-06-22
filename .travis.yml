@@ -18,6 +18,7 @@ sudo: required
 dist: trusty
 services:
   - mysql
+  - docker
 addons:
   chrome: stable
 
@@ -25,6 +26,14 @@ env:
   - INSTANCE_URL=http://localhost/ DATABASE_DRIVER=MYSQL DATABASE_NAME=automated_tests DATABASE_HOST=localhost DATABASE_USER=automated_tests DATABASE_PASSWORD=automated_tests INSTANCE_ADMIN_USER=admin INSTANCE_ADMIN_PASSWORD=admin1
 
 before_install:
+  # MSSQL
+  - docker pull microsoft/mssql-server-linux:2017-latest
+  - docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=automated_tests>'
+       -p 1433:1433 --name sql1
+       -d microsoft/mssql-server-linux:2017-latest
+  - docker ps -a
+
+
   # Install chrome driver#
   - whereis google-chrome-stable
   - wget https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip
