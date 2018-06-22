@@ -74,6 +74,7 @@ script:
   - ./vendor/bin/codecept run install --env travis-ci-hub -f -vvv -d
   - ./build/push_output.sh
 
+  - docker ps -a
   - docker exec -it sql1 "bash"
 
   # Run the unit tests
