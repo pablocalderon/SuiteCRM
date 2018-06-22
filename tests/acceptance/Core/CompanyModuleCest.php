@@ -371,4 +371,31 @@ class CompanyModuleCest
         $listView->waitForListViewVisible();
         $this->lastView = 'ListView';
     }
+    
+    /**
+     * @param \AcceptanceTester $I
+     * @param \Step\Acceptance\ModuleBuilder $moduleBuilder
+     * @param \Helper\WebDriverHelper $webDriverHelper
+     *
+     * As an administrator I want to delete a company module.
+     */
+    public function testScenarioRemoveCompanyModule(
+        \AcceptanceTester $I,
+        \Step\Acceptance\ModuleBuilder $moduleBuilder,
+        \Step\Acceptance\Repair $repair,
+        \Helper\WebDriverHelper $webDriverHelper
+        )
+    {
+        $I->wantTo('Delete the company test module.');
+        
+        $I->amOnUrl($webDriverHelper->getInstanceURL());
+        
+        $I->loginAsAdmin();
+        
+        $moduleBuilder->deleteModule(
+            \Page\CompanyModule::$PACKAGE_NAME
+            );
+        
+        $repair->clickQuickRepairAndRebuild();
+    }
 }

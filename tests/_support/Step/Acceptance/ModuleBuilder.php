@@ -152,7 +152,7 @@ class ModuleBuilder extends Administration
         $I->click($packageName, '.bodywrapper');
         $I->waitForElementVisible('[name="name"]');
         $I->click('Deploy');
-
+        
         if($packageExists) {
             $I->acceptPopup();
         }
@@ -163,5 +163,43 @@ class ModuleBuilder extends Administration
         // Wait for page to refresh and look for new package link
         $I->waitForElement('#newPackageLink', 360);
 
+    }
+    
+    /**
+     * @param string $packageName
+     *
+     */
+    
+    public function deleteModule ($packageName)
+    {
+        $I = $this;
+        
+        //Go To Module Loader.
+        $I->gotoAdministration();
+        $I->click('#module_loader');
+        $I->waitForElementVisible('[value="Uninstall"]', 10);
+        
+        //Uninstall Module.
+        $I->click('Uninstall');
+        $I->checkOption('[name="remove_tables"]');
+        $I->click('#submit_button');
+        $I->waitForElementVisible('[value="Back to Module Loader"]', 10);
+        $I->click('Back to Module Loader');
+        $I->waitForElementVisible('[value="Delete Package"]', 10);
+        $I->click('Delete Package');
+        $I->acceptPopup();
+        $I->dontSee('Delete Package');
+        
+        //Go To Module Builder.
+        $I->gotoAdministration();
+        $I->click('#moduleBuilder');
+        $I->waitForText($packageName, 10);
+        
+        //Delete Package.
+        $I->click($packageName);
+        $I->waitForElementVisible(['name' => 'deletebtn'], 10);
+        $I->click('Delete');
+        $I->acceptPopup();
+        $I->waitForText('deleted');
     }
 }

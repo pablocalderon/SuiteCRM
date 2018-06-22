@@ -350,4 +350,31 @@ class FileModuleCest
         $listView->waitForListViewVisible();
         $this->lastView = 'ListView';
     }
+    
+    /**
+     * @param \AcceptanceTester $I
+     * @param \Step\Acceptance\ModuleBuilder $moduleBuilder
+     * @param \Helper\WebDriverHelper $webDriverHelper
+     *
+     * As an administrator I want to delete a basic module.
+     */
+    public function testScenarioRemoveFileModule(
+        \AcceptanceTester $I,
+        \Step\Acceptance\ModuleBuilder $moduleBuilder,
+        \Step\Acceptance\Repair $repair,
+        \Helper\WebDriverHelper $webDriverHelper
+        )
+    {
+        $I->wantTo('Delete the file test module.');
+        
+        $I->amOnUrl($webDriverHelper->getInstanceURL());
+        
+        $I->loginAsAdmin();
+        
+        $moduleBuilder->deleteModule(
+            \Page\FileModule::$PACKAGE_NAME
+            );
+        
+        $repair->clickQuickRepairAndRebuild();
+    }
 }

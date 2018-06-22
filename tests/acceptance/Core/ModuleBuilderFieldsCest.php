@@ -417,4 +417,31 @@ class ModuleBuilderFieldsCest
         $detailView->acceptPopup();
         $listView->waitForListViewVisible();
     }
+    
+    /**
+     * @param \AcceptanceTester $I
+     * @param \Step\Acceptance\ModuleBuilder $moduleBuilder
+     * @param \Helper\WebDriverHelper $webDriverHelper
+     *
+     * As an administrator I want to delete a basic module.
+     */
+    public function testScenarioRemoveFieldsModule(
+        \AcceptanceTester $I,
+        \Step\Acceptance\ModuleBuilder $moduleBuilder,
+        \Step\Acceptance\Repair $repair,
+        \Helper\WebDriverHelper $webDriverHelper
+        )
+    {
+        $I->wantTo('Delete the fields test module.');
+        
+        $I->amOnUrl($webDriverHelper->getInstanceURL());
+        
+        $I->loginAsAdmin();
+        
+        $moduleBuilder->deleteModule(
+            \Page\ModuleFields::$PACKAGE_NAME
+            );
+        
+        $repair->clickQuickRepairAndRebuild();
+    }
 }

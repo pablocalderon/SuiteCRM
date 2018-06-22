@@ -338,4 +338,31 @@ class IssueModuleCest
         $listView->waitForListViewVisible();
         $this->lastView = 'ListView';
     }
+    
+    /**
+     * @param \AcceptanceTester $I
+     * @param \Step\Acceptance\ModuleBuilder $moduleBuilder
+     * @param \Helper\WebDriverHelper $webDriverHelper
+     *
+     * As an administrator I want to delete a basic module.
+     */
+    public function testScenarioRemoveIssueModule(
+        \AcceptanceTester $I,
+        \Step\Acceptance\ModuleBuilder $moduleBuilder,
+        \Step\Acceptance\Repair $repair,
+        \Helper\WebDriverHelper $webDriverHelper
+        )
+    {
+        $I->wantTo('Delete the issue test module.');
+        
+        $I->amOnUrl($webDriverHelper->getInstanceURL());
+        
+        $I->loginAsAdmin();
+        
+        $moduleBuilder->deleteModule(
+            \Page\IssueModule::$PACKAGE_NAME
+            );
+        
+        $repair->clickQuickRepairAndRebuild();
+    }
 }
