@@ -4,13 +4,14 @@ namespace Step\Acceptance;
 class Studio extends Administration{
     
     /**
-     * This function will be used to navigate to a specific module in Studio.
+     * This functions only purpose is to navigate to the 'Fields' section of a module in Studio.
      * 
      * @param string $moduleName
      */
    public function goToStudioModuleFields($moduleName){
        $I = $this;
        
+       //Navigating the CRM to Studio -> $moduleName -> Fields.
        $I->gotoAdministration();
        $I->click('#studio');
        $I->waitForElementVisible('#studiolink_'.$moduleName, 10);
@@ -20,7 +21,7 @@ class Studio extends Administration{
     }
     
     /**
-     * This function will be used to create fields via Studio based on the parameters it's fed.
+     * This function creates fields via Studio based on the parameters it's fed. 
      * 
      * @param string $moduleName
      * @param string $fieldName
@@ -28,17 +29,36 @@ class Studio extends Administration{
      */
     public function testScenarioCreateField($moduleName, $fieldName, $fieldType){
         $I = $this;
-        
-        //Go to Studio>$moduleName>Fields.
+
+        //Function takes in a $moduleName parameter and then navigates to the module's field section in Studio.
         $I->goToStudioModuleFields($moduleName);
         
-        //Selecting the field's type based on the $fieldType parameter passed to the function.
+
         $I->click(['name' => 'addfieldbtn']);
         $I->wait(1);
+        
+        //Some modules contain the "Flex Relate" value in the 'Data Type' field. The two conditional statements below are only
+        //included to cater to any circumstances where this field is selected.
+        if ($fieldType == "Flex Relate" && $I->seePageHas("Flex Relate") == false){
+            echo "No Flex Relate";
+            return;
+        }
+        if ($fieldType == "Flex Relate" && $I->seePageHas("Flex Relate") == true){
+            $I->selectOption("form select[name=type]", $fieldType);
+            $I->wait(1);
+            $I->clearField(['name' => 'help']);
+            $I->fillField(['name' => 'help'], 'Test Help Text');
+            $I->click(['name' => 'fsavebtn']);
+            $I->waitForElement(['name' => 'addfieldbtn'], 10);
+            return;
+        }
+        
+        //Selecting the field's type based on the $fieldType parameter passed to the function.
         $I->selectOption("form select[name=type]", $fieldType);
         
-        //Populating relevant fields if they are currently visible. Could add more conditions to cover
-        //all fields that may be visible during field creation in Studio.
+        
+        //Populating relevant fields if they are currently visible. Could easily add additional statements here to cover all fields
+        //present during creation.
         if ($I->seePageHas('Field Name:')){
             $I->clearField('#field_name_id');
             $I->fillField('#field_name_id', $fieldName);
@@ -52,51 +72,21 @@ class Studio extends Administration{
             $I->fillField(['name' => 'comments'], 'Test Comment Text');
         }  
         
-        //Saving the field.
         $I->click(['name' => 'fsavebtn']);
         $I->waitForElement(['name' => 'addfieldbtn'], 10);
     }
    
-    /*
     /**
-     * This function will be used to add the newly created fields to the Edit and Detail Views.
-     * 
-     * @param string $moduleName
-     */
-    /*public function testScenarioAddFieldToView($moduleName){
-        $I = $this;
-        
-        //Go to Studio>$moduleName>Layouts>Edit View.
-        $I->gotoAdministration();
-        $I->click('#studio');
-        $I->waitForElementVisible('#studiolink_'.$moduleName, 10);
-        $I->click('#studiolink_'.$moduleName);
-        $I->waitForText('Layouts', 10);
-        $I->click('Layouts');
-        $I->waitForText('Edit View', 10);
-        $I->click('Edit View');
-        $I->wait(3);
-        
-        //Add the newly created field to the Edit and Detail Views.
-        $I->dragAndDrop('#1003', '#33');
-        $I->dragAndDrop('#le_label_32', '#1004');   
-        $I->checkOption('#syncCheckbox'); 
-        $I->click('#publishBtn');
-        $I->waitForText('This operation is completed successfully', 10);
-        $I->click('Close');
-    }*/
-    
-    /**
-     * This function will be used to delete fields from Studio based on the parameters it's fed.
+     * This function deletes fields from Studio based on the parameters it's fed.
      * 
      * @param string $moduleName
      * @param string $fieldName
      * @param string $fieldType
      */
     public function testScenarioDeleteField($moduleName, $fieldName, $fieldType){
-        $I = $this;
+        $I = $this;   
         
-        //Fields of "Address" Type create multiple fields so additional clean up is required.
+        //Fields of the "Address" Type create multiple fields (e.g. Country, City, Postal Code) so additional clean up is required.
         if($fieldType == "Address"){
             $I->goToStudioModuleFields($moduleName);
             $I->waitForElement('#'.$fieldName.'_c', 10);
@@ -133,9 +123,26 @@ class Studio extends Administration{
             $I->click(['name' => 'fdeletebtn']);
             $I->acceptPopup();
         } else {
-            //Go to Studio>$moduleName>Fields.
+            //Function takes in a $moduleName parameter and then navigates to the module's field section in Studio.
             $I->goToStudioModuleFields($moduleName);
-
+            $I->wait(1);
+            
+            //Some modules contain the "Flex Relate" value in the 'Data Type' field. The two conditional statements below are only
+            //included to cater to any circumstances where this field is selected.
+            if ($fieldType == "Flex Relate" && $I->seePageHas("parent_name") == false){
+                echo "No Flex Relate";
+                return;
+            }
+            if ($fieldType == "Flex Relate" && $I->seePageHas("parent_name") == true){
+                $I->waitForElement('#parent_name');
+                $I->clickWithLeftButton('#parent_name');
+                $I->waitForElement(['name' => 'fdeletebtn'], 10);
+                $I->click(['name' => 'fdeletebtn']);
+                $I->acceptPopup();
+                $I->waitForElement(['name' => 'addfieldbtn'], 10);
+                return;
+            }
+            
             //Deleting field based on the $fieldName value that was passed to the function.  
             $I->waitForElement('#'.$fieldName.'_c', 10);
             $I->clickWithLeftButton('#'.$fieldName.'_c');

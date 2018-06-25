@@ -31,18 +31,19 @@ class StudioCest
             "SurveyQuestionOptions", "SurveyQuestionResponses", "SurveyQuestions", "SurveyResponses",
             "Surveys", "Prospects", */
         
-        $fieldTypes = array("IFrame", "Image", "Integer",
-            "MultiSelect", "Flex Relate", "Phone", "Radio", "Relate", "TextArea", "URL", "TextField");
+        $fieldTypes = array("Flex Relate", "Phone", "Address");
         
-        /*"Address", "Checkbox", "Currency", "Date", "Datetime", "Decimal",
+        /*"Radio", "Relate", "TextArea", "URL", "TextField", "IFrame", "Image", "Integer", "MultiSelect", "Checkbox", "Currency", "Date", "Datetime", "Decimal",
             "Dynamic DropDown", "DropDown", "Float", "HTML", */
         
         foreach($modules as $x){
             foreach($fieldTypes as $y){
                 $studio->testScenarioCreateField($x, "Test_Studio_Field", $y);
                 $studio->testScenarioDeleteField($x, "test_studio_field", $y);
-                $repair->clickQuickRepairAndRebuild();
             } 
-        }    
+        }
+        
+        $repair->clickQuickRepairAndRebuild();
+        
     }
 }
