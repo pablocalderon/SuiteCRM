@@ -162,8 +162,8 @@ if (!isset($_POST['language']) && (!isset($_SESSION['language']) && empty($_SESS
     }
 }
 
-if (isset($_POST['language'])) {
-    $_SESSION['language'] = str_replace('-','_',$_POST['language']);
+if(isset($_POST['language'])){
+            $_SESSION['language'] = str_replace('-','_',$_POST['language']);
 }
 
 $current_language = isset($_SESSION['language']) ? $_SESSION['language'] : $default_lang;
