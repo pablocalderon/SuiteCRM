@@ -357,6 +357,8 @@ use \jamesiarmes\PhpEws\Client;
          */
         public static function get_ical_event(SugarBean $bean, User $user)
         {
-            include_once ('/var/www/html/suitecrm-mysql/modules/Ews/create.php');
+            require_once ('modules/Ews/Exchange.php');
+            $exchange = new Exchange();
+            $exchange->createMeeting($bean, $user);
         }
     }
