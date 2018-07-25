@@ -42,6 +42,8 @@
 
     require_once('modules/Calendar/Calendar.php');
 
+use \jamesiarmes\PhpEws\Client;
+
     class vCal extends SugarBean
     {
 
@@ -355,30 +357,6 @@
          */
         public static function get_ical_event(SugarBean $bean, User $user)
         {
-            global $timedate;
-            $ical_array = array();
-
-            $ical_array[] = array("BEGIN", "VCALENDAR");
-            $ical_array[] = array("VERSION", "2.0");
-            $ical_array[] = array("PRODID", "-//SugarCRM//SugarCRM Calendar//EN");
-            $ical_array[] = array("BEGIN", "VEVENT");
-            $ical_array[] = array("UID", $bean->id);
-            $ical_array[] = array("ORGANIZED;CN=" . $user->full_name, $user->email1);
-            $ical_array[] = array("DTSTART", $timedate->fromDb($bean->date_start)->format(self::UTC_FORMAT));
-            $ical_array[] = array("DTEND", $timedate->fromDb($bean->date_end)->format(self::UTC_FORMAT));
-
-            $ical_array[] = array(
-                "DTSTAMP", $GLOBALS['timedate']->getNow(false)->format(self::UTC_FORMAT)
-            );
-            $ical_array[] = array("SUMMARY", $bean->name);
-            $ical_array[] = array("LOCATION", $bean->location);
-
-            $descPrepend = empty($bean->join_url) ? "" : $bean->join_url . self::EOL . self::EOL;
-            $ical_array[] = array("DESCRIPTION", $descPrepend . $bean->description);
-
-            $ical_array[] = array("END", "VEVENT");
-            $ical_array[] = array("END", "VCALENDAR");
-
-            return self::create_ical_string_from_array($ical_array);
+            include_once ('/var/www/html/suitecrm-mysql/modules/Ews/create.php');
         }
     }
