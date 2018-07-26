@@ -36,24 +36,12 @@ class Exchange extends SugarBean
         }
 
         $guests = [];
-
-        $eventAttendees = $this->getAttendees();
-
-        if (is_array($eventAttendees)) {
-            foreach ($eventAttendees as $attendee) {
-                $guests = [
-                    [
-                        'name' => $attendee->name,
-                        'email' => $attendee->email1
-                    ],
-                ];
-            }
-        }
+        $guests = $this->getAttendees();
 
 // Set connection information.
         $username = $user->email1;
-        $password = '';
-        $host = '';
+        $password = 'salesagilitypassword1';
+        $host = 'outlook.com';
         $version = Client::VERSION_2016;
 
         $client = new Client($host, $username, $password, $version);
@@ -117,6 +105,9 @@ class Exchange extends SugarBean
         $contactList = [];
         $userList = [];
         $leadList = [];
+        $contactGuests = [];
+        $userGuests = [];
+        $leadGuests = [];
 
         if (!empty($_POST['contact_invitees'])) {
             $contactInvitees = explode(',', trim($_POST['contact_invitees'], ','));
@@ -136,9 +127,13 @@ class Exchange extends SugarBean
             $leadInvitees = array();
         }
 
-        foreach ($contactInvitees as $contact) {
+        foreach ($contactInvitees as $contactCounter => $contact) {
             $contacts = new Contact;
             $contactList[] = $contacts->retrieve($contact);
+            $contactGuests[] = [
+                $contactList[$contactCounter]->name,
+                $contactList[$contactCounter]->email1,
+            ];
         }
 
         foreach ($userInvitees as $user) {
@@ -148,13 +143,35 @@ class Exchange extends SugarBean
             }
         }
 
-        foreach ($leadInvitees as $lead) {
-            $leads = new Lead;
-            $leadList[] = $leads->retrieve($lead);
+        foreach ($userList as $userCount => $userGuest) {
+            $userGuests[] = [
+                $userList[$userCount]->name,
+                $userList[$userCount]->email1,
+            ];
         }
 
-        $attendees = array_merge($contactList, $userList, $leadList);
+        foreach ($leadInvitees as $leadCount => $lead) {
+            $leads = new Lead;
+            $leadList[] = $leads->retrieve($lead);
+            $leadGuests[] = [
+                $leadList[$leadCount]->name,
+                $leadList[$leadCount]->email1,
+            ];
+        }
 
-        return $attendees;
+        $attendees = array_merge($contactGuests, $userGuests, $leadGuests);
+
+        if (is_array($attendees)) {
+            foreach ($attendees as $attendee) {
+                $guests = [
+                    [
+                        'name' => $attendee->name,
+                        'email' => $attendee->email1
+                    ],
+                ];
+            }
+        }
+
+        return $guests;
     }
 }
