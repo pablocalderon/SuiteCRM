@@ -23,16 +23,31 @@ class Exchange extends SugarBean
 
     public function createMeeting(SugarBean $bean, User $user)
     {
-        $start = new DateTime($bean->date_start);
-        $end = new DateTime($bean->date_end);
+        if (empty($bean->date_start)) {
+            $start = new DateTime($bean->date_start);
+        } else {
+            $start = date("Y-m-d H:i:s");
+        }
+
+        if (empty($bean->date_end)) {
+            $end = new DateTime($bean->date_end);
+        } else {
+            $end = date("Y-m-d H:i:s", strtotime('1 hour'));
+        }
+
         $guests = [];
 
         $eventAttendees = $this->getAttendees();
 
         if (is_array($eventAttendees)) {
-            $guests = [
-
-            ];
+            foreach ($eventAttendees as $attendee) {
+                $guests = [
+                    [
+                        'name' => $attendee->name,
+                        'email' => $attendee->email1
+                    ],
+                ];
+            }
         }
 
 // Set connection information.
@@ -95,8 +110,10 @@ class Exchange extends SugarBean
         }
     }
 
-    public function getAttendees()
+    protected function getAttendees()
     {
+        global $current_user;
+
         $contactList = [];
         $userList = [];
         $leadList = [];
@@ -126,7 +143,9 @@ class Exchange extends SugarBean
 
         foreach ($userInvitees as $user) {
             $users = new User;
-            $userList[] = $users->retrieve($user);
+            if ($user !== $current_user->id && $user !== ' ') {
+                $userList[] = $users->retrieve($user);
+            }
         }
 
         foreach ($leadInvitees as $lead) {
@@ -134,6 +153,8 @@ class Exchange extends SugarBean
             $leadList[] = $leads->retrieve($lead);
         }
 
-        return [$contactList, $userList, $leadList];
+        $attendees = array_merge($contactList, $userList, $leadList);
+
+        return $attendees;
     }
 }
