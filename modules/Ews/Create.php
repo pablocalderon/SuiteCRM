@@ -93,6 +93,10 @@ class Create extends SugarBean
                 fwrite(STDOUT, "Created event $id\n");
             }
         }
+
+        include_once __DIR__ . '/Cancel.php';
+        $cancel = new Cancel();
+        $cancel->cancelMeeting($user);
     }
 
     protected function getAttendees()

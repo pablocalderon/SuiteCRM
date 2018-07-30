@@ -43,50 +43,106 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/Exchange.php';
 
 use jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfAllItemsType;
-use jamesiarmes\PhpEws\Client;
 use jamesiarmes\PhpEws\Enumeration\MessageDispositionType;
 use jamesiarmes\PhpEws\Enumeration\ResponseClassType;
 use jamesiarmes\PhpEws\Request\CreateItemType;
 use jamesiarmes\PhpEws\Type\CancelCalendarItemType;
 use jamesiarmes\PhpEws\Type\ItemIdType;
+use \jamesiarmes\PhpEws\Client;
+use \jamesiarmes\PhpEws\Request\FindItemType;
+use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfBaseFolderIdsType;
+use \jamesiarmes\PhpEws\Enumeration\DefaultShapeNamesType;
+use \jamesiarmes\PhpEws\Enumeration\DistinguishedFolderIdNameType;
+use \jamesiarmes\PhpEws\Type\CalendarViewType;
+use \jamesiarmes\PhpEws\Type\DistinguishedFolderIdType;
+use \jamesiarmes\PhpEws\Type\ItemResponseShapeType;
 
 class Cancel extends SugarBean
 {
+    public function cancelMeeting(User $user)
+    {
+        $exchange = new Exchange();
+        $client = $exchange->setConnection($user);
 
-}
+        $event = $this->getEvent($client);
 
 
-// Replace these values with those of the event you wish to cancel.
-$event_id = 'AAMkADk0N2E4OTQxLWRlOTYtNGUxZC05NzE1LTU4ZmI5NGVkZTZmYQBGAAAAAADeofKHfJ96S5ndHNLg9VfeBwAr1MfeoTJdQ7jgaw/bSgljAAAAAAENAAAr1MfeoTJdQ7jgaw/bSgljAABaFXhjAAA=';
-$change_key = 'DwAAABYAAAAr1MfeoTJdQ7jgaw/bSgljAABaHQv5';
-// Set connection information.
-$host = '';
-$username = '';
-$password = '';
-$version = Client::VERSION_2016;
-$client = new Client($host, $username, $password, $version);
-$request = new CreateItemType();
-$request->MessageDisposition = MessageDispositionType::SEND_AND_SAVE_COPY;
-$request->Items = new NonEmptyArrayOfAllItemsType();
-$cancellation = new CancelCalendarItemType();
-$cancellation->ReferenceItemId = new ItemIdType();
-$cancellation->ReferenceItemId->Id = $event_id;
-$cancellation->ReferenceItemId->ChangeKey = $change_key;
-$request->Items->CancelCalendarItem[] = $cancellation;
-$response = $client->CreateItem($request);
-// Iterate over the results, printing any error messages.
-$response_messages = $response->ResponseMessages->CreateItemResponseMessage;
-foreach ($response_messages as $response_message) {
-    // Make sure the request succeeded.
-    if ($response_message->ResponseClass != ResponseClassType::SUCCESS) {
-        $code = $response_message->ResponseCode;
-        $message = $response_message->MessageText;
-        fwrite(
-            STDERR,
-            "Cancellation failed to create with \"$code: $message\"\n"
-        );
-        continue;
+        $request = new CreateItemType();
+        $request->MessageDisposition = MessageDispositionType::SEND_AND_SAVE_COPY;
+        $request->Items = new NonEmptyArrayOfAllItemsType();
+        $cancellation = new CancelCalendarItemType();
+        $cancellation->ReferenceItemId = new ItemIdType();
+        $cancellation->ReferenceItemId->Id = $event['eventID'];
+        $cancellation->ReferenceItemId->ChangeKey = $event['changeKey'];
+        $request->Items->CancelCalendarItem[] = $cancellation;
+        $response = $client->CreateItem($request);
+
+        $response_messages = $response->ResponseMessages->CreateItemResponseMessage;
+        foreach ($response_messages as $response_message) {
+            if ($response_message->ResponseClass != ResponseClassType::SUCCESS) {
+                $code = $response_message->ResponseCode;
+                $message = $response_message->MessageText;
+                fwrite(
+                    STDERR,
+                    "Cancellation failed to create with \"$code: $message\"\n"
+                );
+                continue;
+            }
+        }
+    }
+
+    protected function getEvent($client)
+    {
+
+        $request = new FindItemType();
+        $request->ParentFolderIds = new NonEmptyArrayOfBaseFolderIdsType();
+// Return all event properties.
+        $request->ItemShape = new ItemResponseShapeType();
+        $request->ItemShape->BaseShape = DefaultShapeNamesType::ALL_PROPERTIES;
+        $folder_id = new DistinguishedFolderIdType();
+        $folder_id->Id = DistinguishedFolderIdNameType::CALENDAR;
+        $request->ParentFolderIds->DistinguishedFolderId[] = $folder_id;
+        $request->CalendarView = new CalendarViewType();
+        $response = $client->FindItem($request);
+// Iterate over the results, printing any error messages or event ids.
+        $response_messages = $response->ResponseMessages->FindItemResponseMessage;
+        foreach ($response_messages as $response_message) {
+            // Make sure the request succeeded.
+            if ($response_message->ResponseClass != ResponseClassType::SUCCESS) {
+                $code = $response_message->ResponseCode;
+                $message = $response_message->MessageText;
+                fwrite(
+                    STDERR,
+                    "Failed to search for events with \"$code: $message\"\n"
+                );
+                continue;
+            }
+        }
+
+        // Iterate over the events that were found, printing some data for each.
+        $items = $response_message->RootFolder->Items->CalendarItem;
+        foreach ($items as $item) {
+            $id = $item->ItemId->Id;
+            $start = new DateTime($item->Start);
+            $end = new DateTime($item->End);
+            $output = 'Found event ' . $item->ItemId->Id . "\n"
+                . '  Change Key: ' . $item->ItemId->ChangeKey . "\n"
+                . '  Title: ' . $item->Subject . "\n"
+                . '  Start: ' . $start->format('l, F jS, Y g:ia') . "\n"
+                . '  End:   ' . $end->format('l, F jS, Y g:ia') . "\n\n";
+            fwrite(STDOUT, $output);
+        }
+
+        // Replace these values with those of the event you wish to cancel.
+        $event = [];
+        $event[] = [
+            'eventID' => $id,
+            'changeKey' => $item->ItemId->ChangeKey,
+        ];
+
+        return $event;
     }
 }
