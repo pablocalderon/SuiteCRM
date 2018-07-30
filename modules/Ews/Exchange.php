@@ -23,27 +23,20 @@ class Exchange extends SugarBean
 
     public function createMeeting(SugarBean $bean, User $user)
     {
-        if (empty($bean->date_start)) {
+        if (!empty($bean->date_start)) {
             $start = new DateTime($bean->date_start);
         } else {
             $start = date("Y-m-d H:i:s");
         }
 
-        if (empty($bean->date_end)) {
+        if (!empty($bean->date_end)) {
             $end = new DateTime($bean->date_end);
         } else {
             $end = date("Y-m-d H:i:s", strtotime('1 hour'));
         }
 
         $guests = $this->getAttendees();
-
-// Set connection information.
-        $username = $user->email1;
-        $password = 'salesagilitypassword1';
-        $host = 'outlook.com';
-        $version = Client::VERSION_2016;
-
-        $client = new Client($host, $username, $password, $version);
+        $client = $this->createClient($user);
 
 // Build the request,
         $request = new CreateItemType();
@@ -170,5 +163,16 @@ class Exchange extends SugarBean
             }
         }
         return $guests;
+    }
+
+    protected function createClient(User $user) {
+        $username = $user->email1;
+        $password = '';
+        $host = '';
+        $version = Client::VERSION_2016;
+
+        $client = new Client($host, $username, $password, $version);
+
+        return $client;
     }
 }
