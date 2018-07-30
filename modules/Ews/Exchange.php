@@ -28,16 +28,7 @@ class Exchange extends SugarBean
         $request = $this->buildRequest();
         $event = $this->buildEvent($bean);
         $this->setBody($event);
-
-        // Add attendees
-        foreach ($guests as $guest) {
-            $attendee = new AttendeeType();
-            $attendee->Mailbox = new EmailAddressType();
-            $attendee->Mailbox->EmailAddress = $guest['email'];
-            $attendee->Mailbox->Name = $guest['name'];
-            $attendee->Mailbox->RoutingType = RoutingType::SMTP;
-            $event->RequiredAttendees->Attendee[] = $attendee;
-        }
+        $this->addAttendees($guests, $event);
 
         // Add the event to the request
         $request->Items->CalendarItem[] = $event;
@@ -184,5 +175,18 @@ class Exchange extends SugarBean
         $event->Body = new BodyType();
         $event->Body->_ = 'This is the event body';
         $event->Body->BodyType = BodyTypeType::TEXT;
+    }
+
+    protected function addAttendees($guests, $event) {
+        foreach ($guests as $guest) {
+            $attendee = new AttendeeType();
+            $attendee->Mailbox = new EmailAddressType();
+            $attendee->Mailbox->EmailAddress = $guest['email'];
+            $attendee->Mailbox->Name = $guest['name'];
+            $attendee->Mailbox->RoutingType = RoutingType::SMTP;
+            $event->RequiredAttendees->Attendee[] = $attendee;
+        }
+
+        return $event;
     }
 }
