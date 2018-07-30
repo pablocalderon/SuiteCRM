@@ -35,7 +35,6 @@ class Exchange extends SugarBean
             $end = date("Y-m-d H:i:s", strtotime('1 hour'));
         }
 
-        $guests = [];
         $guests = $this->getAttendees();
 
 // Set connection information.
@@ -108,6 +107,7 @@ class Exchange extends SugarBean
         $contactGuests = [];
         $userGuests = [];
         $leadGuests = [];
+        $guests = [];
 
         if (!empty($_POST['contact_invitees'])) {
             $contactInvitees = explode(',', trim($_POST['contact_invitees'], ','));
@@ -163,15 +163,12 @@ class Exchange extends SugarBean
 
         if (is_array($attendees)) {
             foreach ($attendees as $attendee) {
-                $guests = [
-                    [
-                        'name' => $attendee->name,
-                        'email' => $attendee->email1
-                    ],
+                $guests[] = [
+                        'name' => $attendee[0],
+                        'email' => $attendee[1]
                 ];
             }
         }
-
         return $guests;
     }
 }
