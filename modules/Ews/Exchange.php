@@ -23,37 +23,11 @@ class Exchange extends SugarBean
 
     public function createMeeting(SugarBean $bean, User $user)
     {
-        if (!empty($bean->date_start)) {
-            $start = new DateTime($bean->date_start);
-        } else {
-            $start = date("Y-m-d H:i:s");
-        }
-
-        if (!empty($bean->date_end)) {
-            $end = new DateTime($bean->date_end);
-        } else {
-            $end = date("Y-m-d H:i:s", strtotime('1 hour'));
-        }
-
         $guests = $this->getAttendees();
         $client = $this->createClient($user);
-
-// Build the request,
-        $request = new CreateItemType();
-        $request->SendMeetingInvitations = CalendarItemCreateOrDeleteOperationType::SEND_ONLY_TO_ALL;
-        $request->Items = new NonEmptyArrayOfAllItemsType();
-
-// Build the event to be added.
-        $event = new CalendarItemType();
-        $event->RequiredAttendees = new NonEmptyArrayOfAttendeesType();
-        $event->Start = $start->format('c');
-        $event->End = $end->format('c');
-        $event->Subject = $bean->name;
-
-// Set the event body.
-        $event->Body = new BodyType();
-        $event->Body->_ = 'This is the event body';
-        $event->Body->BodyType = BodyTypeType::TEXT;
+        $request = $this->buildRequest();
+        $event = $this->buildEvent($bean);
+        $this->setBody($event);
 
 // Iterate over the guests, adding each as an attendee to the request.
         foreach ($guests as $guest) {
@@ -157,15 +131,16 @@ class Exchange extends SugarBean
         if (is_array($attendees)) {
             foreach ($attendees as $attendee) {
                 $guests[] = [
-                        'name' => $attendee[0],
-                        'email' => $attendee[1]
+                    'name' => $attendee[0],
+                    'email' => $attendee[1]
                 ];
             }
         }
         return $guests;
     }
 
-    protected function createClient(User $user) {
+    protected function createClient(User $user)
+    {
         $username = $user->email1;
         $password = '';
         $host = '';
@@ -174,5 +149,42 @@ class Exchange extends SugarBean
         $client = new Client($host, $username, $password, $version);
 
         return $client;
+    }
+
+    protected function buildRequest() {
+        $request = new CreateItemType();
+        $request->SendMeetingInvitations = CalendarItemCreateOrDeleteOperationType::SEND_ONLY_TO_ALL;
+        $request->Items = new NonEmptyArrayOfAllItemsType();
+
+        return $request;
+    }
+
+    protected function buildEvent(SugarBean $bean) {
+        if (!empty($bean->date_start)) {
+            $start = new DateTime($bean->date_start);
+        } else {
+            $start = date("Y-m-d H:i:s");
+        }
+
+        if (!empty($bean->date_end)) {
+            $end = new DateTime($bean->date_end);
+        } else {
+            $end = date("Y-m-d H:i:s", strtotime('1 hour'));
+        }
+
+        $event = new CalendarItemType();
+        $event->RequiredAttendees = new NonEmptyArrayOfAttendeesType();
+        $event->Start = $start->format('c');
+        $event->End = $end->format('c');
+        $event->Subject = $bean->name;
+
+        return $event;
+    }
+
+    protected function setBody($event) {
+        // Set the event body.
+        $event->Body = new BodyType();
+        $event->Body->_ = 'This is the event body';
+        $event->Body->BodyType = BodyTypeType::TEXT;
     }
 }
