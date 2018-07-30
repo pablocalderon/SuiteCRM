@@ -15,7 +15,7 @@ use jamesiarmes\PhpEws\Type\BodyType;
 use jamesiarmes\PhpEws\Type\CalendarItemType;
 use jamesiarmes\PhpEws\Type\EmailAddressType;
 
-class Exchange extends SugarBean
+class Create extends SugarBean
 {
     public $tracker_visibility = false;
     public $object_name = 'Exchange';
