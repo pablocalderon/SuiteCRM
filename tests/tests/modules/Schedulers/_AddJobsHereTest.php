@@ -41,32 +41,68 @@ require_once 'include/SugarQueue/SugarJobQueue.php';
 require_once 'install/install_utils.php';
 
 class _AddJobsHereTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
-{    
-    protected function storeStateAll() 
+{
+    protected function storeStateAll()
     {
         // save state
         $state = new SuiteCRM\StateSaver();
         $state->pushTable('job_queue');
         $state->pushGlobals();
-        
+
         return $state;
     }
-    
-    protected function restoreStateAll($state) 
+
+    protected function restoreStateAll($state)
     {
         // clean up
         $state->popGlobals();
         $state->popTable('job_queue');
-        
+
     }
-    
+
     public function test__construct()
     {
         // save state
         $state = $this->storeStateAll();
 
-        $_AddJobsHereTest = new _AddJobsHereTest();
-        $this->assertInstanceOf('$_AddJobsHereTest', $_AddJobsHereTest);
+        $ScheduledReport = new AORScheduledReportJob();
+        $this->assertInstanceOf('AORScheduledReportJob', $ScheduledReport);
+
+        // clean up
+        $this->restoreStateAll($state);
+    }
+
+    public function testrun()
+    {
+        // save state
+        $state = $this->storeStateAll();
+
+        // test
+        $ScheduledReport = new AORScheduledReportJob();
+
+        $this->assertEquals(false, $ScheduledReport->run(0));
+        $this->assertEquals('<style>
+        h1{
+            color: black;
+        }
+        .list
+        {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;font-size: 12px;
+            background: #fff;margin: 45px;width: 480px;border-collapse: collapse;text-align: left;
+        }
+        .list th
+        {
+            font-size: 14px;
+            font-weight: normal;
+            color: black;
+            padding: 10px 8px;
+            border-bottom: 2px solid black;
+        }
+        .list td
+        {
+            padding: 9px 8px 0px 8px;
+        }
+        </style>', $ScheduledReport->html);
 
         // clean up
         $this->restoreStateAll($state);
