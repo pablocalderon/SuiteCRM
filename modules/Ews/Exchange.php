@@ -29,7 +29,7 @@ class Exchange extends SugarBean
         $event = $this->buildEvent($bean);
         $this->setBody($event);
 
-// Iterate over the guests, adding each as an attendee to the request.
+        // Add attendees
         foreach ($guests as $guest) {
             $attendee = new AttendeeType();
             $attendee->Mailbox = new EmailAddressType();
@@ -39,16 +39,12 @@ class Exchange extends SugarBean
             $event->RequiredAttendees->Attendee[] = $attendee;
         }
 
-// Add the event to the request. You could add multiple events to create more
-// than one in a single request.
+        // Add the event to the request
         $request->Items->CalendarItem[] = $event;
-
         $response = $client->CreateItem($request);
 
-// Iterate over the results, printing any error messages or event ids.
         $response_messages = $response->ResponseMessages->CreateItemResponseMessage;
         foreach ($response_messages as $response_message) {
-            // Make sure the request succeeded.
             if ($response_message->ResponseClass != ResponseClassType::SUCCESS) {
                 $code = $response_message->ResponseCode;
                 $message = $response_message->MessageText;
@@ -56,7 +52,6 @@ class Exchange extends SugarBean
                 continue;
             }
 
-            // Iterate over the created events, printing the id for each.
             foreach ($response_message->Items->CalendarItem as $item) {
                 $id = $item->ItemId->Id;
                 fwrite(STDOUT, "Created event $id\n");
@@ -142,8 +137,8 @@ class Exchange extends SugarBean
     protected function createClient(User $user)
     {
         $username = $user->email1;
-        $password = '';
-        $host = '';
+        $password = 'salesagilitypassword1';
+        $host = 'outlook.com';
         $version = Client::VERSION_2016;
 
         $client = new Client($host, $username, $password, $version);
@@ -151,7 +146,8 @@ class Exchange extends SugarBean
         return $client;
     }
 
-    protected function buildRequest() {
+    protected function buildRequest()
+    {
         $request = new CreateItemType();
         $request->SendMeetingInvitations = CalendarItemCreateOrDeleteOperationType::SEND_ONLY_TO_ALL;
         $request->Items = new NonEmptyArrayOfAllItemsType();
@@ -159,7 +155,8 @@ class Exchange extends SugarBean
         return $request;
     }
 
-    protected function buildEvent(SugarBean $bean) {
+    protected function buildEvent(SugarBean $bean)
+    {
         if (!empty($bean->date_start)) {
             $start = new DateTime($bean->date_start);
         } else {
@@ -181,7 +178,8 @@ class Exchange extends SugarBean
         return $event;
     }
 
-    protected function setBody($event) {
+    protected function setBody($event)
+    {
         // Set the event body.
         $event->Body = new BodyType();
         $event->Body->_ = 'This is the event body';
