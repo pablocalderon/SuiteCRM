@@ -21,7 +21,7 @@ class SaleModuleCest
      */
     public function _before(AcceptanceTester $I)
     {
-        if(!$this->fakeData) {
+        if (!$this->fakeData) {
             $this->fakeData = Faker\Factory::create();
             $this->fakeDataSeed = rand(0, 2048);
         }
@@ -325,7 +325,7 @@ class SaleModuleCest
 
         $listView->waitForListViewVisible();
     }
-    
+
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ModuleBuilder $moduleBuilder
@@ -341,15 +341,15 @@ class SaleModuleCest
         )
     {
         $I->wantTo('Delete the sale test module.');
-        
+
         $I->amOnUrl($webDriverHelper->getInstanceURL());
-        
+
         $I->loginAsAdmin();
-        
+
         $moduleBuilder->deleteModule(
             \Page\SaleModule::$PACKAGE_NAME
             );
-        
+
         $repair->clickQuickRepairAndRebuild();
     }
 }

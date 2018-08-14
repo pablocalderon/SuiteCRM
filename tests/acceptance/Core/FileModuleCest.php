@@ -195,7 +195,6 @@ class FileModuleCest
         $listView->clickNameLink($this->fakeData->lastName . '.test.txt');
         $detailView->waitForDetailViewVisible();
         $this->lastView = 'DetailView';
-
     }
 
     /**
@@ -350,7 +349,7 @@ class FileModuleCest
         $listView->waitForListViewVisible();
         $this->lastView = 'ListView';
     }
-    
+
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ModuleBuilder $moduleBuilder
@@ -366,15 +365,15 @@ class FileModuleCest
         )
     {
         $I->wantTo('Delete the file test module.');
-        
+
         $I->amOnUrl($webDriverHelper->getInstanceURL());
-        
+
         $I->loginAsAdmin();
-        
+
         $moduleBuilder->deleteModule(
             \Page\FileModule::$PACKAGE_NAME
             );
-        
+
         $repair->clickQuickRepairAndRebuild();
     }
 }
