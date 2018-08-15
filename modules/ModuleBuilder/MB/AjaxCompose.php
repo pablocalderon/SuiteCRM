@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,15 +34,15 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 class AjaxCompose
 {
-    var $sections = array();
-    var $crumbs = array('Home'=>'ModuleBuilder.main("Home")',/* 'Assistant'=>'Assistant.mbAssistant.xy=Array("650, 40"); Assistant.mbAssistant.show();'*/);
-    function addSection($name, $title, $content, $action='activate')
+    public $sections = array();
+    public $crumbs = array('Home'=>'ModuleBuilder.main("Home")',/* 'Assistant'=>'Assistant.mbAssistant.xy=Array("650, 40"); Assistant.mbAssistant.show();'*/);
+    public function addSection($name, $title, $content, $action='activate')
     {
         $crumb = '';
         if ($name == 'center') {
@@ -49,8 +50,8 @@ class AjaxCompose
         }
         $this->sections[$name] = array('title'=>$title,'crumb'=>$crumb, 'content'=>$content, 'action'=>$action);
     }
-	
-    function getJavascript()
+    
+    public function getJavascript()
     {
         if (!empty($this->sections['center'])) {
             if (empty($this->sections['east'])) {
@@ -60,17 +61,17 @@ class AjaxCompose
                 $this->addSection('east2', '', '', 'deactivate');
             }
         }
-		
+        
         $json = getJSONobj();
         return $json->encode($this->sections);
     }
-	
-    function addCrumb($name, $action)
+    
+    public function addCrumb($name, $action)
     {
         $this->crumbs[$name] = $action;
     }
-	
-    function getBreadCrumb()
+    
+    public function getBreadCrumb()
     {
         $crumbs = '';
         $actions = array();
@@ -101,8 +102,8 @@ class AjaxCompose
         }
         return $crumbs . '<br><br>';
     }
-	
-    function echoErrorStatus($labelName='')
+    
+    public function echoErrorStatus($labelName='')
     {
         $sections = array('failure'=>true,'failMsg'=>$labelName);
         $json = getJSONobj();

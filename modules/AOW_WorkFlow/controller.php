@@ -51,7 +51,7 @@ class AOW_WorkFlowController extends SugarController
     {
         if (!empty($_REQUEST['aow_module']) && $_REQUEST['aow_module'] != '') {
             if (isset($_REQUEST['rel_field']) &&  $_REQUEST['rel_field'] != '') {
-                $module = getRelatedModule($_REQUEST['aow_module'],$_REQUEST['rel_field']);
+                $module = getRelatedModule($_REQUEST['aow_module'], $_REQUEST['rel_field']);
             } else {
                 $module = $_REQUEST['aow_module'];
             }
@@ -64,7 +64,7 @@ class AOW_WorkFlowController extends SugarController
     {
         if (!empty($_REQUEST['aow_module']) && $_REQUEST['aow_module'] != '') {
             if (isset($_REQUEST['rel_field']) &&  $_REQUEST['rel_field'] != '') {
-                $module = getRelatedModule($_REQUEST['aow_module'],$_REQUEST['rel_field']);
+                $module = getRelatedModule($_REQUEST['aow_module'], $_REQUEST['rel_field']);
             } else {
                 $module = $_REQUEST['aow_module'];
             }
@@ -79,7 +79,7 @@ class AOW_WorkFlowController extends SugarController
         global $app_list_strings, $beanFiles, $beanList;
 
         if (isset($_REQUEST['rel_field']) &&  $_REQUEST['rel_field'] != '') {
-            $module = getRelatedModule($_REQUEST['aow_module'],$_REQUEST['rel_field']);
+            $module = getRelatedModule($_REQUEST['aow_module'], $_REQUEST['rel_field']);
         } else {
             $module = $_REQUEST['aow_module'];
         }
@@ -156,7 +156,7 @@ class AOW_WorkFlowController extends SugarController
         global $app_list_strings, $beanFiles, $beanList;
 
         if (isset($_REQUEST['rel_field']) &&  $_REQUEST['rel_field'] != '') {
-            $module = getRelatedModule($_REQUEST['aow_module'],$_REQUEST['rel_field']);
+            $module = getRelatedModule($_REQUEST['aow_module'], $_REQUEST['rel_field']);
         } else {
             $module = $_REQUEST['aow_module'];
         }
@@ -201,7 +201,7 @@ class AOW_WorkFlowController extends SugarController
                 $valid_opp = array('Value','Field','Any_Change','Date');
                 break;
             case 'enum':
-            case 'dynamicenum':    
+            case 'dynamicenum':
             case 'multienum':
                 $valid_opp = array('Value','Field','Any_Change', 'Multi');
                 break;
@@ -308,7 +308,7 @@ class AOW_WorkFlowController extends SugarController
     protected function action_getModuleFieldType()
     {
         if (isset($_REQUEST['rel_field']) &&  $_REQUEST['rel_field'] != '') {
-            $rel_module = getRelatedModule($_REQUEST['aow_module'],$_REQUEST['rel_field']);
+            $rel_module = getRelatedModule($_REQUEST['aow_module'], $_REQUEST['rel_field']);
         } else {
             $rel_module = $_REQUEST['aow_module'];
         }
@@ -346,7 +346,7 @@ class AOW_WorkFlowController extends SugarController
                 echo getDateField($module, $aow_field, $view, $value, false);
                 break;
             case 'Multi':
-                echo getModuleField($rel_module,$fieldname, $aow_field, $view, $value,'multienum');
+                echo getModuleField($rel_module, $fieldname, $aow_field, $view, $value, 'multienum');
                 break;
             case 'SecurityGroup':
                 $module = 'Accounts';
@@ -354,7 +354,7 @@ class AOW_WorkFlowController extends SugarController
                 // no break
             case 'Value':
             default:
-                echo getModuleField($rel_module,$fieldname, $aow_field, $view, $value);
+                echo getModuleField($rel_module, $fieldname, $aow_field, $view, $value);
                 break;
         }
         die;
@@ -396,14 +396,14 @@ class AOW_WorkFlowController extends SugarController
                 }
                 echo getDateField($module, $aow_field, $view, $value);
                 break;
-            Case 'Round_Robin':
-            Case 'Least_Busy':
-            Case 'Random':
+            case 'Round_Robin':
+            case 'Least_Busy':
+            case 'Random':
                 echo getAssignField($aow_field, $view, $value);
                 break;
             case 'Value':
             default:
-                echo getModuleField($module,$fieldname, $aow_field, $view, $value);
+                echo getModuleField($module, $fieldname, $aow_field, $view, $value);
                 break;
         }
         die;
@@ -423,7 +423,7 @@ class AOW_WorkFlowController extends SugarController
             $value = '';
         }
 
-        echo getModuleField($_REQUEST['aow_module'],$_REQUEST['aow_fieldname'], $_REQUEST['aow_newfieldname'], $view, $value);
+        echo getModuleField($_REQUEST['aow_module'], $_REQUEST['aow_fieldname'], $_REQUEST['aow_newfieldname'], $view, $value);
         die;
     }
 
@@ -458,7 +458,7 @@ class AOW_WorkFlowController extends SugarController
                 break;
             case 'Value':
             default:
-                echo getModuleField($module,$fieldname, $aow_field, $view, $value);
+                echo getModuleField($module, $fieldname, $aow_field, $view, $value);
                 break;
         }
         die;
@@ -553,7 +553,7 @@ class AOW_WorkFlowController extends SugarController
 
         require_once($beanFiles[$beanList[$_REQUEST['aow_module']]]);
         $bean = new $beanList[$_REQUEST['aow_module']];
-        echo $action->edit_display($line,$bean,$params);
+        echo $action->edit_display($line, $bean, $params);
         die;
     }
 
@@ -587,7 +587,7 @@ class AOW_WorkFlowController extends SugarController
                 }
                 break;
             case 'Specify User':
-                echo getModuleField('Accounts','assigned_user_name', $aow_field, $view, $value);
+                echo getModuleField('Accounts', 'assigned_user_name', $aow_field, $view, $value);
                 break;
             case 'Users':
                 echo getAssignField($aow_field, $view, $value);

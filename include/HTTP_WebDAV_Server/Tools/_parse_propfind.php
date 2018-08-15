@@ -35,7 +35,7 @@ class _parse_propfind
      * @var bool
      * @access public
      */
-    var $success = false;
+    public $success = false;
 
     /**
      * found properties are collected here
@@ -43,7 +43,7 @@ class _parse_propfind
      * @var array
      * @access public
      */
-    var $props = false;
+    public $props = false;
 
     /**
      * internal tag nesting depth counter
@@ -51,7 +51,7 @@ class _parse_propfind
      * @var int
      * @access private
      */
-    var $depth = 0;
+    public $depth = 0;
 
 
     /**
@@ -59,7 +59,7 @@ class _parse_propfind
      *
      * @access public
      */
-    function __construct($path)
+    public function __construct($path)
     {
         // success state flag
         $this->success = true;
@@ -84,13 +84,18 @@ class _parse_propfind
         $xml_parser = xml_parser_create_ns("UTF-8", " ");
 
         // set tag and data handlers
-        xml_set_element_handler($xml_parser,
-								array(&$this, "_startElement"),
-								array(&$this, "_endElement"));
+        xml_set_element_handler(
+            $xml_parser,
+                                array(&$this, "_startElement"),
+                                array(&$this, "_endElement")
+        );
 
         // we want a case sensitive parser
-        xml_parser_set_option($xml_parser,
-							  XML_OPTION_CASE_FOLDING, false);
+        xml_parser_set_option(
+            $xml_parser,
+                              XML_OPTION_CASE_FOLDING,
+            false
+        );
 
 
         // parse input
@@ -114,9 +119,9 @@ class _parse_propfind
         fclose($f_in);
 
         // if no input was parsed it was a request
-		if (!count($this->props)) {
-		    $this->props = "all";
-		} // default
+        if (!count($this->props)) {
+            $this->props = "all";
+        } // default
     }
 
 
@@ -128,7 +133,7 @@ class _parse_propfind
      * @param  string    tag name
      * @param  array     tag attributes
      */
-    function _startElement($parser, $name, $attrs)
+    public function _startElement($parser, $name, $attrs)
     {
         // name space handling
         if (strstr($name, " ")) {
@@ -173,7 +178,7 @@ class _parse_propfind
      * @param  resource  parser
      * @param  string    tag name
      */
-    function _endElement($parser, $name)
+    public function _endElement($parser, $name)
     {
         // here we only need to decrement the depth count
         $this->depth--;

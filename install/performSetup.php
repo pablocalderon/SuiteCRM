@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 function installStatus($msg, $cmd = null, $overwrite = false, $before = '[ok]<br>')
 {
@@ -61,7 +62,7 @@ $GLOBALS['installing'] = true;
 if (!isset($install_script) || !$install_script) {
     die($mod_strings['ERR_NO_DIRECT_SCRIPT']);
 }
-ini_set("output_buffering","0");
+ini_set("output_buffering", "0");
 set_time_limit(3600);
 // flush after each output so the user can see the progress in real-time
 ob_implicit_flush();
@@ -107,12 +108,12 @@ $setup_site_log_level				='fatal';
 
 /*sugar_cache_clear('TeamSetsCache');
 if ( file_exists($cache_dir .'modules/Teams/TeamSetCache.php') ) {
-	unlink($cache_dir.'modules/Teams/TeamSetCache.php');
+    unlink($cache_dir.'modules/Teams/TeamSetCache.php');
 }
 
 sugar_cache_clear('TeamSetsMD5Cache');
 if ( file_exists($cache_dir.'modules/Teams/TeamSetMD5Cache.php') ) {
-	unlink($cache_dir.'modules/Teams/TeamSetMD5Cache.php');
+    unlink($cache_dir.'modules/Teams/TeamSetMD5Cache.php');
 }*/
 $langHeader = get_language_header();
 $out =<<<EOQ
@@ -156,7 +157,7 @@ $bottle = handleSugarConfig();
 //handleLog4Php();
 
 $server_software = $_SERVER["SERVER_SOFTWARE"];
-if (strpos($server_software,'Microsoft-IIS') !== false) {
+if (strpos($server_software, 'Microsoft-IIS') !== false) {
     installLog("calling handleWebConfig()");
     handleWebConfig();
 } else {
@@ -221,7 +222,7 @@ $new_config         = 1;
 $new_report     = 1;
 
 // add non-module Beans to this array to keep the installer from erroring.
-$nonStandardModules = array (
+$nonStandardModules = array(
     //'Tracker',
 );
 
@@ -317,7 +318,7 @@ echo "<br>";
             $db->createTableParams($table, $rel_data['fields'], $rel_data['indices']);
         }
 
-        SugarBean::createRelationshipMeta($rel_name,$db,$table,$rel_dictionary,'');
+        SugarBean::createRelationshipMeta($rel_name, $db, $table, $rel_dictionary, '');
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -384,8 +385,8 @@ enableSugarFeeds();
 
     //require_once('modules/Connectors/InstallDefaultConnectors.php');
 
-	///////////////////////////////////////////////////////////////////////////////
-	////    INSTALL PASSWORD TEMPLATES
+    ///////////////////////////////////////////////////////////////////////////////
+    ////    INSTALL PASSWORD TEMPLATES
     include('install/seed_data/Advanced_Password_SeedData.php');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -430,7 +431,7 @@ FP;
     }
     if (!empty($_SESSION['setup_system_name'])) {
         $admin=new Administration();
-        $admin->saveSetting('system','name',$_SESSION['setup_system_name']);
+        $admin->saveSetting('system', 'name', $_SESSION['setup_system_name']);
     }
 
     // Bug 28601 - Set the default list of tabs to show
@@ -534,13 +535,13 @@ if (!is_null($_SESSION['scenarios'])) {
 
 //Write the tabstructure to custom so that the grouping are not shown for the un-selected scenarios
 $fp = sugar_fopen('custom/include/tabConfig.php', 'w');
-$fileContents = "<?php \n" .'$GLOBALS["tabStructure"] ='.var_export($GLOBALS['tabStructure'],true).';';
+$fileContents = "<?php \n" .'$GLOBALS["tabStructure"] ='.var_export($GLOBALS['tabStructure'], true).';';
 fwrite($fp, $fileContents);
 fclose($fp);
 
 //Write the dashlets to custom so that the dashlets are not shown for the un-selected scenarios
 $fp = sugar_fopen('custom/modules/Home/dashlets.php', 'w');
-$fileContents = "<?php \n" .'$defaultDashlets ='.var_export($defaultDashlets,true).';';
+$fileContents = "<?php \n" .'$defaultDashlets ='.var_export($defaultDashlets, true).';';
 fwrite($fp, $fileContents);
 fclose($fp);
 
@@ -618,7 +619,7 @@ installLog('retrieveSettings');
 //$focus->retrieveSettings();
 // switch off the adminwizard (mark that we have got past this point)
 installLog('AdminWizard OFF');
-$focus->saveSetting('system','adminwizard',1);
+$focus->saveSetting('system', 'adminwizard', 1);
 
 installLog('saveConfig');
 $focus->saveConfig();
@@ -777,4 +778,4 @@ EOQ;
 echo $out;
 
 $loginURL = str_replace('install.php', 'index.php', "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
-installStatus(sprintf($mod_strings['STAT_INSTALL_FINISH_LOGIN'], $loginURL) , array('function' => 'redirect', 'arguments' => $loginURL));
+installStatus(sprintf($mod_strings['STAT_INSTALL_FINISH_LOGIN'], $loginURL), array('function' => 'redirect', 'arguments' => $loginURL));

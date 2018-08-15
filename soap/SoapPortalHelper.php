@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 $portal_modules = array('Contacts', 'Accounts', 'Notes');
 $portal_modules[] = 'Cases';
@@ -206,7 +207,7 @@ function get_notes_in_module($in, $module, $orderBy = '')
             require_once 'include/SugarSQLValidate.php';
             $valid = new SugarSQLValidate();
             $fakeWhere = " 1=1 ";
-            if ($valid->validateQueryClauses($fakeWhere,$orderBy)) {
+            if ($valid->validateQueryClauses($fakeWhere, $orderBy)) {
                 $query .= ' ORDER BY '. $orderBy;
             } else {
                 $GLOBALS['log']->error("Bad order by: $orderBy");
@@ -375,14 +376,13 @@ function login_user($portal_auth)
         $bean->retrieve($user['id']);
         $current_user = $bean;
         return 'success';
-    } else {
-        $GLOBALS['log']->fatal('SECURITY: User authentication for '. $portal_auth['user_name']. ' failed');
-        return 'fail';
     }
+    $GLOBALS['log']->fatal('SECURITY: User authentication for '. $portal_auth['user_name']. ' failed');
+    return 'fail';
 }
 
 
-function portal_get_entry_list_limited($session, $module_name,$where, $order_by, $select_fields, $row_offset, $limit)
+function portal_get_entry_list_limited($session, $module_name, $where, $order_by, $select_fields, $row_offset, $limit)
 {
     global  $beanList, $beanFiles, $portal_modules;
     $error = new SoapError();
@@ -420,14 +420,14 @@ function portal_get_entry_list_limited($session, $module_name,$where, $order_by,
         //if no Cases have been loaded into the session as viewable, then do not issue query, just return empty list
         //issuing a query with no cases loaded in session will return ALL the Cases, which is not a good thing
         if (!empty($_SESSION['viewable'][$module_name])) {
-            $list =  get_related_list(get_module_in($module_name), new aCase(), $where,$order_by, $row_offset, $limit);
+            $list =  get_related_list(get_module_in($module_name), new aCase(), $where, $order_by, $row_offset, $limit);
         }
     } elseif ($module_name == 'Contacts') {
         $sugar = new Contact();
-        $list =  get_related_list(get_module_in($module_name), new Contact(), $where,$order_by);
+        $list =  get_related_list(get_module_in($module_name), new Contact(), $where, $order_by);
     } elseif ($module_name == 'Accounts') {
         $sugar = new Account();
-        $list =  get_related_list(get_module_in($module_name), new Account(), $where,$order_by);
+        $list =  get_related_list(get_module_in($module_name), new Account(), $where, $order_by);
     } elseif ($module_name == 'Bugs') {
 
         //if the related bugs have not yet been loaded into the session object,
@@ -457,7 +457,7 @@ function portal_get_entry_list_limited($session, $module_name,$where, $order_by,
         return array('result_count'=>-1, 'entry_list'=>array(), 'error'=>$error->get_soap_array());
     }
 
-    $output_list = Array();
+    $output_list = array();
     $field_list = array();
     foreach ($list as $value) {
 
@@ -469,7 +469,7 @@ function portal_get_entry_list_limited($session, $module_name,$where, $order_by,
         }
     }
     $output_list = filter_return_list($output_list, $select_fields, $module_name);
-    $field_list = filter_field_list($field_list,$select_fields, $module_name);
+    $field_list = filter_field_list($field_list, $select_fields, $module_name);
 
     return array('result_count'=>sizeof($output_list), 'next_offset'=>0,'field_list'=>$field_list, 'entry_list'=>$output_list, 'error'=>$error->get_soap_array());
 }

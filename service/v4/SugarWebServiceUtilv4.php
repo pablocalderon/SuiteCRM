@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,15 +34,15 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('service/v3_1/SugarWebServiceUtilv3_1.php');
 
 class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
 {
-    function get_module_view_defs($moduleName, $type, $view)
+    public function get_module_view_defs($moduleName, $type, $view)
     {
         require_once('include/MVC/View/SugarView.php');
         $metadataFile = null;
@@ -57,7 +58,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
                 if ($view == 'subpanel') {
                     $results = $this->get_subpanel_defs($moduleName, $type);
                 } else {
-                    $v = new SugarView(null,array());
+                    $v = new SugarView(null, array());
                     $v->module = $moduleName;
                     $v->type = $view;
                     $fullView = ucfirst($view) . 'View';
@@ -72,7 +73,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
         }
 
         //Add field level acls.
-        $results = $this->addFieldLevelACLs($moduleName,$type, $view, $results);
+        $results = $this->addFieldLevelACLs($moduleName, $type, $view, $results);
 
         return $results;
     }
@@ -83,7 +84,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
      * if the list should filter for favorites.  Should eventually update the SugarBean function as well.
      *
      */
-    function get_data_list(
+    public function get_data_list(
         $seed,
         $order_by = "",
         $where = "",
@@ -104,8 +105,17 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
             $params['favorites'] = true;
         }
 
-        $query = $seed->create_new_list_query($order_by, $where, array(), $params, $show_deleted, '', false, null,
-            $single_select);
+        $query = $seed->create_new_list_query(
+            $order_by,
+            $where,
+            array(),
+            $params,
+            $show_deleted,
+            '',
+            false,
+            null,
+            $single_select
+        );
 
         return $seed->process_list_query($query, $row_offset, $limit, $max, $where);
     }
@@ -138,11 +148,11 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
      * @param string The module name
      * @return bool true indicating bean is favorites enabled
      */
-    function is_favorites_enabled($module_name)
+    public function is_favorites_enabled($module_name)
     {
         global $beanList, $beanFiles;
 
-        $fav = FALSE;
+        $fav = false;
         return $fav;
     }
 
@@ -167,7 +177,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
         return $filterFields;
     }
 
-    function get_field_list($value,$fields,  $translate=true)
+    public function get_field_list($value, $fields, $translate=true)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_field_list(too large a struct, '.print_r($fields, true).", $translate");
         $module_fields = array();
@@ -202,7 +212,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
                         $options_dom = array();
                     }
                     foreach ($options_dom as $key=>$oneOption) {
-                        $options_ret[$key] = $this->get_name_value($key,$oneOption);
+                        $options_ret[$key] = $this->get_name_value($key, $oneOption);
                     }
                 }
 
@@ -245,22 +255,22 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
             } //foreach
         } //if
 
-		if ($value->module_dir == 'Meetings' || $value->module_dir == 'Calls') {
-		    if (isset($module_fields['duration_minutes']) && isset($GLOBALS['app_list_strings']['duration_intervals'])) {
-		        $options_dom = $GLOBALS['app_list_strings']['duration_intervals'];
-		        $options_ret = array();
-		        foreach ($options_dom as $key=>$oneOption) {
-		            $options_ret[$key] = $this->get_name_value($key,$oneOption);
-		        }
+        if ($value->module_dir == 'Meetings' || $value->module_dir == 'Calls') {
+            if (isset($module_fields['duration_minutes']) && isset($GLOBALS['app_list_strings']['duration_intervals'])) {
+                $options_dom = $GLOBALS['app_list_strings']['duration_intervals'];
+                $options_ret = array();
+                foreach ($options_dom as $key=>$oneOption) {
+                    $options_ret[$key] = $this->get_name_value($key, $oneOption);
+                }
 
-		        $module_fields['duration_minutes']['options'] = $options_ret;
-		    }
-		}
+                $module_fields['duration_minutes']['options'] = $options_ret;
+            }
+        }
 
         if ($value->module_dir == 'Bugs') {
             require_once('modules/Releases/Release.php');
             $seedRelease = new Release();
-            $options = $seedRelease->get_releases(TRUE, "Active");
+            $options = $seedRelease->get_releases(true, "Active");
             $options_ret = array();
             foreach ($options as $name=>$value) {
                 $options_ret[] =  array('name'=> $name , 'value'=>$value);
@@ -305,7 +315,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
     }
 
 
-    function new_handle_set_entries($module_name, $name_value_lists, $select_fields = FALSE)
+    public function new_handle_set_entries($module_name, $name_value_lists, $select_fields = false)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->new_handle_set_entries');
         global $beanList, $beanFiles, $current_user, $app_list_strings;
@@ -343,8 +353,8 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
                 if ($seed->field_name_map[$field_name]['type'] == 'enum') {
                     $vardef = $seed->field_name_map[$field_name];
                     if (isset($app_list_strings[$vardef['options']]) && !isset($app_list_strings[$vardef['options']][$val])) {
-                        if (in_array($val,$app_list_strings[$vardef['options']])) {
-                            $val = array_search($val,$app_list_strings[$vardef['options']]);
+                        if (in_array($val, $app_list_strings[$vardef['options']])) {
+                            $val = array_search($val, $app_list_strings[$vardef['options']]);
                         }
                     }
                 }
@@ -399,7 +409,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
                             //then we can set the id, otherwise this is a new object
                             $order_by = "";
                             $query = $seed->table_name.".outlook_id = '".$seed->outlook_id."'";
-                            $response = $seed->get_list($order_by, $query, 0,-1,-1,0);
+                            $response = $seed->get_list($order_by, $query, 0, -1, -1, 0);
                             $list = $response['list'];
                             if (count($list) > 0) {
                                 foreach ($list as $value) {
@@ -409,9 +419,9 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
                             }//fi
                         }//fi
                     }//fi
-				    if (empty($seed->reminder_time)) {
-				        $seed->reminder_time = -1;
-				    }
+                    if (empty($seed->reminder_time)) {
+                        $seed->reminder_time = -1;
+                    }
                     if ($seed->reminder_time == -1) {
                         $defaultRemindrTime = $current_user->getPreference('reminder_time');
                         if ($defaultRemindrTime != -1) {
@@ -433,7 +443,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
             }
 
             // if somebody is calling set_entries_detail() and wants fields returned...
-            if ($select_fields !== FALSE) {
+            if ($select_fields !== false) {
                 $ret_values[$count] = array();
 
                 foreach ($select_fields as $select_field) {
@@ -445,21 +455,20 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
         }
 
         // handle returns for set_entries_detail() and set_entries()
-        if ($select_fields !== FALSE) {
+        if ($select_fields !== false) {
             $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_entries');
             return array(
-				'name_value_lists' => $ret_values,
-			);
-        } else {
-            $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_entries');
-            return array(
-				'ids' => $ids,
-			);
+                'name_value_lists' => $ret_values,
+            );
         }
+        $GLOBALS['log']->info('End: SoapHelperWebServices->new_handle_set_entries');
+        return array(
+                'ids' => $ids,
+            );
     }
 
 
-    function checkSessionAndModuleAccess($session, $login_error_key, $module_name, $access_level, $module_access_level_error_key, $errorObject)
+    public function checkSessionAndModuleAccess($session, $login_error_key, $module_name, $access_level, $module_access_level_error_key, $errorObject)
     {
         if (isset($_REQUEST['oauth_token'])) {
             $session = $this->checkOAuthAccess($errorObject);
@@ -516,34 +525,34 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
      * @param String $type The type of subpanel definition ('wireless' or 'default')
      * @return array Array of the subpanel definition; empty array if no matching definition found
      */
-    function get_subpanel_defs($module, $type)
+    public function get_subpanel_defs($module, $type)
     {
         global $beanList, $beanFiles;
         $results = array();
         switch ($type) {
-	        case 'wireless':
+            case 'wireless':
 
                 if (file_exists('custom/modules/'.$module.'/metadata/wireless.subpaneldefs.php')) {
                     require_once('custom/modules/'.$module.'/metadata/wireless.subpaneldefs.php');
                 } elseif (file_exists('modules/'.$module.'/metadata/wireless.subpaneldefs.php')) {
-	                require_once('modules/'.$module.'/metadata/wireless.subpaneldefs.php');
-	            }
+                    require_once('modules/'.$module.'/metadata/wireless.subpaneldefs.php');
+                }
 
                 //If an Ext/WirelessLayoutdefs/wireless.subpaneldefs.ext.php file exists, then also load it as well
                 if (file_exists('custom/modules/'.$module.'/Ext/WirelessLayoutdefs/wireless.subpaneldefs.ext.php')) {
                     require_once('custom/modules/'.$module.'/Ext/WirelessLayoutdefs/wireless.subpaneldefs.ext.php');
                 }
-	            break;
+                break;
 
-	        case 'default':
-	        default:
-	            if (file_exists ('modules/'.$module.'/metadata/subpaneldefs.php')) {
-	                require ('modules/'.$module.'/metadata/subpaneldefs.php');
-	            }
-	            if (file_exists('custom/modules/'.$module.'/Ext/Layoutdefs/layoutdefs.ext.php')) {
-	                require ('custom/modules/'.$module.'/Ext/Layoutdefs/layoutdefs.ext.php');
-	            }
-	    }
+            case 'default':
+            default:
+                if (file_exists('modules/'.$module.'/metadata/subpaneldefs.php')) {
+                    require('modules/'.$module.'/metadata/subpaneldefs.php');
+                }
+                if (file_exists('custom/modules/'.$module.'/Ext/Layoutdefs/layoutdefs.ext.php')) {
+                    require('custom/modules/'.$module.'/Ext/Layoutdefs/layoutdefs.ext.php');
+                }
+        }
 
         //Filter results for permissions
         foreach ($layout_defs[$module]['subpanel_setup'] as $subpanel => $subpaneldefs) {

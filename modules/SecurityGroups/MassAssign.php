@@ -39,7 +39,7 @@ if (!empty($_REQUEST['uid'])) {
 elseif (isset($_REQUEST['entire'])) {
     if (isset($_SESSION['export_where']) && !empty($_SESSION['export_where'])) { // bug 4679
         $where = $_SESSION['export_where'];
-        $whereArr = explode (" ", trim($where));
+        $whereArr = explode(" ", trim($where));
         if ($whereArr[0] == trim('where')) {
             $whereClean = array_shift($whereArr);
         }
@@ -50,11 +50,11 @@ elseif (isset($_REQUEST['entire'])) {
     if (empty($order_by)) {
         $order_by = '';
     }
-    $query = $sugarbean->create_export_query($order_by,$where);
-    $result = $db->query($query,true);
+    $query = $sugarbean->create_export_query($order_by, $where);
+    $result = $db->query($query, true);
 
     $new_arr = array();
-    while ($val = $db->fetchByAssoc($result,-1,false)) {
+    while ($val = $db->fetchByAssoc($result, -1, false)) {
         array_push($new_arr, $val['id']);
     }
     $_POST['mass'] = $new_arr;
@@ -67,50 +67,50 @@ if (isset($_POST['mass']) && is_array($_POST['mass'])) {
             $sugarbean->retrieve($id);
 
             //if($sugarbean->ACLAccess('Delete')){
-				
+                
             $GLOBALS['log']->debug("MassAssign - deleting relationship: $groupFocus->name");
             if ($sugarbean->module_dir == 'Users') {
                 $rel_name = "SecurityGroups";
             } elseif (empty($rel_name) || !isset($rel_name)) {
-                $rel_name = $groupFocus->getLinkName($sugarbean->module_dir,"SecurityGroups");
+                $rel_name = $groupFocus->getLinkName($sugarbean->module_dir, "SecurityGroups");
             }
             $sugarbean->load_relationship($rel_name);
-            $sugarbean->$rel_name->delete($sugarbean->id,$groupFocus->id);
-				
+            $sugarbean->$rel_name->delete($sugarbean->id, $groupFocus->id);
+                
         //As of 6.3.0 many-to-many requires a link field set in both modules...so lets bypass that
-				//$groupFocus->removeGroupFromRecord($sugarbean->module_dir, $id, $groupFocus->id);
-			//}
+                //$groupFocus->removeGroupFromRecord($sugarbean->module_dir, $id, $groupFocus->id);
+            //}
         } else {
             $sugarbean->retrieve($id);
 
             //if($sugarbean->ACLAccess('Save')){
-				
+                
             $GLOBALS['log']->debug("MassAssign - adding relationship: $groupFocus->name");
             if ($sugarbean->module_dir == 'Users') {
                 $rel_name = "SecurityGroups";
             } elseif (empty($rel_name) || !isset($rel_name)) {
-                $rel_name = $groupFocus->getLinkName($sugarbean->module_dir,"SecurityGroups");
+                $rel_name = $groupFocus->getLinkName($sugarbean->module_dir, "SecurityGroups");
             }
             $GLOBALS['log']->debug("MassAssign - adding relationship relationship name: ".$rel_name);
             $sugarbean->load_relationship($rel_name);
             $sugarbean->$rel_name->add($groupFocus->id);
-				
+                
 
             //As of 6.3.0 many-to-many requires a link field set in both modules...so lets bypass that
-				/**
-				//check existing
-				$query = "SELECT * FROM securitygroups_records WHERE securitygroup_id='$groupFocus->id' AND record_id='$id' AND module='$sugarbean->module_dir' AND deleted=0";
-				$db = DBManagerFactory::getInstance();
-				$result = $db->query($query);
-				$row = $db->fetchByAssoc($result);
-				if (empty($row))
-				{
-					$groupFocus->addGroupToRecord($sugarbean->module_dir, $id, $groupFocus->id);
-				}
-				*/
+                /**
+                //check existing
+                $query = "SELECT * FROM securitygroups_records WHERE securitygroup_id='$groupFocus->id' AND record_id='$id' AND module='$sugarbean->module_dir' AND deleted=0";
+                $db = DBManagerFactory::getInstance();
+                $result = $db->query($query);
+                $row = $db->fetchByAssoc($result);
+                if (empty($row))
+                {
+                    $groupFocus->addGroupToRecord($sugarbean->module_dir, $id, $groupFocus->id);
+                }
+                */
 
 
-			//}
+            //}
         }
     }
 }

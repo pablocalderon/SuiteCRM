@@ -1,10 +1,10 @@
 <?php
  /**
- * 
- * 
- * @package 
+ *
+ *
+ * @package
  * @copyright SalesAgility Ltd http://www.salesagility.com
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -20,12 +20,14 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author Salesagility Ltd <support@salesagility.com>
+ * @author SalesAgility Ltd <support@salesagility.com>
  */
 require_once 'modules/InboundEmail/InboundEmail.php';
 require_once 'include/clean.php';
 class AOPInboundEmail extends InboundEmail
 {
+
+    public $job_name = 'function::pollMonitoredInboxesAOP';
 
     /**
      * Replaces embedded image links with links to the appropriate note in the CRM.
@@ -33,29 +35,29 @@ class AOPInboundEmail extends InboundEmail
      * @param $noteIds A whitelist of note ids to replace
      * @return mixed
      */
-    function processImageLinks($string, $noteIds)
+    public function processImageLinks($string, $noteIds)
     {
         global $sugar_config;
         if (!$noteIds) {
             return $string;
         }
         $matches = array();
-        preg_match('/cid:([[:alnum:]-]*)/',$string,$matches);
+        preg_match('/cid:([[:alnum:]-]*)/', $string, $matches);
         if (!$matches) {
             return $string;
         }
         array_shift($matches);
         $matches = array_unique($matches);
         foreach ($matches as $match) {
-            if (in_array($match,$noteIds)) {
-                $string = str_replace('cid:'.$match,$sugar_config['site_url']."/index.php?entryPoint=download&id={$match}&type=Notes&",$string);
+            if (in_array($match, $noteIds)) {
+                $string = str_replace('cid:'.$match, $sugar_config['site_url']."/index.php?entryPoint=download&id={$match}&type=Notes&", $string);
             }
         }
         return $string;
     }
 
 
-    function handleCreateCase($email, $userId)
+    public function handleCreateCase($email, $userId)
     {
         global $current_user, $mod_strings, $current_language;
         $mod_strings = return_module_language($current_language, "Emails");
@@ -69,13 +71,13 @@ class AOPInboundEmail extends InboundEmail
             $email->retrieve($email->id);
             $c = new aCase();
 
-            $notes = $email->get_linked_beans('notes','Notes');
+            $notes = $email->get_linked_beans('notes', 'Notes');
             $noteIds = array();
             foreach ($notes as $note) {
                 $noteIds[] = $note->id;
             }
             if ($email->description_html) {
-                $c->description = $this->processImageLinks(SugarCleaner::cleanHtml($email->description_html),$noteIds);
+                $c->description = $this->processImageLinks(SugarCleaner::cleanHtml($email->description_html), $noteIds);
             } else {
                 $c->description = $email->description;
             }
@@ -134,7 +136,7 @@ class AOPInboundEmail extends InboundEmail
                 $newNote->save();
                 $srcFile = "upload://{$note->id}";
                 $destFile = "upload://{$newNote->id}";
-                copy($srcFile,$destFile);
+                copy($srcFile, $destFile);
             }
 
             $c->email_id = $email->id;

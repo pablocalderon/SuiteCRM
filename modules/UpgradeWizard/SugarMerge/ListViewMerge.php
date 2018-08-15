@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /*********************************************************************************
 
@@ -57,13 +58,13 @@ class ListViewMerge extends EditViewMerge
 {
     protected $varName = 'listViewDefs';
     protected $viewDefs = 'ListView';
-	
+    
     /**
     	 * Loads the meta data of the original, new, and custom file into the variables originalData, newData, and customData respectively it then transforms them into a structure that EditView Merge would understand
     	 *
     	 * @param STRING $module - name of the module's files that are to be merged
     	 * @param STRING $original_file - path to the file that originally shipped with sugar
-    	 * @param STRING $new_file - path to the new file that is shipping with the patch 
+    	 * @param STRING $new_file - path to the new file that is shipping with the patch
     	 * @param STRING $custom_file - path to the custom file
     	 */
     protected function loadData($module, $original_file, $new_file, $custom_file)
@@ -73,7 +74,7 @@ class ListViewMerge extends EditViewMerge
         $this->customData = array($module=>array( $this->viewDefs=>array($this->panelName=>array('DEFAULT'=>$this->customData[$module]))));
         $this->newData = array($module=>array( $this->viewDefs=>array($this->panelName=>array('DEFAULT'=>$this->newData[$module]))));
     }
-	
+    
     /**
      * This takes in a  list of panels and returns an associative array of field names to the meta-data of the field as well as the locations of that field
      * Since ListViews don't have the concept of rows and columns it takes the panel and the row to be the field name
@@ -87,7 +88,7 @@ class ListViewMerge extends EditViewMerge
         if (!$multiple) {
             $panels = array($panels);
         }
-		
+        
         foreach ($panels as $panel_id=>$panel) {
             foreach ($panel as $col_id=>$col) {
                 $field_name = $col_id;
@@ -96,11 +97,11 @@ class ListViewMerge extends EditViewMerge
         }
         return $fields;
     }
-		
+        
     /**
      * This builds the array of fields from the merged fields in the appropriate order
-     * when building the panels for a list view the most important thing is order 
-     * so we ensure the fields that came from the custom file keep 
+     * when building the panels for a list view the most important thing is order
+     * so we ensure the fields that came from the custom file keep
      * their order then we add any new fields at the end
      *
      * @return ARRAY
@@ -115,7 +116,7 @@ class ListViewMerge extends EditViewMerge
                 unset($this->mergedFields[$id]);
             }
         }
-        //now deal with the rest 
+        //now deal with the rest
         foreach ($this->mergedFields as $id =>$field) {
             //Set the default attribute to false for all the rest of these fields since they're not from custom source
             $field['data']['default'] = false;
@@ -123,7 +124,7 @@ class ListViewMerge extends EditViewMerge
         }
         return $panels;
     }
-	
+    
     /**
      * Since all the meta-data is just a list of fields the panel section should be all the meta data
      *
@@ -132,19 +133,19 @@ class ListViewMerge extends EditViewMerge
     {
         $this->newData = $this->buildPanels();
     }
-	
+    
     /**
      * This will save the merged data to a file
      *
-     * @param STRING $to - path of the file to save it to 
+     * @param STRING $to - path of the file to save it to
      * @return BOOLEAN - success or failure of the save
      */
     public function save($to)
     {
         return write_array_to_file("$this->varName['$this->module']", $this->newData, $to);
     }
-	
-	
+    
+    
     /**
      * Merges the fields together and stores them in $this->mergedFields
      *
@@ -168,15 +169,15 @@ class ListViewMerge extends EditViewMerge
             if (isset($this->newFields[$field]) && isset($this->originalFields[$field])) {
                 //if both the custom field and the original match then we take the location of the custom field since it hasn't moved
                 $loc = $this->customFields[$field]['loc'];
-                $loc['source'] = 'custom';	
+                $loc['source'] = 'custom';
 
                 //echo var_export($loc, true);
                 //but we still merge the meta data of the three
                 $this->mergedFields[$field] = array(
-					'data'=>$this->mergeField($this->originalFields[$field]['data'], $this->newFields[$field]['data'], $this->customFields[$field]['data']), 
-					'loc'=>$loc);
-				
-				
+                    'data'=>$this->mergeField($this->originalFields[$field]['data'], $this->newFields[$field]['data'], $this->customFields[$field]['data']),
+                    'loc'=>$loc);
+                
+                
             //if it's not set in the new fields then it was a custom field or an original field so we take the custom fields data and set the location source to custom
             } elseif (!isset($this->newFields[$field])) {
                 $this->mergedFields[$field] = $data;
@@ -184,20 +185,20 @@ class ListViewMerge extends EditViewMerge
             } else {
                 //otherwise  the field is in both new and custom but not in the orignal so we merge the new and custom data together and take the location from the custom
                 $this->mergedFields[$field] = array(
-					'data'=>$this->mergeField('', $this->newFields[$field]['data'], $this->customFields[$field]['data']), 
-					'loc'=>$this->customFields[$field]['loc']);
-				
+                    'data'=>$this->mergeField('', $this->newFields[$field]['data'], $this->customFields[$field]['data']),
+                    'loc'=>$this->customFields[$field]['loc']);
+                
                 $this->mergedFields[$field]['loc']['source'] = 'custom';
                 //echo var_export($this->mergedFields[$field], true);
             }
-			
-            //then we clear out the field from 
+            
+            //then we clear out the field from
             unset($this->originalFields[$field]);
             unset($this->customFields[$field]);
             unset($this->newFields[$field]);
         }
-		
-		
+        
+        
         /**
          * These are fields that were removed by the customer
          */
@@ -205,17 +206,17 @@ class ListViewMerge extends EditViewMerge
             unset($this->originalFields[$field]);
             unset($this->newFields[$field]);
         }
-			
+            
         foreach ($this->newFields as $field=>$data) {
             $data['loc']['source']= 'new';
             $this->mergedFields[$field] = array(
-					'data'=>$data['data'], 
-					'loc'=>$data['loc']);
+                    'data'=>$data['data'],
+                    'loc'=>$data['loc']);
             unset($this->newFields[$field]);
         }
     }
-		
-	
+        
+    
     /**
      * Merges the meta data of a single field
      *
@@ -253,7 +254,7 @@ class ListViewMerge extends EditViewMerge
             $this->log($custom);
             return $custom;
         }
-		
+        
         if (is_array($custom)) {
             //if both new and custom are arrays then at this point new != custom and orig != custom and orig != new  so let's merge the custom and the new and return that
             if (is_array($new)) {
@@ -261,14 +262,13 @@ class ListViewMerge extends EditViewMerge
                 $this->log($new);
                 $new['default'] = $custom['default'];
                 return $new;
-            } else {
-                //otherwise we know that new is not an array and custom has been 'customized' so let's keep those customizations.
-                $this->log($custom);
-                return $custom;
             }
+            //otherwise we know that new is not an array and custom has been 'customized' so let's keep those customizations.
+            $this->log($custom);
+            return $custom;
         }
-		
-        //default to returning the New version of the field 
+        
+        //default to returning the New version of the field
         $new['default'] = isset($custom['default']) ? $custom['default'] : false;
         return $new;
     }

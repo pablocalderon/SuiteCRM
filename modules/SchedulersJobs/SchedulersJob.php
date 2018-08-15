@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 /**
@@ -79,25 +80,25 @@ class SchedulersJob extends Basic
     public $percent_complete; // how much of the job is done
 
     // standard SugarBean child attrs
-    var $table_name		= "job_queue";
-    var $object_name		= "SchedulersJob";
-    var $module_dir		= "SchedulersJobs";
-    var $new_schema		= true;
-    var $process_save_dates = true;
+    public $table_name		= "job_queue";
+    public $object_name		= "SchedulersJob";
+    public $module_dir		= "SchedulersJobs";
+    public $new_schema		= true;
+    public $process_save_dates = true;
     // related fields
-	var $job_name;	// the Scheduler's 'name' field
-	var $job;		// the Scheduler's 'job' field
-	// object specific attributes
-	public $user; // User object
-	var $scheduler; // Scheduler parent
-	public $min_interval = 30; // minimal interval for job reruns
-	protected $job_done = true;
+    public $job_name;	// the Scheduler's 'name' field
+    public $job;		// the Scheduler's 'job' field
+    // object specific attributes
+    public $user; // User object
+    public $scheduler; // Scheduler parent
+    public $min_interval = 30; // minimal interval for job reruns
+    protected $job_done = true;
     protected $old_user;
 
     /**
      * Job constructor.
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         if (!empty($GLOBALS['sugar_config']['jobs']['min_retry_interval'])) {
@@ -108,7 +109,7 @@ class SchedulersJob extends Basic
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function SchedulersJob()
+    public function SchedulersJob()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -137,7 +138,7 @@ class SchedulersJob extends Basic
      *
      * @return string Formatted datetime value
      */
-    function handleDateFormat($date='now', $user=null, $user_format=false)
+    public function handleDateFormat($date='now', $user=null, $user_format=false)
     {
         global $timedate;
 
@@ -173,17 +174,17 @@ class SchedulersJob extends Basic
         // cURL inits
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $job); // set url
-		curl_setopt($ch, CURLOPT_FAILONERROR, true); // silent failure (code >300);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // do not follow location(); inits - we always use the current
-		curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true); // silent failure (code >300);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // do not follow location(); inits - we always use the current
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
         curl_setopt($ch, CURLOPT_DNS_USE_GLOBAL_CACHE, false);  // not thread-safe
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // return into a variable to continue program execution
-		curl_setopt($ch, CURLOPT_TIMEOUT, $timeout); // never times out - bad idea?
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // 5 secs for connect timeout
-		curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);  // open brand new conn
-		curl_setopt($ch, CURLOPT_HEADER, true); // do not return header info with result
-		curl_setopt($ch, CURLOPT_NOPROGRESS, true); // do not have progress bar
-		$urlparts = parse_url($job);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // return into a variable to continue program execution
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout); // never times out - bad idea?
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // 5 secs for connect timeout
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);  // open brand new conn
+        curl_setopt($ch, CURLOPT_HEADER, true); // do not return header info with result
+        curl_setopt($ch, CURLOPT_NOPROGRESS, true); // do not have progress bar
+        $urlparts = parse_url($job);
         if (empty($urlparts['port'])) {
             if (isset($urlparts['scheme']) && $urlparts['scheme'] == 'https') {
                 $urlparts['port'] = 443;
@@ -192,11 +193,11 @@ class SchedulersJob extends Basic
             }
         }
         curl_setopt($ch, CURLOPT_PORT, $urlparts['port']); // set port as reported by Server
-		//TODO make the below configurable
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // most customers will not have Certificate Authority account
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // most customers will not have Certificate Authority account
+        //TODO make the below configurable
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // most customers will not have Certificate Authority account
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // most customers will not have Certificate Authority account
 
-		curl_setopt($ch, CURLOPT_NOSIGNAL, true); // ignore any cURL signals to PHP (for multi-threading)
+        curl_setopt($ch, CURLOPT_NOSIGNAL, true); // ignore any cURL signals to PHP (for multi-threading)
         $result = curl_exec($ch);
         $cInfo = curl_getinfo($ch);	//url,content_type,header_size,request_size,filetime,http_code
         //ssl_verify_result,total_time,namelookup_time,connect_time
@@ -211,14 +212,13 @@ class SchedulersJob extends Basic
         }
         curl_close($ch);
 
-        if ($result !== FALSE && $cInfo['http_code'] < 400) {
+        if ($result !== false && $cInfo['http_code'] < 400) {
             $GLOBALS['log']->debug("----->Firing was successful: $job");
             $GLOBALS['log']->debug('----->WTIH RESULT: '.strip_tags($result).' AND '.strip_tags(print_r($cInfo, true)));
             return true;
-        } else {
-            $GLOBALS['log']->fatal("Job failed: $job");
-            return false;
         }
+        $GLOBALS['log']->fatal("Job failed: $job");
+        return false;
     }
     ////	END SCHEDULERSJOB HELPER FUNCTIONS
     ///////////////////////////////////////////////////////////////////////////
@@ -229,7 +229,7 @@ class SchedulersJob extends Basic
     /**
      * This function gets DB data and preps it for ListViews
      */
-    function get_list_view_data()
+    public function get_list_view_data()
     {
         global $mod_strings;
 
@@ -243,7 +243,7 @@ class SchedulersJob extends Basic
     /** method stub for future customization
      *
      */
-    function fill_in_additional_list_fields()
+    public function fill_in_additional_list_fields()
     {
         $this->fill_in_additional_detail_fields();
     }
@@ -430,28 +430,28 @@ class SchedulersJob extends Basic
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
         switch ($errno) {
-    		case E_USER_WARNING:
-    		case E_COMPILE_WARNING:
-    		case E_CORE_WARNING:
-    		case E_WARNING:
-    			$type = "Warning";
-    			break;
-    		case E_USER_ERROR:
-    		case E_COMPILE_ERROR:
-    		case E_CORE_ERROR:
-    		case E_ERROR:
-    			$type = "Fatal Error";
-	    		break;
-    		case E_PARSE:
-    			$type = "Parse Error";
-	    		break;
-    		case E_RECOVERABLE_ERROR:
-    			$type = "Recoverable Error";
-	    		break;
-		    default:
-		        // Ignore errors we don't know about
-		        return;
-    	}
+            case E_USER_WARNING:
+            case E_COMPILE_WARNING:
+            case E_CORE_WARNING:
+            case E_WARNING:
+                $type = "Warning";
+                break;
+            case E_USER_ERROR:
+            case E_COMPILE_ERROR:
+            case E_CORE_ERROR:
+            case E_ERROR:
+                $type = "Fatal Error";
+                break;
+            case E_PARSE:
+                $type = "Parse Error";
+                break;
+            case E_RECOVERABLE_ERROR:
+                $type = "Recoverable Error";
+                break;
+            default:
+                // Ignore errors we don't know about
+                return;
+        }
         $errstr = strip_tags($errstr);
         $this->errors .= sprintf(translate('ERR_PHP', 'SchedulersJobs'), $type, $errno, $errstr, $errfile, $errline)."\n";
     }
@@ -544,13 +544,11 @@ class SchedulersJob extends Basic
                 if ($res) {
                     $this->resolveJob(self::JOB_SUCCESS);
                     return true;
-                } else {
-                    $this->resolveJob(self::JOB_FAILURE);
-                    return false;
                 }
-            } else {
-                return $this->resolution != self::JOB_FAILURE;
+                $this->resolveJob(self::JOB_FAILURE);
+                return false;
             }
+            return $this->resolution != self::JOB_FAILURE;
         } elseif ($exJob[0] == 'url') {
             if (function_exists('curl_init')) {
                 $GLOBALS['log']->debug('----->SchedulersJob firing URL job: '.$exJob[1]);
@@ -559,14 +557,12 @@ class SchedulersJob extends Basic
                     restore_error_handler();
                     $this->resolveJob(self::JOB_SUCCESS);
                     return true;
-                } else {
-                    restore_error_handler();
-                    $this->resolveJob(self::JOB_FAILURE);
-                    return false;
                 }
-            } else {
-                $this->resolveJob(self::JOB_FAILURE, translate('ERR_CURL', 'SchedulersJobs'));
+                restore_error_handler();
+                $this->resolveJob(self::JOB_FAILURE);
+                return false;
             }
+            $this->resolveJob(self::JOB_FAILURE, translate('ERR_CURL', 'SchedulersJobs'));
         } elseif ($exJob[0] == 'class') {
             $tmpJob = new $exJob[1]();
             if ($tmpJob instanceof RunnableSchedulerJob) {
@@ -582,16 +578,13 @@ class SchedulersJob extends Basic
                     if ($result) {
                         $this->resolveJob(self::JOB_SUCCESS);
                         return true;
-                    } else {
-                        $this->resolveJob(self::JOB_FAILURE);
-                        return false;
                     }
-                } else {
-                    return $this->resolution != self::JOB_FAILURE;
+                    $this->resolveJob(self::JOB_FAILURE);
+                    return false;
                 }
-            } else {
-                return $this->resolveJob(self::JOB_FAILURE, sprintf(translate('ERR_JOBTYPE', 'SchedulersJobs'), strip_tags($this->target)));
+                return $this->resolution != self::JOB_FAILURE;
             }
+            return $this->resolveJob(self::JOB_FAILURE, sprintf(translate('ERR_JOBTYPE', 'SchedulersJobs'), strip_tags($this->target)));
         } else {
             return $this->resolveJob(self::JOB_FAILURE, sprintf(translate('ERR_JOBTYPE', 'SchedulersJobs'), strip_tags($this->target)));
         }

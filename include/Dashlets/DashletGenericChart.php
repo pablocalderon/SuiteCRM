@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('include/Dashlets/Dashlet.php');
 require_once('include/generic/LayoutManager.php');
@@ -270,9 +271,9 @@ abstract class DashletGenericChart extends Dashlet
             }
         }
         $this->currentSearchFields = $currentSearchFields;
-        $this->getConfigureSmartyInstance()->assign('title',translate('LBL_TITLE','Charts'));
-        $this->getConfigureSmartyInstance()->assign('save',$GLOBALS['app_strings']['LBL_SAVE_BUTTON_LABEL']);
-        $this->getConfigureSmartyInstance()->assign('clear',$GLOBALS['app_strings']['LBL_CLEAR_BUTTON_LABEL']);
+        $this->getConfigureSmartyInstance()->assign('title', translate('LBL_TITLE', 'Charts'));
+        $this->getConfigureSmartyInstance()->assign('save', $GLOBALS['app_strings']['LBL_SAVE_BUTTON_LABEL']);
+        $this->getConfigureSmartyInstance()->assign('clear', $GLOBALS['app_strings']['LBL_CLEAR_BUTTON_LABEL']);
         $this->getConfigureSmartyInstance()->assign('id', $this->id);
         $this->getConfigureSmartyInstance()->assign('searchFields', $this->currentSearchFields);
         $this->getConfigureSmartyInstance()->assign('dashletTitle', $this->title);
@@ -362,7 +363,7 @@ abstract class DashletGenericChart extends Dashlet
         $autoRefreshSS = new Sugar_Smarty();
         $autoRefreshSS->assign('dashletOffset', $dashletOffset);
         $autoRefreshSS->assign('dashletId', $this->id);
-        $autoRefreshSS->assign('strippedDashletId', str_replace("-","",$this->id)); //javascript doesn't like "-" in function names
+        $autoRefreshSS->assign('strippedDashletId', str_replace("-", "", $this->id)); //javascript doesn't like "-" in function names
         $autoRefreshSS->assign('dashletRefreshInterval', $this->getAutoRefresh());
         $autoRefreshSS->assign('url', "predefined_chart");
         $tpl = 'include/Dashlets/DashletGenericAutoRefresh.tpl';
@@ -374,7 +375,7 @@ abstract class DashletGenericChart extends Dashlet
     }
 
     //Added as the rgraph charts do not use SugarCharts and this is where this method was previously
-    function getChartData($query)
+    public function getChartData($query)
     {
         global $app_list_strings, $db;
         $dataSet = array();
@@ -402,7 +403,7 @@ abstract class DashletGenericChart extends Dashlet
     bool $ifsort2                 Whether to sort by the second column or just translate the second column.
      * @return        The sorted and translated data.
      */
-    function sortData($data_set, $keycolname1=null, $translate1=false, $keycolname2=null, $translate2=false, $ifsort2=false)
+    public function sortData($data_set, $keycolname1=null, $translate1=false, $keycolname2=null, $translate2=false, $ifsort2=false)
     {
         //You can set whether the columns need to be translated or sorted. It the column needn't to be translated, the sorting must be done in SQL, this function will not do the sorting.
         global $app_list_strings;

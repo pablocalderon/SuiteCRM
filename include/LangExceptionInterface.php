@@ -41,7 +41,6 @@
 
 namespace SuiteCRM;
 
-
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -56,7 +55,7 @@ interface LangExceptionInterface
 { // extends Throwable { // extending Throwable only in PHP7+
 
     /**
-     * 
+     *
      * @return string
      */
     public function getLangMessage();

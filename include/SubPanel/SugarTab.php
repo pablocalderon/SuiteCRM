@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /**
  * Tab representation
@@ -46,7 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class SugarTab
 {
-    function __construct($type='singletabmenu')
+    public function __construct($type='singletabmenu')
     {
         $this->type = $type;
         $this->ss = new Sugar_Smarty();
@@ -55,7 +56,7 @@ class SugarTab
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function SugarTab($type='singletabmenu')
+    public function SugarTab($type='singletabmenu')
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -67,7 +68,7 @@ class SugarTab
     }
 
 
-    function setup($mainTabs, $otherTabs=array(), $subTabs=array(), $selected_group='All')
+    public function setup($mainTabs, $otherTabs=array(), $subTabs=array(), $selected_group='All')
     {
         global $sugar_version, $sugar_config, $current_user;
 
@@ -81,7 +82,7 @@ class SugarTab
             $selected_group = $key_all;
         }
 
-        $moreTabs = array_slice($mainTabs,$max_tabs);
+        $moreTabs = array_slice($mainTabs, $max_tabs);
         /* If the current tab is in the 'More' menu, move it into the visible menu. */
         if (!empty($moreTabs[$selected_group])) {
             $temp = array($selected_group => $mainTabs[$selected_group]);
@@ -110,12 +111,12 @@ class SugarTab
         }
     }
 
-    function fetch()
+    public function fetch()
     {
         return $this->ss->fetch('include/SubPanel/tpls/' . $this->type . '.tpl');
     }
 
-    function display()
+    public function display()
     {
         $this->ss->display('include/SubPanel/tpls/' . $this->type . '.tpl');
     }

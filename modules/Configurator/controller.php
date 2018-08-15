@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 require_once('include/MVC/Controller/SugarController.php');
@@ -47,7 +48,7 @@ class ConfiguratorController extends SugarController
     /**
      * Go to the font manager view
      */
-    function action_FontManager()
+    public function action_FontManager()
     {
         global $current_user;
         if (!is_admin($current_user)) {
@@ -59,7 +60,7 @@ class ConfiguratorController extends SugarController
     /**
      * Delete a font and go back to the font manager
      */
-    function action_deleteFont()
+    public function action_deleteFont()
     {
         global $current_user;
         if (!is_admin($current_user)) {
@@ -71,13 +72,13 @@ class ConfiguratorController extends SugarController
             $fontManager = new FontManager();
             $fontManager->filename = $_REQUEST['filename'];
             if (!$fontManager->deleteFont()) {
-                $urlSTR .='&error='.urlencode(implode("<br>",$fontManager->errors));
+                $urlSTR .='&error='.urlencode(implode("<br>", $fontManager->errors));
             }
         }
         header("Location: $urlSTR");
     }
 
-    function action_listview()
+    public function action_listview()
     {
         global $current_user;
         if (!is_admin($current_user)) {
@@ -88,7 +89,7 @@ class ConfiguratorController extends SugarController
     /**
      * Show the addFont view
      */
-    function action_addFontView()
+    public function action_addFontView()
     {
         global $current_user;
         if (!is_admin($current_user)) {
@@ -99,7 +100,7 @@ class ConfiguratorController extends SugarController
     /**
      * Add a new font and show the addFontResult view
      */
-    function action_addFont()
+    public function action_addFont()
     {
         global $current_user, $mod_strings;
         if (!is_admin($current_user)) {
@@ -137,7 +138,7 @@ class ConfiguratorController extends SugarController
         }
         $this->view = 'addFontResult';
     }
-    function action_saveadminwizard()
+    public function action_saveadminwizard()
     {
         global $current_user;
         if (!is_admin($current_user)) {
@@ -156,7 +157,7 @@ class ConfiguratorController extends SugarController
         //The save of the admin wizard stops the post silent install from re-showing the admin wizard on each login
         $postSilentInstallAdminWizardCompleted = $current_user->getPreference('postSilentInstallAdminWizardCompleted');
         if (isset($postSilentInstallAdminWizardCompleted) && !$postSilentInstallAdminWizardCompleted) {
-            $current_user->setPreference('postSilentInstallAdminWizardCompleted',true);
+            $current_user->setPreference('postSilentInstallAdminWizardCompleted', true);
         }
 
         // Bug 37310 - Delete any existing currency that matches the one we've just set the default to during the admin wizard
@@ -197,7 +198,7 @@ class ConfiguratorController extends SugarController
 
             foreach ($installation_scenarios as $scenario) {
                 //If the item is not in $_SESSION['scenarios'], then unset them as they are not required
-                if (!in_array($scenario['key'],$_REQUEST['scenarios'])) {
+                if (!in_array($scenario['key'], $_REQUEST['scenarios'])) {
                     foreach ($scenario['modules'] as $module) {
                         if (($removeKey = array_search($module, $enabled_tabs)) !== false) {
                             unset($enabled_tabs[$removeKey]);
@@ -224,12 +225,12 @@ class ConfiguratorController extends SugarController
             }
             //Write the tabstructure to custom so that the grouping are not shown for the un-selected scenarios
             $fp = sugar_fopen('custom/include/tabConfig.php', 'w');
-            $fileContents = "<?php \n" .'$GLOBALS["tabStructure"] ='.var_export($GLOBALS['tabStructure'],true).';';
+            $fileContents = "<?php \n" .'$GLOBALS["tabStructure"] ='.var_export($GLOBALS['tabStructure'], true).';';
             fwrite($fp, $fileContents);
             fclose($fp);
             //Write the dashlets to custom so that the dashlets are not shown for the un-selected scenarios
             $fp = sugar_fopen('custom/modules/Home/dashlets.php', 'w');
-            $fileContents = "<?php \n" .'$defaultDashlets ='.var_export($defaultDashlets,true).';';
+            $fileContents = "<?php \n" .'$defaultDashlets ='.var_export($defaultDashlets, true).';';
             fwrite($fp, $fileContents);
             fclose($fp);
             // End of the scenario implementations
@@ -238,7 +239,7 @@ class ConfiguratorController extends SugarController
         SugarApplication::redirect('index.php?module=Users&action=Wizard&skipwelcome=1');
     }
 
-    function action_saveconfig()
+    public function action_saveconfig()
     {
         require_once('modules/Administration/QuickRepairAndRebuild.php');
         global $current_user;
@@ -266,7 +267,7 @@ class ConfiguratorController extends SugarController
         SugarApplication::redirect('index.php?module=Administration&action=index');
     }
 
-    function action_detail()
+    public function action_detail()
     {
         global $current_user;
         if (!is_admin($current_user)) {
@@ -278,7 +279,7 @@ class ConfiguratorController extends SugarController
     /**
      * Define correct view for action
      */
-    function action_historyContactsEmails()
+    public function action_historyContactsEmails()
     {
         $this->view = 'historyContactsEmails';
     }
@@ -286,7 +287,7 @@ class ConfiguratorController extends SugarController
     /**
      * Generates custom field_defs for selected fields
      */
-    function action_historyContactsEmailsSave()
+    public function action_historyContactsEmailsSave()
     {
         if (!empty($_POST['modules']) && is_array($_POST['modules'])) {
             require_once('include/SubPanel/SubPanelDefinitions.php');

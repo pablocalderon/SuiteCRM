@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,9 +34,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 class EAPMController extends SugarController
@@ -46,9 +47,9 @@ class EAPMController extends SugarController
      */
     protected $api;
 
-    var $action_remap = array('detailview'=>'editview', 'DetailView'=>'EditView');
+    public $action_remap = array('detailview'=>'editview', 'DetailView'=>'EditView');
 
-    var $admin_actions = array('listview', 'index');
+    public $admin_actions = array('listview', 'index');
 
     public function process()
     {
@@ -76,12 +77,12 @@ class EAPMController extends SugarController
             unset($_POST['password']);
         }
         parent::pre_save();
-        $this->api = ExternalAPIFactory::loadAPI($this->bean->application,true);
+        $this->api = ExternalAPIFactory::loadAPI($this->bean->application, true);
         if (empty($this->api)) {
             return $this->failed(translate('LBL_AUTH_UNSUPPORTED', $this->bean->module_dir));
         }
         if (empty($this->bean->id)) {
-            $eapmBean = EAPM::getLoginInfo($this->bean->application,true);
+            $eapmBean = EAPM::getLoginInfo($this->bean->application, true);
             if ($eapmBean) {
                 SugarApplication::appendErrorMessage(translate('LBL_APPLICATION_FOUND_NOTICE', $this->bean->module_dir));
                 $this->bean->id = $eapmBean->id;
@@ -102,9 +103,8 @@ class EAPMController extends SugarController
                 $reply = $this->api->checkLogin();
                 if (!$reply['success']) {
                     return $this->failed(translate('LBL_AUTH_ERROR', $this->bean->module_dir));
-                } else {
-                    $this->bean->validated();
                 }
+                $this->bean->validated();
             }
         }
         if ($this->return_module == 'Users') {
@@ -144,13 +144,12 @@ class EAPMController extends SugarController
             return true;
         }
         if (empty($_REQUEST['oauth_error'])) {
-            $this->api = ExternalAPIFactory::loadAPI($this->bean->application,true);
+            $this->api = ExternalAPIFactory::loadAPI($this->bean->application, true);
             $reply = $this->api->checkLogin($this->bean);
             if (!$reply['success']) {
                 return $this->failed(translate('LBL_AUTH_ERROR', $this->bean->module_dir));
-            } else {
-                $this->bean->validated();
             }
+            $this->bean->validated();
         }
         
         // This is a tweak so that we can automatically close windows if requested by the external account system
@@ -164,7 +163,7 @@ class EAPMController extends SugarController
             }
             echo($js);
             return;
-        }            
+        }
         
         // redirect to detail view, as in save
         return parent::post_save();
@@ -173,7 +172,7 @@ class EAPMController extends SugarController
     protected function pre_QuickSave()
     {
         if (!empty($_REQUEST['application'])) {
-            $eapmBean = EAPM::getLoginInfo($_REQUEST['application'],true);
+            $eapmBean = EAPM::getLoginInfo($_REQUEST['application'], true);
             if (!$eapmBean) {
                 $this->bean->application = $_REQUEST['application'];
                 $this->bean->assigned_user_id = $GLOBALS['current_user']->id;
@@ -188,7 +187,7 @@ class EAPMController extends SugarController
     
     public function action_QuickSave()
     {
-        $this->api = ExternalAPIFactory::loadAPI($this->bean->application,true);
+        $this->api = ExternalAPIFactory::loadAPI($this->bean->application, true);
         $this->action_save();
 
         if ($this->api->authMethod == 'oauth') {
@@ -214,9 +213,8 @@ class EAPMController extends SugarController
             $reply = $this->api->checkLogin();
             if (!$reply['success']) {
                 return $this->failed(translate('LBL_AUTH_ERROR', $this->bean->module_dir));
-            } else {
-                $this->bean->validated();
             }
+            $this->bean->validated();
         } else {
             // Normal auth methods go through this.
             $this->action_save();
@@ -236,7 +234,7 @@ class EAPMController extends SugarController
             return;
         }
 
-        if (method_exists($api,'loadDocCache')) {
+        if (method_exists($api, 'loadDocCache')) {
             $api->loadDocCache(true);
         }
 

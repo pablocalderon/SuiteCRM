@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('include/ListView/ListViewSmarty.php');
 
@@ -47,30 +48,30 @@ require_once('include/SearchForm/SearchForm2.php');
 define("NUM_COLS", 2);
 class PopupSmarty extends ListViewSmarty
 {
-    var $contextMenus = false;
-    var $export = false;
-    var $mailmerge = false;
-    var $mergeduplicates = false;
-    var $quickViewLinks = false;
-    var $multiSelect = false;
-    var $headerTpl;
-    var $footerTpl;
-    var $th;
-    var $tpl;
-    var $view;
-    var $field_defs;
-    var $formData;
-    var $_popupMeta;
-    var $_create = false;
-    var $searchdefs = array();
-    var $listviewdefs = array();
-    var $searchFields = array();
-    var $customFieldDefs;
-    var $filter_fields = array();
+    public $contextMenus = false;
+    public $export = false;
+    public $mailmerge = false;
+    public $mergeduplicates = false;
+    public $quickViewLinks = false;
+    public $multiSelect = false;
+    public $headerTpl;
+    public $footerTpl;
+    public $th;
+    public $tpl;
+    public $view;
+    public $field_defs;
+    public $formData;
+    public $_popupMeta;
+    public $_create = false;
+    public $searchdefs = array();
+    public $listviewdefs = array();
+    public $searchFields = array();
+    public $customFieldDefs;
+    public $filter_fields = array();
     //rrs
-    var $searchForm;
-    var $module;
-    var $massUpdateData = '';
+    public $searchForm;
+    public $module;
+    public $massUpdateData = '';
 
     public function __construct($seed, $module)
     {
@@ -106,11 +107,11 @@ class PopupSmarty extends ListViewSmarty
      *
      * @return void
      */
-    function processArrowVars()
+    public function processArrowVars()
     {
-        $pathParts = pathinfo(SugarThemeRegistry::current()->getImageURL('arrow.gif',false));
+        $pathParts = pathinfo(SugarThemeRegistry::current()->getImageURL('arrow.gif', false));
 
-        list($width,$height) = getimagesize($pathParts['dirname'].'/'.$pathParts['basename']);
+        list($width, $height) = getimagesize($pathParts['dirname'].'/'.$pathParts['basename']);
 
         $this->th->ss->assign('arrowExt', $pathParts['extension']);
         $this->th->ss->assign('arrowWidth', $width);
@@ -127,7 +128,7 @@ class PopupSmarty extends ListViewSmarty
      * @param html_var string the corresponding html var in xtpl per row
      *
      */
-    function process($file, $data, $htmlVar)
+    public function process($file, $data, $htmlVar)
     {
         global $odd_bg, $even_bg, $hilite_bg, $click_bg, $app_strings;
         parent::process($file, $data, $htmlVar);
@@ -220,7 +221,7 @@ class PopupSmarty extends ListViewSmarty
     /*
      * Display the Smarty template.  Here we are using the TemplateHandler for caching per the module.
      */
-    function display($end = true)
+    public function display($end = true)
     {
         global $app_strings;
 
@@ -228,7 +229,7 @@ class PopupSmarty extends ListViewSmarty
             require_once('include/language/jsLanguage.php');
             jsLanguage::createAppStringsCache($GLOBALS['current_language']);
         }
-        $jsLang = getVersionedScript("cache/jsLanguage/{$GLOBALS['current_language']}.js",  $GLOBALS['sugar_config']['js_lang_version']);
+        $jsLang = getVersionedScript("cache/jsLanguage/{$GLOBALS['current_language']}.js", $GLOBALS['sugar_config']['js_lang_version']);
 
         $this->th->ss->assign('data', $this->data['data']);
         $this->data['pageData']['offsets']['lastOffsetOnPage'] = $this->data['pageData']['offsets']['current'] + count($this->data['data']);
@@ -285,8 +286,18 @@ class PopupSmarty extends ListViewSmarty
             $this->th->ss->assign('ADDFORMHEADER', $this->_getAddFormHeader());
             $this->th->ss->assign('object_name', $this->seed->object_name);
         }
-        $this->th->ss->assign('LIST_HEADER', get_form_header($GLOBALS['mod_strings']['LBL_LIST_FORM_TITLE'], '', false));
-        $this->th->ss->assign('SEARCH_FORM_HEADER', get_form_header($GLOBALS['mod_strings']['LBL_SEARCH_FORM_TITLE'], '', false));
+        $this->th->ss->assign(
+            'LIST_HEADER',
+            get_form_header($GLOBALS['mod_strings']['LBL_LIST_FORM_TITLE'], '', false)
+        );
+        $this->th->ss->assign(
+            'SEARCH_FORM_HEADER',
+            get_form_header($GLOBALS['mod_strings']['LBL_SEARCH_FORM_TITLE'], '', false)
+        );
+
+        $themeObject = SugarThemeRegistry::current();
+        $this->th->ss->assign("STYLE_JS", ob_get_contents() . $themeObject->getJS());
+
         $str = $this->th->displayTemplate($this->seed->module_dir, $this->view, $this->tpl);
         return $str;
     }
@@ -294,21 +305,21 @@ class PopupSmarty extends ListViewSmarty
     /*
      * Setup up the smarty template. we added an extra step here to add the order by from the popupdefs.
      */
-    function setup(
+    public function setup(
         $seed,
         $file = null,
         $where = null,
-        $params = Array(),
+        $params = array(),
         $offset = 0,
         $limit = -1,
-        $filter_fields = Array(),
+        $filter_fields = array(),
         $id_field = 'id',
         $id = null
     ) {
         $args = func_get_args();
         return call_user_func_array(array($this, '_setup'), $args);
     }
-    function _setup($file)
+    public function _setup($file)
     {
         if (isset($this->_popupMeta)) {
             if (isset($this->_popupMeta['create']['formBase'])) {
@@ -451,13 +462,13 @@ class PopupSmarty extends ListViewSmarty
         } else {
             $this->should_process = false;
             $data = array(
-				'data'=>array(),
-			    'pageData'=>array(
-			    	'bean'=>array('moduleDir'=>$this->seed->module_dir),
-					'ordering'=>'',
-					'offsets'=>array('total'=>0,'next'=>0,'current'=>0),
-				),
-			);
+                'data'=>array(),
+                'pageData'=>array(
+                    'bean'=>array('moduleDir'=>$this->seed->module_dir),
+                    'ordering'=>'',
+                    'offsets'=>array('total'=>0,'next'=>0,'current'=>0),
+                ),
+            );
         }
 
         $this->fillDisplayColumnsWithVardefs();
@@ -468,7 +479,7 @@ class PopupSmarty extends ListViewSmarty
     /*
      * Return the where clause as per the REQUEST.
      */
-    function _get_where_clause()
+    public function _get_where_clause()
     {
         $where = '';
         $where_clauses = $this->searchForm->generateSearchWhere(true, $this->seed->module_dir);
@@ -493,7 +504,7 @@ class PopupSmarty extends ListViewSmarty
     /*
      * Generate the data for the search form on the header of the Popup.
      */
-    function _build_field_defs()
+    public function _build_field_defs()
     {
         $this->formData = array();
         $this->customFieldDefs = array();
@@ -533,7 +544,7 @@ class PopupSmarty extends ListViewSmarty
         }
     }
 
-    function _getAddForm()
+    public function _getAddForm()
     {
         $addform = '';
         if (!$this->seed->ACLAccess('save')) {
@@ -553,15 +564,15 @@ class PopupSmarty extends ListViewSmarty
             $formbody = $formBase->$getFormMethod($prefix, $mod, $formBody);
 
             $addform = '<table><tr><td nowrap="nowrap" valign="top">'
-					. str_replace('<br>', '</td><td nowrap="nowrap" valign="top">&nbsp;', $formbody)
-					. '</td></tr></table>'
-					. '<input type="hidden" name="action" value="Popup" />';
+                    . str_replace('<br>', '</td><td nowrap="nowrap" valign="top">&nbsp;', $formbody)
+                    . '</td></tr></table>'
+                    . '<input type="hidden" name="action" value="Popup" />';
 
             return $addform;
         }
     }
 
-    function _getAddFormHeader()
+    public function _getAddFormHeader()
     {
         $lbl_save_button_title = $GLOBALS['app_strings']['LBL_SAVE_BUTTON_TITLE'];
         $lbl_save_button_key = $GLOBALS['app_strings']['LBL_SAVE_BUTTON_KEY'];
@@ -586,7 +597,7 @@ EOQ;
         return $addformheader;
     }
 
-    function getQuickCreate()
+    public function getQuickCreate()
     {
         require_once("include/EditView/PopupQuickCreate.php");
         $qc = new PopupQuickCreate($this->module);

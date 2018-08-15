@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 require_once('modules/DynamicFields/templates/Fields/TemplateCurrencyId.php');
@@ -46,12 +47,12 @@ require_once('modules/DynamicFields/templates/Fields/TemplateRange.php');
 
 class TemplateCurrency extends TemplateRange
 {
-    var $max_size = 25;
-    var $len = 26 ;
-    var $precision = 6;
-    var $type='currency';
+    public $max_size = 25;
+    public $len = 26 ;
+    public $precision = 6;
+    public $type='currency';
 
-    function delete($df)
+    public function delete($df)
     {
         parent::delete($df);
         //currency id
@@ -60,7 +61,7 @@ class TemplateCurrency extends TemplateRange
         $currency_id->delete($df);
     }
 
-    function save($df)
+    public function save($df)
     {
         //the currency field
         $this->default = unformat_number($this->default);
@@ -76,14 +77,14 @@ class TemplateCurrency extends TemplateRange
         //$df->addLabel($currency_id->vname);
     }
 
-    function get_field_def()
+    public function get_field_def()
     {
         $def = parent::get_field_def();
         $def['precision'] = (!empty($this->precision)) ? $this->precision : 6;
         return $def;
     }
 
-    function get_db_type()
+    public function get_db_type()
     {
         $precision = (!empty($this->precision)) ? $this->precision : 6;
         $len = (!empty($this->len)) ? $this->len:26;

@@ -53,8 +53,8 @@ class ProjectViewGanttChart extends ViewDetail
 
         $project->retrieve($_REQUEST["project_id"]);
         //Get project resources (users & contacts)
-        $resources1 = $project->get_linked_beans('project_users_1','User');
-        $resources2 = $project->get_linked_beans('project_contacts_1','Contact');
+        $resources1 = $project->get_linked_beans('project_users_1', 'User');
+        $resources2 = $project->get_linked_beans('project_contacts_1', 'Contact');
         //Combine resources into array of objects
         $resource_array = array();
         foreach ($resources1 as $user) {
@@ -106,15 +106,15 @@ class ProjectViewGanttChart extends ViewDetail
 
 							<label for="Predecessor"><?php echo $mod_strings['LBL_PREDECESSORS']; ?></label>
 							<?php
-							echo '<select id="Predecessor" name="Predecessor" class="text ui-widget-content ui-corner-all" />';
+                            echo '<select id="Predecessor" name="Predecessor" class="text ui-widget-content ui-corner-all" />';
         /* foreach ($tasks as $task) {
-								echo '<option rel="'.$task->id.'" value="'.$task->order_number.'">'.$task->name.'</opion>';
-							}*/
+                                echo '<option rel="'.$task->id.'" value="'.$task->order_number.'">'.$task->name.'</opion>';
+                            }*/
         echo '</select>'; ?>
 							<label for="relation_type"><?php echo $mod_strings['LBL_RELATIONSHIP_TYPE']; ?></label>
 							<?php
-							echo '<select id="relation_type" name="relation_type" class="text ui-widget-content ui-corner-all">
-									'.get_select_options_with_id($app_list_strings['relationship_type_list'],'').'
+                            echo '<select id="relation_type" name="relation_type" class="text ui-widget-content ui-corner-all">
+									'.get_select_options_with_id($app_list_strings['relationship_type_list'], '').'
 							</select>'; ?>
 							<label for="Lag"><?php echo $mod_strings['LBL_LAG']; ?></label>
 							<input type="text" name="Lag" value="0" id="Lag" class="text ui-widget-content ui-corner-all" />
@@ -145,12 +145,12 @@ class ProjectViewGanttChart extends ViewDetail
 							<input type="text" name="Duration" id="Duration" class="text ui-widget-content ui-corner-all" />
 							<select id="Duration_unit" name="Duration_unit" class="text ui-widget-content ui-corner-all" />
 							<?php
-							echo get_select_options_with_id($app_list_strings['duration_unit_dom'],''); ?>
+                            echo get_select_options_with_id($app_list_strings['duration_unit_dom'], ''); ?>
 							</select>
 
 							<label for="Resources"><?php echo $mod_strings['LBL_ASSIGNED_USER_ID']; ?></label>
 							<?php
-							echo '<select id="Resources" name="Resources" class="text ui-widget-content ui-corner-all" />';
+                            echo '<select id="Resources" name="Resources" class="text ui-widget-content ui-corner-all" />';
         echo '<option value="0">'.$mod_strings['LBL_UNASSIGNED'].'</option>';
         foreach ($resource_array as $resource) {
             echo '<option rel="'.$resource->type.'" value="'.$resource->id.'">'.$resource->name.'</opion>';
@@ -237,10 +237,10 @@ class ProjectViewGanttChart extends ViewDetail
         <div id="wrapper" >
 
 			<?php
-					if (ACLController::checkAccess('Project', 'edit', true)) {
-					    echo '<div style="clear:both;padding:10px;"><button id="add_button" class="gantt_button">' . $mod_strings['LBL_ADD_NEW_TASK'] . '</button></div>';
-					    echo '<input id="is_editable" name="is_editable" type="hidden" value="1" >';
-					} ?>
+                    if (ACLController::checkAccess('Project', 'edit', true)) {
+                        echo '<div style="clear:both;padding:10px;"><button id="add_button" class="gantt_button">' . $mod_strings['LBL_ADD_NEW_TASK'] . '</button></div>';
+                        echo '<input id="is_editable" name="is_editable" type="hidden" value="1" >';
+                    } ?>
             <input id="project_id" type="hidden" name="project_id" value="<?php echo $_REQUEST["record"]; ?>" />
             <div id="project_wrapper">
 
@@ -252,7 +252,7 @@ class ProjectViewGanttChart extends ViewDetail
     }
 
     //Returns the time span between two dates in years  months and days
-    function time_range($start_date, $end_date)
+    public function time_range($start_date, $end_date)
     {
         global $mod_strings;
 

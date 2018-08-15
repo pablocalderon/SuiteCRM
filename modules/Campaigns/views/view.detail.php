@@ -3,12 +3,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +20,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +38,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /*********************************************************************************
 
@@ -56,7 +57,7 @@ require_once('include/MVC/View/views/view.detail.php');
 
 class CampaignsViewDetail extends ViewDetail
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         //turn off normal display of subpanels
@@ -66,7 +67,7 @@ class CampaignsViewDetail extends ViewDetail
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function CampaignsViewDetail()
+    public function CampaignsViewDetail()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -79,7 +80,7 @@ class CampaignsViewDetail extends ViewDetail
 
 
 
-    function preDisplay()
+    public function preDisplay()
     {
         global $mod_strings;
         if (isset($this->bean->campaign_type) && strtolower($this->bean->campaign_type) == 'newsletter') {
@@ -89,7 +90,7 @@ class CampaignsViewDetail extends ViewDetail
         $this->options['show_subpanels'] = false;
     }
 
-    function display()
+    public function display()
     {
         global $app_list_strings;
         $this->ss->assign('APP_LIST', $app_list_strings);
@@ -104,7 +105,7 @@ class CampaignsViewDetail extends ViewDetail
             window.setTimeout('ajax_C_LOG_Status.hideStatus()', 1500);
             window.setTimeout(\"ajax_C_LOG_Status.showStatus('".$mess."')\",2000);
             window.setTimeout('ajax_C_LOG_Status.hideStatus()', 5000); ";
-            $this->ss->assign("MSG_SCRIPT",$confirm_msg);
+            $this->ss->assign("MSG_SCRIPT", $confirm_msg);
         }
 
         if (($this->bean->campaign_type == 'Email') || ($this->bean->campaign_type == 'NewsLetter')) {
@@ -142,7 +143,7 @@ class CampaignsViewDetail extends ViewDetail
             foreach ($alltabs as $key=>$name) {
                 if ($name != 'prospectlists' && $name!='emailmarketing' && $name != 'tracked_urls'
                 /* BEGIN - SECURITY GROUPS */
-                	&& $name != 'securitygroups'
+                    && $name != 'securitygroups'
                 /* END - SECURITY GROUPS */
                 ) {
                     //exclude subpanels that are not prospectlists, emailmarketing, or tracked urls

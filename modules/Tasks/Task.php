@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,56 +37,56 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 // Task is used to store customer information.
 class Task extends SugarBean
 {
-    var $field_name_map;
+    public $field_name_map;
 
     // Stored fields
-    var $id;
-    var $date_entered;
-    var $date_modified;
-    var $assigned_user_id;
-    var $modified_user_id;
-    var $created_by;
-    var $created_by_name;
-    var $modified_by_name;
-    var $description;
-    var $name;
-    var $status;
-    var $date_due_flag;
-    var $date_due;
-    var $time_due;
-    var $date_start_flag;
-    var $date_start;
-    var $time_start;
-    var $priority;
-    var $parent_type;
-    var $parent_id;
-    var $contact_id;
+    public $id;
+    public $date_entered;
+    public $date_modified;
+    public $assigned_user_id;
+    public $modified_user_id;
+    public $created_by;
+    public $created_by_name;
+    public $modified_by_name;
+    public $description;
+    public $name;
+    public $status;
+    public $date_due_flag;
+    public $date_due;
+    public $time_due;
+    public $date_start_flag;
+    public $date_start;
+    public $time_start;
+    public $priority;
+    public $parent_type;
+    public $parent_id;
+    public $contact_id;
 
-    var $parent_name;
-    var $contact_name;
-    var $contact_phone;
-    var $contact_email;
-    var $assigned_user_name;
+    public $parent_name;
+    public $contact_name;
+    public $contact_phone;
+    public $contact_email;
+    public $assigned_user_name;
 
     //bug 28138 todo
     //	var $default_task_name_values = array('Assemble catalogs', 'Make travel arrangements', 'Send a letter', 'Send contract', 'Send fax', 'Send a follow-up letter', 'Send literature', 'Send proposal', 'Send quote', 'Call to schedule meeting', 'Setup evaluation', 'Get demo feedback', 'Arrange introduction', 'Escalate support request', 'Close out support request', 'Ship product', 'Arrange reference call', 'Schedule training', 'Send local user group information', 'Add to mailing list');
 
-    var $table_name = "tasks";
+    public $table_name = "tasks";
 
-    var $object_name = "Task";
-    var $module_dir = 'Tasks';
+    public $object_name = "Task";
+    public $module_dir = 'Tasks';
 
-    var $importable = true;
+    public $importable = true;
     // This is used to retrieve related fields from form posts.
-    var $additional_column_fields = Array('assigned_user_name', 'assigned_user_id', 'contact_name', 'contact_phone', 'contact_email', 'parent_name');
+    public $additional_column_fields = array('assigned_user_name', 'assigned_user_id', 'contact_name', 'contact_phone', 'contact_email', 'parent_name');
 
 
     public function __construct()
@@ -108,9 +109,9 @@ class Task extends SugarBean
     }
 
 
-    var $new_schema = true;
+    public $new_schema = true;
 
-    function save($check_notify = FALSE)
+    public function save($check_notify = false)
     {
         if (empty($this->status)) {
             $this->status = $this->getDefaultStatus();
@@ -118,16 +119,16 @@ class Task extends SugarBean
         return parent::save($check_notify);
     }
 
-    function get_summary_text()
+    public function get_summary_text()
     {
         return "$this->name";
     }
 
-    function create_export_query($order_by, $where, $relate_link_join='')
+    public function create_export_query($order_by, $where, $relate_link_join='')
     {
         $custom_join = $this->getCustomJoin(true, true, $where);
         $custom_join['join'] .= $relate_link_join;
-        $contact_required = stristr($where,"contacts");
+        $contact_required = stristr($where, "contacts");
         if ($contact_required) {
             $query = "SELECT tasks.*, contacts.first_name, contacts.last_name, users.user_name as assigned_user_name ";
             $query .= $custom_join['select'];
@@ -159,7 +160,7 @@ class Task extends SugarBean
         return $query;
     }
 
-    function fill_in_additional_detail_fields()
+    public function fill_in_additional_detail_fields()
     {
         parent::fill_in_additional_detail_fields();
         global $app_strings;
@@ -186,7 +187,7 @@ class Task extends SugarBean
         $this->fill_in_additional_parent_fields();
     }
 
-    function fill_in_additional_parent_fields()
+    public function fill_in_additional_parent_fields()
     {
         $this->parent_name = '';
         global $app_strings, $beanFiles, $beanList, $locale;
@@ -212,7 +213,7 @@ class Task extends SugarBean
             }
             $query .= " from $parent->table_name where id = '$this->parent_id'";
         }
-        $result = $this->db->query($query,true," Error filling in additional detail fields: ");
+        $result = $this->db->query($query, true, " Error filling in additional detail fields: ");
 
         // Get the id and the name.
         $row = $this->db->fetchByAssoc($result);
@@ -265,7 +266,7 @@ class Task extends SugarBean
         }
     }
 
-    function get_list_view_data()
+    public function get_list_view_data()
     {
         global $action, $currentModule, $focus, $current_module_strings, $app_list_strings, $timedate;
 
@@ -303,7 +304,7 @@ class Task extends SugarBean
             $task_fields['PARENT_MODULE'] = $this->parent_type;
         }
         if ($this->status != "Completed" && $this->status != "Deferred") {
-            $setCompleteUrl = "<b><a id='{$this->id}' class='list-view-data-icon' title='".translate('LBL_LIST_CLOSE','Tasks')."' onclick='SUGAR.util.closeActivityPanel.show(\"{$this->module_dir}\",\"{$this->id}\",\"Completed\",\"listview\",\"1\");'>";
+            $setCompleteUrl = "<b><a id='{$this->id}' class='list-view-data-icon' title='".translate('LBL_LIST_CLOSE', 'Tasks')."' onclick='SUGAR.util.closeActivityPanel.show(\"{$this->module_dir}\",\"{$this->id}\",\"Completed\",\"listview\",\"1\");'>";
             $task_fields['SET_COMPLETE'] = $setCompleteUrl . "<span class='suitepicon suitepicon-action-clear'></span></a></b>";
         }
 
@@ -332,7 +333,7 @@ class Task extends SugarBean
         return $task_fields;
     }
 
-    function set_notification_body($xtpl, $task)
+    public function set_notification_body($xtpl, $task)
     {
         global $app_list_strings;
         global $timedate;
@@ -355,14 +356,14 @@ class Task extends SugarBean
         return $xtpl;
     }
 
-    function bean_implements($interface)
+    public function bean_implements($interface)
     {
         switch ($interface) {
-			case 'ACL':return true;
-		}
+            case 'ACL':return true;
+        }
         return false;
     }
-    function listviewACLHelper()
+    public function listviewACLHelper()
     {
         $array_assign = parent::listviewACLHelper();
         $is_owner = false;
@@ -376,7 +377,7 @@ class Task extends SugarBean
             //parent_name_owner not being set for whatever reason so we need to figure this out
             elseif (!empty($this->parent_type) && !empty($this->parent_id)) {
                 global $current_user;
-                $parent_bean = BeanFactory::getBean($this->parent_type,$this->parent_id);
+                $parent_bean = BeanFactory::getBean($this->parent_type, $this->parent_id);
                 if ($parent_bean !== false) {
                     $is_owner = $current_user->id == $parent_bean->assigned_user_id;
                 }
@@ -407,7 +408,7 @@ class Task extends SugarBean
             //contact_name_owner not being set for whatever reason so we need to figure this out
             else {
                 global $current_user;
-                $parent_bean = BeanFactory::getBean('Contacts',$this->contact_id);
+                $parent_bean = BeanFactory::getBean('Contacts', $this->contact_id);
                 if ($parent_bean !== false) {
                     $is_owner = $current_user->id == $parent_bean->assigned_user_id;
                 }
@@ -436,13 +437,13 @@ class Task extends SugarBean
         $def = $this->field_defs['status'];
         if (isset($def['default'])) {
             return $def['default'];
-        } else {
-            $app = return_app_list_strings_language($GLOBALS['current_language']);
-            if (isset($def['options']) && isset($app[$def['options']])) {
-                $keys = array_keys($app[$def['options']]);
-                return $keys[0];
-            }
         }
+        $app = return_app_list_strings_language($GLOBALS['current_language']);
+        if (isset($def['options']) && isset($app[$def['options']])) {
+            $keys = array_keys($app[$def['options']]);
+            return $keys[0];
+        }
+        
         return '';
     }
 }

@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,15 +34,15 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('include/SugarFields/Fields/Base/SugarFieldBase.php');
 
 class SugarFieldFile extends SugarFieldBase
 {
-    private function fillInOptions(&$vardef,&$displayParams)
+    private function fillInOptions(&$vardef, &$displayParams)
     {
         if (isset($vardef['allowEapm']) && $vardef['allowEapm'] == true) {
             if (empty($vardef['docType'])) {
@@ -75,17 +76,17 @@ class SugarFieldFile extends SugarFieldBase
     }
 
 
-    function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    public function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
-        $this->fillInOptions($vardef,$displayParams);
+        $this->fillInOptions($vardef, $displayParams);
         return parent::getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex);
     }
     
-    function getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    public function getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
-        $this->fillInOptions($vardef,$displayParams);
+        $this->fillInOptions($vardef, $displayParams);
 
-        $keys = $this->getAccessKey($vardef,'FILE',$vardef['module']);
+        $keys = $this->getAccessKey($vardef, 'FILE', $vardef['module']);
         $displayParams['accessKeySelect'] = $keys['accessKeySelect'];
         $displayParams['accessKeySelectLabel'] = $keys['accessKeySelectLabel'];
         $displayParams['accessKeySelectTitle'] = $keys['accessKeySelectTitle'];
@@ -96,7 +97,7 @@ class SugarFieldFile extends SugarFieldBase
         return parent::getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex);
     }
     
-    function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    public function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
         return $this->getSmartyView($parentFieldArray, $vardef, $displayParams, $tabindex, 'SearchView');
     }
@@ -104,7 +105,7 @@ class SugarFieldFile extends SugarFieldBase
     public function save(&$bean, $params, $field, $vardef, $prefix = '')
     {
         $fakeDisplayParams = array();
-        $this->fillInOptions($vardef,$fakeDisplayParams);
+        $this->fillInOptions($vardef, $fakeDisplayParams);
 
         require_once('include/upload_file.php');
         $upload_file = new UploadFile($prefix . $field . '_file');
@@ -114,7 +115,7 @@ class SugarFieldFile extends SugarFieldBase
             $upload_file->unlink_file($bean->$field);
             $bean->$field="";
         }
-		
+        
         $move=false;
         if (isset($_FILES[$prefix . $field . '_file']) && $upload_file->confirm_upload()) {
             $bean->$field = $upload_file->get_stored_file_name();
@@ -167,11 +168,11 @@ class SugarFieldFile extends SugarFieldBase
         } elseif (!empty($params[$prefix . $field . '_remoteName'])) {
             // We aren't moving, we might need to do some remote linking
             $displayParams = array();
-            $this->fillInOptions($vardef,$displayParams);
+            $this->fillInOptions($vardef, $displayParams);
             
             if (isset($params[$prefix . $vardef['docId']])
                  && ! empty($params[$prefix . $vardef['docId']])
-                 && isset($params[$prefix . $vardef['docType']]) 
+                 && isset($params[$prefix . $vardef['docType']])
                  && ! empty($params[$prefix . $vardef['docType']])
                 ) {
                 $bean->$field = $params[$prefix . $field . '_remoteName'];
@@ -197,5 +198,16 @@ class SugarFieldFile extends SugarFieldBase
                 $bean->$clearField = '';
             }
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getListViewSmarty($parentFieldArray, $vardef, $displayParams, $col)
+    {
+        global $currentModule;
+        $displayParams['module'] = $currentModule;
+
+        return parent::getListViewSmarty($parentFieldArray, $vardef, $displayParams, $col);
     }
 }

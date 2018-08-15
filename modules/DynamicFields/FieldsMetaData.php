@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -55,64 +56,64 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class FieldsMetaData extends SugarBean
 {
     // database table columns
-    var $id;
-    var $name;
-    var $vname;
-    var $custom_module;
-    var $type;
-    var $len;
-    var $required;
-    var $default_value;
-    var $deleted;
-    var $ext1;
-    var $ext2;
-    var $ext3;
-    var $audited;
-    var $inline_edit;
-    var $duplicate_merge;
-    var $reportable;
-    var $required_fields =  array("name"=>1, "date_start"=>2, "time_start"=>3,);
+    public $id;
+    public $name;
+    public $vname;
+    public $custom_module;
+    public $type;
+    public $len;
+    public $required;
+    public $default_value;
+    public $deleted;
+    public $ext1;
+    public $ext2;
+    public $ext3;
+    public $audited;
+    public $inline_edit;
+    public $duplicate_merge;
+    public $reportable;
+    public $required_fields =  array("name"=>1, "date_start"=>2, "time_start"=>3,);
 
-    var $table_name = 'fields_meta_data';
-    var $object_name = 'FieldsMetaData';
-    var $module_dir = 'DynamicFields';
-    var $column_fields = array(
-		'id',
-		'name',
-		'vname',
-		'custom_module',
-		'type',
-		'len',
-		'required',
-		'default_value',
-		'deleted',
-		'ext1',
-		'ext2',
-		'ext3',
-		'audited',
-		'inline_edit',
-		'massupdate',
-        'duplicate_merge',
-        'reportable',
-	);
-
-    var $list_fields = array(
-		'id',
-		'name',
-		'vname',
-		'type',
-		'len',
-		'required',
-		'default_value',
-		'audited',
+    public $table_name = 'fields_meta_data';
+    public $object_name = 'FieldsMetaData';
+    public $module_dir = 'DynamicFields';
+    public $column_fields = array(
+        'id',
+        'name',
+        'vname',
+        'custom_module',
+        'type',
+        'len',
+        'required',
+        'default_value',
+        'deleted',
+        'ext1',
+        'ext2',
+        'ext3',
+        'audited',
         'inline_edit',
-		'massupdate',
+        'massupdate',
         'duplicate_merge',
         'reportable',
-	);
+    );
 
-    var $field_name_map;
-    var $new_schema = true;
+    public $list_fields = array(
+        'id',
+        'name',
+        'vname',
+        'type',
+        'len',
+        'required',
+        'default_value',
+        'audited',
+        'inline_edit',
+        'massupdate',
+        'duplicate_merge',
+        'reportable',
+    );
+
+    public $field_name_map;
+    public $new_schema = true;
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -139,14 +140,14 @@ class FieldsMetaData extends SugarBean
     }
 
 
-    function mark_deleted($id)
+    public function mark_deleted($id)
     {
         $query = "DELETE FROM $this->table_name WHERE  id='$id'";
-        $this->db->query($query, true,"Error deleting record: ");
+        $this->db->query($query, true, "Error deleting record: ");
         $this->mark_relationships_deleted($id);
     }
 
-    function get_list_view_data()
+    public function get_list_view_data()
     {
         $data = parent::get_list_view_data();
         $data['VNAME'] = translate($this->vname, $this->custom_module);
@@ -155,7 +156,7 @@ class FieldsMetaData extends SugarBean
     }
 
 
-    function get_summary_text()
+    public function get_summary_text()
     {
         return $this->name;
     }

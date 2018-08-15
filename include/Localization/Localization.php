@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /**
  * Localization manager
@@ -46,45 +47,45 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class Localization
 {
-    var $availableCharsets = array(
-		'BIG-5',        //Taiwan and Hong Kong
-		/*'CP866'			  // ms-dos Cyrillic */
-		/*'CP949'			  //Microsoft Korean */
-		'CP1251',       //MS Cyrillic
-		'CP1252',       //MS Western European & US
-		'EUC-CN',       //Simplified Chinese GB2312
-		'EUC-JP',       //Unix Japanese
-		'EUC-KR',       //Korean
-		'EUC-TW',       //Taiwanese
-		'ISO-2022-JP',  //Japanese
-		'ISO-2022-KR',  //Korean
-		'ISO-8859-1',   //Western European and US
-		'ISO-8859-2',   //Central and Eastern European
-		'ISO-8859-3',   //Latin 3
-		'ISO-8859-4',   //Latin 4
-		'ISO-8859-5',   //Cyrillic
-		'ISO-8859-6',   //Arabic
-		'ISO-8859-7',   //Greek
-		'ISO-8859-8',   //Hebrew
-		'ISO-8859-9',   //Latin 5
-		'ISO-8859-10',  //Latin 6
-		'ISO-8859-13',  //Latin 7
-		'ISO-8859-14',  //Latin 8
-		'ISO-8859-15',  //Latin 9
-		'KOI8-R',       //Cyrillic Russian
-		'KOI8-U',       //Cyrillic Ukranian
-		'SJIS',         //MS Japanese
-		'UTF-8',        //UTF-8
-		'UTF-16LE',     //UTF-16LE
-		);
-    var $localeNameFormat;
-    var $localeNameFormatDefault;
-    var $default_export_charset = 'UTF-8';
-    var $default_email_charset = 'UTF-8';
-    var $currencies = array(); // array loaded with current currencies
-    var $invalidNameFormatUpgradeFilename = 'upgradeInvalidLocaleNameFormat.php';
+    public $availableCharsets = array(
+        'BIG-5',        //Taiwan and Hong Kong
+        /*'CP866'			  // ms-dos Cyrillic */
+        /*'CP949'			  //Microsoft Korean */
+        'CP1251',       //MS Cyrillic
+        'CP1252',       //MS Western European & US
+        'EUC-CN',       //Simplified Chinese GB2312
+        'EUC-JP',       //Unix Japanese
+        'EUC-KR',       //Korean
+        'EUC-TW',       //Taiwanese
+        'ISO-2022-JP',  //Japanese
+        'ISO-2022-KR',  //Korean
+        'ISO-8859-1',   //Western European and US
+        'ISO-8859-2',   //Central and Eastern European
+        'ISO-8859-3',   //Latin 3
+        'ISO-8859-4',   //Latin 4
+        'ISO-8859-5',   //Cyrillic
+        'ISO-8859-6',   //Arabic
+        'ISO-8859-7',   //Greek
+        'ISO-8859-8',   //Hebrew
+        'ISO-8859-9',   //Latin 5
+        'ISO-8859-10',  //Latin 6
+        'ISO-8859-13',  //Latin 7
+        'ISO-8859-14',  //Latin 8
+        'ISO-8859-15',  //Latin 9
+        'KOI8-R',       //Cyrillic Russian
+        'KOI8-U',       //Cyrillic Ukranian
+        'SJIS',         //MS Japanese
+        'UTF-8',        //UTF-8
+        'UTF-16LE',     //UTF-16LE
+        );
+    public $localeNameFormat;
+    public $localeNameFormatDefault;
+    public $default_export_charset = 'UTF-8';
+    public $default_email_charset = 'UTF-8';
+    public $currencies = array(); // array loaded with current currencies
+    public $invalidNameFormatUpgradeFilename = 'upgradeInvalidLocaleNameFormat.php';
     /* Charset mappings for iconv */
-    var $iconvCharsetMap = array(
+    public $iconvCharsetMap = array(
         'KS_C_5601-1987' => 'CP949',
         'ISO-8859-8-I' => 'ISO-8859-8'
         );
@@ -118,23 +119,23 @@ class Localization
      * returns an array of Sugar Config defaults that are determined by locale settings
      * @return array
      */
-    function getLocaleConfigDefaults()
+    public function getLocaleConfigDefaults()
     {
         $coreDefaults = array(
-			'currency'								=> '',
-			'datef'									=> 'm/d/Y',
-			'timef'									=> 'H:i',
-			'default_currency_significant_digits'	=> 2,
-			'default_currency_symbol'				=> '$',
-			'default_export_charset'				=> $this->default_export_charset,
-			'default_locale_name_format'			=> 's f l',
+            'currency'								=> '',
+            'datef'									=> 'm/d/Y',
+            'timef'									=> 'H:i',
+            'default_currency_significant_digits'	=> 2,
+            'default_currency_symbol'				=> '$',
+            'default_export_charset'				=> $this->default_export_charset,
+            'default_locale_name_format'			=> 's f l',
             'name_formats'                          => array('s f l' => 's f l', 'f l' => 'f l', 's l' => 's l', 'l, s f' => 'l, s f',
                                                             'l, f' => 'l, f', 's l, f' => 's l, f', 'l s f' => 'l s f', 'l f s' => 'l f s'),
-			'default_number_grouping_seperator'		=> ',',
-			'default_decimal_seperator'				=> '.',
-			'export_delimiter'						=> ',',
-			'default_email_charset'					=> $this->default_email_charset,
-		);
+            'default_number_grouping_seperator'		=> ',',
+            'default_decimal_seperator'				=> '.',
+            'export_delimiter'						=> ',',
+            'default_email_charset'					=> $this->default_email_charset,
+        );
 
         return $coreDefaults;
     }
@@ -145,7 +146,7 @@ class Localization
      * @param object user User in focus, default null (current_user)
      * @return string pref Most significant preference
      */
-    function getPrecedentPreference($prefName, $user=null, $sugarConfigPrefName = '')
+    public function getPrecedentPreference($prefName, $user=null, $sugarConfigPrefName = '')
     {
         global $current_user;
         global $sugar_config;
@@ -190,7 +191,7 @@ class Localization
     /**
      * wrapper for whatever currency system we implement
      */
-    function loadCurrencies()
+    public function loadCurrencies()
     {
         // doing it dirty here
         global $db;
@@ -204,10 +205,10 @@ class Localization
         if (!is_array($load)) {
             // load default from config.php
             $this->currencies['-99'] = array(
-				'name'		=> $sugar_config['default_currency_name'],
-				'symbol'	=> $sugar_config['default_currency_symbol'],
-				'conversion_rate' => 1
-				);
+                'name'		=> $sugar_config['default_currency_name'],
+                'symbol'	=> $sugar_config['default_currency_symbol'],
+                'conversion_rate' => 1
+                );
 
             $q = "SELECT id, name, symbol, conversion_rate FROM currencies WHERE status = 'Active' and deleted = 0";
             $r = $db->query($q);
@@ -220,7 +221,7 @@ class Localization
 
                 $this->currencies[$a['id']] = $load;
             }
-            sugar_cache_put('currency_list',$this->currencies);
+            sugar_cache_put('currency_list', $this->currencies);
         } else {
             $this->currencies = $load;
         }
@@ -230,7 +231,7 @@ class Localization
      * getter for currencies array
      * @return array $this->currencies returns array( id => array(name => X, etc
      */
-    function getCurrencies()
+    public function getCurrencies()
     {
         return $this->currencies;
     }
@@ -239,55 +240,55 @@ class Localization
      * retrieves default OOTB currencies for sugar_config and installer.
      * @return array ret Array of default currencies keyed by ISO4217 code
      */
-    function getDefaultCurrencies()
+    public function getDefaultCurrencies()
     {
         $ret = array(
-			'AUD' => array(	'name'		=> 'Australian Dollars',
-							'iso4217'	=> 'AUD',
-							'symbol'	=> '$'),
-			'BRL' => array(	'name'		=> 'Brazilian Reais',
-							'iso4217'	=> 'BRL',
-							'symbol'	=> 'R$'),
-			'GBP' => array(	'name'		=> 'British Pounds',
-							'iso4217'	=> 'GBP',
-							'symbol'	=> '£'),
-			'CAD' => array(	'name'		=> 'Canadian Dollars',
-							'iso4217'	=> 'CAD',
-							'symbol'	=> '$'),
-			'CNY' => array(	'name'		=> 'Chinese Yuan',
-							'iso4217'	=> 'CNY',
-							'symbol'	=> '￥'),
-			'EUR' => array(	'name'		=> 'Euro',
-							'iso4217'	=> 'EUR',
-							'symbol'	=> '€'),
-			'HKD' => array(	'name'		=> 'Hong Kong Dollars',
-							'iso4217'	=> 'HKD',
-							'symbol'	=> '$'),
-			'INR' => array(	'name'		=> 'Indian Rupees',
-							'iso4217'	=> 'INR',
-							'symbol'	=> '₨'),
-			'KRW' => array(	'name'		=> 'Korean Won',
-							'iso4217'	=> 'KRW',
-							'symbol'	=> '₩'),
-			'YEN' => array(	'name'		=> 'Japanese Yen',
-							'iso4217'	=> 'JPY',
-							'symbol'	=> '¥'),
-			'MXN' => array(	'name'		=> 'Mexican Pesos',
-							'iso4217'	=> 'MXN',
-							'symbol'	=> '$'),
-			'SGD' => array(	'name'		=> 'Singaporean Dollars',
-							'iso4217'	=> 'SGD',
-							'symbol'	=> '$'),
-			'CHF' => array(	'name'		=> 'Swiss Franc',
-							'iso4217'	=> 'CHF',
-							'symbol'	=> 'SFr.'),
-			'THB' => array(	'name'		=> 'Thai Baht',
-							'iso4217'	=> 'THB',
-							'symbol'	=> '฿'),
-			'USD' => array(	'name'		=> 'US Dollars',
-							'iso4217'	=> 'USD',
-							'symbol'	=> '$'),
-		);
+            'AUD' => array(	'name'		=> 'Australian Dollars',
+                            'iso4217'	=> 'AUD',
+                            'symbol'	=> '$'),
+            'BRL' => array(	'name'		=> 'Brazilian Reais',
+                            'iso4217'	=> 'BRL',
+                            'symbol'	=> 'R$'),
+            'GBP' => array(	'name'		=> 'British Pounds',
+                            'iso4217'	=> 'GBP',
+                            'symbol'	=> '£'),
+            'CAD' => array(	'name'		=> 'Canadian Dollars',
+                            'iso4217'	=> 'CAD',
+                            'symbol'	=> '$'),
+            'CNY' => array(	'name'		=> 'Chinese Yuan',
+                            'iso4217'	=> 'CNY',
+                            'symbol'	=> '￥'),
+            'EUR' => array(	'name'		=> 'Euro',
+                            'iso4217'	=> 'EUR',
+                            'symbol'	=> '€'),
+            'HKD' => array(	'name'		=> 'Hong Kong Dollars',
+                            'iso4217'	=> 'HKD',
+                            'symbol'	=> '$'),
+            'INR' => array(	'name'		=> 'Indian Rupees',
+                            'iso4217'	=> 'INR',
+                            'symbol'	=> '₨'),
+            'KRW' => array(	'name'		=> 'Korean Won',
+                            'iso4217'	=> 'KRW',
+                            'symbol'	=> '₩'),
+            'YEN' => array(	'name'		=> 'Japanese Yen',
+                            'iso4217'	=> 'JPY',
+                            'symbol'	=> '¥'),
+            'MXN' => array(	'name'		=> 'Mexican Pesos',
+                            'iso4217'	=> 'MXN',
+                            'symbol'	=> '$'),
+            'SGD' => array(	'name'		=> 'Singaporean Dollars',
+                            'iso4217'	=> 'SGD',
+                            'symbol'	=> '$'),
+            'CHF' => array(	'name'		=> 'Swiss Franc',
+                            'iso4217'	=> 'CHF',
+                            'symbol'	=> 'SFr.'),
+            'THB' => array(	'name'		=> 'Thai Baht',
+                            'iso4217'	=> 'THB',
+                            'symbol'	=> '฿'),
+            'USD' => array(	'name'		=> 'US Dollars',
+                            'iso4217'	=> 'USD',
+                            'symbol'	=> '$'),
+        );
 
         return $ret;
     }
@@ -303,7 +304,7 @@ class Localization
      * @param string charset Target charset
      * @return array Translated string pack
      */
-    function translateStringPack($strings, $charset)
+    public function translateStringPack($strings, $charset)
     {
         // handle recursive
         foreach ($strings as $k => $v) {
@@ -322,7 +323,7 @@ class Localization
      * @param	mixed the var (array or string) to translate
      * @return	mixed the translated variable
      */
-    function translateForEmail($var)
+    public function translateForEmail($var)
     {
         if (is_array($var)) {
             foreach ($var as $k => $v) {
@@ -340,7 +341,7 @@ class Localization
      * @param bean object A SugarBean
      * @return bean object The bean with translated strings
      */
-    function prepBeanForExport($bean)
+    public function prepBeanForExport($bean)
     {
         foreach ($bean->field_defs as $k => $field) {
             if (is_string($bean->$k)) {
@@ -361,7 +362,7 @@ class Localization
      * @param bool   forceIconv force using the iconv library instead of mb_string
      * @return string the translated string
      */
-    function translateCharset($string, $fromCharset, $toCharset='UTF-8', $forceIconv = false)
+    public function translateCharset($string, $fromCharset, $toCharset='UTF-8', $forceIconv = false)
     {
         $GLOBALS['log']->debug("Localization: translating [{$string}] from {$fromCharset} into {$toCharset}");
 
@@ -395,15 +396,15 @@ class Localization
                 $GLOBALS['log']->debug("Localization: iconv using charset {$newToCharset} instead of {$toCharset}");
             }
             return iconv($newFromCharset, $newToCharset, $string);
-        } else {
-            return $string;
-        } // end else clause
+        }
+        return $string;
+        // end else clause
     }
 
     /**
      * translates a character set from one to another, and the into MIME-header friendly format
      */
-    function translateCharsetMIME($string, $fromCharset, $toCharset='UTF-8', $encoding="Q")
+    public function translateCharsetMIME($string, $fromCharset, $toCharset='UTF-8', $encoding="Q")
     {
         $previousEncoding = mb_internal_encoding();
         mb_internal_encoding($fromCharset);
@@ -412,7 +413,7 @@ class Localization
         return $result;
     }
 
-    function normalizeCharset($charset)
+    public function normalizeCharset($charset)
     {
         $charset = strtolower(preg_replace("/[\-\_]*/", "", $charset));
         return $charset;
@@ -421,7 +422,7 @@ class Localization
     /**
      * returns an array of charsets with keys for available translations; appropriate for get_select_options_with_id()
      */
-    function getCharsetSelect()
+    public function getCharsetSelect()
     {
         //jc:12293 - the "labels" or "human-readable" representations of the various charsets
         //should be translatable
@@ -440,7 +441,7 @@ class Localization
      * @param string charset to override ALL, pass a valid charset here
      * @return string charset the chosen character set
      */
-    function getExportCharset($charset='', $user=null)
+    public function getExportCharset($charset='', $user=null)
     {
         $charset = $this->getPrecedentPreference('default_export_charset', $user);
         return $charset;
@@ -450,7 +451,7 @@ class Localization
      * returns the charset preferred in descending order: User, Sugar Config, DEFAULT
      * @return string charset the chosen character set
      */
-    function getOutboundEmailCharset($user=null)
+    public function getOutboundEmailCharset($user=null)
     {
         $charset = $this->getPrecedentPreference('default_email_charset', $user);
         return $charset;
@@ -460,26 +461,26 @@ class Localization
 
     ///////////////////////////////////////////////////////////////////////////
     ////	NUMBER DISPLAY FORMATTING CODE
-    function getDecimalSeparator($user=null)
+    public function getDecimalSeparator($user=null)
     {
         // Bug50887 this is purposefully misspelled as ..._seperator to match the way it's defined throughout the app.
         $dec = $this->getPrecedentPreference('default_decimal_seperator', $user);
         return $dec;
     }
 
-    function getNumberGroupingSeparator($user=null)
+    public function getNumberGroupingSeparator($user=null)
     {
         $sep = $this->getPrecedentPreference('default_number_grouping_seperator', $user);
         return $sep;
     }
 
-    function getPrecision($user=null)
+    public function getPrecision($user=null)
     {
         $precision = $this->getPrecedentPreference('default_currency_significant_digits', $user);
         return $precision;
     }
 
-    function getCurrencySymbol($user=null)
+    public function getCurrencySymbol($user=null)
     {
         $dec = $this->getPrecedentPreference('default_currency_symbol', $user);
         return $dec;
@@ -492,7 +493,7 @@ class Localization
      * @param bool is_currency Flag to also return the currency symbol
      * @return string Formatted number
      */
-    function getLocaleFormattedNumber($number, $currencySymbol='', $is_currency=true, $user=null)
+    public function getLocaleFormattedNumber($number, $currencySymbol='', $is_currency=true, $user=null)
     {
         $fnum			= $number;
         $majorDigits	= '';
@@ -529,10 +530,10 @@ class Localization
         }
 
         // handle decimals
-		if ($precision > 0) { // we toss the minor digits otherwise
-			if (is_array($exNum) && isset($exNum[1])) {
-			}
-		}
+        if ($precision > 0) { // we toss the minor digits otherwise
+            if (is_array($exNum) && isset($exNum[1])) {
+            }
+        }
 
 
         if ($is_currency) {
@@ -544,7 +545,7 @@ class Localization
     /**
      * returns Javascript to format numbers and currency for ***DISPLAY***
      */
-    function getNumberJs()
+    public function getNumberJs()
     {
         $out = <<<eoq
 
@@ -627,7 +628,7 @@ eoq;
      * get's the Name format macro string, preferring $current_user
      * @return string format Name Format macro for locale
      */
-    function getLocaleFormatMacro($user=null)
+    public function getLocaleFormatMacro($user=null)
     {
         $returnFormat = $this->getPrecedentPreference('default_locale_name_format', $user);
         return $returnFormat;
@@ -647,7 +648,7 @@ eoq;
      * when the formatted name would be blank
      * @return string formattedName
      */
-    function getLocaleFormattedName($firstName, $lastName, $salutationKey='', $title='', $format="", $user=null, $returnEmptyStringIfEmpty = false)
+    public function getLocaleFormattedName($firstName, $lastName, $salutationKey='', $title='', $format="", $user=null, $returnEmptyStringIfEmpty = false)
     {
         global $current_user;
         global $app_list_strings;
@@ -699,7 +700,7 @@ eoq;
             return $returnEmptyStringIfEmpty ? '' : ' ';
         }
 
-        if (strpos($formattedName,',',strlen($formattedName)-1)) { // remove trailing commas
+        if (strpos($formattedName, ',', strlen($formattedName)-1)) { // remove trailing commas
             $formattedName = substr($formattedName, 0, strlen($formattedName)-1);
         }
         return trim($formattedName);
@@ -712,7 +713,7 @@ eoq;
      * @param string salutation Saluation, use app_strings default if not specified
      * @return string some Javascript
      */
-    function getNameJs($first='', $last='', $salutation='', $title='')
+    public function getNameJs($first='', $last='', $salutation='', $title='')
     {
         global $app_strings;
 
@@ -780,7 +781,7 @@ eoq;
      */
     public function createInvalidLocaleNameFormatUpgradeNotice()
     {
-        $fh = fopen($this->invalidNameFormatUpgradeFilename,'w');
+        $fh = fopen($this->invalidNameFormatUpgradeFilename, 'w');
         fclose($fh);
     }
 
@@ -838,7 +839,7 @@ eoq;
     public function detectCharset($str, $strict=false)
     {
         if (function_exists('mb_convert_encoding')) {
-            return mb_detect_encoding($str,'ASCII,JIS,UTF-8,EUC-JP,SJIS,ISO-8859-1',$strict);
+            return mb_detect_encoding($str, 'ASCII,JIS,UTF-8,EUC-JP,SJIS,ISO-8859-1', $strict);
         }
 
         return false;

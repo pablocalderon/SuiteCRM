@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,15 +34,15 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('include/SugarFields/Parsers/MetaParser.php');
 
 class SearchFormMetaParser extends MetaParser
 {
-    function __construct()
+    public function __construct()
     {
         $this->mView = 'Search';
     }
@@ -49,7 +50,7 @@ class SearchFormMetaParser extends MetaParser
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function SearchFormMetaParser()
+    public function SearchFormMetaParser()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -66,7 +67,7 @@ class SearchFormMetaParser extends MetaParser
      * @param $mixed
      * @return $obj A MetaDataBean instance
      **/
-    function parse($filePath, $vardefs = array(), $moduleDir = '', $merge=false, $masterCopy=null)
+    public function parse($filePath, $vardefs = array(), $moduleDir = '', $merge=false, $masterCopy=null)
     {
         $contents = file_get_contents($filePath);
         $contents = $this->trimHTML($contents);
@@ -104,11 +105,11 @@ class SearchFormMetaParser extends MetaParser
 );
 ?>";
 
-        $header = preg_replace('/(\d+)[\s]=>[\s]?/',"",$header);
+        $header = preg_replace('/(\d+)[\s]=>[\s]?/', "", $header);
         return $header;
     }
 
-    function mergeSection($section, $masterSection)
+    public function mergeSection($section, $masterSection)
     {
 
   // Get all the names in the panel
@@ -131,10 +132,10 @@ class SearchFormMetaParser extends MetaParser
             $id = is_array($row) ? $row['name'] : $row;
 
             /*
-  	 if(!isset($existingElements[$id])) {
-  	 	//$addEntry = $row;
-  	 }
-  	 */
+     if(!isset($existingElements[$id])) {
+         //$addEntry = $row;
+     }
+     */
 
             if (isset($existingElements[$id])) {
                 //Use master copy instead
@@ -142,17 +143,17 @@ class SearchFormMetaParser extends MetaParser
             }
 
             // Add it to the $panels
-  	 /*
-  	 if(!empty($addEntry)) {
-  	 	$section[] = $addEntry;
-  	 }
-  	 */
+     /*
+     if(!empty($addEntry)) {
+         $section[] = $addEntry;
+     }
+     */
         } //foreach
 
         return $section;
     }
 
-    function processSection($section, $table, $filePath, $vardefs=array())
+    public function processSection($section, $table, $filePath, $vardefs=array())
     {
         $toptr = $this->getElementsByType("tr", $table);
 
@@ -207,7 +208,7 @@ class SearchFormMetaParser extends MetaParser
                     // If it's a custom field we just set the name
                     $name = $customField;
                 } elseif (is_array($formElementNames) && count($formElementNames) == 1
-	   	  	           && (isset($vardefs[$formElementNames[0]]) || $formElementNames[0] == 'current_user_only')) {
+                       && (isset($vardefs[$formElementNames[0]]) || $formElementNames[0] == 'current_user_only')) {
                     $name = $formElementNames[0];
                 }
 
@@ -262,7 +263,7 @@ class SearchFormMetaParser extends MetaParser
         return $metarow;
     }
 
-    function applyRules($moduleDir, $section=array())
+    public function applyRules($moduleDir, $section=array())
     {
         require_once('include/SugarFields/Parsers/Rules/BaseRule.php');
         $baseRule = new BaseRule();

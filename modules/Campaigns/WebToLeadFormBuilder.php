@@ -213,7 +213,7 @@ HTML;
         $html = '';
         foreach ($appListStringsFieldOptions as $field_option_key => $field_option) {
             if ($field_option != null) {
-                if (!empty($lead->$fieldName) && in_array($field_option_key,unencodeMultienum($lead->$fieldName))) {
+                if (!empty($lead->$fieldName) && in_array($field_option_key, unencodeMultienum($lead->$fieldName))) {
                     $_checked = ' checked';
                 } else {
                     $_checked = '';
@@ -256,7 +256,7 @@ HTML;
     // char strings
 
     /**
-     * 
+     *
      * @param string $fieldName
      * @param string $fieldLabel
      * @param bool $fieldRequired
@@ -301,7 +301,7 @@ HTML;
     // email
 
     /**
-     * 
+     *
      * @param string $fieldName
      * @param string $fieldRequired
      * @param string $fieldLabel
@@ -320,7 +320,7 @@ HTML;
     }
     
     /**
-     * 
+     *
      * @param string $fieldName
      * @return string
      */
@@ -375,7 +375,7 @@ HTML;
 
     private static function getArrayOfFieldInfo($lead, $colsField, &$requiredFields)
     {
-        $field_vname= preg_replace('/:$/','',translate($lead->field_defs[$colsField]['vname'], $lead->module_dir));
+        $field_vname= preg_replace('/:$/', '', translate($lead->field_defs[$colsField]['vname'], $lead->module_dir));
         $field_name= $colsField;
         $field_label = $field_vname .": ";
         if (isset($lead->field_defs[$colsField]['custom_type']) && $lead->field_defs[$colsField]['custom_type'] != null) {
@@ -394,12 +394,12 @@ HTML;
             && $lead->field_defs[$colsField]['required'] != 0) {
             $field_required = $lead->field_defs[$colsField]['required'];
             if (! in_array($lead->field_defs[$colsField]['name'], $requiredFields)) {
-                array_push($requiredFields,$lead->field_defs[$colsField]['name']);
+                array_push($requiredFields, $lead->field_defs[$colsField]['name']);
             }
         }
         if ($lead->field_defs[$colsField]['name']=='last_name') {
             if (! in_array($lead->field_defs[$colsField]['name'], $requiredFields)) {
-                array_push($requiredFields,$lead->field_defs[$colsField]['name']);
+                array_push($requiredFields, $lead->field_defs[$colsField]['name']);
             }
         }
         $field_options = null;
@@ -411,7 +411,8 @@ HTML;
 
     // --------------- generate form ------------------
 
-    public static function generate($request,
+    public static function generate(
+        $request,
                                     $lead,
                                     $moduleDir,
                                     $siteURL,

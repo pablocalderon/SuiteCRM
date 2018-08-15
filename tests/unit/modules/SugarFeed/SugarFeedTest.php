@@ -128,7 +128,7 @@ class SugarFeedTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testpushFeed2()
     {
 
-	// save state
+    // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushTable('aod_index');
@@ -181,7 +181,7 @@ class SugarFeedTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         //test fetchReplies method
         $this->fetchReplies();
 
-        //mark the record as deleted 
+        //mark the record as deleted
         $sugarFeed->mark_deleted($sugarFeed->id);
         
         // clean up
@@ -239,7 +239,9 @@ class SugarFeedTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetTimeLapse()
     {
-        $result = SugarFeed::getTimeLapse('2016-01-15 11:16:02');
+        global $timedate;
+
+        $result = SugarFeed::getTimeLapse($timedate->asUser($timedate->fromDb('2016-01-15 11:16:02')));
         $this->assertTrue(isset($result));
         $this->assertGreaterThan(0, strlen($result));
     }

@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -71,84 +72,84 @@ function get_widget($type)
 {
     $local_temp = null;
     switch (strtolower($type)) {
-			case 'char':
-			case 'varchar':
-			case 'varchar2':
-						$local_temp = new TemplateText(); break;
-			case 'text':
-			case 'textarea':
-						$local_temp = new TemplateTextArea(); break;
-			case 'double':
+            case 'char':
+            case 'varchar':
+            case 'varchar2':
+                        $local_temp = new TemplateText(); break;
+            case 'text':
+            case 'textarea':
+                        $local_temp = new TemplateTextArea(); break;
+            case 'double':
 
-			case 'float':
-						$local_temp = new TemplateFloat(); break;
-			case 'decimal':
-						$local_temp = new TemplateDecimal(); break;
-			case 'int':
-						$local_temp = new TemplateInt(); break;
-			case 'date':
-						$local_temp = new TemplateDate(); break;
-			case 'bool':
-						$local_temp = new TemplateBoolean(); break;
-			case 'relate':
-						$local_temp = new TemplateRelatedTextField(); break;
-			case 'enum':
-						$local_temp = new TemplateEnum(); break;
-			case 'multienum':
-						$local_temp = new TemplateMultiEnum(); break;
-			case 'radioenum':
-						$local_temp = new TemplateRadioEnum(); break;
-			case 'email':
-						$local_temp = new TemplateEmail(); break;
-		    case 'url':
-						$local_temp = new TemplateURL(); break;
-			case 'iframe':
-						$local_temp = new TemplateIFrame(); break;
-			case 'html':
-						$local_temp = new TemplateHTML(); break;
-			case 'phone':
-						$local_temp = new TemplatePhone(); break;
-			case 'currency':
-						$local_temp = new TemplateCurrency(); break;
-			case 'parent':
-						$local_temp = new TemplateParent(); break;
-			case 'parent_type':
-						$local_temp = new TemplateParentType(); break;
-			case 'currency_id':
-						$local_temp = new TemplateCurrencyId(); break;
-			case 'address':
-						$local_temp = new TemplateAddress(); break;
-			case 'encrypt':
-						$local_temp = new TemplateEncrypt(); break;
-			case 'id':
-						$local_temp = new TemplateId(); break;
-			case 'datetimecombo':
-			case 'datetime':
-						$local_temp = new TemplateDatetimecombo(); break;
+            case 'float':
+                        $local_temp = new TemplateFloat(); break;
+            case 'decimal':
+                        $local_temp = new TemplateDecimal(); break;
+            case 'int':
+                        $local_temp = new TemplateInt(); break;
+            case 'date':
+                        $local_temp = new TemplateDate(); break;
+            case 'bool':
+                        $local_temp = new TemplateBoolean(); break;
+            case 'relate':
+                        $local_temp = new TemplateRelatedTextField(); break;
+            case 'enum':
+                        $local_temp = new TemplateEnum(); break;
+            case 'multienum':
+                        $local_temp = new TemplateMultiEnum(); break;
+            case 'radioenum':
+                        $local_temp = new TemplateRadioEnum(); break;
+            case 'email':
+                        $local_temp = new TemplateEmail(); break;
+            case 'url':
+                        $local_temp = new TemplateURL(); break;
+            case 'iframe':
+                        $local_temp = new TemplateIFrame(); break;
+            case 'html':
+                        $local_temp = new TemplateHTML(); break;
+            case 'phone':
+                        $local_temp = new TemplatePhone(); break;
+            case 'currency':
+                        $local_temp = new TemplateCurrency(); break;
+            case 'parent':
+                        $local_temp = new TemplateParent(); break;
+            case 'parent_type':
+                        $local_temp = new TemplateParentType(); break;
+            case 'currency_id':
+                        $local_temp = new TemplateCurrencyId(); break;
+            case 'address':
+                        $local_temp = new TemplateAddress(); break;
+            case 'encrypt':
+                        $local_temp = new TemplateEncrypt(); break;
+            case 'id':
+                        $local_temp = new TemplateId(); break;
+            case 'datetimecombo':
+            case 'datetime':
+                        $local_temp = new TemplateDatetimecombo(); break;
             case 'image':
                         $local_temp = new TemplateImage(); break;
-			default:
-						$file = false;
-						if (file_exists('custom/modules/DynamicFields/templates/Fields/Template'. ucfirst($type) . '.php')) {
-						    $file  =	'custom/modules/DynamicFields/templates/Fields/Template'. ucfirst($type) . '.php';
-						} elseif (file_exists('modules/DynamicFields/templates/Fields/Template'. ucfirst($type) . '.php')) {
-						    $file  =	'modules/DynamicFields/templates/Fields/Template'. ucfirst($type) . '.php';
-						}
-						if (!empty($file)) {
-						    require_once($file);
-						    $class  = 'Template' . ucfirst($type) ;
-						    $customClass = 'Custom' . $class;
-						    if (class_exists($customClass)) {
-						        $local_temp = new $customClass();
-						    } else {
-						        $local_temp = new $class();
-						    }
-						    break;
-						} else {
-						    $local_temp = new TemplateText();
-						    break;
-						}
-	}
+            default:
+                        $file = false;
+                        if (file_exists('custom/modules/DynamicFields/templates/Fields/Template'. ucfirst($type) . '.php')) {
+                            $file  =	'custom/modules/DynamicFields/templates/Fields/Template'. ucfirst($type) . '.php';
+                        } elseif (file_exists('modules/DynamicFields/templates/Fields/Template'. ucfirst($type) . '.php')) {
+                            $file  =	'modules/DynamicFields/templates/Fields/Template'. ucfirst($type) . '.php';
+                        }
+                        if (!empty($file)) {
+                            require_once($file);
+                            $class  = 'Template' . ucfirst($type) ;
+                            $customClass = 'Custom' . $class;
+                            if (class_exists($customClass)) {
+                                $local_temp = new $customClass();
+                            } else {
+                                $local_temp = new $class();
+                            }
+                            break;
+                        }
+                            $local_temp = new TemplateText();
+                            break;
+                        
+    }
 
     return $local_temp;
 }

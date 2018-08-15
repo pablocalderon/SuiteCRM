@@ -231,9 +231,9 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                         if (in_array($optInEmailField, $optedOut)) {
                             $sea->resetOptIn();
                             continue;
-                        } else {
-                            $sea->optIn();
                         }
+                        $sea->optIn();
+                        
 
                         $configurator = new Configurator();
                         if ($configurator->isConfirmOptInEnabled()) {
@@ -250,7 +250,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                         }
                         if ($configurator->isOptInEnabled()) {
                             $date = TimeDate::getInstance()->nowDb();
-                            $date_test = $timedate->to_display_date($date,false);
+                            $date_test = $timedate->to_display_date($date, false);
                             $person->lawful_basis = '^consent^';
                             $person->date_reviewed = $date_test;
                             $person->lawful_basis_source = 'website';
@@ -351,9 +351,8 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
         sugar_cleanup();
         // die to keep code from running into redirect case below
         die();
-    } else {
-        echo $mod_strings['LBL_SERVER_IS_CURRENTLY_UNAVAILABLE'];
     }
+    echo $mod_strings['LBL_SERVER_IS_CURRENTLY_UNAVAILABLE'];
 }
 
 if (!empty($_POST['redirect'])) {

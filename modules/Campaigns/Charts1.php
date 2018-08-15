@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,11 +37,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
+/**
 
 * Description:  Includes the functions for Customer module specific charts.
 ********************************************************************************/
@@ -61,7 +62,7 @@ class charts
      * @param array targets: translated list of all activity types, targeted, bounced etc..
      * @param string campaign_id: chart for this campaign.
      */
-    function campaign_response_chart($targets,$campaign_id)
+    public function campaign_response_chart($targets, $campaign_id)
     {
         $focus = new Campaign();
         $leadSourceArr = array();
@@ -92,15 +93,15 @@ class charts
         }
 
         //use the new template.
-        $xtpl=new XTemplate ('modules/Campaigns/chart.tpl');
-        $xtpl->assign("GRAPHTITLE",'Campaign Response by Recipient Activity');
-        $xtpl->assign("Y_DEFAULT_ALT_TEXT",'Rollover a bar to view details.');
+        $xtpl=new XTemplate('modules/Campaigns/chart.tpl');
+        $xtpl->assign("GRAPHTITLE", 'Campaign Response by Recipient Activity');
+        $xtpl->assign("Y_DEFAULT_ALT_TEXT", 'Rollover a bar to view details.');
 
         //process rows
         foreach ($leadSourceArr as $key=>$values) {
             if (isset($values['bars'])) {
                 foreach ($values['bars'] as $bar_id=>$bar_value) {
-                    $xtpl->assign("Y_BAR_ID",$bar_id);
+                    $xtpl->assign("Y_BAR_ID", $bar_id);
                 }
             }
         }

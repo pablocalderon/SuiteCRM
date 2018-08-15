@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -195,15 +196,15 @@ EOD;
             $sugarChart->url_params['assigned_user_id'] = array_values($this->pbls_ids);
         $sugarChart->getData($this->constructQuery());
         $sugarChart->data_set = $sugarChart->sortData($sugarChart->data_set, 'lead_source', true);
-		$xmlFile = $sugarChart->getXMLFileName($this->id);
-		$sugarChart->saveXMLFile($xmlFile, $sugarChart->generateXML());
+        $xmlFile = $sugarChart->getXMLFileName($this->id);
+        $sugarChart->saveXMLFile($xmlFile, $sugarChart->generateXML());
 
-		return $this->getTitle('<div align="center"></div>') .
+        return $this->getTitle('<div align="center"></div>') .
             '<div align="center">' . $sugarChart->display($this->id, $xmlFile, '100%', '480', false) . '</div>'. $this->processAutoRefresh();
         */
     }
 
-    function getChartData($query)
+    public function getChartData($query)
     {
         global $app_list_strings, $db;
         $dataSet = [];
@@ -250,12 +251,12 @@ EOD;
             "FROM opportunities ";
         $query .= "WHERE opportunities.deleted=0 ";
         if (count($this->pbls_ids) > 0) {
-            $query .= "AND opportunities.assigned_user_id IN ('".implode("','",$this->pbls_ids)."') ";
+            $query .= "AND opportunities.assigned_user_id IN ('".implode("','", $this->pbls_ids)."') ";
         }
         if (count($this->pbls_lead_sources) > 0) {
-            $query .= "AND opportunities.lead_source IN ('".implode("','",$this->pbls_lead_sources)."') ";
+            $query .= "AND opportunities.lead_source IN ('".implode("','", $this->pbls_lead_sources)."') ";
         } else {
-            $query .= "AND opportunities.lead_source IN ('".implode("','",array_keys($GLOBALS['app_list_strings']['lead_source_dom']))."') ";
+            $query .= "AND opportunities.lead_source IN ('".implode("','", array_keys($GLOBALS['app_list_strings']['lead_source_dom']))."') ";
         }
         $query .= "GROUP BY lead_source ORDER BY total DESC";
 

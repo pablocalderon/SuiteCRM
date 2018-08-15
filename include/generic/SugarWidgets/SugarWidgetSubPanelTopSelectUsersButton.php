@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2016 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -48,7 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class SugarWidgetSubPanelTopSelectUsersButton extends SugarWidgetSubPanelTopSelectButton
 {
     //button_properties is a collection of properties associated with the widget_class definition. layoutmanager
-    function __construct($button_properties=array())
+    public function __construct($button_properties=array())
     {
         $this->button_properties=$button_properties;
     }
@@ -56,7 +57,7 @@ class SugarWidgetSubPanelTopSelectUsersButton extends SugarWidgetSubPanelTopSele
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function SugarWidgetSubPanelTopSelectUsersButton($button_properties=array())
+    public function SugarWidgetSubPanelTopSelectUsersButton($button_properties=array())
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -68,12 +69,12 @@ class SugarWidgetSubPanelTopSelectUsersButton extends SugarWidgetSubPanelTopSele
     }
 
 
-    function getDisplayName()
+    public function getDisplayName()
     {
         return $GLOBALS['app_strings']['LBL_SELECT_USER_BUTTON_LABEL'];
     }
     //widget_data is the collection of attributes associated with the button in the layout_defs file.
-    function display($widget_data, $additionalFormFields = NULL, $nonbutton = false)
+    public function display($widget_data, $additionalFormFields = null, $nonbutton = false)
     {
         global $app_strings;
         $initial_filter = '';
@@ -102,9 +103,9 @@ class SugarWidgetSubPanelTopSelectUsersButton extends SugarWidgetSubPanelTopSele
         $focus = $widget_data['focus'];
         if (ACLController::moduleSupportsACL($widget_data['module']) && !ACLController::checkAccess($widget_data['module'], 'list', true)) {
             $button = ' <input type="button" name="' .$this->getWidgetId() . '" id="' .$this->getWidgetId() . '" class="button"' . "\"\n"
-			. ' title="' . $this->title . '"'
-			. ' value="' . $this->value . "\"\n"
-			.' disabled />';
+            . ' title="' . $this->title . '"'
+            . ' value="' . $this->value . "\"\n"
+            .' disabled />';
             return $button;
         }
 
@@ -159,26 +160,26 @@ class SugarWidgetSubPanelTopSelectUsersButton extends SugarWidgetSubPanelTopSele
         //field_to_name_array
         $fton_array= array('id' => 'subpanel_id');
         if (isset($widget_data['field_to_name_array']) && is_array($widget_data['field_to_name_array'])) {
-            $fton_array=array_merge($fton_array,$widget_data['field_to_name_array']);
+            $fton_array=array_merge($fton_array, $widget_data['field_to_name_array']);
         }
 
         $return_url = "index.php?module=$return_module&action=$return_action&subpanel=$subpanel_name&record=$return_id&sugar_body_only=1";
 
         $popup_request_data = array(
-			'call_back_function' => 'set_return_and_save_background',
-			'form_name' => 'DetailView',
-			'field_to_name_array' => $fton_array,
-			'passthru_data' => array(
-				'child_field' => $this->module_name,
-				'return_url' => urlencode($return_url),
-				'link_field_name' => $link_field_name,
-				'module_name' => $this->module_name,
-				'refresh_page' => 1,
-			),
-		);
+            'call_back_function' => 'set_return_and_save_background',
+            'form_name' => 'DetailView',
+            'field_to_name_array' => $fton_array,
+            'passthru_data' => array(
+                'child_field' => $this->module_name,
+                'return_url' => urlencode($return_url),
+                'link_field_name' => $link_field_name,
+                'module_name' => $this->module_name,
+                'refresh_page' => 1,
+            ),
+        );
 
         if (is_array($this->button_properties) && !empty($this->button_properties['add_to_passthru_data'])) {
-            $popup_request_data['passthru_data']= array_merge($popup_request_data['passthru_data'],$this->button_properties['add_to_passthru_data']);
+            $popup_request_data['passthru_data']= array_merge($popup_request_data['passthru_data'], $this->button_properties['add_to_passthru_data']);
         }
 
         if (is_array($this->button_properties) && !empty($this->button_properties['add_to_passthru_data']['return_type'])) {
@@ -189,9 +190,9 @@ class SugarWidgetSubPanelTopSelectUsersButton extends SugarWidgetSubPanelTopSele
         $json_encoded_php_array = $this->_create_json_encoded_popup_request($popup_request_data);
 
         return '<form action="index.php">' . "\n"
-			. ' <input type="button" name="' .$this->getWidgetId() . '" id="' .$this->getWidgetId() . '" class="button"' . "\"\n"
-				. ' title="' . $this->title . '"'
-			. ' value="' . $this->value . "\"\n"
-			. " onclick='open_popup(\"$this->module_name\",600,400,\"$initial_filter\",true,true,$json_encoded_php_array,\"$popup_mode\",$create);' /></form>\n";
+            . ' <input type="button" name="' .$this->getWidgetId() . '" id="' .$this->getWidgetId() . '" class="button"' . "\"\n"
+                . ' title="' . $this->title . '"'
+            . ' value="' . $this->value . "\"\n"
+            . " onclick='open_popup(\"$this->module_name\",600,400,\"$initial_filter\",true,true,$json_encoded_php_array,\"$popup_mode\",$create);' /></form>\n";
     }
 }

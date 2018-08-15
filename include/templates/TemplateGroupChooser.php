@@ -16,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,8 +34,8 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -47,16 +47,16 @@ require_once("include/templates/Template.php");
 
 class TemplateGroupChooser extends Template
 {
-    var $args;
-    var $js_loaded = false;
-    var $display_hide_tabs = true;
-    var $display_third_tabs = false;
+    public $args;
+    public $js_loaded = false;
+    public $display_hide_tabs = true;
+    public $display_third_tabs = false;
 
-    function __construct()
+    public function __construct()
     {
     }
 
-    function display()
+    public function display()
     {
         global $app_strings, $mod_strings, $js_loaded;
 
@@ -109,8 +109,8 @@ EOQ;
 
         $str .= '<td>&nbsp;</td></tr><tr><td valign="top" style="padding-right: 2px; padding-left: 2px;" align="center">';
         if (!isset($this->args['disable'])) {
-            $str .= "<a id='chooser_{$this->args['left_name']}_up_arrow' onclick=\"return SUGAR.tabChooser.up('{$this->args['left_name']}','{$this->args['left_name']}','{$this->args['right_name']}');\">" .  SugarThemeRegistry::current()->getImage('uparrow_big','border="0" style="margin-bottom: 1px;"',null,null,'.gif',$alt_tip_up) . "</a><br>
-                     <a id='chooser_{$this->args['right_name']}_down_arrow' onclick=\"return SUGAR.tabChooser.down('{$this->args['left_name']}','{$this->args['left_name']}','{$this->args['right_name']}');\">" . SugarThemeRegistry::current()->getImage('downarrow_big','border="0" style="margin-top: 1px;"',null,null,'.gif',$alt_tip_down) . "</a>";
+            $str .= "<a id='chooser_{$this->args['left_name']}_up_arrow' onclick=\"return SUGAR.tabChooser.up('{$this->args['left_name']}','{$this->args['left_name']}','{$this->args['right_name']}');\">" .  SugarThemeRegistry::current()->getImage('uparrow_big', 'border="0" style="margin-bottom: 1px;"', null, null, '.gif', $alt_tip_up) . "</a><br>
+                     <a id='chooser_{$this->args['right_name']}_down_arrow' onclick=\"return SUGAR.tabChooser.down('{$this->args['left_name']}','{$this->args['left_name']}','{$this->args['right_name']}');\">" . SugarThemeRegistry::current()->getImage('downarrow_big', 'border="0" style="margin-top: 1px;"', null, null, '.gif', $alt_tip_down) . "</a>";
         }
 
         $str .= <<<EOQ
@@ -133,7 +133,7 @@ EOQ;
         if ($this->display_hide_tabs == true) {
             $str .= '<td valign="top" style="padding-right: 2px; padding-left: 2px;" align="center">';
             if (!isset($this->args['disable'])) {
-                $str .= "<a id='chooser_{$this->args['left_name']}_left_arrow' onclick=\"return SUGAR.tabChooser.right_to_left('{$this->args['left_name']}','{$this->args['right_name']}', '{$left_size}', '{$right_size}', '{$max_left}');\">" . SugarThemeRegistry::current()->getImage('leftarrow_big','border="0" style="margin-right: 1px;"',null,null,'.gif',$alt_tip_left) . "</a><a id='chooser_{$this->args['left_name']}_left_to_right' onclick=\"return SUGAR.tabChooser.left_to_right('{$this->args['left_name']}','{$this->args['right_name']}', '{$left_size}', '{$right_size}');\">" . SugarThemeRegistry::current()->getImage('rightarrow_big','border="0" style="margin-left: 1px;"',null,null,'.gif',$alt_tip_right) . "</a>";
+                $str .= "<a id='chooser_{$this->args['left_name']}_left_arrow' onclick=\"return SUGAR.tabChooser.right_to_left('{$this->args['left_name']}','{$this->args['right_name']}', '{$left_size}', '{$right_size}', '{$max_left}');\">" . SugarThemeRegistry::current()->getImage('leftarrow_big', 'border="0" style="margin-right: 1px;"', null, null, '.gif', $alt_tip_left) . "</a><a id='chooser_{$this->args['left_name']}_left_to_right' onclick=\"return SUGAR.tabChooser.left_to_right('{$this->args['left_name']}','{$this->args['right_name']}', '{$left_size}', '{$right_size}');\">" . SugarThemeRegistry::current()->getImage('rightarrow_big', 'border="0" style="margin-left: 1px;"', null, null, '.gif', $alt_tip_right) . "</a>";
             }
             $str .= "</td>
                 <td id=\"{$this->args['right_name']}_td\" align=\"center\">
@@ -148,7 +148,7 @@ EOQ;
         if ($this->display_third_tabs == true) {
             $str .= '<td valign="top" style="padding-right: 2px; padding-left: 2px;" align="center">';
             if (!isset($this->args['disable'])) {
-                $str .= "<a id='chooser_{$this->args['right_name']}_right_arrow' onclick=\"return SUGAR.tabChooser.right_to_left('{$this->args['right_name']}','{$this->args['third_name']}', '{$right_size}', '{$third_size}');\">" . SugarThemeRegistry::current()->getImage('leftarrow_big','border="0" style="margin-right: 1px;"',null,null,'.gif',$alt_tip_left) . "</a><a id='chooser_{$this->args['right_name']}_left_to_right' onclick=\"return SUGAR.tabChooser.left_to_right('{$this->args['right_name']}','{$this->args['third_name']}', '{$right_size}', '{$third_size}');\">" . SugarThemeRegistry::current()->getImage('rightarrow_big','border="0" style="margin-left: 1px;"',null,null,'.gif',$alt_tip_right) . "</a>";
+                $str .= "<a id='chooser_{$this->args['right_name']}_right_arrow' onclick=\"return SUGAR.tabChooser.right_to_left('{$this->args['right_name']}','{$this->args['third_name']}', '{$right_size}', '{$third_size}');\">" . SugarThemeRegistry::current()->getImage('leftarrow_big', 'border="0" style="margin-right: 1px;"', null, null, '.gif', $alt_tip_left) . "</a><a id='chooser_{$this->args['right_name']}_left_to_right' onclick=\"return SUGAR.tabChooser.left_to_right('{$this->args['right_name']}','{$this->args['third_name']}', '{$right_size}', '{$third_size}');\">" . SugarThemeRegistry::current()->getImage('rightarrow_big', 'border="0" style="margin-left: 1px;"', null, null, '.gif', $alt_tip_right) . "</a>";
             }
             $str .= "</td>
                 <td id=\"{$this->args['third_name']}_td\" align=\"center\">
@@ -178,7 +178,7 @@ EOQ;
      * All Moved to sugar_3.js in class tabChooser;
      * Please follow style that Dashlet configuration is done.
      */
-    function template_groups_chooser_js()
+    public function template_groups_chooser_js()
     {
         //return '<script>var object_refs = new Object();</script>';
     }

@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 require_once('include/EditView/SugarVCR.php');
@@ -92,7 +93,7 @@ class ListViewData
      *
      * @return array containing the keys orderBy => field being ordered off of and sortOrder => the sort order of that field
      */
-    function getOrderBy($orderBy = '', $direction = '')
+    public function getOrderBy($orderBy = '', $direction = '')
     {
         if (!empty($orderBy) || !empty($_REQUEST[$this->var_order_by])) {
             if (!empty($_REQUEST[$this->var_order_by])) {
@@ -132,7 +133,7 @@ class ListViewData
      * @param STRING (ASC or DESC) $current_order
      * @return  STRING (ASC or DESC)
      */
-    function getReverseSortOrder($current_order)
+    public function getReverseSortOrder($current_order)
     {
         return (strcmp(strtolower($current_order), 'asc') == 0)?'DESC':'ASC';
     }
@@ -141,7 +142,7 @@ class ListViewData
      *
      * @return INT (the limit)
      */
-    function getLimit()
+    public function getLimit()
     {
         return $GLOBALS['sugar_config'][$this->limitName];
     }
@@ -151,7 +152,7 @@ class ListViewData
      *
      * @return INT (current offset)
      */
-    function getOffset()
+    public function getOffset()
     {
         return (!empty($_REQUEST[$this->var_offset])) ? $_REQUEST[$this->var_offset] : 0;
     }
@@ -184,7 +185,7 @@ class ListViewData
      *
      * @param unknown_type $baseName
      */
-    function setVariableName($baseName, $where, $listviewName = null, $id = null)
+    public function setVariableName($baseName, $where, $listviewName = null, $id = null)
     {
         global $timedate;
         $module = (!empty($listviewName)) ? $listviewName: isset($_REQUEST['module']) ? $_REQUEST['module'] : null;
@@ -201,7 +202,7 @@ class ListViewData
         $_SESSION[strtoupper($baseName) . "_DETAIL_NAV_HISTORY"] = false;
     }
 
-    function getTotalCount($main_query)
+    public function getTotalCount($main_query)
     {
         if (!empty($this->count_query)) {
             $count_query = $this->count_query;
@@ -251,7 +252,7 @@ class ListViewData
      * @param string:'id' $id_field
      * @return array('data'=> row data, 'pageData' => page data information, 'query' => original query string)
      */
-    function getListViewData($seed, $where, $offset=-1, $limit = -1, $filter_fields=array(),$params=array(),$id_field = 'id',$singleSelect=true, $id = null)
+    public function getListViewData($seed, $where, $offset=-1, $limit = -1, $filter_fields=array(), $params=array(), $id_field = 'id', $singleSelect=true, $id = null)
     {
         global $current_user;
         require_once 'include/SearchForm/SearchForm2.php';
@@ -284,8 +285,8 @@ class ListViewData
         // Bug 22740 - Tweak this check to strip off the table name off the order by parameter.
         // Samir Gandhi : Do not remove the report_cache.date_modified condition as the report list view is broken
         $orderby = $order['orderBy'];
-        if (strpos($order['orderBy'],'.') && ($order['orderBy'] != "report_cache.date_modified")) {
-            $orderby = substr($order['orderBy'],strpos($order['orderBy'],'.')+1);
+        if (strpos($order['orderBy'], '.') && ($order['orderBy'] != "report_cache.date_modified")) {
+            $orderby = substr($order['orderBy'], strpos($order['orderBy'], '.')+1);
         }
         if ($orderby != 'date_entered' && !in_array($orderby, array_keys($filter_fields))) {
             $order['orderBy'] = '';
@@ -381,7 +382,7 @@ class ListViewData
             $id_list = '('.substr($id_list, 1).')';
         }
 
-        SugarVCR::store($this->seed->module_dir,  $main_query);
+        SugarVCR::store($this->seed->module_dir, $main_query);
         if ($count != 0) {
             //NOW HANDLE SECONDARY QUERIES
             if (!empty($ret_array['secondary_select'])) {
@@ -465,9 +466,11 @@ class ListViewData
                             $additionalDetailsFile = 'custom/modules/' . $this->seed->module_dir . '/metadata/additionalDetails.php';
                         }
                         require_once($additionalDetailsFile);
-                        $ar = $this->getAdditionalDetails($data[$dataIndex],
+                        $ar = $this->getAdditionalDetails(
+                            $data[$dataIndex],
                                     (empty($this->additionalDetailsFunction) ? 'additionalDetails' : $this->additionalDetailsFunction) . $this->seed->object_name,
-                                    $additionalDetailsEdit);
+                                    $additionalDetailsEdit
+                        );
                     }
                     $pageData['additionalDetails'][$dataIndex] = $ar['string'];
                     $pageData['additionalDetails']['fieldToAddTo'] = $ar['fieldToAddTo'];
@@ -501,7 +504,7 @@ class ListViewData
         $pageData['ordering'] = $order;
         $pageData['ordering']['sortOrder'] = $this->getReverseSortOrder($pageData['ordering']['sortOrder']);
         //get url parameters as an array
-        $pageData['queries'] = $this->generateQueries($pageData['ordering']['sortOrder'], $offset, $prevOffset, $nextOffset,  $endOffset, $totalCounted);
+        $pageData['queries'] = $this->generateQueries($pageData['ordering']['sortOrder'], $offset, $prevOffset, $nextOffset, $endOffset, $totalCounted);
         //join url parameters from array to a string
         $pageData['urls'] = $this->generateURLS($pageData['queries']);
         $pageData['offsets'] = array( 'current'=>$offset, 'next'=>$nextOffset, 'prev'=>$prevOffset, 'end'=>$endOffset, 'total'=>$totalCount, 'totalCounted'=>$totalCounted);
@@ -516,8 +519,8 @@ class ListViewData
         $queryString = '';
 
         if (isset($_REQUEST["searchFormTab"]) && $_REQUEST["searchFormTab"] == "advanced_search" ||
-        	isset($_REQUEST["type_basic"]) && (count($_REQUEST["type_basic"] > 1) || $_REQUEST["type_basic"][0] != "") ||
-        	isset($_REQUEST["module"]) && $_REQUEST["module"] == "MergeRecords") {
+            isset($_REQUEST["type_basic"]) && (count($_REQUEST["type_basic"] > 1) || $_REQUEST["type_basic"][0] != "") ||
+            isset($_REQUEST["module"]) && $_REQUEST["module"] == "MergeRecords") {
             $queryString = "-advanced_search";
         } elseif (isset($_REQUEST["searchFormTab"]) && $_REQUEST["searchFormTab"] == "basic_search") {
             if ($seed->module_dir == "Reports") {
@@ -610,7 +613,7 @@ class ListViewData
      * @param GUID id id of the record
      * @return array string to attach to field
      */
-    function getAdditionalDetailsAjax($id)
+    public function getAdditionalDetailsAjax($id)
     {
         global $app_strings;
 
@@ -618,7 +621,7 @@ class ListViewData
 
         $extra = "<span id='adspan_" . $id . "' "
                 . "onclick=\"lvg_dtails('$id')\" "
-				. " style='position: relative;'><!--not_in_theme!-->$jscalendarImage</span>";
+                . " style='position: relative;'><!--not_in_theme!-->$jscalendarImage</span>";
 
         return array('fieldToAddTo' => $this->additionalDetailsFieldToAdd, 'string' => $extra);
     }
@@ -631,7 +634,7 @@ class ListViewData
      * @param array $editAccess
      * @return array string to attach to field
      */
-    function getAdditionalDetails($fields, $adFunction, $editAccess)
+    public function getAdditionalDetails($fields, $adFunction, $editAccess)
     {
         global $app_strings;
         global $mod_strings;

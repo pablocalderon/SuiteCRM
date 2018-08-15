@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2017 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -63,7 +63,7 @@ class campaign_charts
      * @param string $marketing_id
      * @return string
      */
-    public function campaign_response_by_activity_type($datay= array(),$targets=array(),$campaign_id= null, $cache_file_name='a_file', $refresh=false, $marketing_id='')
+    public function campaign_response_by_activity_type($datay= array(), $targets=array(), $campaign_id= null, $cache_file_name='a_file', $refresh=false, $marketing_id='')
     {
         global $app_strings, $mod_strings, $charset, $lang, $barChartColors,$app_list_strings;
 
@@ -151,18 +151,18 @@ class campaign_charts
                         }
                         $count = (isset($leadSourceArr[$key][$outcome]) && is_array($leadSourceArr[$key][$outcome]) && is_array($leadSourceArr[$key][$outcome]['total'])) ? array_sum($leadSourceArr[$key][$outcome]['total']) : 0;
                         $camp_data[$translation][$outcome] =
-							array(
-								"numerical_value" => $count,
-								"group_text" => $translation,
-								"group_key" => "",
-								"count" => "{$count}",
-								"group_label" => $alttext,
-								"numerical_label" => "Hits",
-								"numerical_key" => "hits",
-								"module" => 'Campaigns',
-								"group_base_text" => $outcome,
-								"link" => $key
-							);
+                            array(
+                                "numerical_value" => $count,
+                                "group_text" => $translation,
+                                "group_key" => "",
+                                "count" => "{$count}",
+                                "group_label" => $alttext,
+                                "numerical_label" => "Hits",
+                                "numerical_key" => "hits",
+                                "module" => 'Campaigns',
+                                "group_base_text" => $outcome,
+                                "link" => $key
+                            );
                     }
                 }
 
@@ -201,8 +201,16 @@ class campaign_charts
      * @param bool $is_dashlet
      * @param string $dashlet_id
      * @return string
-     */function campaign_response_roi($datay= array(),$targets=array(),$campaign_id= null, $cache_file_name='a_file', $refresh=false,$marketing_id='',$is_dashlet=false,$dashlet_id=''
-		) {
+     */public function campaign_response_roi(
+        $datay= array(),
+        $targets=array(),
+        $campaign_id= null,
+        $cache_file_name='a_file',
+        $refresh=false,
+        $marketing_id='',
+        $is_dashlet=false,
+        $dashlet_id=''
+        ) {
         global $app_strings,$mod_strings, $current_module_strings, $charset, $lang, $app_list_strings, $current_language,$sugar_config;
 
         $not_empty = false;
@@ -220,7 +228,7 @@ class campaign_charts
             $focus = new Campaign();
             $focus->retrieve($campaign_id);
             $opp_count=0;
-            $opp_query  = "select count(*) opp_count,sum(" . db_convert("amount_usdollar","IFNULL",array(0)).")  total_value";
+            $opp_query  = "select count(*) opp_count,sum(" . db_convert("amount_usdollar", "IFNULL", array(0)).")  total_value";
             $opp_query .= " from opportunities";
             $opp_query .= " where campaign_id='$campaign_id'";
             $opp_query .= " and sales_stage='Prospecting'";
@@ -350,7 +358,7 @@ class campaign_charts
     //THis is a copy of the campaign_response_roi for rgraph so that the data is separate from the chart / presentation
     //this will need refactored later rather than a cut n paste job like this
     //perhaps add another boolean to the parameter list to return just the data or the chart
-    function campaign_response_roi_data($datay= array(),$targets=array(),$campaign_id = null, $cache_file_name='a_file', $refresh=false,$marketing_id='',$is_dashlet=false,$dashlet_id='')
+    public function campaign_response_roi_data($datay= array(), $targets=array(), $campaign_id = null, $cache_file_name='a_file', $refresh=false, $marketing_id='', $is_dashlet=false, $dashlet_id='')
     {
         global $app_strings,$mod_strings, $current_module_strings, $charset, $lang, $app_list_strings, $current_language,$sugar_config;
 
@@ -375,7 +383,7 @@ class campaign_charts
             $focus = new Campaign();
             $focus->retrieve($campaign_id);
             $opp_count=0;
-            $opp_query  = "select count(*) opp_count,sum(" . db_convert("amount_usdollar","IFNULL",array(0)).")  total_value";
+            $opp_query  = "select count(*) opp_count,sum(" . db_convert("amount_usdollar", "IFNULL", array(0)).")  total_value";
             $opp_query .= " from opportunities";
             $opp_query .= " where campaign_id='$campaign_id'";
             $opp_query .= " and sales_stage='Prospecting'";

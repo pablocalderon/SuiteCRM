@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 /**
@@ -89,14 +90,14 @@ if (empty($_SESSION['MAILMERGE_MODULE']) && !empty($_SESSION['mail_merge_file_lo
     $_SESSION['MAILMERGE_SKIP_REL'] = null;
     $_SESSION['MAILMERGE_CONTAINS_CONTACT_INFO'] = null;
     $item_ids = array();
-    parse_str(stripslashes(html_entity_decode($selObjs, ENT_QUOTES)),$item_ids);
+    parse_str(stripslashes(html_entity_decode($selObjs, ENT_QUOTES)), $item_ids);
 
     if ($module == 'CampaignProspects') {
         $module = 'Prospects';
         if (!empty($_SESSION['MAILMERGE_CAMPAIGN_ID'])) {
             $targets = array_keys($item_ids);
             require_once('modules/Campaigns/utils.php');
-            campaign_log_mail_merge($_SESSION['MAILMERGE_CAMPAIGN_ID'],$targets);
+            campaign_log_mail_merge($_SESSION['MAILMERGE_CAMPAIGN_ID'], $targets);
         }
     }
     $class_name = $beanList[$module];
@@ -149,7 +150,7 @@ if (empty($_SESSION['MAILMERGE_MODULE']) && !empty($_SESSION['mail_merge_file_lo
     $_SESSION['MAILMERGE_TEMP_FILE_' . $mTime] = $dataDir . $dataFileName;
     $site_url = $sugar_config['site_url'];
     //$templateFile = $site_url . '/' . UploadFile::get_upload_url($document);
-    $templateFile = $site_url . '/' . UploadFile::get_url(from_html($document->filename),$document->id);
+    $templateFile = $site_url . '/' . UploadFile::get_url(from_html($document->filename), $document->id);
     $dataFile =$dataFileName;
     $startUrl = 'index.php?action=index&module=MailMerge&reset=true';
 

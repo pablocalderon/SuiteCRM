@@ -13,29 +13,29 @@
      You can find the whole class documentation on the pChart web site.
  */
 
- define("STOCK_MISSING_SERIE"	, 180001);
+ define("STOCK_MISSING_SERIE", 180001);
 
  /* pStock class definition */
  class pStock
  {
-     var $pChartObject;
-     var $pDataObject;
+     public $pChartObject;
+     public $pDataObject;
 
      /* Class creator */
-     function pStock($pChartObject,$pDataObject)
+     public function pStock($pChartObject, $pDataObject)
      {
          $this->pChartObject = $pChartObject;
          $this->pDataObject  = $pDataObject;
      }
 
      /* Draw a stock chart */
-     function drawStockChart($Format="")
+     public function drawStockChart($Format="")
      {
          $SerieOpen		= isset($Format["SerieOpen"]) ? $Format["SerieOpen"] : "Open";
          $SerieClose	= isset($Format["SerieClose"]) ? $Format["SerieClose"] : "Close";
          $SerieMin		= isset($Format["SerieMin"]) ? $Format["SerieMin"] : "Min";
          $SerieMax		= isset($Format["SerieMax"]) ? $Format["SerieMax"] : "Max";
-         $SerieMedian	= isset($Format["SerieMedian"]) ? $Format["SerieMedian"] : NULL;
+         $SerieMedian	= isset($Format["SerieMedian"]) ? $Format["SerieMedian"] : null;
          $LineWidth		= isset($Format["LineWidth"]) ? $Format["LineWidth"] : 1;
          $LineR		= isset($Format["LineR"]) ? $Format["LineR"] : 0;
          $LineG		= isset($Format["LineG"]) ? $Format["LineG"] : 0;
@@ -52,7 +52,7 @@
          $BoxUpG		= isset($Format["BoxUpG"]) ? $Format["BoxUpG"] : 224;
          $BoxUpB		= isset($Format["BoxUpB"]) ? $Format["BoxUpB"] : 46;
          $BoxUpAlpha	= isset($Format["BoxUpAlpha"]) ? $Format["BoxUpAlpha"] : 100;
-         $BoxUpSurrounding	= isset($Format["BoxUpSurrounding"]) ? $Format["BoxUpSurrounding"] : NULL;
+         $BoxUpSurrounding	= isset($Format["BoxUpSurrounding"]) ? $Format["BoxUpSurrounding"] : null;
          $BoxUpBorderR	= isset($Format["BoxUpBorderR"]) ? $Format["BoxUpBorderR"] : $BoxUpR-20;
          $BoxUpBorderG	= isset($Format["BoxUpBorderG"]) ? $Format["BoxUpBorderG"] : $BoxUpG-20;
          $BoxUpBorderB	= isset($Format["BoxUpBorderB"]) ? $Format["BoxUpBorderB"] : $BoxUpB-20;
@@ -61,17 +61,17 @@
          $BoxDownG		= isset($Format["BoxDownG"]) ? $Format["BoxDownG"] : 100;
          $BoxDownB		= isset($Format["BoxDownB"]) ? $Format["BoxDownB"] : 46;
          $BoxDownAlpha	= isset($Format["BoxDownAlpha"]) ? $Format["BoxDownAlpha"] : 100;
-         $BoxDownSurrounding= isset($Format["BoxDownSurrounding"]) ? $Format["BoxDownSurrounding"] : NULL;
+         $BoxDownSurrounding= isset($Format["BoxDownSurrounding"]) ? $Format["BoxDownSurrounding"] : null;
          $BoxDownBorderR	= isset($Format["BoxDownBorderR"]) ? $Format["BoxDownBorderR"] : $BoxDownR-20;
          $BoxDownBorderG	= isset($Format["BoxDownBorderG"]) ? $Format["BoxDownBorderG"] : $BoxDownG-20;
          $BoxDownBorderB	= isset($Format["BoxDownBorderB"]) ? $Format["BoxDownBorderB"] : $BoxDownB-20;
          $BoxDownBorderAlpha= isset($Format["BoxDownBorderAlpha"]) ? $Format["BoxDownBorderAlpha"] : 100;
-         $ShadowOnBoxesOnly	= isset($Format["ShadowOnBoxesOnly"]) ? $Format["ShadowOnBoxesOnly"] : TRUE;
+         $ShadowOnBoxesOnly	= isset($Format["ShadowOnBoxesOnly"]) ? $Format["ShadowOnBoxesOnly"] : true;
          $MedianR		= isset($Format["MedianR"]) ? $Format["MedianR"] : 255;
          $MedianG		= isset($Format["MedianG"]) ? $Format["MedianG"] : 0;
          $MedianB		= isset($Format["MedianB"]) ? $Format["MedianB"] : 0;
          $MedianAlpha	= isset($Format["MedianAlpha"]) ? $Format["MedianAlpha"] : 100;
-         $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
+         $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : false;
          $ImageMapTitle	= isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : "Stock Chart";
 
 
@@ -79,12 +79,12 @@
          $Data    = $this->pDataObject->getData();
          $Palette = $this->pDataObject->getPalette();
 
-         if ($BoxUpSurrounding != NULL) {
+         if ($BoxUpSurrounding != null) {
              $BoxUpBorderR = $BoxUpR + $BoxUpSurrounding;
              $BoxUpBorderG = $BoxUpG + $BoxUpSurrounding;
              $BoxUpBorderB = $BoxUpB + $BoxUpSurrounding;
          }
-         if ($BoxDownSurrounding != NULL) {
+         if ($BoxDownSurrounding != null) {
              $BoxDownBorderR = $BoxDownR + $BoxDownSurrounding;
              $BoxDownBorderG = $BoxDownG + $BoxDownSurrounding;
              $BoxDownBorderB = $BoxDownB + $BoxDownSurrounding;
@@ -96,7 +96,7 @@
          $BoxOffset = $BoxWidth / 2;
 
          $Data = $this->pChartObject->DataSet->getData();
-         list($XMargin,$XDivs) = $this->pChartObject->scaleGetXSettings();
+         list($XMargin, $XDivs) = $this->pChartObject->scaleGetXSettings();
 
          if (!isset($Data["Series"][$SerieOpen]) || !isset($Data["Series"][$SerieClose]) || !isset($Data["Series"][$SerieMin]) || !isset($Data["Series"][$SerieMax])) {
              return(STOCK_MISSING_SERIE);
@@ -108,7 +108,7 @@
              if (isset($Data["Series"][$SerieClose]["Data"][$Key]) || isset($Data["Series"][$SerieMin]["Data"][$Key]) || isset($Data["Series"][$SerieMax]["Data"][$Key])) {
                  $Point = array($Value,$Data["Series"][$SerieClose]["Data"][$Key],$Data["Series"][$SerieMin]["Data"][$Key],$Data["Series"][$SerieMax]["Data"][$Key]);
              }
-             if ($SerieMedian != NULL && isset($Data["Series"][$SerieMedian]["Data"][$Key])) {
+             if ($SerieMedian != null && isset($Data["Series"][$SerieMedian]["Data"][$Key])) {
                  $Point[] = $Data["Series"][$SerieMedian]["Data"][$Key];
              }
 
@@ -120,7 +120,7 @@
          $Format	= $Data["Axis"][$AxisID]["Format"];
          $Unit	= $Data["Axis"][$AxisID]["Unit"];
 
-         $YZero	= $this->pChartObject->scaleComputeY(0,array("AxisID"=>$AxisID));
+         $YZero	= $this->pChartObject->scaleComputeY(0, array("AxisID"=>$AxisID));
          $XStep	= ($this->pChartObject->GraphAreaX2-$this->pChartObject->GraphAreaX1-$XMargin*2)/$XDivs;
 
          $X = $this->pChartObject->GraphAreaX1 + $XMargin;
@@ -133,17 +133,17 @@
          $MedianSettings	= array("R"=>$MedianR,"G"=>$MedianG,"B"=>$MedianB,"Alpha"=>$MedianAlpha);
 
          foreach ($Plots as $Key =>$Points) {
-             $PosArray = $this->pChartObject->scaleComputeY($Points,array("AxisID"=>$AxisID));
+             $PosArray = $this->pChartObject->scaleComputeY($Points, array("AxisID"=>$AxisID));
 
              $Values = "Open :".$Data["Series"][$SerieOpen]["Data"][$Key]."<BR>Close : ".$Data["Series"][$SerieClose]["Data"][$Key]."<BR>Min : ".$Data["Series"][$SerieMin]["Data"][$Key]."<BR>Max : ".$Data["Series"][$SerieMax]["Data"][$Key]."<BR>";
-             if ($SerieMedian != NULL) {
+             if ($SerieMedian != null) {
                  $Values = $Values."Median : ".$Data["Series"][$SerieMedian]["Data"][$Key]."<BR>";
              }
              if ($PosArray[0] > $PosArray[1]) {
-                 $ImageMapColor = $this->pChartObject->toHTMLColor($BoxUpR,$BoxUpG,$BoxUpB);
+                 $ImageMapColor = $this->pChartObject->toHTMLColor($BoxUpR, $BoxUpG, $BoxUpB);
              } else {
-                 $ImageMapColor = $this->pChartObject->toHTMLColor($BoxDownR,$BoxDownG,$BoxDownB);
-             } 
+                 $ImageMapColor = $this->pChartObject->toHTMLColor($BoxDownR, $BoxDownG, $BoxDownB);
+             }
 
              if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
                  if ($YZero > $this->pChartObject->GraphAreaY2-1) {
@@ -161,28 +161,28 @@
 
                  if ($ShadowOnBoxesOnly) {
                      $RestoreShadow = $this->pChartObject->Shadow;
-                     $this->pChartObject->Shadow = FALSE;
+                     $this->pChartObject->Shadow = false;
                  }
 
                  if ($LineWidth == 1) {
-                     $this->pChartObject->drawLine($X,$PosArray[2],$X,$PosArray[3],$LineSettings);
+                     $this->pChartObject->drawLine($X, $PosArray[2], $X, $PosArray[3], $LineSettings);
                  } else {
-                     $this->pChartObject->drawFilledRectangle($X-$LineOffset,$PosArray[2],$X+$LineOffset,$PosArray[3],$LineSettings);
+                     $this->pChartObject->drawFilledRectangle($X-$LineOffset, $PosArray[2], $X+$LineOffset, $PosArray[3], $LineSettings);
                  }
 
                  if ($ExtremityWidth == 1) {
-                     $this->pChartObject->drawLine($X-$ExtremityLength,$PosArray[2],$X+$ExtremityLength,$PosArray[2],$ExtremitySettings);
-                     $this->pChartObject->drawLine($X-$ExtremityLength,$PosArray[3],$X+$ExtremityLength,$PosArray[3],$ExtremitySettings);
+                     $this->pChartObject->drawLine($X-$ExtremityLength, $PosArray[2], $X+$ExtremityLength, $PosArray[2], $ExtremitySettings);
+                     $this->pChartObject->drawLine($X-$ExtremityLength, $PosArray[3], $X+$ExtremityLength, $PosArray[3], $ExtremitySettings);
 
                      if ($RecordImageMap) {
-                         $this->pChartObject->addToImageMap("RECT",floor($X-$ExtremityLength).",".floor($PosArray[2]).",".floor($X+$ExtremityLength).",".floor($PosArray[3]),$ImageMapColor,$ImageMapTitle,$Values);
+                         $this->pChartObject->addToImageMap("RECT", floor($X-$ExtremityLength).",".floor($PosArray[2]).",".floor($X+$ExtremityLength).",".floor($PosArray[3]), $ImageMapColor, $ImageMapTitle, $Values);
                      }
                  } else {
-                     $this->pChartObject->drawFilledRectangle($X-$ExtremityLength,$PosArray[2],$X+$ExtremityLength,$PosArray[2]-$ExtremityWidth,$ExtremitySettings);
-                     $this->pChartObject->drawFilledRectangle($X-$ExtremityLength,$PosArray[3],$X+$ExtremityLength,$PosArray[3]+$ExtremityWidth,$ExtremitySettings);
+                     $this->pChartObject->drawFilledRectangle($X-$ExtremityLength, $PosArray[2], $X+$ExtremityLength, $PosArray[2]-$ExtremityWidth, $ExtremitySettings);
+                     $this->pChartObject->drawFilledRectangle($X-$ExtremityLength, $PosArray[3], $X+$ExtremityLength, $PosArray[3]+$ExtremityWidth, $ExtremitySettings);
 
                      if ($RecordImageMap) {
-                         $this->pChartObject->addToImageMap("RECT",floor($X-$ExtremityLength).",".floor($PosArray[2]-$ExtremityWidth).",".floor($X+$ExtremityLength).",".floor($PosArray[3]+$ExtremityWidth),$ImageMapColor,$ImageMapTitle,$Values);
+                         $this->pChartObject->addToImageMap("RECT", floor($X-$ExtremityLength).",".floor($PosArray[2]-$ExtremityWidth).",".floor($X+$ExtremityLength).",".floor($PosArray[3]+$ExtremityWidth), $ImageMapColor, $ImageMapTitle, $Values);
                      }
                  }
 
@@ -191,13 +191,13 @@
                  }
 
                  if ($PosArray[0] > $PosArray[1]) {
-                     $this->pChartObject->drawFilledRectangle($X-$BoxOffset,$PosArray[0],$X+$BoxOffset,$PosArray[1],$BoxUpSettings);
+                     $this->pChartObject->drawFilledRectangle($X-$BoxOffset, $PosArray[0], $X+$BoxOffset, $PosArray[1], $BoxUpSettings);
                  } else {
-                     $this->pChartObject->drawFilledRectangle($X-$BoxOffset,$PosArray[0],$X+$BoxOffset,$PosArray[1],$BoxDownSettings);
+                     $this->pChartObject->drawFilledRectangle($X-$BoxOffset, $PosArray[0], $X+$BoxOffset, $PosArray[1], $BoxDownSettings);
                  }
 
                  if (isset($PosArray[4])) {
-                     $this->pChartObject->drawLine($X-$ExtremityLength,$PosArray[4],$X+$ExtremityLength,$PosArray[4],$MedianSettings);
+                     $this->pChartObject->drawLine($X-$ExtremityLength, $PosArray[4], $X+$ExtremityLength, $PosArray[4], $MedianSettings);
                  }
 
                  $X = $X + $XStep;
@@ -216,29 +216,29 @@
                  }
 
                  if ($LineWidth == 1) {
-                     $this->pChartObject->drawLine($PosArray[2],$Y,$PosArray[3],$Y,$LineSettings);
+                     $this->pChartObject->drawLine($PosArray[2], $Y, $PosArray[3], $Y, $LineSettings);
                  } else {
-                     $this->pChartObject->drawFilledRectangle($PosArray[2],$Y-$LineOffset,$PosArray[3],$Y+$LineOffset,$LineSettings);
+                     $this->pChartObject->drawFilledRectangle($PosArray[2], $Y-$LineOffset, $PosArray[3], $Y+$LineOffset, $LineSettings);
                  }
 
                  if ($ShadowOnBoxesOnly) {
                      $RestoreShadow = $this->pChartObject->Shadow;
-                     $this->pChartObject->Shadow = FALSE;
+                     $this->pChartObject->Shadow = false;
                  }
 
                  if ($ExtremityWidth == 1) {
-                     $this->pChartObject->drawLine($PosArray[2],$Y-$ExtremityLength,$PosArray[2],$Y+$ExtremityLength,$ExtremitySettings);
-                     $this->pChartObject->drawLine($PosArray[3],$Y-$ExtremityLength,$PosArray[3],$Y+$ExtremityLength,$ExtremitySettings);
+                     $this->pChartObject->drawLine($PosArray[2], $Y-$ExtremityLength, $PosArray[2], $Y+$ExtremityLength, $ExtremitySettings);
+                     $this->pChartObject->drawLine($PosArray[3], $Y-$ExtremityLength, $PosArray[3], $Y+$ExtremityLength, $ExtremitySettings);
 
                      if ($RecordImageMap) {
-                         $this->pChartObject->addToImageMap("RECT",floor($PosArray[2]).",".floor($Y-$ExtremityLength).",".floor($PosArray[3]).",".floor($Y+$ExtremityLength),$ImageMapColor,$ImageMapTitle,$Values);
+                         $this->pChartObject->addToImageMap("RECT", floor($PosArray[2]).",".floor($Y-$ExtremityLength).",".floor($PosArray[3]).",".floor($Y+$ExtremityLength), $ImageMapColor, $ImageMapTitle, $Values);
                      }
                  } else {
-                     $this->pChartObject->drawFilledRectangle($PosArray[2],$Y-$ExtremityLength,$PosArray[2]-$ExtremityWidth,$Y+$ExtremityLength,$ExtremitySettings);
-                     $this->pChartObject->drawFilledRectangle($PosArray[3],$Y-$ExtremityLength,$PosArray[3]+$ExtremityWidth,$Y+$ExtremityLength,$ExtremitySettings);
+                     $this->pChartObject->drawFilledRectangle($PosArray[2], $Y-$ExtremityLength, $PosArray[2]-$ExtremityWidth, $Y+$ExtremityLength, $ExtremitySettings);
+                     $this->pChartObject->drawFilledRectangle($PosArray[3], $Y-$ExtremityLength, $PosArray[3]+$ExtremityWidth, $Y+$ExtremityLength, $ExtremitySettings);
 
                      if ($RecordImageMap) {
-                         $this->pChartObject->addToImageMap("RECT",floor($PosArray[2]-$ExtremityWidth).",".floor($Y-$ExtremityLength).",".floor($PosArray[3]+$ExtremityWidth).",".floor($Y+$ExtremityLength),$ImageMapColor,$ImageMapTitle,$Values);
+                         $this->pChartObject->addToImageMap("RECT", floor($PosArray[2]-$ExtremityWidth).",".floor($Y-$ExtremityLength).",".floor($PosArray[3]+$ExtremityWidth).",".floor($Y+$ExtremityLength), $ImageMapColor, $ImageMapTitle, $Values);
                      }
                  }
 
@@ -247,13 +247,13 @@
                  }
 
                  if ($PosArray[0] < $PosArray[1]) {
-                     $this->pChartObject->drawFilledRectangle($PosArray[0],$Y-$BoxOffset,$PosArray[1],$Y+$BoxOffset,$BoxUpSettings);
+                     $this->pChartObject->drawFilledRectangle($PosArray[0], $Y-$BoxOffset, $PosArray[1], $Y+$BoxOffset, $BoxUpSettings);
                  } else {
-                     $this->pChartObject->drawFilledRectangle($PosArray[0],$Y-$BoxOffset,$PosArray[1],$Y+$BoxOffset,$BoxDownSettings);
+                     $this->pChartObject->drawFilledRectangle($PosArray[0], $Y-$BoxOffset, $PosArray[1], $Y+$BoxOffset, $BoxDownSettings);
                  }
 
                  if (isset($PosArray[4])) {
-                     $this->pChartObject->drawLine($PosArray[4],$Y-$ExtremityLength,$PosArray[4],$Y+$ExtremityLength,$MedianSettings);
+                     $this->pChartObject->drawLine($PosArray[4], $Y-$ExtremityLength, $PosArray[4], $Y+$ExtremityLength, $MedianSettings);
                  }
 
                  $Y = $Y + $XStep;

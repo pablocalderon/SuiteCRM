@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,50 +37,50 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 require_once("include/SugarTheme/cssmin.php");
 
 class SugarSpriteBuilder
 {
-    var $isAvailable = false;
-    var $silentRun = false;
-    var $fromSilentUpgrade = false;
-    var $writeToUpgradeLog = false;
+    public $isAvailable = false;
+    public $silentRun = false;
+    public $fromSilentUpgrade = false;
+    public $writeToUpgradeLog = false;
 
-    var $debug = false;
-    var $fileName = 'sprites';
-    var $cssMinify = true;
+    public $debug = false;
+    public $fileName = 'sprites';
+    public $cssMinify = true;
 
     // class supported image types
-    var $supportedTypeMap = array(
-		IMG_GIF => IMAGETYPE_GIF,
-		IMG_JPG => IMAGETYPE_JPEG,
-		IMG_PNG => IMAGETYPE_PNG,
-	);
+    public $supportedTypeMap = array(
+        IMG_GIF => IMAGETYPE_GIF,
+        IMG_JPG => IMAGETYPE_JPEG,
+        IMG_PNG => IMAGETYPE_PNG,
+    );
 
     // sprite settings
-    var $pngCompression = 9;
-    var $pngFilter = PNG_NO_FILTER;
-    var $maxWidth = 75;
-    var $maxHeight = 75;
-    var $rowCnt = 30;
+    public $pngCompression = 9;
+    public $pngFilter = PNG_NO_FILTER;
+    public $maxWidth = 75;
+    public $maxHeight = 75;
+    public $rowCnt = 30;
 
     // processed image types
-    var $imageTypes = array();
+    public $imageTypes = array();
 
     // source files
-    var $spriteSrc = array();
-    var $spriteRepeat = array();
+    public $spriteSrc = array();
+    public $spriteRepeat = array();
 
     // sprite resource images
-    var $spriteImg;
+    public $spriteImg;
 
     // sprite_config collection
-    var $sprites_config = array();
+    public $sprites_config = array();
 
 
     public function __construct()
@@ -111,7 +112,7 @@ class SugarSpriteBuilder
     public function addDirectory($name, $dir)
     {
 
-		// sprite namespace
+        // sprite namespace
         if (!array_key_exists($name, $this->spriteSrc)) {
             $this->spriteSrc[$name] = array();
         }
@@ -132,16 +133,16 @@ class SugarSpriteBuilder
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
 
-				// optional sprites_config.php file
+                // optional sprites_config.php file
                 $this->loadSpritesConfig($dir);
 
                 while (($file = readdir($dh)) !== false) {
                     if ($file != "." && $file != ".." && $file != "sprites_config.php") {
 
-						// file info & check supported image format
+                        // file info & check supported image format
                         if ($info = $this->getFileInfo($dir, $file)) {
 
-							// skip excluded files
+                            // skip excluded files
                             if (isset($this->sprites_config[$dir]['exclude']) && array_search($file, $this->sprites_config[$dir]['exclude']) !== false) {
                                 global $mod_strings;
                                 $msg = string_format($mod_strings['LBL_SPRITES_EXCLUDING_FILE'], array("{$dir}/{$file}"));
@@ -213,7 +214,7 @@ class SugarSpriteBuilder
         $info = @getimagesize($dir.'/'.$file);
         if ($info) {
 
-			// supported image type ?
+            // supported image type ?
             if (isset($this->imageTypes[$info[2]])) {
                 $w = $info[0];
                 $h = $info[1];
@@ -281,16 +282,16 @@ class SugarSpriteBuilder
                 $isRepeat = true;
                 $type = substr($name, 7, 10) == 'horizontal' ? 'horizontal' : 'vertical';
                 $config = array(
-					'type' => $type,
-				);
+                    'type' => $type,
+                );
             } else {
                 $isRepeat = false;
                 $config = array(
-					'type' => 'boxed',
-					'width' => $this->maxWidth,
-					'height' => $this->maxHeight,
-					'rowcnt' => $this->rowCnt,
-				);
+                    'type' => 'boxed',
+                    'width' => $this->maxWidth,
+                    'height' => $this->maxHeight,
+                    'rowcnt' => $this->rowCnt,
+                );
             }
 
             // use separate class to arrange the images
@@ -436,7 +437,7 @@ background-position: -{$offset_x}px -{$offset_y}px;
      */
     private function initSpriteImg($w, $h)
     {
-        $this->spriteImg = imagecreatetruecolor($w,$h);
+        $this->spriteImg = imagecreatetruecolor($w, $h);
         $transparent = imagecolorallocatealpha($this->spriteImg, 0, 0, 0, 127);
         imagefill($this->spriteImg, 0, 0, $transparent);
         imagealphablending($this->spriteImg, false);
@@ -458,15 +459,15 @@ background-position: -{$offset_x}px -{$offset_y}px;
     {
         $path_file = $dir.'/'.$file;
         switch ($type) {
-			case IMAGETYPE_GIF:
-				return imagecreatefromgif($path_file);
-			case IMAGETYPE_JPEG:
-				return imagecreatefromjpeg($path_file);
-			case IMAGETYPE_PNG:
-				return imagecreatefrompng($path_file);
-			default:
-				return false;
-		}
+            case IMAGETYPE_GIF:
+                return imagecreatefromgif($path_file);
+            case IMAGETYPE_JPEG:
+                return imagecreatefromjpeg($path_file);
+            case IMAGETYPE_PNG:
+                return imagecreatefrompng($path_file);
+            default:
+                return false;
+        }
     }
 
     /**
@@ -497,14 +498,14 @@ background-position: -{$offset_x}px -{$offset_y}px;
 class SpritePlacement
 {
 
-	// occupied space
-    var $spriteMatrix = array();
+    // occupied space
+    public $spriteMatrix = array();
 
     // minimum surface
-    var $minSurface = 0;
+    public $minSurface = 0;
 
     // sprite src (flattened array)
-    var $spriteSrc = array();
+    public $spriteSrc = array();
 
     // placement config array
     /*
@@ -518,12 +519,12 @@ class SpritePlacement
     			-> rowcnt
 
     */
-    var $config = array();
+    public $config = array();
 
-    function __construct($spriteSrc, $config)
+    public function __construct($spriteSrc, $config)
     {
 
-		// convert spriteSrc to flat array
+        // convert spriteSrc to flat array
         foreach ($spriteSrc as $dir => $files) {
             foreach ($files as $file => $info) {
                 // use full path as identifier
@@ -535,11 +536,11 @@ class SpritePlacement
         $this->config = $config;
     }
 
-    function processSprites()
+    public function processSprites()
     {
         foreach ($this->spriteSrc as $id => $info) {
 
-			// dimensions
+            // dimensions
             $x = $info['x'];
             $y = $info['y'];
 
@@ -554,58 +555,58 @@ class SpritePlacement
     }
 
     // returns x/y coordinates to fit the sprite
-    function addSprite($w, $h)
+    public function addSprite($w, $h)
     {
         $result = false;
 
         switch ($this->config['type']) {
 
-			// boxed
-			case 'boxed':
+            // boxed
+            case 'boxed':
 
-				$spriteX = $this->config['width'];
-				$spriteY = $this->config['height'];
-				$spriteCnt = count($this->spriteMatrix) + 1;
-				$y = ceil($spriteCnt / $this->config['rowcnt']);
-				$x = $spriteCnt - (($y - 1) * $this->config['rowcnt']);
-				$result = array(
-					'x' => ($x * $spriteX) + 1 - $spriteX,
-					'y' => ($y * $spriteY) + 1 - $spriteY);
+                $spriteX = $this->config['width'];
+                $spriteY = $this->config['height'];
+                $spriteCnt = count($this->spriteMatrix) + 1;
+                $y = ceil($spriteCnt / $this->config['rowcnt']);
+                $x = $spriteCnt - (($y - 1) * $this->config['rowcnt']);
+                $result = array(
+                    'x' => ($x * $spriteX) + 1 - $spriteX,
+                    'y' => ($y * $spriteY) + 1 - $spriteY);
 
-				break;
+                break;
 
-			// horizontal -> align vertically
-			case 'horizontal':
-				$result = array('x' => 1, 'y' => $this->height() + 1);
-				break;
+            // horizontal -> align vertically
+            case 'horizontal':
+                $result = array('x' => 1, 'y' => $this->height() + 1);
+                break;
 
-			// vertical -> align horizontally
-			case 'vertical':
-				$result = array('x' => $this->width() + 1, 'y' => 1);
-				break;
+            // vertical -> align horizontally
+            case 'vertical':
+                $result = array('x' => $this->width() + 1, 'y' => 1);
+                break;
 
-			default:
-				$GLOBALS['log']->warn(__CLASS__.": Unknown sprite placement algorithm -> {$this->config['type']}");
-				break;
-		}
+            default:
+                $GLOBALS['log']->warn(__CLASS__.": Unknown sprite placement algorithm -> {$this->config['type']}");
+                break;
+        }
 
         return $result;
     }
 
     // calculate total width
-    function width()
+    public function width()
     {
         return $this->getMaxAxis('x');
     }
 
     // calculate total height
-    function height()
+    public function height()
     {
         return $this->getMaxAxis('y');
     }
 
     // helper function to get highest axis value
-    function getMaxAxis($axis)
+    public function getMaxAxis($axis)
     {
         $val = 0;
         foreach ($this->spriteMatrix as $id => $coor) {

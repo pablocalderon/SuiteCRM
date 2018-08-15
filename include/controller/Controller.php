@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,14 +37,14 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
+/**
 
  * Description:
- ********************************************************************************/
+ */
 
 
 
@@ -54,8 +55,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class Controller extends SugarBean
 {
-    var $focus;
-    var $type;  //defines id this is a new list order or existing, or delete
+    public $focus;
+    public $type;  //defines id this is a new list order or existing, or delete
     // New, Save, Delete
 
     public function __construct()
@@ -80,7 +81,7 @@ class Controller extends SugarBean
     }
 
 
-    function init(& $seed_object, $type)
+    public function init(& $seed_object, $type)
     {
         $this->focus = & $seed_object;
         $this->type = $type;
@@ -88,11 +89,11 @@ class Controller extends SugarBean
         //end function Controller
     }
 
-    function change_component_order($magnitude, $direction, $parent_id="")
+    public function change_component_order($magnitude, $direction, $parent_id="")
     {
         if (!empty($this->type) && $this->type=="Save") {
 
-			//safety check
+            //safety check
             $wall_test = $this->check_wall($magnitude, $direction, $parent_id);
 
             if ($wall_test==false) {
@@ -195,7 +196,7 @@ class Controller extends SugarBean
 						  WHERE ".$this->focus->controller_def['parent_var']."='$parent_id'
 						  AND ".$this->focus->table_name.".deleted='0'
 						 ";
-            $result = $this->db->query($query,true," Error capturing max start order: ");
+            $result = $this->db->query($query, true, " Error capturing max start order: ");
             $row = $this->db->fetchByAssoc($result);
 
             if (!is_null($row['max_start'])) {
@@ -228,7 +229,7 @@ class Controller extends SugarBean
         //end function change_component_order
     }
 
-    function update_affected_order($affected_id, $affected_new_x="", $affected_new_y="")
+    public function update_affected_order($affected_id, $affected_new_x="", $affected_new_y="")
     {
         $query = 	"UPDATE ".$this->focus->table_name." SET";
 
@@ -244,11 +245,11 @@ class Controller extends SugarBean
 
         $query .=	"	WHERE id='$affected_id'";
         $query .=   "	AND ".$this->focus->table_name.".deleted='0'";
-        $result = $this->db->query($query,true," Error updating affected order id: ");
+        $result = $this->db->query($query, true, " Error updating affected order id: ");
         //end function update_affected_order
     }
 
-    function get_affected_id($parent_id, $list_order_x="", $list_order_y="")
+    public function get_affected_id($parent_id, $list_order_x="", $list_order_y="")
     {
         $query = "	SELECT id from ".$this->focus->table_name."
 					WHERE ".$this->focus->controller_def['parent_var']."='$parent_id'
@@ -264,7 +265,7 @@ class Controller extends SugarBean
         }
 
         //echo $query."<BR>";
-        $result = $this->db->query($query,true," Error capturing affected id: ");
+        $result = $this->db->query($query, true, " Error capturing affected id: ");
         $row = $this->db->fetchByAssoc($result);
 
         return $row['id'];
@@ -276,7 +277,7 @@ class Controller extends SugarBean
     /////////////Wall Functions////////////////////
 
 
-    function check_wall($magnitude, $direction, $parent_id)
+    public function check_wall($magnitude, $direction, $parent_id)
     {
 
 //TODO: jgreen - this is only single axis check_wall mechanism, will need to upgrade this to double axis
@@ -289,7 +290,7 @@ class Controller extends SugarBean
 				  WHERE ".$this->focus->controller_def['parent_var']."='$parent_id'
 				  AND ".$this->focus->table_name.".deleted='0'
 						 ";
-            $result = $this->db->query($query,true," Error capturing max start order: ");
+            $result = $this->db->query($query, true, " Error capturing max start order: ");
             $row = $this->db->fetchByAssoc($result);
 
             if ($this->focus->controller_def['start_axis']=="x") {
@@ -332,11 +333,11 @@ class Controller extends SugarBean
     //Delete adjust functions////////////////////
 
 
-    function delete_adjust_order($parent_id)
+    public function delete_adjust_order($parent_id)
     {
 
 
-	//Currently handles single axis motion only!!!!!!!!!
+    //Currently handles single axis motion only!!!!!!!!!
         //TODO: jgreen - Add dual axis motion
 
         //adjust along start_axis
@@ -348,7 +349,7 @@ class Controller extends SugarBean
         $query .= "WHERE ".$this->focus->controller_def['start_var']." > ".$current_position." AND deleted=0 ";
         $query .= "AND ".$this->focus->controller_def['parent_var']." = '".$parent_id."'";
 
-        $result = $this->db->query($query,true," Error updating the delete_adjust_order: ");
+        $result = $this->db->query($query, true, " Error updating the delete_adjust_order: ");
         //end delete_adjust_order
     }
     //End Delete Functions/////////////////////////

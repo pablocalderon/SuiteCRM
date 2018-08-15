@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,30 +16,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
  * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
- * 
+ *
  * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
  * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- * 
+ *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 require_once('modules/Administration/UpgradeWizardCommon.php');
@@ -86,7 +87,7 @@ $upload_max_filesize_bytes = return_bytes($upload_max_filesize);
 if ($upload_max_filesize_bytes < constant('SUGARCRM_MIN_UPLOAD_MAX_FILESIZE_BYTES')) {
     $GLOBALS['log']->debug("detected upload_max_filesize: $upload_max_filesize");
     print('<p class="error">' . $mod_strings['MSG_INCREASE_UPLOAD_MAX_FILESIZE'] . ' '
-		. get_cfg_var('cfg_file_path') . "</p>\n");
+        . get_cfg_var('cfg_file_path') . "</p>\n");
 }
 
 //
@@ -101,7 +102,7 @@ if (isset($_REQUEST['run']) && ($_REQUEST['run'] != "")) {
         if (isset($_REQUEST['release_id']) && $_REQUEST['release_id'] != "") {
             require_once('ModuleInstall/PackageManager.php');
             $pm = new PackageManager();
-            $tempFile = $pm->download('','',$_REQUEST['release_id']);
+            $tempFile = $pm->download('', '', $_REQUEST['release_id']);
             $perform = true;
             $base_filename = urldecode($tempFile);
         } elseif (!empty($_REQUEST['load_module_from_dir'])) {
@@ -170,11 +171,11 @@ if (isset($_REQUEST['run']) && ($_REQUEST['run'] != "")) {
                 $target_manifest = remove_file_extension($target_path) . "-manifest.php";
 
                 if (isset($manifest['icon']) && $manifest['icon'] != "") {
-                    $icon_location = extractFile($tempFile ,$manifest['icon']);
+                    $icon_location = extractFile($tempFile, $manifest['icon']);
                     copy($icon_location, remove_file_extension($target_path)."-icon.".pathinfo($icon_location, PATHINFO_EXTENSION));
                 }
 
-                if (rename($tempFile , $target_path)) {
+                if (rename($tempFile, $target_path)) {
                     copy($manifest_file, $target_manifest);
                     $GLOBALS['ML_STATUS_MESSAGE'] = $base_filename.$mod_strings['LBL_UW_UPLOAD_SUCCESS'];
                 } else {
@@ -186,7 +187,7 @@ if (isset($_REQUEST['run']) && ($_REQUEST['run'] != "")) {
             }
         }
     } elseif ($run == $mod_strings['LBL_UW_BTN_DELETE_PACKAGE']) {
-        if (!empty ($_REQUEST['install_file'])) {
+        if (!empty($_REQUEST['install_file'])) {
             die($mod_strings['ERR_UW_NO_UPLOAD_FILE']);
         }
 
@@ -270,61 +271,61 @@ print( "<table>\n" );
 print( "<tr><th></th><th align=left>{$mod_strings['LBL_ML_NAME']}</th><th>{$mod_strings['LBL_ML_TYPE']}</th><th>{$mod_strings['LBL_ML_VERSION']}</th><th>{$mod_strings['LBL_ML_PUBLISHED']}</th><th>{$mod_strings['LBL_ML_UNINSTALLABLE']}</th><th>{$mod_strings['LBL_ML_DESCRIPTION']}</th></tr>\n" );
 foreach($upgrade_contents as $upgrade_content)
 {
-	if(!preg_match("#.*\.zip\$#", $upgrade_content))
-	{
-		continue;
-	}
+    if(!preg_match("#.*\.zip\$#", $upgrade_content))
+    {
+        continue;
+    }
 
-	$upgrade_content = clean_path($upgrade_content);
-	$the_base = basename($upgrade_content);
-	$the_md5 = md5_file($upgrade_content);
-	$md5_matches = $uh->findByMd5($the_md5);
+    $upgrade_content = clean_path($upgrade_content);
+    $the_base = basename($upgrade_content);
+    $the_md5 = md5_file($upgrade_content);
+    $md5_matches = $uh->findByMd5($the_md5);
 
-	if(0 == sizeof($md5_matches))
-	{
-		$target_manifest = remove_file_extension( $upgrade_content ) . '-manifest.php';
-		require_once($target_manifest);
+    if(0 == sizeof($md5_matches))
+    {
+        $target_manifest = remove_file_extension( $upgrade_content ) . '-manifest.php';
+        require_once($target_manifest);
 
-		$name = empty($manifest['name']) ? $upgrade_content : $manifest['name'];
-		$version = empty($manifest['version']) ? '' : $manifest['version'];
-		$published_date = empty($manifest['published_date']) ? '' : $manifest['published_date'];
-		$icon = '';
-		$description = empty($manifest['description']) ? 'None' : $manifest['description'];
-		$uninstallable = empty($manifest['is_uninstallable']) ? 'No' : 'Yes';
-		$type = getUITextForType( $manifest['type'] );
-		$manifest_type = $manifest['type'];
+        $name = empty($manifest['name']) ? $upgrade_content : $manifest['name'];
+        $version = empty($manifest['version']) ? '' : $manifest['version'];
+        $published_date = empty($manifest['published_date']) ? '' : $manifest['published_date'];
+        $icon = '';
+        $description = empty($manifest['description']) ? 'None' : $manifest['description'];
+        $uninstallable = empty($manifest['is_uninstallable']) ? 'No' : 'Yes';
+        $type = getUITextForType( $manifest['type'] );
+        $manifest_type = $manifest['type'];
 
-		if($view == 'default' && $manifest_type != 'patch')
-		{
-			continue;
-		}
+        if($view == 'default' && $manifest_type != 'patch')
+        {
+            continue;
+        }
 
-		if($view == 'module'
-			&& $manifest_type != 'module' && $manifest_type != 'theme' && $manifest_type != 'langpack')
-		{
-			continue;
-		}
+        if($view == 'module'
+            && $manifest_type != 'module' && $manifest_type != 'theme' && $manifest_type != 'langpack')
+        {
+            continue;
+        }
 
-		if(empty($manifest['icon']))
-		{
-			$icon = getImageForType( $manifest['type'] );
-		}
-		else
-		{
-			$path_parts = pathinfo( $manifest['icon'] );
-			$icon = "<!--not_in_theme!--><img src=\"" . remove_file_extension( $upgrade_content ) . "-icon." . $path_parts['extension'] . "\" alt =''>";
-		}
+        if(empty($manifest['icon']))
+        {
+            $icon = getImageForType( $manifest['type'] );
+        }
+        else
+        {
+            $path_parts = pathinfo( $manifest['icon'] );
+            $icon = "<!--not_in_theme!--><img src=\"" . remove_file_extension( $upgrade_content ) . "-icon." . $path_parts['extension'] . "\" alt =''>";
+        }
 
-		$upgrades_available++;
-		print( "<tr><td>$icon</td><td>$name</td><td>$type</td><td>$version</td><td>$published_date</td><td>$uninstallable</td><td>$description</td>\n" );
+        $upgrades_available++;
+        print( "<tr><td>$icon</td><td>$name</td><td>$type</td><td>$version</td><td>$published_date</td><td>$uninstallable</td><td>$description</td>\n" );
 
-		$upgrade_content = urlencode($upgrade_content);
+        $upgrade_content = urlencode($upgrade_content);
 
-		$form2 =<<<eoq
+        $form2 =<<<eoq
             <form action="{$form_action}_prepare" method="post">
             <td><input type=submit name="btn_mode" onclick="this.form.mode.value='Install';this.form.submit();" value="{$mod_strings['LBL_UW_BTN_INSTALL']}" /></td>
             <input type=hidden name="install_file" value="{$upgrade_content}" />
-			<input type=hidden name="mode"/>
+            <input type=hidden name="mode"/>
             </form>
 
             <form action="{$form_action}" method="post">
@@ -333,7 +334,7 @@ foreach($upgrade_contents as $upgrade_content)
             </form>
             </tr>
 eoq;
-		echo $form2;
+        echo $form2;
     }
 }
 print( "</table>\n" );

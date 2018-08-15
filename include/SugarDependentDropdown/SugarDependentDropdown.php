@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /*********************************************************************************
 
@@ -52,60 +53,60 @@ class SugarDependentDropdown
     /*
      * Holds processed metadata, ready for JSON
      */
-    var $metadata;
+    public $metadata;
 
     /*
      * Flag to suppress errors and/or log more heavily
      */
-    var $debugMode = false;
+    public $debugMode = false;
 
     /*
      * Default metadata array that will be merged with any passed fields to
      * ensure uniformity
      */
-    var $defaults = array(
-		'name'		=> '',
-		'id'		=> '',
-		'type'		=> 'none',	// form element, valid "select", "input", "checkbox", "none"
-		'label_pos'	=> 'left',		// valid: 'left', 'right', 'top', 'bottom', 'none' (none)
-		'hidden'	=> array(),		// metadata to create hidden fields with values you choose
-	);
+    public $defaults = array(
+        'name'		=> '',
+        'id'		=> '',
+        'type'		=> 'none',	// form element, valid "select", "input", "checkbox", "none"
+        'label_pos'	=> 'left',		// valid: 'left', 'right', 'top', 'bottom', 'none' (none)
+        'hidden'	=> array(),		// metadata to create hidden fields with values you choose
+    );
 
     /*
      * Fields that must exist in an element (single dropdown/field) metadata
      * array.
      */
-    var $elementRequired = array(
-		'name',
-		'id',
-		//'values',
-		//'onchange',
-		//'force_render',
-	);
+    public $elementRequired = array(
+        'name',
+        'id',
+        //'values',
+        //'onchange',
+        //'force_render',
+    );
 
     /**
      * Fields that will be merged down into individual elements and handlers
      */
-    var $alwaysMerge = array(
-		'force_render',
-	);
+    public $alwaysMerge = array(
+        'force_render',
+    );
 
     /*
      * Valid 'types' for a dependent dropdown
      */
-    var $validTypes = array(
-		"select", 	// select dropdown
-		"input", 	// text input field
-		"checkbox",	// checkbox (radio buttons will not be supported)
-		"none", 	// blank
-		"multiple"	// custom functionality
-	);
+    public $validTypes = array(
+        "select", 	// select dropdown
+        "input", 	// text input field
+        "checkbox",	// checkbox (radio buttons will not be supported)
+        "none", 	// blank
+        "multiple"	// custom functionality
+    );
 
     /**
      * Sole constructor
      * @param string $metadata Path to metadata file to consume
      */
-    function __construct($metadata='')
+    public function __construct($metadata='')
     {
         if (!empty($metadata)) {
             $this->init($metadata);
@@ -115,7 +116,7 @@ class SugarDependentDropdown
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function SugarDependentDropdown($metadata='')
+    public function SugarDependentDropdown($metadata='')
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -130,7 +131,7 @@ class SugarDependentDropdown
      * Prepares an instance of SDD for use with a given set
      * @param string $metadata Path to metadata file to consume
      */
-    function init($metadata)
+    public function init($metadata)
     {
         if (is_string($metadata)) {
             if ($this->debugMode) {
@@ -181,12 +182,12 @@ class SugarDependentDropdown
     } // end init()
 
 
-	///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     ////	PRIVATE UTILS
     /**
      * Verifies that an element is valid and has all the required info.
      */
-    function isValidElement($element)
+    public function isValidElement($element)
     {
         if (is_array($element)) {
             foreach ($this->elementRequired as $k => $req) {
@@ -213,7 +214,7 @@ class SugarDependentDropdown
      * @param array $element Element metadata
      * @return array
      */
-    function initElement($element, $alwaysMerge)
+    public function initElement($element, $alwaysMerge)
     {
         if ($this->isValidElement($element)) {
             $mergedElement = sugarArrayMerge($this->defaults, $element);
@@ -255,11 +256,10 @@ class SugarDependentDropdown
             }
 
             return $mergedElement;
-        } else {
-            if ($this->debugMode) {
-                $this->debugOutput("SugarRouting is trying to initialize a non-element:");
-                $this->debugOutput($element);
-            }
+        }
+        if ($this->debugMode) {
+            $this->debugOutput("SugarRouting is trying to initialize a non-element:");
+            $this->debugOutput($element);
         }
     }
 
@@ -269,7 +269,7 @@ class SugarDependentDropdown
      * @param array $metadata
      * @return bool
      */
-    function verifyMetadata($metadata)
+    public function verifyMetadata($metadata)
     {
         if (isset($metadata['elements']) && !empty($metadata['elements']) && is_array($metadata['elements'])) {
             $elements = $metadata['elements'];
@@ -288,37 +288,37 @@ class SugarDependentDropdown
                  * Check based on "type"
                  */
                 switch ($element['type']) {
-					case "select":
-						if (isset($element['values'])) {
-						    $index = substr($indexName, 7, strlen($indexName));
+                    case "select":
+                        if (isset($element['values'])) {
+                            $index = substr($indexName, 7, strlen($indexName));
 
 
-						    /* if we have an array to iterate through - this is not the case with lazy-loaded values */
-						    if (is_array($element['values']) && !empty($element['values'])) {
-						        $index++; // string to int conversion, i know, sucks
-						        $nextElementKey = "element".$index;
-						        $nextElement = $elements[$nextElementKey];
+                            /* if we have an array to iterate through - this is not the case with lazy-loaded values */
+                            if (is_array($element['values']) && !empty($element['values'])) {
+                                $index++; // string to int conversion, i know, sucks
+                                $nextElementKey = "element".$index;
+                                $nextElement = $elements[$nextElementKey];
 
-						        foreach ($element['values'] as $key => $value) {
-						            if (!array_key_exists($key, $nextElement['handlers'])) {
-						                if ($this->debugMode) {
-						                    $this->debugOutput("SugarRouting: next-order element is missing a handler for value: [ {$key} ]");
-						                    $this->debugOutput($elements);
-						                    $this->debugOutput($nextElement);
-						                }
-						                return false;
-						            }
-						        }
-						    }
-						} else {
-						    if ($this->debugMode) {
-						        $this->debugOutput("SugarRouting: 'select' element found, no 'values' defined.");
-						        $this->debugOutput($element);
-						    }
-						    return false;
-						}
-					break; // end "select" check
-				}
+                                foreach ($element['values'] as $key => $value) {
+                                    if (!array_key_exists($key, $nextElement['handlers'])) {
+                                        if ($this->debugMode) {
+                                            $this->debugOutput("SugarRouting: next-order element is missing a handler for value: [ {$key} ]");
+                                            $this->debugOutput($elements);
+                                            $this->debugOutput($nextElement);
+                                        }
+                                        return false;
+                                    }
+                                }
+                            }
+                        } else {
+                            if ($this->debugMode) {
+                                $this->debugOutput("SugarRouting: 'select' element found, no 'values' defined.");
+                                $this->debugOutput($element);
+                            }
+                            return false;
+                        }
+                    break; // end "select" check
+                }
 
                 /*
                  * Handler "handlers" mini-element metadata definition verification
@@ -343,12 +343,12 @@ class SugarDependentDropdown
                 $this->debugOutput((count($metadata) > 1) ? "SugarRouting: all checks passed, valid metadata confirmed" : "SugarRouting: 'handlers' checks passed, valid metadata confirmed.");
             }
             return true;
-        } else {
-            if ($this->debugMode) {
-                $this->debugOutput("SugarRouting: Your metadata does not contain a valid 'elements' array:");
-                $this->debugOutput($metadata);
-            }
         }
+        if ($this->debugMode) {
+            $this->debugOutput("SugarRouting: Your metadata does not contain a valid 'elements' array:");
+            $this->debugOutput($metadata);
+        }
+        
         return false;
     }
 
@@ -356,12 +356,12 @@ class SugarDependentDropdown
      * Prints debug messages to the screen
      * @param mixed
      */
-    function debugOutput($v)
+    public function debugOutput($v)
     {
         echo "\n<pre>\n";
         print_r($v);
         echo "\n</pre>\n";
     }
     ////	END PRIVATE UTILS
-	///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
 } // end Class def

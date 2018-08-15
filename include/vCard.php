@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /**
  * vCard implementation
@@ -55,7 +56,7 @@ class vCard
         $this->properties = array();
     }
 
-    function loadContact($contactid, $module='Contacts')
+    public function loadContact($contactid, $module='Contacts')
     {
         global $app_list_strings;
 
@@ -89,35 +90,35 @@ class vCard
         $this->setTitle($contact->title);
     }
 
-    function setTitle($title)
+    public function setTitle($title)
     {
-        $this->setProperty("TITLE",$title);
+        $this->setProperty("TITLE", $title);
     }
-    function setORG($org, $dep)
+    public function setORG($org, $dep)
     {
-        $this->setProperty("ORG","$org;$dep");
+        $this->setProperty("ORG", "$org;$dep");
     }
-    function setAddress($address, $city, $state,$postal, $country, $type, $encoding='')
+    public function setAddress($address, $city, $state, $postal, $country, $type, $encoding='')
     {
         if (!empty($encoding)) {
             $encoding = ";ENCODING={$encoding}";
         }
-        $this->setProperty("ADR;$type$encoding",";;$address;$city;$state;$postal;$country");
+        $this->setProperty("ADR;$type$encoding", ";;$address;$city;$state;$postal;$country");
     }
 
-    function setName($first_name, $last_name, $prefix)
+    public function setName($first_name, $last_name, $prefix)
     {
-        $this->name = strtr($first_name.'_'.$last_name, ' ' , '_');
-        $this->setProperty('N',$last_name.';'.$first_name.';;'.$prefix);
-        $this->setProperty('FN',"$prefix $first_name $last_name");
+        $this->name = strtr($first_name.'_'.$last_name, ' ', '_');
+        $this->setProperty('N', $last_name.';'.$first_name.';;'.$prefix);
+        $this->setProperty('FN', "$prefix $first_name $last_name");
     }
 
-    function setEmail($address)
+    public function setEmail($address)
     {
         $this->setProperty('EMAIL;INTERNET', $address);
     }
 
-    function setPhoneNumber($number, $type)
+    public function setPhoneNumber($number, $type)
     {
         if ($type != 'FAX') {
             $this->setProperty("TEL;$type", $number);
@@ -125,11 +126,11 @@ class vCard
             $this->setProperty("TEL;WORK;$type", $number);
         }
     }
-    function setBirthDate($date)
+    public function setBirthDate($date)
     {
-        $this->setProperty('BDAY',$date);
+        $this->setProperty('BDAY', $date);
     }
-    function getProperty($name)
+    public function getProperty($name)
     {
         if (isset($this->properties[$name])) {
             return $this->properties[$name];
@@ -137,12 +138,12 @@ class vCard
         return null;
     }
 
-    function setProperty($name, $value)
+    public function setProperty($name, $value)
     {
         $this->properties[$name] = $value;
     }
 
-    function toString()
+    public function toString()
     {
         global $locale;
         $temp = "BEGIN:VCARD\n";
@@ -159,7 +160,7 @@ class vCard
         return $temp;
     }
 
-    function saveVCard()
+    public function saveVCard()
     {
         global $locale;
         $content = $this->toString();
@@ -180,7 +181,7 @@ class vCard
         print $locale->translateCharset($content, 'UTF-8', $locale->getExportCharset());
     }
 
-    function importVCard($filename, $module = 'Contacts')
+    public function importVCard($filename, $module = 'Contacts')
     {
         global $current_user;
         $lines = file($filename);
@@ -324,7 +325,7 @@ class vCard
                     $GLOBALS['log']->debug('I found a company name');
                     if (!empty($value)) {
                         $GLOBALS['log']->debug('I found a company name (fer real)');
-                        if (is_a($bean,"Contact") || is_a($bean,"Lead")) {
+                        if (is_a($bean, "Contact") || is_a($bean, "Lead")) {
                             $GLOBALS['log']->debug('And Im dealing with a person!');
                             $accountBean = BeanFactory::getBean('Accounts');
                             // It's a contact, we better try and match up an account
@@ -343,7 +344,7 @@ class vCard
                                 if (file_exists('custom/include/vCardTrimStrings.php')) {
                                     require_once('custom/include/vCardTrimStrings.php');
                                 }
-                                $short_company_name = trim(preg_replace(array_keys($vCardTrimStrings), $vCardTrimStrings,$full_company_name), " ,.");
+                                $short_company_name = trim(preg_replace(array_keys($vCardTrimStrings), $vCardTrimStrings, $full_company_name), " ,.");
 
                                 $GLOBALS['log']->debug('Trying an extended search for: ' . $short_company_name);
                                 $result = $accountBean->retrieve_by_string_fields(array('name' => $short_company_name, 'deleted' => 0));
@@ -399,4 +400,3 @@ class vCard
         return $beanId;
     }
 }
-

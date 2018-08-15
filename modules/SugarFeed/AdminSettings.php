@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -51,7 +52,7 @@ $admin->retrieveSettings();
 // Handle posts
 if (!empty($_REQUEST['process'])) {
     // Check the cleanup logic hook, make sure it is still there
-    check_logic_hook_file('Users','after_login', array(1, 'SugarFeed old feed entry remover', 'modules/SugarFeed/SugarFeedFlush.php', 'SugarFeedFlush', 'flushStaleEntries'));
+    check_logic_hook_file('Users', 'after_login', array(1, 'SugarFeed old feed entry remover', 'modules/SugarFeed/SugarFeedFlush.php', 'SugarFeedFlush', 'flushStaleEntries'));
 
     // We have data posted
     if ($_REQUEST['process'] == 'true') {
@@ -74,7 +75,7 @@ if (!empty($_REQUEST['process'])) {
             }
             
             foreach ($active_modules as $name => $is_active) {
-                $module = substr($name,7);
+                $module = substr($name, 7);
                 
                 if ($is_active == '1') {
                     // They are activating something that was disabled before
@@ -85,26 +86,26 @@ if (!empty($_REQUEST['process'])) {
                 }
             }
             
-            $admin->saveSetting('sugarfeed','enabled','1');
+            $admin->saveSetting('sugarfeed', 'enabled', '1');
         } else {
-            $admin->saveSetting('sugarfeed','enabled','0');
+            $admin->saveSetting('sugarfeed', 'enabled', '0');
             // Now we need to remove all of the logic hooks, so they don't continue to run
             // We also need to leave the database alone, so they can enable/disable modules with the system disabled
             $modulesWithFeeds = SugarFeed::getAllFeedModules();
             
             foreach ($modulesWithFeeds as $currFeedModule) {
-                SugarFeed::disableModuleFeed($currFeedModule,FALSE);
+                SugarFeed::disableModuleFeed($currFeedModule, false);
             }
         }
 
-        $admin->retrieveSettings(FALSE,TRUE);
+        $admin->retrieveSettings(false, true);
         SugarFeed::flushBackendCache();
     } elseif ($_REQUEST['process'] == 'deleteRecords') {
         if (! isset($db)) {
             $db = DBManagerFactory::getInstance();
         }
-        $db->query("UPDATE sugarfeed SET deleted = '1'");        
-        echo(translate('LBL_RECORDS_DELETED','SugarFeed'));
+        $db->query("UPDATE sugarfeed SET deleted = '1'");
+        echo(translate('LBL_RECORDS_DELETED', 'SugarFeed'));
     }
 
 
@@ -120,7 +121,7 @@ $sugar_smarty->assign('mod', $mod_strings);
 $sugar_smarty->assign('app', $app_strings);
 
 if (isset($admin->settings['sugarfeed_enabled']) && $admin->settings['sugarfeed_enabled'] == '1') {
-    $sugar_smarty->assign('enabled_checkbox','checked');
+    $sugar_smarty->assign('enabled_checkbox', 'checked');
 }
 
 $possible_feeds = SugarFeed::getAllFeedModules();
@@ -139,22 +140,21 @@ foreach ($possible_feeds as $module) {
         // Fake module, need to handle specially
         $userFeedEnabled = $currModule['enabled'];
         continue;
-    } else {
-        $currModule['label'] = $GLOBALS['app_list_strings']['moduleList'][$module];
     }
+    $currModule['label'] = $GLOBALS['app_list_strings']['moduleList'][$module];
+    
 
     $module_list[] = $currModule;
 }
-$sugar_smarty->assign('module_list',$module_list);
-$sugar_smarty->assign('user_feed_enabled',$userFeedEnabled);
+$sugar_smarty->assign('module_list', $module_list);
+$sugar_smarty->assign('user_feed_enabled', $userFeedEnabled);
 
 echo getClassicModuleTitle(
-        "Administration", 
+        "Administration",
         array(
-            "<a href='index.php?module=Administration&action=index'>".translate('LBL_MODULE_NAME','Administration')."</a>",
+            "<a href='index.php?module=Administration&action=index'>".translate('LBL_MODULE_NAME', 'Administration')."</a>",
            $mod_strings['LBL_MODULE_NAME'],
-           ), 
+           ),
         false
         );
 $sugar_smarty->display('modules/SugarFeed/AdminSettings.tpl');
-

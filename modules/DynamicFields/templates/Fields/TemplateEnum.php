@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,34 +37,34 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 require_once('include/utils/array_utils.php');
 class TemplateEnum extends TemplateText
 {
-    var $max_size = 100;
-    var $len = 100;
-    var $type='enum';
-    var $ext1 = '';
-    var $default_value = '';
-    var $dependency ; // any dependency information
-    var $supports_unified_search = true;
+    public $max_size = 100;
+    public $len = 100;
+    public $type='enum';
+    public $ext1 = '';
+    public $default_value = '';
+    public $dependency ; // any dependency information
+    public $supports_unified_search = true;
 
-    function __construct()
+    public function __construct()
     {
         // ensure that the field dependency information is read in from any _REQUEST
-        $this->localVardefMap = array (
-    		'trigger' => 'trigger',
-    		'action' => 'action' ,
+        $this->localVardefMap = array(
+            'trigger' => 'trigger',
+            'action' => 'action' ,
             'visibility_grid' => 'visibility_grid',
         ) ;
-        $this->vardef_map = array_merge ($this->vardef_map , $this->localVardefMap) ;
+        $this->vardef_map = array_merge($this->vardef_map, $this->localVardefMap) ;
     }
 
-    function populateFromPost()
+    public function populateFromPost()
     {
         parent::populateFromPost();
         if (!empty($this->visibility_grid) && is_string($this->visibility_grid)) {
@@ -77,28 +78,28 @@ class TemplateEnum extends TemplateText
         // check first if we have the component parts of a dependency
         $dependencyPresent = true ;
         foreach ($this->localVardefMap as $def) {
-            $dependencyPresent &= isset ($this->$def) ;
+            $dependencyPresent &= isset($this->$def) ;
         }
 
         if ($dependencyPresent) {
-            $dependencies = array () ;
+            $dependencies = array() ;
 
-            if (is_array ($this->trigger) && is_array ($this->action)) {
-                for ($i = 0 ; $i < count ($this->action) ; $i++) {
+            if (is_array($this->trigger) && is_array($this->action)) {
+                for ($i = 0 ; $i < count($this->action) ; $i++) {
                     $dependencies [ $this->trigger [ $i ] ] = $this->action [ $i ] ;
                 }
                 $this->dependency = $dependencies ;
             } else {
-                if (! is_array ($this->trigger) && ! is_array ($this->action)) {
-                    $this->dependency = array ( $this->trigger => $this->action ) ;
+                if (! is_array($this->trigger) && ! is_array($this->action)) {
+                    $this->dependency = array( $this->trigger => $this->action ) ;
                 }
             }
             // tidy up
-            unset ($this->trigger) ;
-            unset ($this->action) ;
+            unset($this->trigger) ;
+            unset($this->action) ;
         }
     }
-    function get_xtpl_edit()
+    public function get_xtpl_edit()
     {
         $name = $this->name;
         $value = '';
@@ -124,7 +125,7 @@ class TemplateEnum extends TemplateText
         return $returnXTPL;
     }
 
-    function get_xtpl_search()
+    public function get_xtpl_search()
     {
         $searchFor = '';
         if (!empty($_REQUEST[$this->name])) {
@@ -140,7 +141,7 @@ class TemplateEnum extends TemplateText
         return $returnXTPL;
     }
 
-    function get_field_def()
+    public function get_field_def()
     {
         $def = parent::get_field_def();
         $def['options'] = !empty($this->options) ? $this->options : $this->ext1;
@@ -158,7 +159,7 @@ class TemplateEnum extends TemplateText
         return $def;
     }
 
-    function get_xtpl_detail()
+    public function get_xtpl_detail()
     {
         $name = $this->name;
 
@@ -188,7 +189,7 @@ class TemplateEnum extends TemplateText
         return '';
     }
 
-    function save($df)
+    public function save($df)
     {
         if (!empty($this->default_value) && is_array($this->default_value)) {
             $this->default_value = $this->default_value[0];
@@ -205,7 +206,7 @@ class TemplateEnum extends TemplateText
     /**
      * @param DynamicField $df
      */
-    function delete($df)
+    public function delete($df)
     {
         parent::delete($df);
     }

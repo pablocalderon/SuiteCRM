@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /*********************************************************************************
 
@@ -56,25 +57,25 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class Currency extends SugarBean
 {
     // Stored fields
-    var $id;
-    var $iso4217;
-    var $name;
-    var $status;
-    var $conversion_rate;
-    var $deleted;
-    var $date_entered;
-    var $date_modified;
-    var $symbol;
-    var $hide = '';
-    var $unhide = '';
-    var $field_name_map;
+    public $id;
+    public $iso4217;
+    public $name;
+    public $status;
+    public $conversion_rate;
+    public $deleted;
+    public $date_entered;
+    public $date_modified;
+    public $symbol;
+    public $hide = '';
+    public $unhide = '';
+    public $field_name_map;
 
-    var $table_name = "currencies";
-    var $object_name = "Currency";
-    var $module_dir = "Currencies";
-    var $new_schema = true;
+    public $table_name = "currencies";
+    public $object_name = "Currency";
+    public $module_dir = "Currencies";
+    public $new_schema = true;
 
-    var $disable_num_format = true;
+    public $disable_num_format = true;
 
 
     public function __construct()
@@ -94,7 +95,7 @@ class Currency extends SugarBean
      * @param $precision The rounding precision scale
      * @return currency value in US Dollars from conversion
      */
-    function convertToDollar($amount, $precision = 6)
+    public function convertToDollar($amount, $precision = 6)
     {
         return $this->conversion_rate ? round(($amount / $this->conversion_rate), $precision) : 0;
     }
@@ -108,7 +109,7 @@ class Currency extends SugarBean
      * @param $precision The rounding precision scale
      * @return currency value from US Dollar conversion
      */
-    function convertFromDollar($amount, $precision = 6)
+    public function convertFromDollar($amount, $precision = 6)
     {
         return round(($amount * $this->conversion_rate), $precision);
     }
@@ -119,7 +120,7 @@ class Currency extends SugarBean
      * Returns the default currency name as defined in application
      * @return String value of default currency name
      */
-    function getDefaultCurrencyName()
+    public function getDefaultCurrencyName()
     {
         global $sugar_config;
         return $sugar_config['default_currency_name'];
@@ -131,7 +132,7 @@ class Currency extends SugarBean
      * Returns the default currency symobol in application
      * @return String value of default currency symbol(e.g. $)
      */
-    function getDefaultCurrencySymbol()
+    public function getDefaultCurrencySymbol()
     {
         global $sugar_config;
         return $sugar_config['default_currency_symbol'];
@@ -143,7 +144,7 @@ class Currency extends SugarBean
      * Returns the default ISO 4217 standard currency code value
      * @return String value for the ISO 4217 standard code(e.g. EUR)
      */
-    function getDefaultISO4217()
+    public function getDefaultISO4217()
     {
         global $sugar_config;
         return $sugar_config['default_currency_iso4217'];
@@ -159,7 +160,7 @@ class Currency extends SugarBean
      * @return String id value for symbol defined in Currencies table, blank String value
      *         if none found
      */
-    function retrieveIDBySymbol($symbol)
+    public function retrieveIDBySymbol($symbol)
     {
         $query = "SELECT id FROM currencies WHERE symbol='$symbol' AND deleted=0;";
         $result = $this->db->query($query);
@@ -173,7 +174,7 @@ class Currency extends SugarBean
         return '';
     }
 
-    function list_view_parse_additional_sections(&$list_form)
+    public function list_view_parse_additional_sections(&$list_form)
     {
         global $isMerge;
 
@@ -183,7 +184,7 @@ class Currency extends SugarBean
         return $list_form;
     }
 
-    function retrieve_id_by_name($name)
+    public function retrieve_id_by_name($name)
     {
         $nameQuoted = $this->db->quote($name);
         $query = "select id from currencies where name='$nameQuoted' and deleted=0;";
@@ -197,7 +198,7 @@ class Currency extends SugarBean
         return '';
     }
 
-    function retrieve($id = -99, $encode = true, $deleted = true)
+    public function retrieve($id = -99, $encode = true, $deleted = true)
     {
         if ($id == '-99') {
             $this->name = 	$this->getDefaultCurrencyName();
@@ -234,20 +235,20 @@ class Currency extends SugarBean
      * Returns:
      * 	$symbol otherwise chr(2) for euro symbol
      */
-    function getPdfCurrencySymbol()
+    public function getPdfCurrencySymbol()
     {
         if ($this->symbol == '&#8364;' || $this->symbol == '€') {
             return chr(2);
         }
         return $this->symbol;
     }
-    function get_list_view_data()
+    public function get_list_view_data()
     {
         $this->conversion_rate = format_number($this->conversion_rate, 10, 10);
         $data = parent::get_list_view_data();
         return $data;
     }
-    function save($check_notify = FALSE)
+    public function save($check_notify = false)
     {
         sugar_cache_clear('currency_list');
         return parent::save($check_notify);
@@ -350,8 +351,8 @@ function format_number($amount, $round = null, $decimals = null, $params = array
 
     // only create a currency object if we need it
     if ((!empty($params['currency_symbol']) && $params['currency_symbol']) ||
-	  (!empty($params['convert']) && $params['convert']) ||
-	  (!empty($params['currency_id']))) {
+      (!empty($params['convert']) && $params['convert']) ||
+      (!empty($params['currency_id']))) {
         // if we have an override currency_id
         if (!empty($params['currency_id'])) {
             if ($override_currency_id != $params['currency_id']) {
@@ -400,7 +401,7 @@ function format_number($amount, $round = null, $decimals = null, $params = array
 
     if (empty($params['human'])) {
         $amount = number_format(round($amount, $round), $decimals, $dec_sep, $num_grp_sep);
-        $amount = format_place_symbol($amount, $symbol,(empty($params['symbol_space']) ? false : true));
+        $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true));
     } else {
         // If amount is more greater than a thousand(positive or negative)
         if (strpos($amount, '.') > 0) {
@@ -411,9 +412,9 @@ function format_number($amount, $round = null, $decimals = null, $params = array
             $amount = round(($amount / 1000), 0);
             $amount = number_format($amount, 0, $dec_sep, $num_grp_sep); // add for SI bug 52498
             $amount = $amount . 'k';
-            $amount = format_place_symbol($amount, $symbol,(empty($params['symbol_space']) ? false : true));
+            $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true));
         } else {
-            $amount = format_place_symbol($amount, $symbol,(empty($params['symbol_space']) ? false : true));
+            $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true));
         }
     }
 
@@ -470,28 +471,25 @@ function unformat_number($string)
     $out_number = trim($string[0]);
     if ($out_number == '') {
         return '';
-    } else {
-        return (float)$out_number;
     }
+    return (float)$out_number;
 }
 
 // deprecated use format_number() above
-function format_money($amount, $for_display = TRUE)
+function format_money($amount, $for_display = true)
 {
     // This function formats an amount for display.
     // Later on, this should be converted to use proper thousand and decimal seperators
     // Currently, it stays closer to the existing format, and just rounds to two decimal points
     if (isset($amount)) {
         if ($for_display) {
-            return sprintf("%0.02f",$amount);
-        } else {
-            // If it's an editable field, don't use a thousand seperator.
-            // Or perhaps we will want to, but it doesn't matter right now.
-            return sprintf("%0.02f",$amount);
+            return sprintf("%0.02f", $amount);
         }
-    } else {
-        return;
+        // If it's an editable field, don't use a thousand seperator.
+        // Or perhaps we will want to, but it doesn't matter right now.
+        return sprintf("%0.02f", $amount);
     }
+    return;
 }
 
 /**
@@ -609,11 +607,10 @@ function getCurrencyDropDown($focus, $field='currency_id', $value='', $view='Det
             $html .= $currency->getJavascript();
         }
         return $html;
-    } else {
-        $currency = new Currency();
-        $currency->retrieve($value);
-        return $currency->name;
     }
+    $currency = new Currency();
+    $currency->retrieve($value);
+    return $currency->name;
 }
 
 function getCurrencyNameDropDown($focus, $field='currency_name', $value='', $view='DetailView')
@@ -649,17 +646,16 @@ function getCurrencyNameDropDown($focus, $field='currency_name', $value='', $vie
             $listitems[$item->name] = $item->name;
         }
         return '<select name="'.$field.'" id="'.$field.'" />'.
-            get_select_options_with_id($listitems,$value).'</select>';
-    } else {
-        $currency = new Currency();
-        if (isset($focus->currency_id)) {
-            $currency_id = $focus->currency_id;
-        } else {
-            $currency_id = -99;
-        }
-        $currency->retrieve($currency_id);
-        return $currency->name;
+            get_select_options_with_id($listitems, $value).'</select>';
     }
+    $currency = new Currency();
+    if (isset($focus->currency_id)) {
+        $currency_id = $focus->currency_id;
+    } else {
+        $currency_id = -99;
+    }
+    $currency->retrieve($currency_id);
+    return $currency->name;
 }
 
 function getCurrencySymbolDropDown($focus, $field='currency_name', $value='', $view='DetailView')
@@ -695,16 +691,14 @@ function getCurrencySymbolDropDown($focus, $field='currency_name', $value='', $v
             $listitems[$item->symbol] = $item->symbol;
         }
         return '<select name="'.$field.'" id="'.$field.'" />'.
-            get_select_options_with_id($listitems,$value).'</select>';
-    } else {
-        $currency = new Currency();
-        if (isset($focus->currency_id)) {
-            $currency_id = $focus->currency_id;
-        } else {
-            $currency_id = -99;
-        }
-        $currency->retrieve($currency_id);
-        return $currency->name;
+            get_select_options_with_id($listitems, $value).'</select>';
     }
+    $currency = new Currency();
+    if (isset($focus->currency_id)) {
+        $currency_id = $focus->currency_id;
+    } else {
+        $currency_id = -99;
+    }
+    $currency->retrieve($currency_id);
+    return $currency->name;
 }
-

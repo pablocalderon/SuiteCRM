@@ -14,7 +14,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testlistViewProcess()
     {
         
-	// save state
+    // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -30,7 +30,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $rows = [];
         while ($row = $resource->fetch_assoc()) {
             $rows[] = $row;
-        } 
+        }
         $tableAodIndex = $rows;
         
         $query = "SELECT * FROM email_addresses";
@@ -38,7 +38,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $rows = [];
         while ($row = $resource->fetch_assoc()) {
             $rows[] = $row;
-        } 
+        }
         $tableEmailAddresses = $rows;
         
         
@@ -56,7 +56,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         
         
         
-        // clean up 
+        // clean up
         
         DBManagerFactory::getInstance()->query("DELETE FROM email_addresses");
         foreach ($tableEmailAddresses as $row) {
@@ -91,7 +91,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testViewList()
     {
         
-	// save state
+    // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -118,7 +118,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testlistViewPrepare()
     {
         
-	// save state
+    // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -182,7 +182,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testprepareSearchForm()
     {
         
-	// save state
+    // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -193,7 +193,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // test
         
         
-        //test without any REQUEST parameters set. it will set searchform attribute to a searchform object. 
+        //test without any REQUEST parameters set. it will set searchform attribute to a searchform object.
         $view1 = new ViewList();
         $view1->module = 'Users';
         $view1->prepareSearchForm();
@@ -220,7 +220,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testprocessSearchForm()
     {
         
-	// save state
+    // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -262,7 +262,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testpreDisplay()
     {
         
-	// save state
+    // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -289,7 +289,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testdisplay()
     {
         
-	// save state
+    // save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -305,7 +305,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $rows = [];
         while ($row = $resource->fetch_assoc()) {
             $rows[] = $row;
-        } 
+        }
         $tableEmailAddresses = $rows;
         
         $view = new ViewList();
@@ -317,7 +317,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         ob_end_clean();
         $this->assertGreaterThan(0, strlen($renderedContent1));
 
-        //test with bean, seed and other arrtibutes set. it shuold return html. 
+        //test with bean, seed and other arrtibutes set. it shuold return html.
         $view->bean = new User();
         $view->seed = new User();
         $view->module = 'Users';
@@ -331,7 +331,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         ob_end_clean();
         $this->assertGreaterThan(0, strlen($renderedContent2));
         
-        // clean up 
+        // clean up
         
         DBManagerFactory::getInstance()->query("DELETE FROM email_addresses");
         foreach ($tableEmailAddresses as $row) {

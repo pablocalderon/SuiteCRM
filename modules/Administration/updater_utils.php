@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,11 +37,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
+/**
 
 ********************************************************************************/
 require_once('include/utils/encryption_utils.php');
@@ -70,7 +71,7 @@ function getSystemInfo($send_usage_info=true)
             $administration = new Administration();
         }
         $administration->retrieveSettings('system');
-        $info['system_name'] = (!empty($administration->settings['system_name']))?substr($administration->settings['system_name'], 0 ,255):'';
+        $info['system_name'] = (!empty($administration->settings['system_name']))?substr($administration->settings['system_name'], 0, 255):'';
 
 
         $result=$db->getOne("select count(*) count from users where status='Active' and deleted=0 and is_admin='1'", false, 'fetching admin count');
@@ -192,7 +193,7 @@ function check_now($send_usage_info=true, $get_request_data=false, $response_dat
     }
 
     if ($response_data || !$sclient->getError()) {
-        $serializedResultData = sugarDecode($key,$encodedResult);
+        $serializedResultData = sugarDecode($key, $encodedResult);
         $resultData = unserialize($serializedResultData);
         if ($response_data && empty($resultData)) {
             $resultData = array();
@@ -208,16 +209,16 @@ function check_now($send_usage_info=true, $get_request_data=false, $response_dat
             if (!empty($resultData['msg']['admin'])) {
                 $license->saveSetting('license', 'msg_admin', base64_encode($resultData['msg']['admin']));
             } else {
-                $license->saveSetting('license', 'msg_admin','');
+                $license->saveSetting('license', 'msg_admin', '');
             }
             if (!empty($resultData['msg']['all'])) {
                 $license->saveSetting('license', 'msg_all', base64_encode($resultData['msg']['all']));
             } else {
-                $license->saveSetting('license', 'msg_all','');
+                $license->saveSetting('license', 'msg_all', '');
             }
         } else {
-            $license->saveSetting('license', 'msg_admin','');
-            $license->saveSetting('license', 'msg_all','');
+            $license->saveSetting('license', 'msg_admin', '');
+            $license->saveSetting('license', 'msg_all', '');
         }
         $license->saveSetting('license', 'last_validation', 'success');
         unset($_SESSION['COULD_NOT_CONNECT']);
@@ -236,10 +237,10 @@ function check_now($send_usage_info=true, $get_request_data=false, $response_dat
         $_SESSION['COULD_NOT_CONNECT'] =TimeDate::getInstance()->nowDb();
     }
     if (!empty($resultData['versions'])) {
-        $license->saveSetting('license', 'latest_versions',base64_encode(serialize($resultData['versions'])));
+        $license->saveSetting('license', 'latest_versions', base64_encode(serialize($resultData['versions'])));
     } else {
         $resultData['versions'] = array();
-        $license->saveSetting('license', 'latest_versions','')	;
+        $license->saveSetting('license', 'latest_versions', '')	;
     }
 
     if (sizeof($resultData) == 1 && !empty($resultData['versions'][0]['version'])
@@ -261,7 +262,7 @@ function compareVersions($ver1, $ver2)
 function set_CheckUpdates_config_setting($value)
 {
     $admin=new Administration();
-    $admin->saveSetting('Update','CheckUpdates',$value);
+    $admin->saveSetting('Update', 'CheckUpdates', $value);
 }
 /* return's value for the 'CheckUpdates' config setting
 * if the setting does not exist one gets created with a default value of automatic.
@@ -272,9 +273,9 @@ function get_CheckUpdates_config_setting()
 
 
     $admin=new Administration();
-    $admin=$admin->retrieveSettings('Update',true);
+    $admin=$admin->retrieveSettings('Update', true);
     if (empty($admin->settings) or empty($admin->settings['Update_CheckUpdates'])) {
-        $admin->saveSetting('Update','CheckUpdates','automatic');
+        $admin->saveSetting('Update', 'CheckUpdates', 'automatic');
     } else {
         $checkupdates=$admin->settings['Update_CheckUpdates'];
     }
@@ -284,7 +285,7 @@ function get_CheckUpdates_config_setting()
 function set_last_check_version_config_setting($value)
 {
     $admin=new Administration();
-    $admin->saveSetting('Update','last_check_version',$value);
+    $admin->saveSetting('Update', 'last_check_version', $value);
 }
 function get_last_check_version_config_setting()
 {
@@ -292,16 +293,15 @@ function get_last_check_version_config_setting()
     $admin=$admin->retrieveSettings('Update');
     if (empty($admin->settings) or empty($admin->settings['Update_last_check_version'])) {
         return null;
-    } else {
-        return $admin->settings['Update_last_check_version'];
     }
+    return $admin->settings['Update_last_check_version'];
 }
 
 
 function set_last_check_date_config_setting($value)
 {
     $admin=new Administration();
-    $admin->saveSetting('Update','last_check_date',$value);
+    $admin->saveSetting('Update', 'last_check_date', $value);
 }
 function get_last_check_date_config_setting()
 {
@@ -309,9 +309,8 @@ function get_last_check_date_config_setting()
     $admin=$admin->retrieveSettings('Update');
     if (empty($admin->settings) or empty($admin->settings['Update_last_check_date'])) {
         return 0;
-    } else {
-        return $admin->settings['Update_last_check_date'];
     }
+    return $admin->settings['Update_last_check_date'];
 }
 
 function set_sugarbeat($value)
@@ -339,7 +338,7 @@ function shouldCheckSugar()
     global $license, $timedate;
     if (
 
-	get_CheckUpdates_config_setting() == 'automatic') {
+    get_CheckUpdates_config_setting() == 'automatic') {
         return true;
     }
 
@@ -365,7 +364,7 @@ function loginLicense()
         $current_date_time=time();
         $time_period=3*23*3600 ;
         if (($current_date_time - $last_check_date) > $time_period
-		) {
+        ) {
             $version = check_now(get_sugarbeat());
 
             unset($_SESSION['license_seats_needed']);

@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,15 +34,15 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 class MBLanguage
 {
-    var $iTemplates = array();
-    var $templates = array();
-    function __construct($name, $path, $label, $key_name)
+    public $iTemplates = array();
+    public $templates = array();
+    public function __construct($name, $path, $label, $key_name)
     {
         $this->path = $path;
         $this->name = $name;
@@ -52,7 +53,7 @@ class MBLanguage
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function MBLanguage($name, $path, $label, $key_name)
+    public function MBLanguage($name, $path, $label, $key_name)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -64,13 +65,13 @@ class MBLanguage
     }
 
 
-    function load()
+    public function load()
     {
         $this->generateModStrings();
         $this->generateAppStrings();
     }
 
-    function loadStrings($file)
+    public function loadStrings($file)
     {
         $module = strtoupper($this->name);
         $object_name = strtoupper($this->key_name);
@@ -92,7 +93,7 @@ class MBLanguage
         }
     }
 
-    function loadAppListStrings($file)
+    public function loadAppListStrings($file)
     {
         if (!file_exists($file)) {
             return;
@@ -114,7 +115,7 @@ class MBLanguage
         }
     }
 
-    function generateModStrings()
+    public function generateModStrings()
     {
         $this->strings = array();
         $this->loadTemplates();
@@ -130,7 +131,7 @@ class MBLanguage
         $this->loadStrings($this->path . '/language');
     }
 
-    function getModStrings($language='en_us')
+    public function getModStrings($language='en_us')
     {
         $language .= '.lang.php';
         if (!empty($this->strings[$language]) && $language != 'en_us.lang.php') {
@@ -142,7 +143,7 @@ class MBLanguage
         $empty = array();
         return $empty;
     }
-    function getAppListStrings($language='en_us')
+    public function getAppListStrings($language='en_us')
     {
         $language .= '.lang.php';
         if (!empty($this->appListStrings[$language]) && $language != 'en_us.lang.php') {
@@ -155,7 +156,7 @@ class MBLanguage
         return $empty;
     }
 
-    function generateAppStrings($buildFromTemplate = true)
+    public function generateAppStrings($buildFromTemplate = true)
     {
         $this->appListStrings = array('en_us.lang.php'=>array());
         //By default, generate app strings for the current language as well.
@@ -174,7 +175,7 @@ class MBLanguage
             }
         }
     }
-    function save($key_name, $duplicate=false, $rename=false)
+    public function save($key_name, $duplicate=false, $rename=false)
     {
         $header = file_get_contents('modules/ModuleBuilder/MB/header.php');
         $save_path = $this->path . '/language';
@@ -182,7 +183,7 @@ class MBLanguage
         foreach ($this->strings as $lang=>$values) {
             //Check if the module Label has changed.
             $renameLang = $rename || empty($values) || (isset($values['LBL_MODULE_NAME']) && $this->label != $values['LBL_MODULE_NAME']);
-            $mod_strings = return_module_language(str_replace('.lang.php','',$lang), 'ModuleBuilder');
+            $mod_strings = return_module_language(str_replace('.lang.php', '', $lang), 'ModuleBuilder');
             $required = array(
                 'LBL_LIST_FORM_TITLE'=>$this->label . " " . $mod_strings['LBL_LIST'],
                 'LBL_MODULE_NAME'=>$this->label,
@@ -203,7 +204,7 @@ class MBLanguage
                     $values[$k] = $v;
                 }
             }
-            write_array_to_file('mod_strings', $values, $save_path .'/'.$lang,'w', $header);
+            write_array_to_file('mod_strings', $values, $save_path .'/'.$lang, 'w', $header);
         }
         $app_save_path = $this->path . '/../../language/application';
         mkdir_recursive($app_save_path);
@@ -233,7 +234,7 @@ class MBLanguage
             foreach ($values as $key=>$array) {
                 if ($duplicate) {
                     //keep the original when duplicating
-                    $appFile .= override_value_to_string_recursive2 ('app_list_strings', $key, $array);
+                    $appFile .= override_value_to_string_recursive2('app_list_strings', $key, $array);
                 }
                 $okey = $key;
                 if ($key_changed) {
@@ -244,7 +245,7 @@ class MBLanguage
                 }
                 // if we aren't duplicating or the key has changed let's add it
                 if (!$duplicate || $okey != $key) {
-                    $appFile .= override_value_to_string_recursive2 ('app_list_strings', $key, $array);
+                    $appFile .= override_value_to_string_recursive2('app_list_strings', $key, $array);
                 }
             }
 
@@ -259,7 +260,7 @@ class MBLanguage
     *  we will include it from global app_list_string array into custom\modulebuilder\packages\$package\language\application\$lang.lang.php
     *  when we create a dropdown filed  and the value is created in MB.(#20728 )
     **/
-    function getGlobalAppListStringsForMB(&$values)
+    public function getGlobalAppListStringsForMB(&$values)
     {
         //Ensure it comes from MB
         if (!empty($_REQUEST['view_package']) && !empty($_REQUEST['type']) && $_REQUEST['type'] == 'enum'  && !empty($_REQUEST['options'])) {
@@ -272,14 +273,14 @@ class MBLanguage
         }
     }
 
-    function build($path)
+    public function build($path)
     {
         if (file_exists($this->path.'/language/')) {
             copy_recursive($this->path.'/language/', $path . '/language/');
         }
     }
 
-    function loadTemplates()
+    public function loadTemplates()
     {
         if (empty($this->templates)) {
             if (file_exists("$this->path/config.php")) {
@@ -294,7 +295,7 @@ class MBLanguage
      * Reset the templates and load the language files again.  This is called from
      * MBModule->save() once the config file has been written.
      */
-    function reload()
+    public function reload()
     {
         $this->templates = null;
         $this->load();

@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -67,43 +68,43 @@ class Sugarpdf extends TCPDF
      * the controller and the view.  The bean will automatically be set for us, but this
      * is meant to hold anything else.
      */
-    var $sugarpdf_object_map = array();
+    public $sugarpdf_object_map = array();
     /**
      * The name of the current module.
      */
-    var $module = '';
+    public $module = '';
     /**
      * The name of the current action.
      */
-    var $action = '';
+    public $action = '';
     /**
      */
-    var $bean = null;
+    public $bean = null;
     /**
     * Any errors that occured this can either be set by the view or the controller or the model
     */
-    var $errors = array();
+    public $errors = array();
     /**
      * Use to set the filename of the output pdf file.
      */
-    var $fileName = PDF_FILENAME;
+    public $fileName = PDF_FILENAME;
     /**
      * Use for the ACL access.
      */
-    var $aclAction = PDF_ACL_ACCESS;
+    public $aclAction = PDF_ACL_ACCESS;
     /**
      * Constructor which will peform the setup.
      */
 
 
-    function __construct($bean = null, $sugarpdf_object_map = array(),$orientation=PDF_PAGE_ORIENTATION, $unit=PDF_UNIT, $format=PDF_PAGE_FORMAT, $unicode=true, $encoding='UTF-8', $diskcache=false)
+    public function __construct($bean = null, $sugarpdf_object_map = array(), $orientation=PDF_PAGE_ORIENTATION, $unit=PDF_UNIT, $format=PDF_PAGE_FORMAT, $unicode=true, $encoding='UTF-8', $diskcache=false)
     {
         global $locale;
         //  $encoding = $locale->getExportCharset();
         if (empty($encoding)) {
             $encoding = "UTF-8";
         }
-        parent::__construct($orientation,$unit,$format,$unicode,$encoding,$diskcache);
+        parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache);
         $this->module = $GLOBALS['module'];
         $this->bean = $bean;
         $this->sugarpdf_object_map = $sugarpdf_object_map;
@@ -115,7 +116,7 @@ class Sugarpdf extends TCPDF
     /**
      * This method will be called from the controller and is not meant to be overridden.
      */
-    function process()
+    public function process()
     {
         $this->preDisplay();
         $this->display();
@@ -124,7 +125,7 @@ class Sugarpdf extends TCPDF
     /**
      * This method will display the errors on the page.
      */
-    function displayErrors()
+    public function displayErrors()
     {
         foreach ($this->errors as $error) {
             echo '<span class="error">' . $error . '</span><br>';
@@ -140,7 +141,7 @@ class Sugarpdf extends TCPDF
      * and then the subview can just override display(). If it so desires, can also override
      * preDisplay().
      */
-    function preDisplay()
+    public function preDisplay()
     {
         // set document information
         $this->SetCreator(PDF_CREATOR);
@@ -157,10 +158,10 @@ class Sugarpdf extends TCPDF
         $this->SetCompression($compression);
         $protection=array();
         if (PDF_PROTECTION != "") {
-            $protection=explode(",",PDF_PROTECTION);
+            $protection=explode(",", PDF_PROTECTION);
         }
 
-        $this->SetProtection($protection,blowfishDecode(blowfishGetKey('sugarpdf_pdf_user_password'), PDF_USER_PASSWORD),blowfishDecode(blowfishGetKey('sugarpdf_pdf_owner_password'), PDF_OWNER_PASSWORD));
+        $this->SetProtection($protection, blowfishDecode(blowfishGetKey('sugarpdf_pdf_user_password'), PDF_USER_PASSWORD), blowfishDecode(blowfishGetKey('sugarpdf_pdf_owner_password'), PDF_OWNER_PASSWORD));
         $this->setCellHeightRatio(K_CELL_HEIGHT_RATIO);
         $this->setJPEGQuality(intval(PDF_JPEG_QUALITY));
         $this->setPDFVersion(PDF_PDF_VERSION);
@@ -169,8 +170,8 @@ class Sugarpdf extends TCPDF
         $this->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
 
         // set header and footer fonts
-        $this->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $this->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $this->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $this->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
         //set margins
         $this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
@@ -178,7 +179,7 @@ class Sugarpdf extends TCPDF
         $this->setFooterMargin(PDF_MARGIN_FOOTER);
 
         //set auto page breaks
-        $this->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $this->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
         //set image scale factor
         $this->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -192,11 +193,11 @@ class Sugarpdf extends TCPDF
     /**
      * [OVERRIDE] - This method is meant to overidden in a subclass.
      */
-    function display()
+    public function display()
     {
         $this->AddPage();
-        $this->SetFont(PDF_FONT_NAME_MAIN,'B',16);
-        $this->MultiCell(0,0,'Tcpdf class for this module and action has not been implemented.',0,'C');
+        $this->SetFont(PDF_FONT_NAME_MAIN, 'B', 16);
+        $this->MultiCell(0, 0, 'Tcpdf class for this module and action has not been implemented.', 0, 'C');
         $this->Info();
     }
 
@@ -214,16 +215,16 @@ class Sugarpdf extends TCPDF
         $headerfont = $this->getHeaderFont();
         $headerdata = $this->getHeaderData();
 
-        if (($headerdata['logo']) AND ($headerdata['logo'] != K_BLANK_IMAGE)) {
+        if (($headerdata['logo']) and ($headerdata['logo'] != K_BLANK_IMAGE)) {
 
             // START SUGARPDF
             $logo = K_PATH_CUSTOM_IMAGES.$headerdata['logo'];
             $imsize = @getimagesize($logo);
-            if ($imsize === FALSE) {
+            if ($imsize === false) {
                 // encode spaces on filename
                 $logo = str_replace(' ', '%20', $logo);
                 $imsize = @getimagesize($logo);
-                if ($imsize === FALSE) {
+                if ($imsize === false) {
                     $logo = K_PATH_IMAGES.$headerdata['logo'];
                 }
             }
@@ -281,18 +282,18 @@ class Sugarpdf extends TCPDF
         parent::SetFont($family, $style, $size, $fontfile);
     }
 
-    function Info()
+    public function Info()
     {
-        $this->SetFont(PDF_FONT_NAME_MAIN,'',12);
-        $this->MultiCell(0,0,'---',0,'L');
-        $this->MultiCell(0,0,'Class: '.get_class($this),0,'L');
-        $this->MultiCell(0,0,'Extends: '.get_parent_class($this),0,'L');
-        $this->MultiCell(0,0,'---',0,'L');
-        $this->MultiCell(0,0,'Module: '.$this->module,0,'L');
-        $this->MultiCell(0,0,'Tcpdf Action: '.$this->action,0,'L');
-        $this->MultiCell(0,0,'Bean ID: '.$this->bean->getFieldValue('id'),0,'L');
-        $this->SetFont(PDF_FONT_NAME_MAIN,'',12);
-        $this->MultiCell(0,0,'---',0,'L');
+        $this->SetFont(PDF_FONT_NAME_MAIN, '', 12);
+        $this->MultiCell(0, 0, '---', 0, 'L');
+        $this->MultiCell(0, 0, 'Class: '.get_class($this), 0, 'L');
+        $this->MultiCell(0, 0, 'Extends: '.get_parent_class($this), 0, 'L');
+        $this->MultiCell(0, 0, '---', 0, 'L');
+        $this->MultiCell(0, 0, 'Module: '.$this->module, 0, 'L');
+        $this->MultiCell(0, 0, 'Tcpdf Action: '.$this->action, 0, 'L');
+        $this->MultiCell(0, 0, 'Bean ID: '.$this->bean->getFieldValue('id'), 0, 'L');
+        $this->SetFont(PDF_FONT_NAME_MAIN, '', 12);
+        $this->MultiCell(0, 0, '---', 0, 'L');
     }
 
     /**
@@ -329,7 +330,7 @@ class Sugarpdf extends TCPDF
      * @param $options Array which can contain : width (array 'column name'=>'width value + % OR nothing'), isheader (bool), header (array), fill (string: HTML color), ishtml (bool) default: false, border (0: no border (defaul), 1: frame or all of the following characters: L ,T ,R ,B), align (L: left align, C: center, R: right align, J: justification), stretch (array 'column name'=>stretch type)
      * @see MultiCell()
      */
-    public function writeCellTable($item, $options=NULL)
+    public function writeCellTable($item, $options=null)
     {
         // Save initial font values
         $fontFamily = $this->getFontFamily();
@@ -350,7 +351,7 @@ class Sugarpdf extends TCPDF
             }
             $h = $this->getLineHeightFromArray($header, $options["width"]);
             foreach ($header as $v) {
-                $this->MultiCell($options["width"][$v],$h,$v,$headerOptions['border'],$headerOptions['align'],$headerOptions['fillstate'],0,'','',true, $options['stretch'][$v], $headerOptions['ishtml']);
+                $this->MultiCell($options["width"][$v], $h, $v, $headerOptions['border'], $headerOptions['align'], $headerOptions['fillstate'], 0, '', '', true, $options['stretch'][$v], $headerOptions['ishtml']);
             }
             $this->SetFillColorArray($this->convertHTMLColorToDec($options['fill']));
             $this->Ln();
@@ -358,7 +359,7 @@ class Sugarpdf extends TCPDF
 
         // MAIN
         // default font
-        $this->SetFont($fontFamily,$fontStyle,$fontSize);
+        $this->SetFont($fontFamily, $fontStyle, $fontSize);
         $this->SetTextColor(0, 0, 0);
         $even=true;
         $firstrow = true;
@@ -390,9 +391,9 @@ class Sugarpdf extends TCPDF
                 }
 
                 //Bug45077-replacing single quote entities
-                $value=str_replace("&#039;","'",$value);
+                $value=str_replace("&#039;", "'", $value);
                 //Bug45077-replacing double quote entities
-                $value=str_replace("&quot;",'"',$value);
+                $value=str_replace("&quot;", '"', $value);
 
                 if ($even && !empty($options['evencolor'])) {
                     $this->SetFillColorArray($this->convertHTMLColorToDec($options['evencolor']));
@@ -403,14 +404,14 @@ class Sugarpdf extends TCPDF
                 }
 
                 if ($firstrow) {
-                    $this->MultiCell($options["width"][$kk],$h,$value,$cellOptions['border'],$cellOptions['align'],$cellOptions['fillstate'],0,'','',true, $options['stretch'][$kk], $cellOptions['ishtml'], true, 0, false);
+                    $this->MultiCell($options["width"][$kk], $h, $value, $cellOptions['border'], $cellOptions['align'], $cellOptions['fillstate'], 0, '', '', true, $options['stretch'][$kk], $cellOptions['ishtml'], true, 0, false);
                 } else {
                     if ($firstcell) {
                         // add page only once (for the first cell)
-                        $this->MultiCell($options["width"][$kk],$h,$value,$cellOptions['border'],$cellOptions['align'],$cellOptions['fillstate'],0,'','',true,0,$cellOptions['ishtml'], true, 0, true);
+                        $this->MultiCell($options["width"][$kk], $h, $value, $cellOptions['border'], $cellOptions['align'], $cellOptions['fillstate'], 0, '', '', true, 0, $cellOptions['ishtml'], true, 0, true);
                         $firstcell = false;
                     } else {
-                        $this->MultiCell($options["width"][$kk],$h,$value,$cellOptions['border'],$cellOptions['align'],$cellOptions['fillstate'],0,'','',true,0,$cellOptions['ishtml'], true, 0, false);
+                        $this->MultiCell($options["width"][$kk], $h, $value, $cellOptions['border'], $cellOptions['align'], $cellOptions['fillstate'], 0, '', '', true, 0, $cellOptions['ishtml'], true, 0, false);
                     }
                 }
 
@@ -419,7 +420,7 @@ class Sugarpdf extends TCPDF
             $this->Ln();
             $firstrow = false;
         }
-        $this->SetFont($fontFamily,$fontStyle,$fontSize);
+        $this->SetFont($fontFamily, $fontStyle, $fontSize);
         $this->SetTextColor(0, 0, 0);
     }
 
@@ -433,7 +434,7 @@ class Sugarpdf extends TCPDF
      * @param $options Array which can contain : table (array of "HTML proprty"=>"value"),td (array of "HTML proprty"=>"value"), tr (array of "HTML proprty"=>"value"), isheader(bool), header (array of "HTML proprty"=>"value"), width (array 'column name'=>'width value + unit OR nothing')
      * @return the HTML code if $returnHtml set to true
      */
-    public function writeHTMLTable($item, $returnHtml=false, $options=NULL)
+    public function writeHTMLTable($item, $returnHtml=false, $options=null)
     {
         //TODO ISSUE - width in % for the td have to be multiply by the number of column.
         //     ex: for a width of 20% in a table of 6 columns the width will have to be 120% (20*6).
@@ -490,9 +491,8 @@ class Sugarpdf extends TCPDF
         $html=$this->wrap("table", $html, $options);
         if ($returnHtml) {
             return $html;
-        } else {
-            $this->writeHTML($html);
         }
+        $this->writeHTML($html);
     }
 
     /**
@@ -640,7 +640,7 @@ class Sugarpdf extends TCPDF
     public function getNumLines($txt, $w=0)
     {
         $lines = 0;
-        if (empty($w) OR ($w <= 0)) {
+        if (empty($w) or ($w <= 0)) {
             if ($this->rtl) {
                 $w = $this->x - $this->lMargin;
             } else {
@@ -686,13 +686,12 @@ class Sugarpdf extends TCPDF
                                     $lines += ceil($this->GetStringWidth($wordBlock) / $wmax);
                                 }
                                 continue;
-                            } else {
-                                $first = true;
-                                $lines += ceil($this->GetStringWidth(substr($wordBlock, 0, (strlen($wordBlock) - strlen(" ".$words[$i])))) / $wmax);
-                                $i--;
-                                $lastNum = 0;
-                                $run = false;
                             }
+                            $first = true;
+                            $lines += ceil($this->GetStringWidth(substr($wordBlock, 0, (strlen($wordBlock) - strlen(" ".$words[$i])))) / $wmax);
+                            $i--;
+                            $lastNum = 0;
+                            $run = false;
                         }
                     } else {
                         $first = false;
@@ -720,7 +719,6 @@ class Sugarpdf extends TCPDF
             ini_set('zlib.output_compression', 'Off');
         }
 
-        return parent::Output($name,$dest);
+        return parent::Output($name, $dest);
     }
 }
-

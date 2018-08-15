@@ -1,7 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -12,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -29,10 +33,10 @@
  *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo. If the display of the logo is not reasonably feasible for
- * technical reasons, the Appropriate Legal Notices must display the words
- * "Powered by SugarCRM".
- ********************************************************************************/
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /**
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
@@ -43,7 +47,7 @@ requireLucene();
 
 class AOD_Index extends AOD_Index_sugar
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         Zend_Search_Lucene_Search_QueryParser::setDefaultEncoding('utf-8');
@@ -53,7 +57,7 @@ class AOD_Index extends AOD_Index_sugar
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function AOD_Index()
+    public function AOD_Index()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -65,20 +69,20 @@ class AOD_Index extends AOD_Index_sugar
     }
 
 
-    function isEnabled()
+    public function isEnabled()
     {
         global $sugar_config;
         return !empty($sugar_config['aod']['enable_aod']);
     }
 
-    function find($queryString)
+    public function find($queryString)
     {
         $queryString = strtolower($queryString);
         $hits = $this->getLuceneIndex()->find($queryString);
         return $hits;
     }
 
-    function optimise()
+    public function optimise()
     {
         if (!$this->isEnabled()) {
             return;
@@ -91,18 +95,17 @@ class AOD_Index extends AOD_Index_sugar
 
     public function getIndex()
     {
-        $index = BeanFactory::getBean('AOD_Index',1);
+        $index = BeanFactory::getBean('AOD_Index', 1);
         if (!empty($index) && !empty($index->id)) {
             return $index;
-        } else {
-            $index = new AOD_Index();
-            $index->id = 1;
-            $index->new_with_id = true;
-            $index->name = "Index";
-            $index->location = "modules/AOD_Index/Index/Index";
-            $index->save();
-            return $index;
         }
+        $index = new AOD_Index();
+        $index->id = 1;
+        $index->new_with_id = true;
+        $index->name = "Index";
+        $index->location = "modules/AOD_Index/Index/Index";
+        $index->save();
+        return $index;
     }
 
     /**
@@ -155,7 +158,7 @@ class AOD_Index extends AOD_Index_sugar
         if (!$document) {
             return array("error"=>"Failed to parse document");
         }
-        $document->addField(Zend_Search_Lucene_Field::text("filename",$revision->filename));
+        $document->addField(Zend_Search_Lucene_Field::text("filename", $revision->filename));
         return array("error"=>false,"document"=>$document);
     }
 
@@ -175,16 +178,16 @@ class AOD_Index extends AOD_Index_sugar
         foreach ($GLOBALS['dictionary'][$bean->getObjectName()]['fields'] as $key => $field) {
             switch ($field['type']) {
                 case "enum":
-                	if (property_exists($bean, $key)) {
-                	    $document["document"]->addField(Zend_Search_Lucene_Field::Keyword($key, strtolower($bean->$key),'UTF-8'));
-                	}
+                    if (property_exists($bean, $key)) {
+                        $document["document"]->addField(Zend_Search_Lucene_Field::Keyword($key, strtolower($bean->$key), 'UTF-8'));
+                    }
                     break;
 
                 case "multienum":
-                	if (property_exists($bean, $key)) {
-                	    $vals = unencodeMultienum($bean->$key);
-                	    $document["document"]->addField(Zend_Search_Lucene_Field::unStored($key, strtolower(implode(" ",$vals)),'UTF-8'));
-                	}
+                    if (property_exists($bean, $key)) {
+                        $vals = unencodeMultienum($bean->$key);
+                        $document["document"]->addField(Zend_Search_Lucene_Field::unStored($key, strtolower(implode(" ", $vals)), 'UTF-8'));
+                    }
                     break;
                 case "name":
                 case "phone":
@@ -192,13 +195,13 @@ class AOD_Index extends AOD_Index_sugar
                 case "text":
                 case "url":
                 case "varchar":
-                    if (property_exists($bean,$key)) {
+                    if (property_exists($bean, $key)) {
                         $val = strtolower($bean->$key);
                     } else {
                         $val = '';
                     }
-                    $field = Zend_Search_Lucene_Field::unStored($key, $val,'UTF-8');
-                    $field->boost = $this->getBoost($bean->module_name,$key);
+                    $field = Zend_Search_Lucene_Field::unStored($key, $val, 'UTF-8');
+                    $field->boost = $this->getBoost($bean->module_name, $key);
                     $document["document"]->addField($field);
                     break;
                 case "address":
@@ -238,7 +241,7 @@ class AOD_Index extends AOD_Index_sugar
     {
         global $timedate;
         $indexEventBean = BeanFactory::getBean("AOD_IndexEvent");
-        $indexEvents = $indexEventBean->get_full_list('',"aod_indexevent.record_id = '".$beanId."' AND aod_indexevent.record_module = '".$module."'");
+        $indexEvents = $indexEventBean->get_full_list('', "aod_indexevent.record_id = '".$beanId."' AND aod_indexevent.record_module = '".$module."'");
         if ($indexEvents) {
             $indexEvent = $indexEvents[0];
             if (count($indexEvents) > 1) {
@@ -270,14 +273,14 @@ class AOD_Index extends AOD_Index_sugar
         $this->getLuceneIndex()->commit();
     }
 
-    public static function isModuleSearchable($module,$beanName)
+    public static function isModuleSearchable($module, $beanName)
     {
         $whiteList = array("DocumentRevisions","Cases");
-        if (in_array($module,$whiteList)) {
+        if (in_array($module, $whiteList)) {
             return true;
         }
         $blackList = array("AOD_IndexEvent","AOD_Index","AOW_Actions","AOW_Conditions","AOW_Processed","SchedulersJobs");
-        if (in_array($module,$blackList)) {
+        if (in_array($module, $blackList)) {
             return false;
         }
         $manager = new VardefManager();
@@ -303,7 +306,7 @@ class AOD_Index extends AOD_Index_sugar
                 return false;
             }
 
-            if (!self::isModuleSearchable($module,BeanFactory::getObjectName($module))) {
+            if (!self::isModuleSearchable($module, BeanFactory::getObjectName($module))) {
                 return false;
             }
 
@@ -312,13 +315,13 @@ class AOD_Index extends AOD_Index_sugar
                 return false;
             }
 
-            $indexEvent = $this->getIndexEvent($module,$beanId);
+            $indexEvent = $this->getIndexEvent($module, $beanId);
             $indexEvent->name = $bean->get_summary_text();
 
             $document = $this->getDocumentForBean($bean);
             //Index name, id, date, filename
             if (!$document['error']) {
-                $this->remove($module,$beanId);
+                $this->remove($module, $beanId);
                 $this->getLuceneIndex()->addDocument($document['document']);
                 $indexEvent->success = true;
             } else {
@@ -372,7 +375,7 @@ class AOD_Index extends AOD_Index_sugar
         $beanList = $GLOBALS['beanList'];
         ksort($beanList);
         foreach ($beanList as $beanModule => $beanName) {
-            if (self::isModuleSearchable($beanModule,$beanName)) {
+            if (self::isModuleSearchable($beanModule, $beanName)) {
                 $modules[$beanModule] = $beanName;
             }
         }

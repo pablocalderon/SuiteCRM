@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -46,8 +47,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('modules/Administration/Common.php');
 class TabGroupHelper
 {
-    var $modules = array();
-    function getAvailableModules($lang = '')
+    public $modules = array();
+    public function getAvailableModules($lang = '')
     {
         static $availableModules = array();
         if (!empty($availableModules)) {
@@ -73,7 +74,7 @@ class TabGroupHelper
      *
      * @param REQUEST params  $params
      */
-    function saveTabGroups($params)
+    public function saveTabGroups($params)
     {
         //#30205
         global $sugar_config;
@@ -101,7 +102,7 @@ class TabGroupHelper
             $app_strings = return_application_language($grouptab_lang);
             if (empty($app_strings[$labelID]) || $app_strings[$labelID] != $labelValue) {
                 $contents = return_custom_app_list_strings_file_contents($grouptab_lang);
-                $new_contents = replace_or_add_app_string($labelID,$labelValue, $contents);
+                $new_contents = replace_or_add_app_string($labelID, $labelValue, $contents);
                 save_custom_app_list_strings_contents($new_contents, $grouptab_lang);
 
                 $languages = get_languages();
@@ -112,7 +113,7 @@ class TabGroupHelper
                     $app_strings = return_application_language($language);
                     if (!isset($app_strings[$labelID])) {
                         $contents = return_custom_app_list_strings_file_contents($language);
-                        $new_contents = replace_or_add_app_string($labelID,$labelValue, $contents);
+                        $new_contents = replace_or_add_app_string($labelID, $labelValue, $contents);
                         save_custom_app_list_strings_contents($new_contents, $language);
                     }
                 }
@@ -137,4 +138,3 @@ class TabGroupHelper
         $GLOBALS['tabStructure'] = $tabGroups;
     }
 }
-

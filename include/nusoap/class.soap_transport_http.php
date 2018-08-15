@@ -13,7 +13,7 @@ r56989 - 2010-06-16 13:01:33 -0700 (Wed, 16 Jun 2010) - kjing - defunt "Mango" s
 
 r55980 - 2010-04-19 13:31:28 -0700 (Mon, 19 Apr 2010) - kjing - create Mango (6.1) based on windex
 
-r51719 - 2009-10-22 10:18:00 -0700 (Thu, 22 Oct 2009) - mitani - Converted to Build 3  tags and updated the build system 
+r51719 - 2009-10-22 10:18:00 -0700 (Thu, 22 Oct 2009) - mitani - Converted to Build 3  tags and updated the build system
 
 r51634 - 2009-10-19 13:32:22 -0700 (Mon, 19 Oct 2009) - mitani - Windex is the branch for Sugar Sales 1.0 development
 
@@ -68,33 +68,33 @@ if (!defined('sugarEntry') || !sugarEntry) {
 */
 class soap_transport_http extends nusoap_base
 {
-    var $url = '';
-    var $uri = '';
-    var $digest_uri = '';
-    var $scheme = '';
-    var $host = '';
-    var $port = '';
-    var $path = '';
-    var $request_method = 'POST';
-    var $protocol_version = '1.0';
-    var $encoding = '';
-    var $outgoing_headers = array();
-    var $incoming_headers = array();
-    var $incoming_cookies = array();
-    var $outgoing_payload = '';
-    var $incoming_payload = '';
-    var $response_status_line;	// HTTP response status line
-    var $useSOAPAction = true;
-    var $persistentConnection = false;
-    var $ch = false;	// cURL handle
-	var $ch_options = array();	// cURL custom options
-	var $use_curl = false;		// force cURL use
-	var $proxy = null;			// proxy information (associative array)
-	var $username = '';
-    var $password = '';
-    var $authtype = '';
-    var $digestRequest = array();
-    var $certRequest = array();	// keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional)
+    public $url = '';
+    public $uri = '';
+    public $digest_uri = '';
+    public $scheme = '';
+    public $host = '';
+    public $port = '';
+    public $path = '';
+    public $request_method = 'POST';
+    public $protocol_version = '1.0';
+    public $encoding = '';
+    public $outgoing_headers = array();
+    public $incoming_headers = array();
+    public $incoming_cookies = array();
+    public $outgoing_payload = '';
+    public $incoming_payload = '';
+    public $response_status_line;	// HTTP response status line
+    public $useSOAPAction = true;
+    public $persistentConnection = false;
+    public $ch = false;	// cURL handle
+    public $ch_options = array();	// cURL custom options
+    public $use_curl = false;		// force cURL use
+    public $proxy = null;			// proxy information (associative array)
+    public $username = '';
+    public $password = '';
+    public $authtype = '';
+    public $digestRequest = array();
+    public $certRequest = array();	// keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional)
     // cainfofile: certificate authority file, e.g. '$pathToPemFiles/rootca.pem'
     // sslcertfile: SSL certificate file, e.g. '$pathToPemFiles/mycert.pem'
     // sslkeyfile: SSL key file, e.g. '$pathToPemFiles/mykey.pem'
@@ -111,7 +111,7 @@ class soap_transport_http extends nusoap_base
     * @param boolean $use_curl Whether to try to force cURL use
     * @access public
     */
-    function soap_transport_http($url, $curl_options = NULL, $use_curl = false)
+    public function soap_transport_http($url, $curl_options = null, $use_curl = false)
     {
         parent::nusoap_base();
         $this->debug("ctor url=$url use_curl=$use_curl curl_options:");
@@ -132,7 +132,7 @@ class soap_transport_http extends nusoap_base
     * @param	mixed $value The cURL option value
     * @access   private
     */
-    function setCurlOption($option, $value)
+    public function setCurlOption($option, $value)
     {
         $this->debug("setCurlOption option=$option, value=");
         $this->appendDebug($this->varDump($value));
@@ -146,7 +146,7 @@ class soap_transport_http extends nusoap_base
     * @param string $value The value of the header
     * @access private
     */
-    function setHeader($name, $value)
+    public function setHeader($name, $value)
     {
         $this->outgoing_headers[$name] = $value;
         $this->debug("set header $name: $value");
@@ -158,7 +158,7 @@ class soap_transport_http extends nusoap_base
     * @param string $name The name of the header
     * @access private
     */
-    function unsetHeader($name)
+    public function unsetHeader($name)
     {
         if (isset($this->outgoing_headers[$name])) {
             $this->debug("unset header $name");
@@ -172,7 +172,7 @@ class soap_transport_http extends nusoap_base
     * @param string $url The URL to which to connect
     * @access private
     */
-    function setURL($url)
+    public function setURL($url)
     {
         $this->url = $url;
 
@@ -181,12 +181,12 @@ class soap_transport_http extends nusoap_base
             $this->debug("parsed URL $k = $v");
             $this->$k = $v;
         }
-		
+        
         // add any GET params to path
         if (isset($u['query']) && $u['query'] != '') {
             $this->path .= '?' . $u['query'];
         }
-		
+        
         // set default port
         if (!isset($u['port'])) {
             if ($u['scheme'] == 'https') {
@@ -195,10 +195,10 @@ class soap_transport_http extends nusoap_base
                 $this->port = 80;
             }
         }
-		
+        
         $this->uri = $this->path;
         $this->digest_uri = $this->uri;
-		
+        
         // build headers
         if (!isset($u['port'])) {
             $this->setHeader('Host', $this->host);
@@ -217,7 +217,7 @@ class soap_transport_http extends nusoap_base
     * @return	string	I/O method to use (socket|curl|unknown)
     * @access	private
     */
-    function io_method()
+    public function io_method()
     {
         if ($this->use_curl || ($this->scheme == 'https') || ($this->scheme == 'http' && $this->authtype == 'ntlm') || ($this->scheme == 'http' && is_array($this->proxy) && $this->proxy['authtype'] == 'ntlm')) {
             return 'curl';
@@ -236,7 +236,7 @@ class soap_transport_http extends nusoap_base
     * @return	boolean true if connected, false if not
     * @access   private
     */
-    function connect($connection_timeout=0,$response_timeout=30)
+    public function connect($connection_timeout=0, $response_timeout=30)
     {
         // For PHP 4.3 with OpenSSL, change https scheme to ssl, then treat like
         // "regular" socket.
@@ -282,7 +282,7 @@ class soap_transport_http extends nusoap_base
             } else {
                 $this->fp = @fsockopen($host, $this->port, $this->errno, $this->error_str);
             }
-		
+        
             // test pointer
             if (!$this->fp) {
                 $msg = 'Couldn\'t open socket connection to server ' . $this->url;
@@ -295,7 +295,7 @@ class soap_transport_http extends nusoap_base
                 $this->setError($msg);
                 return false;
             }
-		
+        
             // set response timeout
             $this->debug('set response timeout to ' . $response_timeout);
             socket_set_timeout($this->fp, $response_timeout);
@@ -390,10 +390,10 @@ class soap_transport_http extends nusoap_base
                 // recent versions of cURL turn on peer/host checking by default,
                 // while PHP binaries are not compiled with a default location for the
                 // CA cert bundle, so disable peer/host checking.
-                //$this->setCurlOption(CURLOPT_CAINFO, 'f:\php-4.3.2-win32\extensions\curl-ca-bundle.crt');		
+                //$this->setCurlOption(CURLOPT_CAINFO, 'f:\php-4.3.2-win32\extensions\curl-ca-bundle.crt');
                 $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, 0);
                 $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, 0);
-	
+    
                 // support client certificates (thanks Tobias Boes, Doug Anarino, Eryan Ariobowo)
                 if ($this->authtype == 'certificate') {
                     $this->debug('set cURL certificate options');
@@ -462,11 +462,10 @@ class soap_transport_http extends nusoap_base
             }
             $this->debug('cURL connection set up');
             return true;
-        } else {
-            $this->setError('Unknown scheme ' . $this->scheme);
-            $this->debug('Unknown scheme ' . $this->scheme);
-            return false;
         }
+        $this->setError('Unknown scheme ' . $this->scheme);
+        $this->debug('Unknown scheme ' . $this->scheme);
+        return false;
     }
 
     /**
@@ -479,7 +478,7 @@ class soap_transport_http extends nusoap_base
     * @return	string data
     * @access   public
     */
-    function send($data, $timeout=0, $response_timeout=30, $cookies=NULL)
+    public function send($data, $timeout=0, $response_timeout=30, $cookies=null)
     {
         $this->debug('entered send() with data of length: '.strlen($data));
 
@@ -492,18 +491,18 @@ class soap_transport_http extends nusoap_base
                 if (!$this->connect($timeout, $response_timeout)) {
                     return false;
                 }
-				
+                
                 // send request
                 if (!$this->sendRequest($data, $cookies)) {
                     return false;
                 }
-				
+                
                 // get response
                 $respdata = $this->getResponse();
             } else {
                 $this->setError("Too many tries to get an OK response ($this->response_status_line)");
             }
-        }		
+        }
         $this->debug('end of send()');
         return $respdata;
     }
@@ -520,11 +519,11 @@ class soap_transport_http extends nusoap_base
     * @access   public
     * @deprecated
     */
-    function sendHTTPS($data, $timeout=0, $response_timeout=30, $cookies)
+    public function sendHTTPS($data, $timeout=0, $response_timeout=30, $cookies)
     {
         return $this->send($data, $timeout, $response_timeout, $cookies);
     }
-	
+    
     /**
     * if authenticating, set user credentials here
     *
@@ -535,7 +534,7 @@ class soap_transport_http extends nusoap_base
     * @param	array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
     * @access   public
     */
-    function setCredentials($username, $password, $authtype = 'basic', $digestRequest = array(), $certRequest = array())
+    public function setCredentials($username, $password, $authtype = 'basic', $digestRequest = array(), $certRequest = array())
     {
         $this->debug("setCredentials username=$username authtype=$authtype digestRequest=");
         $this->appendDebug($this->varDump($digestRequest));
@@ -543,25 +542,25 @@ class soap_transport_http extends nusoap_base
         $this->appendDebug($this->varDump($certRequest));
         // cf. RFC 2617
         if ($authtype == 'basic') {
-            $this->setHeader('Authorization', 'Basic '.base64_encode(str_replace(':','',$username).':'.$password));
+            $this->setHeader('Authorization', 'Basic '.base64_encode(str_replace(':', '', $username).':'.$password));
         } elseif ($authtype == 'digest') {
             if (isset($digestRequest['nonce'])) {
                 $digestRequest['nc'] = isset($digestRequest['nc']) ? $digestRequest['nc']++ : 1;
-				
+                
                 // calculate the Digest hashes (calculate code based on digest implementation found at: http://www.rassoc.com/gregr/weblog/stories/2002/07/09/webServicesSecurityHttpDigestAuthenticationWithoutActiveDirectory.html)
-	
+    
                 // A1 = unq(username-value) ":" unq(realm-value) ":" passwd
                 $A1 = $username. ':' . (isset($digestRequest['realm']) ? $digestRequest['realm'] : '') . ':' . $password;
-	
+    
                 // H(A1) = MD5(A1)
                 $HA1 = md5($A1);
-	
+    
                 // A2 = Method ":" digest-uri-value
                 $A2 = $this->request_method . ':' . $this->digest_uri;
-	
+    
                 // H(A2)
                 $HA2 =  md5($A2);
-	
+    
                 // KD(secret, data) = H(concat(secret, ":", data))
                 // if qop == auth:
                 // request-digest  = <"> < KD ( H(A1),     unq(nonce-value)
@@ -572,7 +571,7 @@ class soap_transport_http extends nusoap_base
                 //                            ) <">
                 // if qop is missing,
                 // request-digest  = <"> < KD ( H(A1), unq(nonce-value) ":" H(A2) ) > <">
-	
+    
                 $unhashedDigest = '';
                 $nonce = isset($digestRequest['nonce']) ? $digestRequest['nonce'] : '';
                 $cnonce = $nonce;
@@ -581,10 +580,10 @@ class soap_transport_http extends nusoap_base
                 } else {
                     $unhashedDigest = $HA1 . ':' . $nonce . ':' . $HA2;
                 }
-	
+    
                 $hashedDigest = md5($unhashedDigest);
-	
-                $opaque = '';	
+    
+                $opaque = '';
                 if (isset($digestRequest['opaque'])) {
                     $opaque = ', opaque="' . $digestRequest['opaque'] . '"';
                 }
@@ -603,25 +602,25 @@ class soap_transport_http extends nusoap_base
         $this->authtype = $authtype;
         $this->digestRequest = $digestRequest;
     }
-	
+    
     /**
     * set the soapaction value
     *
     * @param    string $soapaction
     * @access   public
     */
-    function setSOAPAction($soapaction)
+    public function setSOAPAction($soapaction)
     {
         $this->setHeader('SOAPAction', '"' . $soapaction . '"');
     }
-	
+    
     /**
     * use http encoding
     *
     * @param    string $enc encoding style. supported values: gzip, deflate, or both
     * @access   public
     */
-    function setEncoding($enc='gzip, deflate')
+    public function setEncoding($enc='gzip, deflate')
     {
         if (function_exists('gzdeflate')) {
             $this->protocol_version = '1.1';
@@ -635,7 +634,7 @@ class soap_transport_http extends nusoap_base
             $this->encoding = $enc;
         }
     }
-	
+    
     /**
     * set proxy info here
     *
@@ -646,16 +645,16 @@ class soap_transport_http extends nusoap_base
     * @param	string $proxyauthtype (basic|ntlm)
     * @access   public
     */
-    function setProxy($proxyhost, $proxyport, $proxyusername = '', $proxypassword = '', $proxyauthtype = 'basic')
+    public function setProxy($proxyhost, $proxyport, $proxyusername = '', $proxypassword = '', $proxyauthtype = 'basic')
     {
         if ($proxyhost) {
             $this->proxy = array(
-				'host' => $proxyhost,
-				'port' => $proxyport,
-				'username' => $proxyusername,
-				'password' => $proxypassword,
-				'authtype' => $proxyauthtype
-			);
+                'host' => $proxyhost,
+                'port' => $proxyport,
+                'username' => $proxyusername,
+                'password' => $proxypassword,
+                'authtype' => $proxyauthtype
+            );
             if ($proxyusername != '' && $proxypassword != '' && $proxyauthtype = 'basic') {
                 $this->setHeader('Proxy-Authorization', ' Basic '.base64_encode($proxyusername.':'.$proxypassword));
             }
@@ -665,7 +664,7 @@ class soap_transport_http extends nusoap_base
             unsetHeader('Proxy-Authorization');
         }
     }
-	
+    
 
     /**
      * Test if the given string starts with a header that is to be skipped.
@@ -675,16 +674,16 @@ class soap_transport_http extends nusoap_base
      * @returns	boolean	Whether a skippable header was found.
      * @access	private
      */
-    function isSkippableCurlHeader(&$data)
+    public function isSkippableCurlHeader(&$data)
     {
         $skipHeaders = array(	'HTTP/1.1 100',
-								'HTTP/1.0 301',
-								'HTTP/1.1 301',
-								'HTTP/1.0 302',
-								'HTTP/1.1 302',
-								'HTTP/1.0 401',
-								'HTTP/1.1 401',
-								'HTTP/1.0 200 Connection established');
+                                'HTTP/1.0 301',
+                                'HTTP/1.1 301',
+                                'HTTP/1.0 302',
+                                'HTTP/1.1 302',
+                                'HTTP/1.0 401',
+                                'HTTP/1.1 401',
+                                'HTTP/1.0 200 Connection established');
         foreach ($skipHeaders as $hd) {
             $prefix = substr($data, 0, strlen($hd));
             if ($prefix == $hd) {
@@ -697,7 +696,7 @@ class soap_transport_http extends nusoap_base
 
     /**
     * decode a string that is encoded w/ "chunked' transfer encoding
- 	* as defined in RFC2068 19.4.6
+    * as defined in RFC2068 19.4.6
     *
     * @param    string $buffer
     * @param    string $lb
@@ -705,56 +704,56 @@ class soap_transport_http extends nusoap_base
     * @access   public
     * @deprecated
     */
-    function decodeChunked($buffer, $lb)
+    public function decodeChunked($buffer, $lb)
     {
         // length := 0
         $length = 0;
         $new = '';
-		
+        
         // read chunk-size, chunk-extension (if any) and CRLF
         // get the position of the linebreak
         $chunkend = strpos($buffer, $lb);
-        if ($chunkend == FALSE) {
+        if ($chunkend == false) {
             $this->debug('no linebreak found in decodeChunked');
             return $new;
         }
-        $temp = substr($buffer,0,$chunkend);
+        $temp = substr($buffer, 0, $chunkend);
         $chunk_size = hexdec(trim($temp));
         $chunkstart = $chunkend + strlen($lb);
         // while (chunk-size > 0) {
         while ($chunk_size > 0) {
             $this->debug("chunkstart: $chunkstart chunk_size: $chunk_size");
             $chunkend = strpos($buffer, $lb, $chunkstart + $chunk_size);
-		  	
+            
             // Just in case we got a broken connection
-            if ($chunkend == FALSE) {
-                $chunk = substr($buffer,$chunkstart);
+            if ($chunkend == false) {
+                $chunk = substr($buffer, $chunkstart);
                 // append chunk-data to entity-body
                 $new .= $chunk;
                 $length += strlen($chunk);
                 break;
             }
-			
+            
             // read chunk-data and CRLF
-            $chunk = substr($buffer,$chunkstart,$chunkend-$chunkstart);
+            $chunk = substr($buffer, $chunkstart, $chunkend-$chunkstart);
             // append chunk-data to entity-body
             $new .= $chunk;
             // length := length + chunk-size
             $length += strlen($chunk);
             // read chunk-size and CRLF
             $chunkstart = $chunkend + strlen($lb);
-			
+            
             $chunkend = strpos($buffer, $lb, $chunkstart) + strlen($lb);
-            if ($chunkend == FALSE) {
+            if ($chunkend == false) {
                 break; //Just in case we got a broken connection
             }
-            $temp = substr($buffer,$chunkstart,$chunkend-$chunkstart);
+            $temp = substr($buffer, $chunkstart, $chunkend-$chunkstart);
             $chunk_size = hexdec(trim($temp));
             $chunkstart = $chunkend;
         }
         return $new;
     }
-	
+    
     /**
      * Writes the payload, including HTTP headers, to $this->outgoing_payload.
      *
@@ -763,7 +762,7 @@ class soap_transport_http extends nusoap_base
      * @return	void
      * @access	private
      */
-    function buildPayload($data, $cookie_str = '')
+    public function buildPayload($data, $cookie_str = '')
     {
         // Note: for cURL connections, $this->outgoing_payload is ignored,
         // as is the Content-Length header, but these are still created as
@@ -800,7 +799,7 @@ class soap_transport_http extends nusoap_base
 
         // header/body separator
         $this->outgoing_payload .= "\r\n";
-		
+        
         // add data
         $this->outgoing_payload .= $data;
     }
@@ -813,7 +812,7 @@ class soap_transport_http extends nusoap_base
     * @return	boolean	true if OK, false if problem
     * @access   private
     */
-    function sendRequest($data, $cookies = NULL)
+    public function sendRequest($data, $cookies = null)
     {
         // build cookie string
         $cookie_str = $this->getCookiesForRequest($cookies, (($this->scheme == 'ssl') || ($this->scheme == 'https')));
@@ -853,8 +852,8 @@ class soap_transport_http extends nusoap_base
                 $this->setCurlOption(CURLOPT_POST, 1);
                 $this->setCurlOption(CURLOPT_POSTFIELDS, $data);
                 $this->debug('set cURL POST data');
-            } else {
             }
+            
             // insert custom user-set cURL options
             foreach ($this->ch_options as $key => $val) {
                 $this->setCurlOption($key, $val);
@@ -871,16 +870,16 @@ class soap_transport_http extends nusoap_base
     * @return	string the response (also sets member variables like incoming_payload)
     * @access   private
     */
-    function getResponse()
+    public function getResponse()
     {
         $this->incoming_payload = '';
-	    
+        
         if ($this->io_method() == 'socket') {
             // loop until headers have been retrieved
             $data = '';
             while (!isset($lb)) {
 
-			// We might EOF during header read.
+            // We might EOF during header read.
                 if (feof($this->fp)) {
                     $this->incoming_payload = $data;
                     $this->debug('found no headers before EOF after length ' . strlen($data));
@@ -902,17 +901,17 @@ class soap_transport_http extends nusoap_base
                 }
 
                 $data .= $tmp;
-                $pos = strpos($data,"\r\n\r\n");
+                $pos = strpos($data, "\r\n\r\n");
                 if ($pos > 1) {
                     $lb = "\r\n";
                 } else {
-                    $pos = strpos($data,"\n\n");
+                    $pos = strpos($data, "\n\n");
                     if ($pos > 1) {
                         $lb = "\n";
                     }
                 }
                 // remove 100 headers
-                if (isset($lb) && preg_match('/^HTTP\/1.1 100/',$data)) {
+                if (isset($lb) && preg_match('/^HTTP\/1.1 100/', $data)) {
                     unset($lb);
                     $data = '';
                 }//
@@ -921,12 +920,12 @@ class soap_transport_http extends nusoap_base
             $this->incoming_payload .= $data;
             $this->debug('found end of headers after length ' . strlen($data));
             // process headers
-            $header_data = trim(substr($data,0,$pos));
-            $header_array = explode($lb,$header_data);
+            $header_data = trim(substr($data, 0, $pos));
+            $header_array = explode($lb, $header_data);
             $this->incoming_headers = array();
             $this->incoming_cookies = array();
             foreach ($header_array as $header_line) {
-                $arr = explode(':',$header_line, 2);
+                $arr = explode(':', $header_line, 2);
                 if (count($arr) > 1) {
                     $header_name = strtolower(trim($arr[0]));
                     $this->incoming_headers[$header_name] = trim($arr[1]);
@@ -945,7 +944,7 @@ class soap_transport_http extends nusoap_base
                     $this->incoming_headers[$header_name] .= $lb . ' ' . $header_line;
                 }
             }
-		
+        
             // loop until msg has been received
             if (isset($this->incoming_headers['transfer-encoding']) && strtolower($this->incoming_headers['transfer-encoding']) == 'chunked') {
                 $content_length =  2147483647;	// ignore any content-length header
@@ -1011,30 +1010,30 @@ class soap_transport_http extends nusoap_base
             $this->debug('read body of length ' . strlen($data));
             $this->incoming_payload .= $data;
             $this->debug('received a total of '.strlen($this->incoming_payload).' bytes of data from server');
-		
+        
             // close filepointer
             if (
-			(isset($this->incoming_headers['connection']) && strtolower($this->incoming_headers['connection']) == 'close') || 
-			(! $this->persistentConnection) || feof($this->fp)) {
+            (isset($this->incoming_headers['connection']) && strtolower($this->incoming_headers['connection']) == 'close') ||
+            (! $this->persistentConnection) || feof($this->fp)) {
                 fclose($this->fp);
                 $this->fp = false;
                 $this->debug('closed socket');
             }
-		
+        
             // connection was closed unexpectedly
             if ($this->incoming_payload == '') {
                 $this->setError('no response from server');
                 return false;
             }
-		
+        
             // decode transfer-encoding
 //		if(isset($this->incoming_headers['transfer-encoding']) && strtolower($this->incoming_headers['transfer-encoding']) == 'chunked'){
 //			if(!$data = $this->decodeChunked($data, $lb)){
 //				$this->setError('Decoding of chunked data failed');
 //				return false;
 //			}
-			//print "<pre>\nde-chunked:\n---------------\n$data\n\n---------------\n</pre>";
-			// set decoded payload
+            //print "<pre>\nde-chunked:\n---------------\n$data\n\n---------------\n</pre>";
+            // set decoded payload
 //			$this->incoming_payload = $header_data.$lb.$lb.$data;
 //		}
         } elseif ($this->io_method() == 'curl') {
@@ -1054,56 +1053,56 @@ class soap_transport_http extends nusoap_base
                 $this->setError($err);
                 curl_close($this->ch);
                 return false;
-            } else {
-                //echo '<pre>';
-			//var_dump(curl_getinfo($this->ch));
-			//echo '</pre>';
             }
+            //echo '<pre>';
+            //var_dump(curl_getinfo($this->ch));
+            //echo '</pre>';
+            
             // close curl
             $this->debug('No cURL error, closing cURL');
             curl_close($this->ch);
-		
+        
             // try removing skippable headers
             $savedata = $data;
             while ($this->isSkippableCurlHeader($data)) {
                 $this->debug("Found HTTP header to skip");
-                if ($pos = strpos($data,"\r\n\r\n")) {
-                    $data = ltrim(substr($data,$pos));
-                } elseif ($pos = strpos($data,"\n\n")) {
-                    $data = ltrim(substr($data,$pos));
+                if ($pos = strpos($data, "\r\n\r\n")) {
+                    $data = ltrim(substr($data, $pos));
+                } elseif ($pos = strpos($data, "\n\n")) {
+                    $data = ltrim(substr($data, $pos));
                 }
             }
 
             if ($data == '') {
                 // have nothing left; just remove 100 header(s)
                 $data = $savedata;
-                while (preg_match('/^HTTP\/1.1 100/',$data)) {
-                    if ($pos = strpos($data,"\r\n\r\n")) {
-                        $data = ltrim(substr($data,$pos));
-                    } elseif ($pos = strpos($data,"\n\n")) {
-                        $data = ltrim(substr($data,$pos));
+                while (preg_match('/^HTTP\/1.1 100/', $data)) {
+                    if ($pos = strpos($data, "\r\n\r\n")) {
+                        $data = ltrim(substr($data, $pos));
+                    } elseif ($pos = strpos($data, "\n\n")) {
+                        $data = ltrim(substr($data, $pos));
                     }
                 }
             }
-		
+        
             // separate content from HTTP headers
-            if ($pos = strpos($data,"\r\n\r\n")) {
+            if ($pos = strpos($data, "\r\n\r\n")) {
                 $lb = "\r\n";
-            } elseif ($pos = strpos($data,"\n\n")) {
+            } elseif ($pos = strpos($data, "\n\n")) {
                 $lb = "\n";
             } else {
                 $this->debug('no proper separation of headers and document');
                 $this->setError('no proper separation of headers and document');
                 return false;
             }
-            $header_data = trim(substr($data,0,$pos));
-            $header_array = explode($lb,$header_data);
-            $data = ltrim(substr($data,$pos));
+            $header_data = trim(substr($data, 0, $pos));
+            $header_array = explode($lb, $header_data);
+            $data = ltrim(substr($data, $pos));
             $this->debug('found proper separation of headers and document');
             $this->debug('cleaned data, stringlen: '.strlen($data));
             // clean headers
             foreach ($header_array as $header_line) {
-                $arr = explode(':',$header_line,2);
+                $arr = explode(':', $header_line, 2);
                 if (count($arr) > 1) {
                     $header_name = strtolower(trim($arr[0]));
                     $this->incoming_headers[$header_name] = trim($arr[1]);
@@ -1145,7 +1144,7 @@ class soap_transport_http extends nusoap_base
                 $this->debug('Server wants digest authentication');
                 // remove "Digest " from our elements
                 $digestString = str_replace('Digest ', '', $this->incoming_headers['www-authenticate']);
- 				
+                
                 // parse elements into array
                 $digestElements = explode(',', $digestString);
                 foreach ($digestElements as $val) {
@@ -1164,12 +1163,12 @@ class soap_transport_http extends nusoap_base
             $this->setError('HTTP authentication failed');
             return false;
         }
-		
+        
         if (
-			($http_status >= 300 && $http_status <= 307) ||
-			($http_status >= 400 && $http_status <= 417) ||
-			($http_status >= 501 && $http_status <= 505)
-		   ) {
+            ($http_status >= 300 && $http_status <= 307) ||
+            ($http_status >= 400 && $http_status <= 417) ||
+            ($http_status >= 501 && $http_status <= 505)
+           ) {
             $this->setError("Unsupported HTTP response status $http_status $http_reason (soapclient->response has contents of the response)");
             return false;
         }
@@ -1232,13 +1231,13 @@ class soap_transport_http extends nusoap_base
         } else {
             $this->debug('No Content-Encoding header');
         }
-		
+        
         if (strlen($data) == 0) {
             $this->debug('no data after headers!');
             $this->setError('no data present after HTTP headers');
             return false;
         }
-		
+        
         return $data;
     }
 
@@ -1249,7 +1248,7 @@ class soap_transport_http extends nusoap_base
      * @param	mixed $charset character set used for encoding (or false)
      * @access	public
      */
-    function setContentType($type, $charset = false)
+    public function setContentType($type, $charset = false)
     {
         $this->setHeader('Content-Type', $type . ($charset ? '; charset=' . $charset : ''));
     }
@@ -1260,7 +1259,7 @@ class soap_transport_http extends nusoap_base
      * @return	boolean whether the request was honored by this method.
      * @access	public
      */
-    function usePersistentConnection()
+    public function usePersistentConnection()
     {
         if (isset($this->outgoing_headers['Accept-Encoding'])) {
             return false;
@@ -1281,7 +1280,7 @@ class soap_transport_http extends nusoap_base
     /*
      * TODO: allow a Set-Cookie string to be parsed into multiple cookies
      */
-    function parseCookie($cookie_str)
+    public function parseCookie($cookie_str)
     {
         $cookie_str = str_replace('; ', ';', $cookie_str) . ';';
         $data = preg_split('/;/', $cookie_str);
@@ -1313,9 +1312,9 @@ class soap_transport_http extends nusoap_base
         } else {
             $path = '/';
         }
-						
+                        
         $cookie_param = ';secure;';
-        if (strpos($cookie_str, $cookie_param) !== FALSE) {
+        if (strpos($cookie_str, $cookie_param) !== false) {
             $secure = true;
         } else {
             $secure = false;
@@ -1327,12 +1326,12 @@ class soap_transport_http extends nusoap_base
             $name = substr($value_str, 0, $sep_pos);
             $value = substr($value_str, $sep_pos + 1);
             $cookie= array(	'name' => $name,
-			                'value' => $value,
-							'domain' => $domain,
-							'path' => $path,
-							'expires' => $expires,
-							'secure' => $secure
-							);		
+                            'value' => $value,
+                            'domain' => $domain,
+                            'path' => $path,
+                            'expires' => $expires,
+                            'secure' => $secure
+                            );
             return $cookie;
         }
         return false;
@@ -1346,7 +1345,7 @@ class soap_transport_http extends nusoap_base
      * @return	string for Cookie-HTTP-Header
      * @access	private
      */
-    function getCookiesForRequest($cookies, $secure=false)
+    public function getCookiesForRequest($cookies, $secure=false)
     {
         $cookie_str = '';
         if ((! is_null($cookies)) && (is_array($cookies))) {

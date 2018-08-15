@@ -10,7 +10,7 @@ r56989 - 2010-06-16 13:01:33 -0700 (Wed, 16 Jun 2010) - kjing - defunt "Mango" s
 
 r55980 - 2010-04-19 13:31:28 -0700 (Mon, 19 Apr 2010) - kjing - create Mango (6.1) based on windex
 
-r51719 - 2009-10-22 10:18:00 -0700 (Thu, 22 Oct 2009) - mitani - Converted to Build 3  tags and updated the build system 
+r51719 - 2009-10-22 10:18:00 -0700 (Thu, 22 Oct 2009) - mitani - Converted to Build 3  tags and updated the build system
 
 r51634 - 2009-10-19 13:32:22 -0700 (Mon, 19 Oct 2009) - mitani - Windex is the branch for Sugar Sales 1.0 development
 
@@ -102,7 +102,7 @@ function MakeFont($fontfile, $fmfile, $embedded=true, $enc='cp1252', $patch=arra
     $ffext = strtolower(substr($fontfile, -3));
     $fmext = strtolower(substr($fmfile, -3));
     if ($fmext == 'afm') {
-        if (($ffext == 'ttf') OR ($ffext == 'otf')) {
+        if (($ffext == 'ttf') or ($ffext == 'otf')) {
             $type = 'TrueType';
         } elseif ($ffext == 'pfb') {
             $type = 'Type1';
@@ -125,7 +125,7 @@ function MakeFont($fontfile, $fmfile, $embedded=true, $enc='cp1252', $patch=arra
         $fd = MakeFontDescriptor($fm, empty($map));
     } elseif ($fmext == 'ufm') {
         $enc = '';
-        if (($ffext == 'ttf') OR ($ffext == 'otf')) {
+        if (($ffext == 'ttf') or ($ffext == 'otf')) {
             $type = 'TrueTypeUnicode';
         } else {
             die('Error: not a TrueType font: '.$ffext);
@@ -179,7 +179,7 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
     $s .= '$up='.$fm['UnderlinePosition'].";\n";
     $s .= '$ut='.$fm['UnderlineThickness'].";\n";
     if ($dw <= 0) {
-        if (isset($fm['Widths'][32]) AND ($fm['Widths'][32] > 0)) {
+        if (isset($fm['Widths'][32]) and ($fm['Widths'][32] > 0)) {
             // assign default space width
             $dw = $fm['Widths'][32];
         } else {
@@ -211,10 +211,10 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
     // END SUGARCRM SPECIFIC
     if ($embedded) {
         //Embedded font
-        if (($type == 'TrueType') OR ($type == 'TrueTypeUnicode')) {
+        if (($type == 'TrueType') or ($type == 'TrueTypeUnicode')) {
             CheckTTF($fontfile);
         }
-        $f = fopen($fontfile,'rb');
+        $f = fopen($fontfile, 'rb');
         if (!$f) {
             die('Error: Unable to open '.$fontfile);
         }
@@ -232,7 +232,7 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
                 die('Error: font file does not seem to be valid Type1');
             }
             $size1 = $pos + 6;
-            if ($header AND (ord($file{$size1}) == 128)) {
+            if ($header and (ord($file{$size1}) == 128)) {
                 //Strip second binary header
                 $file = substr($file, 0, $size1).substr($file, $size1+6);
             }
@@ -261,7 +261,7 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
                 // BEGIN SUGARCRM SPECIFIC
                 /*
                 // END SUGARCRM SPECIFIC
-				SaveToFile($cmp, gzcompress($cidtogidmap, 9), 'b');
+                SaveToFile($cmp, gzcompress($cidtogidmap, 9), 'b');
                 // BEGIN SUGARCRM SPECIFIC
                 */
                 SaveToFile($dirname."/".$cmp, gzcompress($cidtogidmap, 9), 'b');
@@ -277,7 +277,7 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
                 // BEGIN SUGARCRM SPECIFIC
                 /*
                 // END SUGARCRM SPECIFIC
-				$f = fopen($cmp, 'wb');
+                $f = fopen($cmp, 'wb');
                 // BEGIN SUGARCRM SPECIFIC
                 */
                 $f = fopen($dirname."/".$cmp, 'wb');
@@ -299,8 +299,8 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
         // BEGIN SUGARCRM SPECIFIC
         /*
         // END SUGARCRM SPECIFIC
-	    $s .= '$file='."'';\n";
-    	// BEGIN SUGARCRM SPECIFIC
+        $s .= '$file='."'';\n";
+        // BEGIN SUGARCRM SPECIFIC
         */
         $s .= $cidInfo;
         // END SUGARCRM SPECIFIC
@@ -309,10 +309,10 @@ r47930 - 2009-06-02 16:21:39 -0700 (Tue, 02 Jun 2009) - jenny - Updating with ch
     // BEGIN SUGARCRM SPECIFIC
     /*
     // END SUGARCRM SPECIFIC
-	SaveToFile($basename.'.php',$s);
+    SaveToFile($basename.'.php',$s);
     // BEGIN SUGARCRM SPECIFIC
     */
-    SaveToFile($dirname."/".$basename.'.php',$s);
+    SaveToFile($dirname."/".$basename.'.php', $s);
     // END SUGARCRM SPECIFIC
     print "Font definition file generated (".$basename.".php)\n";
     // BEGIN SUGARCRM SPECIFIC
@@ -335,8 +335,8 @@ function ReadMap($enc)
     $cc2gn = array();
     foreach ($a as $l) {
         if ($l{0} == '!') {
-            $e = preg_split('/[ \\t]+/',rtrim($l));
-            $cc = hexdec(substr($e[0],1));
+            $e = preg_split('/[ \\t]+/', rtrim($l));
+            $cc = hexdec(substr($e[0], 1));
             $gn = $e[2];
             $cc2gn[$cc] = $gn;
         }
@@ -364,7 +364,7 @@ function ReadUFM($file, &$cidtogidmap)
     $widths = array();
     $fm = array();
     foreach ($a as $l) {
-        $e = explode(' ',chop($l));
+        $e = explode(' ', chop($l));
         if (count($e) < 2) {
             continue;
         }
@@ -383,12 +383,12 @@ function ReadUFM($file, &$cidtogidmap)
                     $fm['CapXHeight'] = $e[13];
                 }
                 // Set GID
-                if (($cc >= 0) AND ($cc < 0xFFFF) AND $glyph) {
+                if (($cc >= 0) and ($cc < 0xFFFF) and $glyph) {
                     $cidtogidmap{($cc * 2)} = chr($glyph >> 8);
                     $cidtogidmap{(($cc * 2) + 1)} = chr($glyph & 0xFF);
                 }
             }
-            if (($gn == '.notdef') AND (!isset($fm['MissingWidth']))) {
+            if (($gn == '.notdef') and (!isset($fm['MissingWidth']))) {
                 $fm['MissingWidth'] = $w;
             }
         } elseif ($code == 'FontName') {
@@ -428,7 +428,7 @@ function ReadUFM($file, &$cidtogidmap)
 /**
  * Read AFM file
  */
-function ReadAFM($file,&$map)
+function ReadAFM($file, &$map)
 {
     //Read a font metric file
     $a = file($file);
@@ -438,40 +438,40 @@ function ReadAFM($file,&$map)
     $widths = array();
     $fm = array();
     $fix = array(
-		'Edot'=>'Edotaccent',
-		'edot'=>'edotaccent',
-		'Idot'=>'Idotaccent',
-		'Zdot'=>'Zdotaccent',
-		'zdot'=>'zdotaccent',
-		'Odblacute' => 'Ohungarumlaut',
-		'odblacute' => 'ohungarumlaut',
-		'Udblacute'=>'Uhungarumlaut',
-		'udblacute'=>'uhungarumlaut',
-		'Gcedilla'=>'Gcommaaccent'
-		,'gcedilla'=>'gcommaaccent',
-		'Kcedilla'=>'Kcommaaccent',
-		'kcedilla'=>'kcommaaccent',
-		'Lcedilla'=>'Lcommaaccent',
-		'lcedilla'=>'lcommaaccent',
-		'Ncedilla'=>'Ncommaaccent',
-		'ncedilla'=>'ncommaaccent',
-		'Rcedilla'=>'Rcommaaccent',
-		'rcedilla'=>'rcommaaccent',
-		'Scedilla'=>'Scommaaccent',
-		'scedilla'=>'scommaaccent',
-		'Tcedilla'=>'Tcommaaccent',
-		'tcedilla'=>'tcommaaccent',
-		'Dslash'=>'Dcroat',
-		'dslash'=>'dcroat',
-		'Dmacron'=>'Dcroat',
-		'dmacron'=>'dcroat',
-		'combininggraveaccent'=>'gravecomb',
-		'combininghookabove'=>'hookabovecomb',
-		'combiningtildeaccent'=>'tildecomb',
-		'combiningacuteaccent'=>'acutecomb',
-		'combiningdotbelow'=>'dotbelowcomb',
-		'dongsign'=>'dong'
-		);
+        'Edot'=>'Edotaccent',
+        'edot'=>'edotaccent',
+        'Idot'=>'Idotaccent',
+        'Zdot'=>'Zdotaccent',
+        'zdot'=>'zdotaccent',
+        'Odblacute' => 'Ohungarumlaut',
+        'odblacute' => 'ohungarumlaut',
+        'Udblacute'=>'Uhungarumlaut',
+        'udblacute'=>'uhungarumlaut',
+        'Gcedilla'=>'Gcommaaccent'
+        ,'gcedilla'=>'gcommaaccent',
+        'Kcedilla'=>'Kcommaaccent',
+        'kcedilla'=>'kcommaaccent',
+        'Lcedilla'=>'Lcommaaccent',
+        'lcedilla'=>'lcommaaccent',
+        'Ncedilla'=>'Ncommaaccent',
+        'ncedilla'=>'ncommaaccent',
+        'Rcedilla'=>'Rcommaaccent',
+        'rcedilla'=>'rcommaaccent',
+        'Scedilla'=>'Scommaaccent',
+        'scedilla'=>'scommaaccent',
+        'Tcedilla'=>'Tcommaaccent',
+        'tcedilla'=>'tcommaaccent',
+        'Dslash'=>'Dcroat',
+        'dslash'=>'dcroat',
+        'Dmacron'=>'Dcroat',
+        'dmacron'=>'dcroat',
+        'combininggraveaccent'=>'gravecomb',
+        'combininghookabove'=>'hookabovecomb',
+        'combiningtildeaccent'=>'tildecomb',
+        'combiningacuteaccent'=>'acutecomb',
+        'combiningdotbelow'=>'dotbelowcomb',
+        'dongsign'=>'dong'
+        );
     foreach ($a as $l) {
         $e = explode(' ', rtrim($l));
         if (count($e) < 2) {
@@ -538,7 +538,7 @@ function ReadAFM($file,&$map)
         if (!isset($widths['.notdef'])) {
             $widths['.notdef'] = 600;
         }
-        if (!isset($widths['Delta']) AND isset($widths['increment'])) {
+        if (!isset($widths['Delta']) and isset($widths['increment'])) {
             $widths['Delta'] = $widths['increment'];
         }
         //Order widths according to map
@@ -574,7 +574,7 @@ function MakeFontDescriptor($fm, $symbolic=false)
     $fd .= ",'CapHeight'=>".$ch;
     //Flags
     $flags = 0;
-    if (isset($fm['IsFixedPitch']) AND $fm['IsFixedPitch']) {
+    if (isset($fm['IsFixedPitch']) and $fm['IsFixedPitch']) {
         $flags += 1<<0;
     }
     if ($symbolic) {
@@ -582,7 +582,7 @@ function MakeFontDescriptor($fm, $symbolic=false)
     } else {
         $flags += 1<<5;
     }
-    if (isset($fm['ItalicAngle']) AND ($fm['ItalicAngle'] != 0)) {
+    if (isset($fm['ItalicAngle']) and ($fm['ItalicAngle'] != 0)) {
         $flags += 1<<6;
     }
     $fd .= ",'Flags'=>".$flags;
@@ -704,7 +704,7 @@ function CheckTTF($file)
     $pp = ($fsType & 0x04) != 0;
     $e = ($fsType & 0x08) != 0;
     fclose($f);
-    if ($rl AND (!$pp) AND (!$e)) {
+    if ($rl and (!$pp) and (!$e)) {
         print "Warning: font license does not allow embedding\n";
     }
 }
@@ -714,27 +714,27 @@ function CheckTTF($file)
 
 $arg = $GLOBALS['argv'];
 if (count($arg) >= 3) {
-	ob_start();
-	array_shift($arg);
-	if (sizeof($arg) == 3) {
-		$arg[3] = $arg[2];
-		$arg[2] = true;
-	} else {
-		if (!isset($arg[2])) {
-			$arg[2] = true;
-		}
-		if (!isset($arg[3])) {
-			$arg[3] = 'cp1252';
-		}
-	}
-	if (!isset($arg[4])) {
-		$arg[4] = array();
-	}
-	MakeFont($arg[0], $arg[1], $arg[2], $arg[3], $arg[4]);
-	$t = ob_get_clean();
-	print preg_replace('!<BR( /)?>!i', "\n", $t);
+    ob_start();
+    array_shift($arg);
+    if (sizeof($arg) == 3) {
+        $arg[3] = $arg[2];
+        $arg[2] = true;
+    } else {
+        if (!isset($arg[2])) {
+            $arg[2] = true;
+        }
+        if (!isset($arg[3])) {
+            $arg[3] = 'cp1252';
+        }
+    }
+    if (!isset($arg[4])) {
+        $arg[4] = array();
+    }
+    MakeFont($arg[0], $arg[1], $arg[2], $arg[3], $arg[4]);
+    $t = ob_get_clean();
+    print preg_replace('!<BR( /)?>!i', "\n", $t);
 } else {
-	print "Usage: makefont.php <ttf/otf/pfb file> <afm/ufm file> <encoding> <patch>\n";
+    print "Usage: makefont.php <ttf/otf/pfb file> <afm/ufm file> <encoding> <patch>\n";
 }
 
 // BEGIN SUGARCRM SPECIFIC

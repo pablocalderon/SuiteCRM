@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
                                                                                        
@@ -67,7 +68,7 @@ function get_currency()
 
 class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
 {
-    function __construct(&$layout_manager)
+    public function __construct(&$layout_manager)
     {
         parent::__construct($layout_manager);
         $this->reporter = $this->layout_manager->getAttribute('reporter');
@@ -76,7 +77,7 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function SugarWidgetFieldCurrency(&$layout_manager)
+    public function SugarWidgetFieldCurrency(&$layout_manager)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -89,7 +90,7 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
 
 
 
-    function & displayList(&$layout_def)
+    public function & displayList(&$layout_def)
     {
         global $locale;
         $symbol = $locale->getPrecedentPreference('default_currency_symbol');
@@ -126,17 +127,16 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
             $div_id = $module ."&$record&$field_name";
             $str = "<div id='$div_id'>".$display;
             global $sugar_config;
-            if (isset ($sugar_config['enable_inline_reports_edit']) && $sugar_config['enable_inline_reports_edit']) {
-                $str .= "&nbsp;" .SugarThemeRegistry::current()->getImage("edit_inline","border='0' alt='Edit Layout' align='bottom' onClick='SUGAR.reportsInlineEdit.inlineEdit(\"$div_id\",\"$value\",\"$module\",\"$record\",\"$field_name\",\"$field_type\",\"$currency_id\",\"$symbol\");'");
+            if (isset($sugar_config['enable_inline_reports_edit']) && $sugar_config['enable_inline_reports_edit']) {
+                $str .= "&nbsp;" .SugarThemeRegistry::current()->getImage("edit_inline", "border='0' alt='Edit Layout' align='bottom' onClick='SUGAR.reportsInlineEdit.inlineEdit(\"$div_id\",\"$value\",\"$module\",\"$record\",\"$field_name\",\"$field_type\",\"$currency_id\",\"$symbol\");'");
             }
             $str .= "</div>";
             return $str;
-        } else {
-            return $display;
         }
+        return $display;
     }
 
-    function displayListPlain($layout_def)
+    public function displayListPlain($layout_def)
     {
         $value = currency_format_number(
             parent::displayListPlain($layout_def),
@@ -149,41 +149,40 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
         );
         return $value;
     }
-    function queryFilterEquals(&$layout_def)
+    public function queryFilterEquals(&$layout_def)
     {
         return $this->_get_column_select($layout_def)."=".DBManagerFactory::getInstance()->quote(unformat_number($layout_def['input_name0']))."\n";
     }
 
-    function queryFilterNot_Equals(&$layout_def)
+    public function queryFilterNot_Equals(&$layout_def)
     {
         return $this->_get_column_select($layout_def)."!=".DBManagerFactory::getInstance()->quote(unformat_number($layout_def['input_name0']))."\n";
     }
 
-    function queryFilterGreater(&$layout_def)
+    public function queryFilterGreater(&$layout_def)
     {
         return $this->_get_column_select($layout_def)." > ".DBManagerFactory::getInstance()->quote(unformat_number($layout_def['input_name0']))."\n";
     }
 
-    function queryFilterLess(&$layout_def)
+    public function queryFilterLess(&$layout_def)
     {
         return $this->_get_column_select($layout_def)." < ".DBManagerFactory::getInstance()->quote(unformat_number($layout_def['input_name0']))."\n";
     }
 
-    function queryFilterBetween(&$layout_def)
+    public function queryFilterBetween(&$layout_def)
     {
         return $this->_get_column_select($layout_def)." > ".DBManagerFactory::getInstance()->quote(unformat_number($layout_def['input_name0'])). " AND ". $this->_get_column_select($layout_def)." < ".DBManagerFactory::getInstance()->quote(unformat_number($layout_def['input_name1']))."\n";
     }
 
-    function isSystemCurrency(&$layout_def)
+    public function isSystemCurrency(&$layout_def)
     {
-        if (strpos($layout_def['name'],'_usdoll') === false) {
+        if (strpos($layout_def['name'], '_usdoll') === false) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
-    function querySelect(&$layout_def)
+    public function querySelect(&$layout_def)
     {
         // add currency column to select
         $table = $this->getCurrencyIdTable($layout_def);
@@ -193,7 +192,7 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
         return $this->_get_column_select($layout_def)." ".$this->_get_column_alias($layout_def)."\n";
     }
 
-    function queryGroupBy($layout_def)
+    public function queryGroupBy($layout_def)
     {
         // add currency column to group by
         $table = $this->getCurrencyIdTable($layout_def);
@@ -203,7 +202,7 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
         return $this->_get_column_select($layout_def)." \n";
     }
 
-    function getCurrencyIdTable($layout_def)
+    public function getCurrencyIdTable($layout_def)
     {
         // We need to fetch the currency id as well
         if (!$this->isSystemCurrency($layout_def) && empty($layout_def['group_function'])) {
@@ -267,4 +266,3 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
         return array('currency_symbol' => $currency_symbol, 'currency_id' => $currency_id);
     }
 }
-

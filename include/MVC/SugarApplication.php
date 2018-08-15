@@ -1,41 +1,41 @@
 <?php
-/** 
- * 
- * SugarCRM Community Edition is a customer relationship management program developed by 
- * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc. 
- * 
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd. 
- * Copyright (C) 2011 - 2018 SalesAgility Ltd. 
- * 
- * This program is free software; you can redistribute it and/or modify it under 
- * the terms of the GNU Affero General Public License version 3 as published by the 
- * Free Software Foundation with the addition of the following permission added 
- * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK 
- * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY 
- * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS. 
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT 
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more 
- * details. 
- * 
- * You should have received a copy of the GNU Affero General Public License along with 
- * this program; if not, see http://www.gnu.org/licenses or write to the Free 
- * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
- * 02110-1301 USA. 
- * 
- * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road, 
- * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com. 
- * 
- * The interactive user interfaces in modified source and object code versions 
- * of this program must display Appropriate Legal Notices, as required under 
- * Section 5 of the GNU Affero General Public License version 3. 
- * 
- * In accordance with Section 7(b) of the GNU Affero General Public License version 3, 
- * these Appropriate Legal Notices must retain the display of the "Powered by 
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not 
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must 
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM". 
+/**
+ *
+ * SugarCRM Community Edition is a customer relationship management program developed by
+ * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
+ * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
+ *
+ * The interactive user interfaces in modified source and object code versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU Affero General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the "Powered by
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -57,10 +57,10 @@ require_once('include/MVC/View/ViewFactory.php');
  */
 class SugarApplication
 {
-    var $controller = null;
-    var $headerDisplayed = false;
-    var $default_module = 'Home';
-    var $default_action = 'index';
+    public $controller = null;
+    public $headerDisplayed = false;
+    public $default_module = 'Home';
+    public $default_action = 'index';
 
     public function __construct()
     {
@@ -83,7 +83,7 @@ class SugarApplication
     /**
      * Perform execution of the application. This method is called from index2.php
      */
-    function execute()
+    public function execute()
     {
         global $sugar_config;
         if (!empty($sugar_config['default_module'])) {
@@ -117,7 +117,7 @@ class SugarApplication
     /**
      * Load the authenticated user. If there is not an authenticated user then redirect to login screen.
      */
-    function loadUser()
+    public function loadUser()
     {
         global $authController, $sugar_config;
         // Double check the server's unique key is in the session.  Make sure this is not an attempt to hijack a session
@@ -199,7 +199,7 @@ class SugarApplication
         //check if user can access
     }
 
-    function ACLFilter()
+    public function ACLFilter()
     {
         ACLController :: filterModuleList($GLOBALS['moduleList']);
     }
@@ -210,14 +210,14 @@ class SugarApplication
      * on the ResourceManager instance.
      *
      */
-    function setupResourceManagement($module)
+    public function setupResourceManagement($module)
     {
         require_once('include/resource/ResourceManager.php');
         $resourceManager = ResourceManager::getInstance();
         $resourceManager->setup($module);
     }
 
-    function setupPrint()
+    public function setupPrint()
     {
         $GLOBALS['request_string'] = '';
 
@@ -242,7 +242,7 @@ class SugarApplication
         $GLOBALS['request_string'] .= 'print=true';
     }
 
-    function preProcess()
+    public function preProcess()
     {
         $config = new Administration;
         $config->retrieveSettings();
@@ -271,7 +271,7 @@ class SugarApplication
         $this->handleAccessControl();
     }
 
-    function handleOfflineClient()
+    public function handleOfflineClient()
     {
         if (isset($GLOBALS['sugar_config']['disc_client']) && $GLOBALS['sugar_config']['disc_client']) {
             if (isset($_REQUEST['action']) && $_REQUEST['action'] != 'SaveTimezone') {
@@ -284,7 +284,7 @@ class SugarApplication
                         $this->controller->action = 'InitialSync';
                     }
                 } else {
-                    require_once ('modules/Sync/file_config.php');
+                    require_once('modules/Sync/file_config.php');
                     if (isset($file_sync_info['is_first_sync']) && $file_sync_info['is_first_sync']) {
                         if ($_REQUEST['action'] != 'InitialSync' && $_REQUEST['action'] != 'Logout' &&
                                 ($_REQUEST['action'] != 'Popup' && $_REQUEST['module'] != 'Sync')) {
@@ -303,7 +303,7 @@ class SugarApplication
     /**
      * Handles everything related to authorization.
      */
-    function handleAccessControl()
+    public function handleAccessControl()
     {
         if ($GLOBALS['current_user']->isDeveloperForAnyModule()) {
             return;
@@ -343,7 +343,7 @@ class SugarApplication
     /**
      * Load only bare minimum of language that can be done before user init and MVC stuff
      */
-    static function preLoadLanguages()
+    public static function preLoadLanguages()
     {
         if (!empty($_SESSION['authenticated_user_language'])) {
             $GLOBALS['current_language'] = $_SESSION['authenticated_user_language'];
@@ -359,7 +359,7 @@ class SugarApplication
      * Load application wide languages as well as module based languages so they are accessible
      * from the module.
      */
-    function loadLanguages()
+    public function loadLanguages()
     {
         if (!empty($_SESSION['authenticated_user_language'])) {
             $GLOBALS['current_language'] = $_SESSION['authenticated_user_language'];
@@ -384,14 +384,14 @@ class SugarApplication
      * Check the db version sugar_version.php and compare to what the version is stored in the config table.
      * Ensure that both are the same.
      */
-    function checkDatabaseVersion($dieOnFailure = true)
+    public function checkDatabaseVersion($dieOnFailure = true)
     {
         $row_count = sugar_cache_retrieve('checkDatabaseVersion_row_count');
         $sugarDbVersion = $GLOBALS['sugar_db_version'];
         $db = DBManagerFactory::getInstance();
         if (empty($row_count)) {
             $version_query = "SELECT count(*) as the_count FROM config WHERE category='info' AND name='sugar_version' AND " .
-                    $db->convert('value', 'text2char') . " = " . 
+                    $db->convert('value', 'text2char') . " = " .
                     $db->quoted($sugarDbVersion);
 
             $result = $db->query($version_query);
@@ -418,7 +418,7 @@ class SugarApplication
     /**
      * Load the themes/images.
      */
-    function loadDisplaySettings()
+    public function loadDisplaySettings()
     {
         global $theme;
 
@@ -460,7 +460,7 @@ class SugarApplication
         }
     }
 
-    function loadLicense()
+    public function loadLicense()
     {
         loadLicense();
         global $user_unique_key, $server_unique_key;
@@ -468,7 +468,7 @@ class SugarApplication
         $server_unique_key = (isset($sugar_config['unique_key'])) ? $sugar_config['unique_key'] : '';
     }
 
-    function loadGlobals()
+    public function loadGlobals()
     {
         global $currentModule;
         $currentModule = $this->controller->module;
@@ -604,7 +604,7 @@ class SugarApplication
         return true;
     }
 
-    function startSession()
+    public function startSession()
     {
         $sessionIdCookie = isset($_COOKIE['PHPSESSID']) ? $_COOKIE['PHPSESSID'] : null;
         if (isset($_REQUEST['MSID'])) {
@@ -639,7 +639,7 @@ class SugarApplication
         LogicHook::initialize()->call_custom_logic('', 'after_session_start');
     }
 
-    function endSession()
+    public function endSession()
     {
         session_destroy();
     }
@@ -650,7 +650,7 @@ class SugarApplication
      * @access	public
      * @param	string	$url	The URL to redirect to
      */
-    static function redirect(
+    public static function redirect(
     $url
     ) {
         /*
@@ -682,7 +682,7 @@ class SugarApplication
     }
 
     /**
-     * classic redirect to another URL, but check first that URL start with "Location:"... 
+     * classic redirect to another URL, but check first that URL start with "Location:"...
      * @param $header_URL
      */
     public static function headerRedirect($header_URL)
@@ -765,13 +765,12 @@ class SugarApplication
             $msgs = $_SESSION[$type];
             unset($_SESSION[$type]);
             return $msgs;
-        } else {
-            return array();
         }
+        return array();
     }
     
     /**
-     * 
+     *
      * @param string $type possible message types: ['user_error_message', 'user_success_message']
      * @throws Exception message type should be valid
      */
@@ -787,7 +786,13 @@ class SugarApplication
      * already been sent
      */
     public static function setCookie(
-    $name, $value, $expire = 0, $path = '/', $domain = null, $secure = false, $httponly = true
+    $name,
+        $value,
+        $expire = 0,
+        $path = '/',
+        $domain = null,
+        $secure = false,
+        $httponly = true
     ) {
         if (is_null($domain)) {
             if (isset($_SERVER["HTTP_HOST"])) {
@@ -871,8 +876,7 @@ class SugarApplication
         }
         if (empty($vars)) {
             return "index.php?module=Home&action=index";
-        } else {
-            return "index.php?" . http_build_query($vars);
         }
+        return "index.php?" . http_build_query($vars);
     }
 }

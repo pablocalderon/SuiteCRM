@@ -35,7 +35,7 @@ class _parse_lockinfo
      * @var bool
      * @access public
      */
-    var $success = false;
+    public $success = false;
 
     /**
      * lock type, currently only "write"
@@ -43,7 +43,7 @@ class _parse_lockinfo
      * @var string
      * @access public
      */
-    var $locktype = "";
+    public $locktype = "";
 
     /**
      * lock scope, "shared" or "exclusive"
@@ -51,7 +51,7 @@ class _parse_lockinfo
      * @var string
      * @access public
      */
-    var $lockscope = "";
+    public $lockscope = "";
 
     /**
      * lock owner information
@@ -59,7 +59,7 @@ class _parse_lockinfo
      * @var string
      * @access public
      */
-    var $owner = "";
+    public $owner = "";
 
     /**
      * flag that is set during lock owner read
@@ -67,7 +67,7 @@ class _parse_lockinfo
      * @var bool
      * @access private
      */
-    var $collect_owner = false;
+    public $collect_owner = false;
 
     /**
      * constructor
@@ -75,7 +75,7 @@ class _parse_lockinfo
      * @param  string  path of stream to read
      * @access public
      */
-    function __construct($path)
+    public function __construct($path)
     {
         // we assume success unless problems occur
         $this->success = true;
@@ -94,15 +94,22 @@ class _parse_lockinfo
         $xml_parser = xml_parser_create_ns("UTF-8", " ");
 
         // set tag and data handlers
-        xml_set_element_handler($xml_parser,
-								array(&$this, "_startElement"),
-								array(&$this, "_endElement"));
-        xml_set_character_data_handler($xml_parser,
-									   array(&$this, "_data"));
+        xml_set_element_handler(
+            $xml_parser,
+                                array(&$this, "_startElement"),
+                                array(&$this, "_endElement")
+        );
+        xml_set_character_data_handler(
+            $xml_parser,
+                                       array(&$this, "_data")
+        );
 
         // we want a case sensitive parser
-        xml_parser_set_option($xml_parser,
-							  XML_OPTION_CASE_FOLDING, false);
+        xml_parser_set_option(
+            $xml_parser,
+                              XML_OPTION_CASE_FOLDING,
+            false
+        );
 
         // parse input
         while ($this->success && !feof($f_in)) {
@@ -139,7 +146,7 @@ class _parse_lockinfo
      * @return void
      * @access private
      */
-    function _startElement($parser, $name, $attrs)
+    public function _startElement($parser, $name, $attrs)
     {
         // namespace handling
         if (strstr($name, " ")) {
@@ -165,16 +172,16 @@ class _parse_lockinfo
         } elseif ($ns == "DAV:") {
             // parse only the essential tags
             switch ($tag) {
-			case "write":
-				$this->locktype = $tag;
-				break;
-			case "exclusive":
-			case "shared":
-				$this->lockscope = $tag;
-				break;
-			case "owner":
-				$this->collect_owner = true;
-				break;
+            case "write":
+                $this->locktype = $tag;
+                break;
+            case "exclusive":
+            case "shared":
+                $this->lockscope = $tag;
+                break;
+            case "owner":
+                $this->collect_owner = true;
+                break;
             }
         }
     }
@@ -187,7 +194,7 @@ class _parse_lockinfo
      * @return void
      * @access private
      */
-    function _data($parser, $data)
+    public function _data($parser, $data)
     {
         // only the <owner> tag has data content
         if ($this->collect_owner) {
@@ -203,7 +210,7 @@ class _parse_lockinfo
      * @return void
      * @access private
      */
-    function _endElement($parser, $name)
+    public function _endElement($parser, $name)
     {
         // namespace handling
         if (strstr($name, " ")) {

@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,12 +37,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
-require_once ('include/JSON.php');
+require_once('include/JSON.php');
 require_once('modules/MailMerge/modules_array.php');
 require_once('modules/MailMerge/merge_query.php');
 
@@ -85,16 +86,16 @@ if (!empty($_POST['selected_objects'])) {
     $selObjs = $_SESSION['SELECTED_OBJECTS_DEF'];
 }
 $sel_obj = array();
-parse_str(html_entity_decode($selObjs, ENT_QUOTES),$sel_obj);
+parse_str(html_entity_decode($selObjs, ENT_QUOTES), $sel_obj);
 $step_num = 3;
 $xtpl->assign("PREV_STEP", '2');
 $xtpl->assign("STEP_NUM", "Step 3:");
-$popup_request_data = array ('call_back_function' => 'set_return', 'form_name' => 'EditView', 'field_to_name_array' => array ('id' => 'rel_id', 'name' => 'rel_name',),);
-	$json = getJSONobj();
+$popup_request_data = array('call_back_function' => 'set_return', 'form_name' => 'EditView', 'field_to_name_array' => array('id' => 'rel_id', 'name' => 'rel_name',),);
+    $json = getJSONobj();
 
-	// must urlencode to put into the filter request string
-	// because IE gets an out of memory error when it is passed
-	// as the usual object literal
+    // must urlencode to put into the filter request string
+    // because IE gets an out of memory error when it is passed
+    // as the usual object literal
 $encoded_popup_request_data = urlencode($json->encode($popup_request_data));
 
 $modules = $modules_array;
@@ -128,7 +129,7 @@ foreach ($sel_obj as $key => $value) {
     $value = str_replace("##", "&", $value);
     $value = stripslashes($value);
     $code = md5($key);
-    $popup_request_data = array ('call_back_function' => 'set_return', 'form_name' => 'EditView', 'field_to_name_array' => array ('id' => 'rel_id_'.$code, 'name' => 'rel_name_'.$code,),);
+    $popup_request_data = array('call_back_function' => 'set_return', 'form_name' => 'EditView', 'field_to_name_array' => array('id' => 'rel_id_'.$code, 'name' => 'rel_name_'.$code,),);
     $encoded_popup_request_data = urlencode($json->encode($popup_request_data));
 
     $fullQuery = get_merge_query($seed, $_SESSION['MAILMERGE_MODULE'], $key);
@@ -150,15 +151,15 @@ foreach ($sel_obj as $key => $value) {
 		name='button' onclick='open_popup(document.EditView.rel_type_{$code}.value, 600, 400,
 			\"&html=mail_merge&rel_module=$umodule&id=$ukey&request_data=$encoded_popup_request_data\", true, false, {});' $disabled/>";
     $items = array(
-	'ID' => $key,
-	'NAME' => $value,
-	'CODE' => $code,
-	'TYPE_OPTIONS' => get_select_options_with_id($modules, '0'),
-	'CHANGE_RELATIONSHIP' => $change_parent_button,
-	'CONTACT_ID' => $contact_id,
-	'CONTACT_NAME' => $full_name,
-	'REL_MODULE' => $_SESSION['MAILMERGE_CONTAINS_CONTACT_INFO'],
-	);
+    'ID' => $key,
+    'NAME' => $value,
+    'CODE' => $code,
+    'TYPE_OPTIONS' => get_select_options_with_id($modules, '0'),
+    'CHANGE_RELATIONSHIP' => $change_parent_button,
+    'CONTACT_ID' => $contact_id,
+    'CONTACT_NAME' => $full_name,
+    'REL_MODULE' => $_SESSION['MAILMERGE_CONTAINS_CONTACT_INFO'],
+    );
 
     $xtpl->assign("MAILMERGE", $items);
 

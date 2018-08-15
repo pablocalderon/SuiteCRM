@@ -17,7 +17,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -35,41 +35,41 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 class AOR_Condition extends Basic
 {
-    var $new_schema = true;
-    var $module_dir = 'AOR_Conditions';
-    var $object_name = 'AOR_Condition';
-    var $table_name = 'aor_conditions';
-    var $tracker_visibility = false;
-    var $importable = true;
-    var $disable_row_level_security = true;
+    public $new_schema = true;
+    public $module_dir = 'AOR_Conditions';
+    public $object_name = 'AOR_Condition';
+    public $table_name = 'aor_conditions';
+    public $tracker_visibility = false;
+    public $importable = true;
+    public $disable_row_level_security = true;
 
-    var $id;
-    var $name;
-    var $date_entered;
-    var $date_modified;
-    var $modified_user_id;
-    var $modified_by_name;
-    var $created_by;
-    var $created_by_name;
-    var $description;
-    var $deleted;
-    var $created_by_link;
-    var $modified_user_link;
-    var $aor_report_id;
-    var $condition_order;
-    var $field;
-    var $logic_op;
-    var $parenthesis;
-    var $operator;
-    var $value;
-    var $value_type;
+    public $id;
+    public $name;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $description;
+    public $deleted;
+    public $created_by_link;
+    public $modified_user_link;
+    public $aor_report_id;
+    public $condition_order;
+    public $field;
+    public $logic_op;
+    public $parenthesis;
+    public $operator;
+    public $value;
+    public $value_type;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -77,7 +77,7 @@ class AOR_Condition extends Basic
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function AOR_Condition()
+    public function AOR_Condition()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -89,7 +89,7 @@ class AOR_Condition extends Basic
     }
 
 
-    function save_lines($post_data, $parent, $key = '')
+    public function save_lines($post_data, $parent, $key = '')
     {
         require_once('modules/AOW_WorkFlow/aow_utils.php');
 

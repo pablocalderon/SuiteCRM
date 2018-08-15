@@ -54,7 +54,7 @@ class Crypt_Blowfish
      * @var array
      * @access private
      */
-    var $_P = array();
+    public $_P = array();
 
 
     /**
@@ -63,7 +63,7 @@ class Crypt_Blowfish
      * @var array
      * @access private
      */
-    var $_S = array();
+    public $_S = array();
 
     /**
      * Mcrypt td resource
@@ -71,7 +71,7 @@ class Crypt_Blowfish
      * @var resource
      * @access private
      */
-    var $_td = null;
+    public $_td = null;
 
     /**
      * Initialization vector
@@ -79,7 +79,7 @@ class Crypt_Blowfish
      * @var string
      * @access private
      */
-    var $_iv = null;
+    public $_iv = null;
 
 
     /**
@@ -123,7 +123,7 @@ class Crypt_Blowfish
      * @access public
      * @deprecated
      */
-    function isReady()
+    public function isReady()
     {
         return true;
     }
@@ -137,7 +137,7 @@ class Crypt_Blowfish
      * @deprecated
      * @see Crypt_Blowfish::_init()
      */
-    function init()
+    public function init()
     {
         $this->_init();
     }
@@ -147,7 +147,7 @@ class Crypt_Blowfish
      *
      * @access private
      */
-    function _init()
+    public function _init()
     {
         $defaults = new Crypt_Blowfish_DefaultKey();
         $this->_P = $defaults->P;
@@ -161,7 +161,7 @@ class Crypt_Blowfish
      * @param int &$Xr
      * @access private
      */
-    function _encipher(&$Xl, &$Xr)
+    public function _encipher(&$Xl, &$Xr)
     {
         for ($i = 0; $i < 16; $i++) {
             $temp = $Xl ^ $this->_P[$i];
@@ -183,7 +183,7 @@ class Crypt_Blowfish
      * @param int &$Xr
      * @access private
      */
-    function _decipher(&$Xl, &$Xr)
+    public function _decipher(&$Xl, &$Xr)
     {
         for ($i = 17; $i > 1; $i--) {
             $temp = $Xl ^ $this->_P[$i];
@@ -205,7 +205,7 @@ class Crypt_Blowfish
      * @return string Returns cipher text on success, PEAR_Error on failure
      * @access public
      */
-    function encrypt($plainText)
+    public function encrypt($plainText)
     {
         if (!is_string($plainText)) {
             $GLOBALS['log']->fatal('Plain text must be a string');
@@ -219,9 +219,9 @@ class Crypt_Blowfish
 
         $cipherText = '';
         $len = strlen($plainText);
-        $plainText .= str_repeat(chr(0),(8 - ($len%8))%8);
+        $plainText .= str_repeat(chr(0), (8 - ($len%8))%8);
         for ($i = 0; $i < $len; $i += 8) {
-            list(,$Xl,$Xr) = unpack("N2",substr($plainText,$i,8));
+            list(, $Xl, $Xr) = unpack("N2", substr($plainText, $i, 8));
             $this->_encipher($Xl, $Xr);
             $cipherText .= pack("N2", $Xl, $Xr);
         }
@@ -236,7 +236,7 @@ class Crypt_Blowfish
      * @return string Returns plain text on success, PEAR_Error on failure
      * @access public
      */
-    function decrypt($cipherText)
+    public function decrypt($cipherText)
     {
         if (!is_string($cipherText)) {
             $GLOBALS['log']->fatal('Chiper text must be a string');
@@ -250,9 +250,9 @@ class Crypt_Blowfish
 
         $plainText = '';
         $len = strlen($cipherText);
-        $cipherText .= str_repeat(chr(0),(8 - ($len%8))%8);
+        $cipherText .= str_repeat(chr(0), (8 - ($len%8))%8);
         for ($i = 0; $i < $len; $i += 8) {
-            list(,$Xl,$Xr) = unpack("N2",substr($cipherText,$i,8));
+            list(, $Xl, $Xr) = unpack("N2", substr($cipherText, $i, 8));
             $this->_decipher($Xl, $Xr);
             $plainText .= pack("N2", $Xl, $Xr);
         }
@@ -269,7 +269,7 @@ class Crypt_Blowfish
      * @return bool  Returns true on success, PEAR_Error on failure
      * @access public
      */
-    function setKey($key)
+    public function setKey($key)
     {
         if (!is_string($key)) {
             $GLOBALS['log']->fatal('Key must be a string');

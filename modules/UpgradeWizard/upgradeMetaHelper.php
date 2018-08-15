@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,23 +34,23 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
 class UpgradeMetaHelper
 {
-    var $upgrade_dir;
-    var $debug_mode;
-    var $upgrade_modules;
-    var $customized_modules;
-    var $source_dir;
-    var $dest_dir ;
-    var $evparser;
-    var $dvparser;
-    var $path_to_master_copy;
+    public $upgrade_dir;
+    public $debug_mode;
+    public $upgrade_modules;
+    public $customized_modules;
+    public $source_dir;
+    public $dest_dir ;
+    public $evparser;
+    public $dvparser;
+    public $path_to_master_copy;
     /**
      * UpgradeMetaHelper
      * This is the constructor for the UpgradeMetaHelper class
@@ -58,7 +59,7 @@ class UpgradeMetaHelper
      * @param $debugMode Debug mode, default is false
      *
      */
-    function __construct($dir='upgrade', $masterCopyDirecotry='modules_50', $debugMode = false)
+    public function __construct($dir='upgrade', $masterCopyDirecotry='modules_50', $debugMode = false)
     {
         $this->upgrade_dir = $dir;
         $this->debug_mode = $debugMode;
@@ -80,7 +81,7 @@ class UpgradeMetaHelper
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function UpgradeMetaHelper($dir='upgrade', $masterCopyDirecotry='modules_50', $debugMode = false)
+    public function UpgradeMetaHelper($dir='upgrade', $masterCopyDirecotry='modules_50', $debugMode = false)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -98,7 +99,7 @@ class UpgradeMetaHelper
      * Array of files that do not match the md5 checksum for the module
      * @return $return_array Two-dimensional Array of [module][modified file(s) Array]
      */
-    function getModifiedModules()
+    public function getModifiedModules()
     {
         $md5_string = array();
         if (file_exists(clean_path(getcwd().'/files.md5'))) {
@@ -136,7 +137,7 @@ class UpgradeMetaHelper
         return $return_array;
     }
 
-    function saveMatchingFilesQueries($currStep,$value)
+    public function saveMatchingFilesQueries($currStep, $value)
     {
         $upgrade_progress_dir = sugar_cached('upgrades/temp');
         if (!is_dir($upgrade_progress_dir)) {
@@ -152,17 +153,20 @@ class UpgradeMetaHelper
                 fopen($file_queries_file, 'w+');
             }
         }
-        if (!isset($files_queries) || $files_queries == NULL) {
+        if (!isset($files_queries) || $files_queries == null) {
             $files_queries = array();
         }
         $files_queries[$currStep]=$value;
-        if (is_writable($file_queries_file) && write_array_to_file("file_queries", $file_queries,
-		$file_queries_file)) {
+        if (is_writable($file_queries_file) && write_array_to_file(
+            "file_queries",
+            $file_queries,
+        $file_queries_file
+        )) {
             //writing to the file
         }
     }
 
-    function getAllCustomizedModulesBeyondStudio()
+    public function getAllCustomizedModulesBeyondStudio()
     {
         require_once('modules/UpgradeWizard/uw_utils.php');
         $md5_string = array();
@@ -172,7 +176,7 @@ class UpgradeMetaHelper
         $return_array = array();
         $modules = $this->loadStudioModules();
         $modulesAll = getAllModules(); //keep all modules as well
-        $allOtherModules = array_diff($modulesAll,$modules);
+        $allOtherModules = array_diff($modulesAll, $modules);
         foreach ($modules as $mod) {
             if (!is_dir('modules/'.$mod)) {
                 continue;
@@ -182,10 +186,10 @@ class UpgradeMetaHelper
             $exclude_files[]=$editView;
             $exclude_files[]=$detailView;
             $allModFiles = array();
-            $allModFiles = findAllFiles('modules/'.$mod,$allModFiles);
+            $allModFiles = findAllFiles('modules/'.$mod, $allModFiles);
             foreach ($allModFiles as $file) {
                 //$file_md5_ref = str_replace(clean_path(getcwd()),'',$file);
-                if (file_exists($file) && !in_array($file,$exclude_files)) {
+                if (file_exists($file) && !in_array($file, $exclude_files)) {
                     if (isset($md5_string['./'.$file])) {
                         $fileContents = file_get_contents($file);
                         if (md5($fileContents) != $md5_string['./'.$file]) {
@@ -205,7 +209,7 @@ class UpgradeMetaHelper
                 continue;
             }
             $allModFiles = array();
-            $allModFiles = findAllFiles('modules/'.$mod,$allModFiles);
+            $allModFiles = findAllFiles('modules/'.$mod, $allModFiles);
             foreach ($allModFiles as $file) {
                 //$file_md5_ref = str_replace(clean_path(getcwd()),'',$file);
                 if (file_exists($file)) {
@@ -230,7 +234,7 @@ class UpgradeMetaHelper
      * If a file has been modified then put the module in the list of customized
      * modules. Show the list in the preflight check UI.
      */
-    function getAllCustomizedModules()
+    public function getAllCustomizedModules()
     {
         require_once('files.md5');
 
@@ -243,7 +247,7 @@ class UpgradeMetaHelper
             $modFiles = findAllFiles(clean_path(getcwd())."/modules/$mod", array());
             foreach ($modFiles as $file) {
                 $fileContents = file_get_contents($file);
-                $file = str_replace(clean_path(getcwd()),'',$file);
+                $file = str_replace(clean_path(getcwd()), '', $file);
                 if ($md5_string['./' . $file]) {
                     if (md5($fileContents) != $md5_string['./' . $file]) {
                         //A file has been customized in the module. Put the module into the
@@ -271,7 +275,7 @@ class UpgradeMetaHelper
      * present in the metadata directory of the module
      * @return $modules Array of modules that are studio enabled
      */
-    function loadStudioModules()
+    public function loadStudioModules()
     {
         $modules = array();
         $d = dir('modules');
@@ -293,7 +297,7 @@ class UpgradeMetaHelper
      * and runs the parsing for the modules to upgrade
      *
      */
-    function runParser()
+    public function runParser()
     {
         require_once('include/SugarFields/Parsers/EditViewMetaParser.php');
         require_once('include/SugarFields/Parsers/DetailViewMetaParser.php');
@@ -317,7 +321,7 @@ class UpgradeMetaHelper
      * @param $files Array of files found to parse
      *
      */
-    function parseFile($module_name, $files)
+    public function parseFile($module_name, $files)
     {
         global $beanList, $dictionary;
         foreach ($files as $file) {
@@ -335,14 +339,16 @@ class UpgradeMetaHelper
                 include('modules/'.$module_name.'/vardefs.php');
                 $bean_name = $beanList[$module_name];
                 $newFile = $this->upgrade_dir.'/modules/'.$module_name.'/metadata/'.$lowerCaseView.'defs.php';
-                $evfp = fopen($newFile,'w');
+                $evfp = fopen($newFile, 'w');
 
                 $bean_name = $bean_name == 'aCase' ? 'Case' : $bean_name;
-                fwrite($evfp, $parser->parse($file,
-											$dictionary[$bean_name]['fields'],
-											$module_name,
-											true,
-											$this->path_to_master_copy.'/modules/'.$module_name.'/metadata/'.$lowerCaseView.'defs.php'));
+                fwrite($evfp, $parser->parse(
+                    $file,
+                                            $dictionary[$bean_name]['fields'],
+                                            $module_name,
+                                            true,
+                                            $this->path_to_master_copy.'/modules/'.$module_name.'/metadata/'.$lowerCaseView.'defs.php'
+                ));
                 fclose($evfp);
             } //if
         } //foreach
@@ -355,7 +361,7 @@ class UpgradeMetaHelper
      * Also creates subdirectories for all studio enabled modules.
      *
      */
-    function create_upgrade_directory()
+    public function create_upgrade_directory()
     {
         $dir = $this->upgrade_dir.'/modules';
         if (!file_exists($this->upgrade_dir)) {
@@ -392,7 +398,7 @@ class UpgradeMetaHelper
      * @param $view The view (EditView or DetailView)
      * @return boolean true if verification check is okay; false otherwise
      */
-    function verifyMetaData($metadataFile, $module, $view)
+    public function verifyMetaData($metadataFile, $module, $view)
     {
         if (!file_exists($metadataFile) || !is_file($metadataFile)) {
             return false;

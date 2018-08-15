@@ -13,7 +13,7 @@ r56989 - 2010-06-16 13:01:33 -0700 (Wed, 16 Jun 2010) - kjing - defunt "Mango" s
 
 r55980 - 2010-04-19 13:31:28 -0700 (Mon, 19 Apr 2010) - kjing - create Mango (6.1) based on windex
 
-r51719 - 2009-10-22 10:18:00 -0700 (Thu, 22 Oct 2009) - mitani - Converted to Build 3  tags and updated the build system 
+r51719 - 2009-10-22 10:18:00 -0700 (Thu, 22 Oct 2009) - mitani - Converted to Build 3  tags and updated the build system
 
 r51634 - 2009-10-19 13:32:22 -0700 (Mon, 19 Oct 2009) - mitani - Windex is the branch for Sugar Sales 1.0 development
 
@@ -53,11 +53,11 @@ nusoap-general@lists.sourceforge.net
 
 /**
 * caches instances of the wsdl class
-* 
+*
 * @author   Scott Nichol <snichol@users.sourceforge.net>
 * @author	Ingo Fischer <ingo@apollon.de>
 
-* @access public 
+* @access public
 */
 class nusoap_wsdlcache
 {
@@ -65,22 +65,22 @@ class nusoap_wsdlcache
      *	@var resource
      *	@access private
      */
-    var $fplock;
+    public $fplock;
     /**
      *	@var integer
      *	@access private
      */
-    var $cache_lifetime;
+    public $cache_lifetime;
     /**
      *	@var string
      *	@access private
      */
-    var $cache_dir;
+    public $cache_dir;
     /**
      *	@var string
      *	@access public
      */
-    var $debug_str = '';
+    public $debug_str = '';
 
     /**
     * constructor
@@ -89,7 +89,7 @@ class nusoap_wsdlcache
     * @param integer $cache_lifetime lifetime for caching-files in seconds or 0 for unlimited
     * @access public
     */
-    function nusoap_wsdlcache($cache_dir='.', $cache_lifetime=0)
+    public function nusoap_wsdlcache($cache_dir='.', $cache_lifetime=0)
     {
         $this->fplock = array();
         $this->cache_dir = $cache_dir != '' ? $cache_dir : '.';
@@ -103,7 +103,7 @@ class nusoap_wsdlcache
     * @return string The filename used to cache the instance
     * @access private
     */
-    function createFilename($wsdl)
+    public function createFilename($wsdl)
     {
         return $this->cache_dir.'/wsdlcache-' . md5($wsdl);
     }
@@ -114,7 +114,7 @@ class nusoap_wsdlcache
     * @param    string $string debug data
     * @access   private
     */
-    function debug($string)
+    public function debug($string)
     {
         $this->debug_str .= get_class($this).": $string\n";
     }
@@ -126,7 +126,7 @@ class nusoap_wsdlcache
     * @return object wsdl The cached wsdl instance, null if the instance is not in the cache
     * @access public
     */
-    function get($wsdl)
+    public function get($wsdl)
     {
         $filename = $this->createFilename($wsdl);
         if ($this->obtainMutex($filename, "r")) {
@@ -156,9 +156,9 @@ class nusoap_wsdlcache
             }
             $this->releaseMutex($filename);
             return (!is_null($s)) ? unserialize($s) : null;
-        } else {
-            $this->debug("Unable to obtain mutex for $filename in get");
         }
+        $this->debug("Unable to obtain mutex for $filename in get");
+        
         return null;
     }
 
@@ -170,7 +170,7 @@ class nusoap_wsdlcache
     * @return boolean Lock successfully obtained ?!
     * @access private
     */
-    function obtainMutex($filename, $mode)
+    public function obtainMutex($filename, $mode)
     {
         if (isset($this->fplock[md5($filename)])) {
             $this->debug("Lock for $filename already exists");
@@ -179,9 +179,8 @@ class nusoap_wsdlcache
         $this->fplock[md5($filename)] = fopen($filename.".lock", "w");
         if ($mode == "r") {
             return flock($this->fplock[md5($filename)], LOCK_SH);
-        } else {
-            return flock($this->fplock[md5($filename)], LOCK_EX);
         }
+        return flock($this->fplock[md5($filename)], LOCK_EX);
     }
 
     /**
@@ -191,7 +190,7 @@ class nusoap_wsdlcache
     * @return boolean WSDL successfully cached
     * @access public
     */
-    function put($wsdl_instance)
+    public function put($wsdl_instance)
     {
         $filename = $this->createFilename($wsdl_instance->wsdl);
         $s = serialize($wsdl_instance);
@@ -207,9 +206,9 @@ class nusoap_wsdlcache
             $this->debug("Put $wsdl_instance->wsdl ($filename) in cache");
             $this->releaseMutex($filename);
             return true;
-        } else {
-            $this->debug("Unable to obtain mutex for $filename in put");
         }
+        $this->debug("Unable to obtain mutex for $filename in put");
+        
         return false;
     }
 
@@ -220,7 +219,7 @@ class nusoap_wsdlcache
     * @return boolean Lock successfully released
     * @access private
     */
-    function releaseMutex($filename)
+    public function releaseMutex($filename)
     {
         $ret = flock($this->fplock[md5($filename)], LOCK_UN);
         fclose($this->fplock[md5($filename)]);
@@ -238,7 +237,7 @@ class nusoap_wsdlcache
     * @return boolean Whether there was an instance to remove
     * @access public
     */
-    function remove($wsdl)
+    public function remove($wsdl)
     {
         $filename = $this->createFilename($wsdl);
         if (!file_exists($filename)) {

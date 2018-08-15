@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /*********************************************************************************
 
@@ -85,8 +86,8 @@ $sel_fields=array();
 $temp_field_array = $focus->merge_bean->field_defs;
 $bean_data=array();
 foreach ($temp_field_array as $field_array) {
-    if (isset($field_array['merge_filter']) 
-	) {
+    if (isset($field_array['merge_filter'])
+    ) {
         if (strtolower($field_array['merge_filter'])=='enabled' or strtolower($field_array['merge_filter'])=='selected') {
             $col_name = $field_array['name'];
 
@@ -96,13 +97,13 @@ foreach ($temp_field_array as $field_array) {
             } else {
                 $col_label = str_replace(':', '', $focus->merge_bean_strings[$field_array['vname']]);
             }
-			
+            
             if (strtolower($field_array['merge_filter'])=='selected') {
                 $sel_fields[$col_name]=$col_label;
             } else {
                 $avail_fields[$col_name] = $col_label;
             }
-			
+            
             $bean_data[$col_name]=$focus->merge_bean->$col_name;
         }
     }
@@ -117,10 +118,10 @@ $params[] = $mod_strings['LBL_LBL_MERGE_RECORDS_STEP_1'];
 $params[] = $focus->merge_bean->name;
 echo getClassicModuleTitle($focus->merge_bean->module_dir, $params, true);
 
-$xtpl = new XTemplate ('modules/MergeRecords/Step1.html');
+$xtpl = new XTemplate('modules/MergeRecords/Step1.html');
 $xtpl->assign("MOD", $mod_strings);
 $xtpl->assign("APP", $app_strings);
-$xtpl->assign("BEANDATA",$json->encode($bean_data));
+$xtpl->assign("BEANDATA", $json->encode($bean_data));
 //This is for the implemetation of finding all dupes for a module, not just
 //dupes for a particular record
 //commenting this out for now
@@ -130,7 +131,7 @@ $xtpl->assign("BEANDATA",$json->encode($bean_data));
 $xtpl->assign("MERGE_MODULE", $focus->merge_module);
 $xtpl->assign("ID", $focus->merge_bean->id);
 
-$xtpl->assign("FIELD_AVAIL_OPTIONS", get_select_options_with_id($avail_fields,''));
+$xtpl->assign("FIELD_AVAIL_OPTIONS", get_select_options_with_id($avail_fields, ''));
 $xtpl->assign("LBL_ADD_BUTTON", translate('LBL_ADD_BUTTON'));
 
 if (isset($_REQUEST['return_id'])) {
@@ -152,10 +153,10 @@ $xtpl->assign("DELETE_INLINE_IMAGE", SugarThemeRegistry::current()->getImageURL(
 //process preloaded filter.
 $pre_loaded=null;
 foreach ($sel_fields as $colName=>$colLabel) {
-    $pre_loaded.=addFieldRow($colName,$colLabel,$bean_data[$colName]);
+    $pre_loaded.=addFieldRow($colName, $colLabel, $bean_data[$colName]);
 }
-$xtpl->assign("PRE_LOADED_FIELDS",$pre_loaded);
-$xtpl->assign("OPERATOR_OPTIONS",$json->encode($app_list_strings['merge_operators_dom']));
+$xtpl->assign("PRE_LOADED_FIELDS", $pre_loaded);
+$xtpl->assign("OPERATOR_OPTIONS", $json->encode($app_list_strings['merge_operators_dom']));
 
 
 $xtpl->parse("main.field_select_block");
@@ -169,13 +170,13 @@ $xtpl->out("main");
  * preload the filter criteria based on the vardef.
  * <span><table><tr><td></td><td></td><td></td></tr></table></span>
  */
-function addFieldRow($colName,$colLabel,$colValue)
+function addFieldRow($colName, $colLabel, $colValue)
 {
     global $theme, $app_list_strings;
     
     static $operator_options;
     if (empty($operator_options)) {
-        $operator_options= get_select_options_with_id($app_list_strings['merge_operators_dom'],'');
+        $operator_options= get_select_options_with_id($app_list_strings['merge_operators_dom'], '');
     }
 
     $LBL_REMOVE = translate('LBL_REMOVE');

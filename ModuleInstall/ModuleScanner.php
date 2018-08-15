@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,52 +16,52 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
  * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
- * 
+ *
  * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
  * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- * 
+ *
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 class ModuleScanner
 {
     private $manifestMap = array(
-			'pre_execute'=>'pre_execute',
-			'install_mkdirs'=>'mkdir',
-			'install_copy'=>'copy',
-			'install_images'=>'image_dir',
-			'install_menus'=>'menu',
-			'install_userpage'=>'user_page',
-			'install_dashlets'=>'dashlets',
-			'install_administration'=>'administration',
-			'install_connectors'=>'connectors',
-			'install_vardefs'=>'vardefs',
-			'install_layoutdefs'=>'layoutdefs',
-			'install_layoutfields'=>'layoutfields',
-			'install_relationships'=>'relationships',
-			'install_languages'=>'language',
+            'pre_execute'=>'pre_execute',
+            'install_mkdirs'=>'mkdir',
+            'install_copy'=>'copy',
+            'install_images'=>'image_dir',
+            'install_menus'=>'menu',
+            'install_userpage'=>'user_page',
+            'install_dashlets'=>'dashlets',
+            'install_administration'=>'administration',
+            'install_connectors'=>'connectors',
+            'install_vardefs'=>'vardefs',
+            'install_layoutdefs'=>'layoutdefs',
+            'install_layoutfields'=>'layoutfields',
+            'install_relationships'=>'relationships',
+            'install_languages'=>'language',
             'install_logichooks'=>'logic_hooks',
-			'post_execute'=>'post_execute',
+            'post_execute'=>'post_execute',
 
-	);
+    );
 
     /**
      * config settings
@@ -90,10 +91,10 @@ class ModuleScanner
         'reflector',
         'reflectionexception',
         'lua',
-	    'ziparchive',
-	    'splfileinfo',
-	    'splfileobject',
-	    'pclzip',
+        'ziparchive',
+        'splfileinfo',
+        'splfileobject',
+        'pclzip',
 
     );
     private $blackList = array(
@@ -104,12 +105,12 @@ class ModuleScanner
     'proc_close',
     'proc_get_status',
     'proc_nice',
-	'passthru',
+    'passthru',
     'clearstatcache',
     'disk_free_space',
     'disk_total_space',
     'diskfreespace',
-	'dir',
+    'dir',
     'fclose',
     'feof',
     'fflush',
@@ -139,7 +140,7 @@ class ModuleScanner
     'is_link',
     'is_readable',
     'is_uploaded_file',
-	'opendir',
+    'opendir',
     'parse_ini_string',
     'pathinfo',
     'pclose',
@@ -149,75 +150,75 @@ class ModuleScanner
     'realpath_cache_size',
     'realpath',
     'rewind',
-	'readdir',
+    'readdir',
     'set_file_buffer',
     'tmpfile',
     'umask',
     'ini_set',
     'set_time_limit',
-	'eval',
-	'exec',
-	'system',
-	'shell_exec',
-	'passthru',
-	'chgrp',
-	'chmod',
-	'chwown',
-	'file_put_contents',
-	'file',
-	'fileatime',
-	'filectime',
-	'filegroup',
-	'fileinode',
-	'filemtime',
-	'fileowner',
-	'fileperms',
-	'fopen',
-	'is_executable',
-	'is_writable',
-	'is_writeable',
-	'lchgrp',
-	'lchown',
-	'linkinfo',
-	'lstat',
-	'mkdir',
+    'eval',
+    'exec',
+    'system',
+    'shell_exec',
+    'passthru',
+    'chgrp',
+    'chmod',
+    'chwown',
+    'file_put_contents',
+    'file',
+    'fileatime',
+    'filectime',
+    'filegroup',
+    'fileinode',
+    'filemtime',
+    'fileowner',
+    'fileperms',
+    'fopen',
+    'is_executable',
+    'is_writable',
+    'is_writeable',
+    'lchgrp',
+    'lchown',
+    'linkinfo',
+    'lstat',
+    'mkdir',
     'mkdir_recursive',
-	'parse_ini_file',
-	'rmdir',
+    'parse_ini_file',
+    'rmdir',
     'rmdir_recursive',
-	'stat',
-	'tempnam',
-	'touch',
-	'unlink',
-	'getimagesize',
-	'call_user_func',
-	'call_user_func_array',
-	'create_function',
+    'stat',
+    'tempnam',
+    'touch',
+    'unlink',
+    'getimagesize',
+    'call_user_func',
+    'call_user_func_array',
+    'create_function',
 
 
-	//mutliple files per function call
-	'copy',
+    //mutliple files per function call
+    'copy',
     'copy_recursive',
-	'link',
-	'rename',
-	'symlink',
-	'move_uploaded_file',
-	'chdir',
-	'chroot',
-	'create_cache_directory',
-	'mk_temp_dir',
-	'write_array_to_file',
-	'write_encoded_file',
-	'create_custom_directory',
-	'sugar_rename',
-	'sugar_chown',
-	'sugar_fopen',
-	'sugar_mkdir',
-	'sugar_file_put_contents',
-	'sugar_file_put_contents_atomic',
-	'sugar_chgrp',
-	'sugar_chmod',
-	'sugar_touch',
+    'link',
+    'rename',
+    'symlink',
+    'move_uploaded_file',
+    'chdir',
+    'chroot',
+    'create_cache_directory',
+    'mk_temp_dir',
+    'write_array_to_file',
+    'write_encoded_file',
+    'create_custom_directory',
+    'sugar_rename',
+    'sugar_chown',
+    'sugar_fopen',
+    'sugar_mkdir',
+    'sugar_file_put_contents',
+    'sugar_file_put_contents_atomic',
+    'sugar_chgrp',
+    'sugar_chmod',
+    'sugar_touch',
 
         // Functions that have callbacks can circumvent our security measures.
         // List retrieved through PHP's XML documentation, and running the
@@ -399,12 +400,12 @@ class ModuleScanner
         'xml_set_processing_instruction_handler',
         'xml_set_start_namespace_decl_handler',
         'xml_set_unparsed_entity_decl_handler',
-	    'simplexml_load_file',
-	    'simplexml_load_string',
+        'simplexml_load_file',
+        'simplexml_load_string',
 
-	    // unzip
-	    'unzip',
-	    'unzip_file',
+        // unzip
+        'unzip',
+        'unzip_file',
 );
     private $methodsBlackList = array('setlevel', 'put' => array('sugarautoloader'), 'unlink' => array('sugarautoloader'));
 
@@ -581,87 +582,86 @@ class ModuleScanner
         foreach ($tokens as $index=>$token) {
             if (is_string($token[0])) {
                 switch ($token[0]) {
-					case '`':
-						$issues['backtick'] = translate('ML_INVALID_FUNCTION') . " '`'";
-						// no break
-					case '(':
-						if ($checkFunction) {
-						    $issues[] = $possibleIssue;
-						}
-						break;
-				}
+                    case '`':
+                        $issues['backtick'] = translate('ML_INVALID_FUNCTION') . " '`'";
+                        // no break
+                    case '(':
+                        if ($checkFunction) {
+                            $issues[] = $possibleIssue;
+                        }
+                        break;
+                }
                 $checkFunction = false;
                 $possibleIssue = '';
             } else {
                 $token['_msi'] = token_name($token[0]);
                 switch ($token[0]) {
-					case T_WHITESPACE: continue;
-					case T_EVAL:
-						if (in_array('eval', $this->blackList) && !in_array('eval', $this->blackListExempt)) {
-						    $issues[]= translate('ML_INVALID_FUNCTION') . ' eval()';
-						}
-						break;
-					case T_STRING:
-						$token[1] = strtolower($token[1]);
-						if ($lastToken !== false && $lastToken[0] == T_NEW) {
-						    if (!in_array($token[1], $this->classBlackList)) {
-						        break;
-						    }
-						    if (in_array($token[1], $this->classBlackListExempt)) {
-						        break;
-						    }
-						} elseif ($token[0] == T_DOUBLE_COLON) {
-						    if (!in_array($lastToken[1], $this->classBlackList)) {
-						        break;
-						    }
-						    if (in_array($lastToken[1], $this->classBlackListExempt)) {
-						        break;
-						    }
-						} else {
-						    //if nothing else fit, lets check the last token to see if this is a possible method call
-						    if ($lastToken !== false &&
+                    case T_WHITESPACE: continue;
+                    case T_EVAL:
+                        if (in_array('eval', $this->blackList) && !in_array('eval', $this->blackListExempt)) {
+                            $issues[]= translate('ML_INVALID_FUNCTION') . ' eval()';
+                        }
+                        break;
+                    case T_STRING:
+                        $token[1] = strtolower($token[1]);
+                        if ($lastToken !== false && $lastToken[0] == T_NEW) {
+                            if (!in_array($token[1], $this->classBlackList)) {
+                                break;
+                            }
+                            if (in_array($token[1], $this->classBlackListExempt)) {
+                                break;
+                            }
+                        } elseif ($token[0] == T_DOUBLE_COLON) {
+                            if (!in_array($lastToken[1], $this->classBlackList)) {
+                                break;
+                            }
+                            if (in_array($lastToken[1], $this->classBlackListExempt)) {
+                                break;
+                            }
+                        } else {
+                            //if nothing else fit, lets check the last token to see if this is a possible method call
+                            if ($lastToken !== false &&
                             ($lastToken[0] == T_OBJECT_OPERATOR ||  $lastToken[0] == T_DOUBLE_COLON)) {
-						        // check static blacklist for methods
-						        if (!empty($this->methodsBlackList[$token[1]])) {
-						            if ($this->methodsBlackList[$token[1]] == '*') {
-						                $issues[]= translate('ML_INVALID_METHOD') . ' ' .$token[1].  '()';
-						                break;
-						            } else {
-						                if ($lastToken[0] == T_DOUBLE_COLON && $index > 2 && $tokens[$index-2][0] == T_STRING) {
-						                    $classname = strtolower($tokens[$index-2][1]);
-						                    if (in_array($classname, $this->methodsBlackList[$token[1]])) {
-						                        $issues[]= translate('ML_INVALID_METHOD') . ' ' .$classname . '::' . $token[1]. '()';
-						                        break;
-						                    }
-						                }
-						            }
-						        }
-						        //this is a method call, check the black list
-						        if (in_array($token[1], $this->methodsBlackList)) {
-						            $issues[]= translate('ML_INVALID_METHOD') . ' ' .$token[1].  '()';
-						        }
-						        break;
-						    }
+                                // check static blacklist for methods
+                                if (!empty($this->methodsBlackList[$token[1]])) {
+                                    if ($this->methodsBlackList[$token[1]] == '*') {
+                                        $issues[]= translate('ML_INVALID_METHOD') . ' ' .$token[1].  '()';
+                                        break;
+                                    }
+                                    if ($lastToken[0] == T_DOUBLE_COLON && $index > 2 && $tokens[$index-2][0] == T_STRING) {
+                                        $classname = strtolower($tokens[$index-2][1]);
+                                        if (in_array($classname, $this->methodsBlackList[$token[1]])) {
+                                            $issues[]= translate('ML_INVALID_METHOD') . ' ' .$classname . '::' . $token[1]. '()';
+                                            break;
+                                        }
+                                    }
+                                }
+                                //this is a method call, check the black list
+                                if (in_array($token[1], $this->methodsBlackList)) {
+                                    $issues[]= translate('ML_INVALID_METHOD') . ' ' .$token[1].  '()';
+                                }
+                                break;
+                            }
 
 
-						    if (!in_array($token[1], $this->blackList)) {
-						        break;
-						    }
-						    if (in_array($token[1], $this->blackListExempt)) {
-						        break;
-						    }
-						}
-						// no break
-					case T_VARIABLE:
-						$checkFunction = true;
-						$possibleIssue = translate('ML_INVALID_FUNCTION') . ' ' .  $token[1] . '()';
-						break;
+                            if (!in_array($token[1], $this->blackList)) {
+                                break;
+                            }
+                            if (in_array($token[1], $this->blackListExempt)) {
+                                break;
+                            }
+                        }
+                        // no break
+                    case T_VARIABLE:
+                        $checkFunction = true;
+                        $possibleIssue = translate('ML_INVALID_FUNCTION') . ' ' .  $token[1] . '()';
+                        break;
 
-					default:
-						$checkFunction = false;
-						$possibleIssue = '';
+                    default:
+                        $checkFunction = false;
+                        $possibleIssue = '';
 
-				}
+                }
                 if ($token[0] != T_WHITESPACE) {
                     $lastToken = $token;
                 }
@@ -685,7 +685,7 @@ class ModuleScanner
     {
         static $md5 = array();
         if (empty($md5) && file_exists('files.md5')) {
-            include ('files.md5');
+            include('files.md5');
             $md5 = isset($md5_string) ? $md5_string : null;
         }
         if ($path[0] != '.' || $path[1] != '/') {
@@ -840,7 +840,7 @@ class ModuleScanner
      **/
     public function displayIssues($package='Package')
     {
-        echo '<h2>'.str_replace('{PACKAGE}' , $package ,translate('ML_PACKAGE_SCANNING')). '</h2><BR><h2 class="error">' . translate('ML_INSTALLATION_FAILED') . '</h2><br><p>' .str_replace('{PACKAGE}' , $package ,translate('ML_PACKAGE_NOT_CONFIRM')). '</p><ul><li>'. translate('ML_OBTAIN_NEW_PACKAGE') . '<li>' . translate('ML_RELAX_LOCAL').
+        echo '<h2>'.str_replace('{PACKAGE}', $package, translate('ML_PACKAGE_SCANNING')). '</h2><BR><h2 class="error">' . translate('ML_INSTALLATION_FAILED') . '</h2><br><p>' .str_replace('{PACKAGE}', $package, translate('ML_PACKAGE_NOT_CONFIRM')). '</p><ul><li>'. translate('ML_OBTAIN_NEW_PACKAGE') . '<li>' . translate('ML_RELAX_LOCAL').
 '</ul></p><br>' . translate('ML_SUGAR_LOADING_POLICY') .  ' <a href=" http://kb.sugarcrm.com/custom/module-loader-restrictions-for-sugar-open-cloud/">' . translate('ML_SUGAR_KB') . '</a>.'.
 '<br>' . translate('ML_AVAIL_RESTRICTION'). ' <a href=" http://developers.sugarcrm.com/wordpress/2009/08/14/module-loader-restrictions/">' . translate('ML_SUGAR_DZ') .  '</a>.<br><br>';
 

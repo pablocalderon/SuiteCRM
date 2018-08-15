@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 /*********************************************************************************
 
@@ -51,28 +52,28 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class Relationship extends SugarBean
 {
-    var $object_name='Relationship';
-    var $module_dir = 'Relationships';
-    var $new_schema = true;
-    var $table_name = 'relationships';
+    public $object_name='Relationship';
+    public $module_dir = 'Relationships';
+    public $new_schema = true;
+    public $table_name = 'relationships';
 
-    var $id;
-    var $relationship_name;
-    var $lhs_module;
-    var $lhs_table;
-    var $lhs_key;
-    var $rhs_module;
-    var $rhs_table;
-    var $rhs_key;
-    var $join_table;
-    var $join_key_lhs;
-    var $join_key_rhs;
-    var $relationship_type;
-    var $relationship_role_column;
-    var $relationship_role_column_value;
-    var $reverse;
+    public $id;
+    public $relationship_name;
+    public $lhs_module;
+    public $lhs_table;
+    public $lhs_key;
+    public $rhs_module;
+    public $rhs_table;
+    public $rhs_key;
+    public $join_table;
+    public $join_key_lhs;
+    public $join_key_rhs;
+    public $relationship_type;
+    public $relationship_role_column;
+    public $relationship_role_column_value;
+    public $reverse;
 
-    var $_self_referencing;
+    public $_self_referencing;
 
     public function __construct()
     {
@@ -97,7 +98,7 @@ class Relationship extends SugarBean
     /*returns true if the relationship is self referencing. equality check is performed for both table and
      * key names.
      */
-    function is_self_referencing()
+    public function is_self_referencing()
     {
         if (empty($this->_self_referencing)) {
             $this->_self_referencing=false;
@@ -138,13 +139,13 @@ class Relationship extends SugarBean
     }
 
 
-    function get_other_module($relationship_name, $base_module, &$db)
+    public function get_other_module($relationship_name, $base_module, &$db)
     {
         //give it the relationship_name and base module
         //it will return the module name on the other side of the relationship
 
         $query = "SELECT relationship_name, rhs_module, lhs_module FROM relationships WHERE deleted=0 AND relationship_name = '".$relationship_name."'";
-        $result = $db->query($query,true," Error searching relationships table..");
+        $result = $db->query($query, true, " Error searching relationships table..");
         $row  =  $db->fetchByAssoc($result);
         if ($row != null) {
             if ($row['rhs_module']==$base_module) {
@@ -161,13 +162,13 @@ class Relationship extends SugarBean
         //end function get_other_module
     }
 
-    function retrieve_by_sides($lhs_module, $rhs_module, &$db)
+    public function retrieve_by_sides($lhs_module, $rhs_module, &$db)
     {
         //give it the relationship_name and base module
         //it will return the module name on the other side of the relationship
 
         $query = "SELECT * FROM relationships WHERE deleted=0 AND lhs_module = '".$lhs_module."' AND rhs_module = '".$rhs_module."'";
-        $result = $db->query($query,true," Error searching relationships table..");
+        $result = $db->query($query, true, " Error searching relationships table..");
         $row  =  $db->fetchByAssoc($result);
         if ($row != null) {
             return $row;
@@ -179,7 +180,7 @@ class Relationship extends SugarBean
         //end function retrieve_by_sides
     }
 
-    static function retrieve_by_modules($lhs_module, $rhs_module, &$db, $type ='')
+    public static function retrieve_by_modules($lhs_module, $rhs_module, &$db, $type ='')
     {
         //give it the relationship_name and base module
         //it will return the module name on the other side of the relationship
@@ -195,7 +196,7 @@ class Relationship extends SugarBean
         if (!empty($type)) {
             $query .= " AND relationship_type='$type'";
         }
-        $result = $db->query($query,true," Error searching relationships table..");
+        $result = $db->query($query, true, " Error searching relationships table..");
         $row  =  $db->fetchByAssoc($result);
         if ($row != null) {
             return $row['relationship_name'];
@@ -208,7 +209,7 @@ class Relationship extends SugarBean
     }
 
 
-    function retrieve_by_name($relationship_name)
+    public function retrieve_by_name($relationship_name)
     {
         if (empty($GLOBALS['relationships'])) {
             $this->load_relationship_meta();
@@ -226,7 +227,7 @@ class Relationship extends SugarBean
         }
     }
 
-    function load_relationship_meta()
+    public function load_relationship_meta()
     {
         if (!file_exists(Relationship::cache_file_dir().'/'.Relationship::cache_file_name_only())) {
             $this->build_relationship_cache();
@@ -235,7 +236,7 @@ class Relationship extends SugarBean
         $GLOBALS['relationships']=$relationships;
     }
 
-    function build_relationship_cache()
+    public function build_relationship_cache()
     {
         $query="SELECT * from relationships where deleted=0";
         $result=$this->db->query($query);
@@ -273,7 +274,7 @@ class Relationship extends SugarBean
     }
 
 
-    function trace_relationship_module($base_module, $rel_module1_name, $rel_module2_name="")
+    public function trace_relationship_module($base_module, $rel_module1_name, $rel_module2_name="")
     {
         global $beanList;
         global $dictionary;
@@ -292,10 +293,10 @@ class Relationship extends SugarBean
             $rel_module2 = $this->get_other_module($rel_attribute2_name, $rel_module1_bean->module_dir, $rel_module1_bean->db);
             $rel_module2_bean = get_module_info($rel_module2);
             return $rel_module2_bean;
-        } else {
-            //no rel_module2, so return rel_module2 bean
-            return $rel_module1_bean;
         }
+        //no rel_module2, so return rel_module2 bean
+        return $rel_module1_bean;
+        
 
         //end function trace_relationship_module
     }

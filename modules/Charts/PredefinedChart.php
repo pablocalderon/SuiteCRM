@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,32 +37,32 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
+/**
 
  * Description: Class defining queries of predefined charts.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
- ********************************************************************************/
+ */
 
 
 
 class PredefinedChart
 {
-    var $params = array();
+    public $params = array();
 
-    function __construct()
+    public function __construct()
     {
     }
 
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function PredefinedChart()
+    public function PredefinedChart()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -73,27 +74,27 @@ class PredefinedChart
     }
 
 
-    function predefinedChartQuery($chart, $params=array())
+    public function predefinedChartQuery($chart, $params=array())
     {
         switch ($chart) {
-			case 'pipeline_by_sales_stage':
-			case 'pipeline_by_sales_stage_funnel':
-				return $this->pipelineBySalesStageQuery();
-			case 'lead_source_by_outcome':
-				return $this->leadSourceByOutcomeQuery($params);
-			case 'outcome_by_month':
-				return $this->outcomeByMonthQuery();
-			case 'pipeline_by_lead_source':
-				return $this->pipelineByLeadSourceQuery($params);
-		    case 'my_modules_used_last_30_days':
-		        return $this->myModuleUsageLast30Days();
-			default:
-				return $this->customChartQuery($chart);
-		}
+            case 'pipeline_by_sales_stage':
+            case 'pipeline_by_sales_stage_funnel':
+                return $this->pipelineBySalesStageQuery();
+            case 'lead_source_by_outcome':
+                return $this->leadSourceByOutcomeQuery($params);
+            case 'outcome_by_month':
+                return $this->outcomeByMonthQuery();
+            case 'pipeline_by_lead_source':
+                return $this->pipelineByLeadSourceQuery($params);
+            case 'my_modules_used_last_30_days':
+                return $this->myModuleUsageLast30Days();
+            default:
+                return $this->customChartQuery($chart);
+        }
         return;
     }
 
-    function pipelineBySalesStageQuery()
+    public function pipelineBySalesStageQuery()
     {
         global $current_user;
         global $timedate;
@@ -158,7 +159,7 @@ class PredefinedChart
         if (count($tempx) > 0) {
             foreach ($tempx as $key) {
                 $datax[$key] = $app_list_strings['sales_stage_dom'][$key];
-                array_push($datax_selected,$key);
+                array_push($datax_selected, $key);
             }
         } else {
             $datax = $app_list_strings['sales_stage_dom'];
@@ -202,7 +203,7 @@ class PredefinedChart
             foreach ($new_ids as $the_id=>$the_name) {
                 $id[] = "'".$the_id."'";
             }
-            $ids = join(",",$id);
+            $ids = join(",", $id);
             $where .= "opportunities.assigned_user_id IN ($ids) ";
         }
         //build the where clause for the query that matches $datax
@@ -212,15 +213,15 @@ class PredefinedChart
             foreach ($datax as $key=>$value) {
                 $dataxArr[] = "'".$key."'";
             }
-            $dataxArr = join(",",$dataxArr);
+            $dataxArr = join(",", $dataxArr);
             $where .= "AND opportunities.sales_stage IN	($dataxArr) ";
         }
 
         $date_start = $timedate->swap_formats($date_start, $timedate->get_date_format(), $timedate->dbDayFormat);
         $date_end = $timedate->swap_formats($date_end, $timedate->get_date_format(), $timedate->dbDayFormat);
         //build the where clause for the query that matches $date_start and $date_end
-        $where .= "	AND opportunities.date_closed >= ". db_convert("'".$date_start."'",'date'). "
-					AND opportunities.date_closed <= ".db_convert("'".$date_end."'",'date') ;
+        $where .= "	AND opportunities.date_closed >= ". db_convert("'".$date_start."'", 'date'). "
+					AND opportunities.date_closed <= ".db_convert("'".$date_end."'", 'date') ;
         $where .= "	AND opportunities.assigned_user_id = users.id  AND opportunities.deleted=0 ";
 
         //Now do the db queries
@@ -241,7 +242,7 @@ class PredefinedChart
         return $query;
     }
 
-    function leadSourceByOutcomeQuery($filters)
+    public function leadSourceByOutcomeQuery($filters)
     {
         global $current_user;
         global $app_list_strings;
@@ -267,7 +268,7 @@ class PredefinedChart
         if (!empty($tempx) && sizeof($tempx) > 0) {
             foreach ($tempx as $key) {
                 $datax[$key] = $app_list_strings['lead_source_dom'][$key];
-                array_push($selected_datax,$key);
+                array_push($selected_datax, $key);
             }
         } else {
             $datax = $app_list_strings['lead_source_dom'];
@@ -304,7 +305,7 @@ class PredefinedChart
             foreach ($user_id as $the_id) {
                 $id[] = "'".$the_id."'";
             }
-            $ids = join(",",$id);
+            $ids = join(",", $id);
             $where .= "opportunities.assigned_user_id IN ($ids) ";
         }
 
@@ -315,7 +316,7 @@ class PredefinedChart
             foreach ($datay as $key=>$value) {
                 $datayArr[] = "'".$key."'";
             }
-            $datayArr = join(",",$datayArr);
+            $datayArr = join(",", $datayArr);
             $where .= "AND opportunities.lead_source IN	($datayArr) ";
         }
         $query = "SELECT lead_source,sales_stage,sum(amount_usdollar/1000) as total,count(*) as opp_count FROM opportunities ";
@@ -325,7 +326,7 @@ class PredefinedChart
         return $query;
     }
 
-    function outcomeByMonthQuery()
+    public function outcomeByMonthQuery()
     {
         global $current_user;
         global $timedate;
@@ -390,7 +391,7 @@ class PredefinedChart
             foreach ($user_id as $the_id) {
                 $id[] = "'".$the_id."'";
             }
-            $ids = join(",",$id);
+            $ids = join(",", $id);
             $where .= "opportunities.assigned_user_id IN ($ids) ";
         }
 
@@ -400,14 +401,14 @@ class PredefinedChart
 
         $opp = new Opportunity();
         //build the where clause for the query that matches $date_start and $date_end
-        $where .= "AND opportunities.date_closed >= ".db_convert("'".$date_start."'",'date')." AND opportunities.date_closed <= ".db_convert("'".$date_end."'",'date')." AND opportunities.deleted=0";
-        $query = "SELECT sales_stage,".db_convert('opportunities.date_closed','date_format',array("'%Y-%m'"),array("'YYYY-MM'"))." as m, sum(amount_usdollar/1000) as total, count(*) as opp_count FROM opportunities ";
+        $where .= "AND opportunities.date_closed >= ".db_convert("'".$date_start."'", 'date')." AND opportunities.date_closed <= ".db_convert("'".$date_end."'", 'date')." AND opportunities.deleted=0";
+        $query = "SELECT sales_stage,".db_convert('opportunities.date_closed', 'date_format', array("'%Y-%m'"), array("'YYYY-MM'"))." as m, sum(amount_usdollar/1000) as total, count(*) as opp_count FROM opportunities ";
         $query .= "WHERE ".$where;
-        $query .= " GROUP BY sales_stage,".db_convert('opportunities.date_closed','date_format',array("'%Y-%m'"),array("'YYYY-MM'"))."ORDER BY m";
+        $query .= " GROUP BY sales_stage,".db_convert('opportunities.date_closed', 'date_format', array("'%Y-%m'"), array("'YYYY-MM'"))."ORDER BY m";
         return $query;
     }
 
-    function pipelineByLeadSourceQuery($filters)
+    public function pipelineByLeadSourceQuery($filters)
     {
         global $current_user;
         global $app_list_strings;
@@ -435,7 +436,7 @@ class PredefinedChart
         if (count($tempx) > 0) {
             foreach ($tempx as $key) {
                 $datax[$key] = $app_list_strings['lead_source_dom'][$key];
-                array_push($selected_datax,$key);
+                array_push($selected_datax, $key);
             }
         } else {
             $datax = $app_list_strings['lead_source_dom'];
@@ -467,7 +468,7 @@ class PredefinedChart
             foreach ($user_id as $the_id) {
                 $id[] = "'".$the_id."'";
             }
-            $ids = join(",",$id);
+            $ids = join(",", $id);
             $where .= "opportunities.assigned_user_id IN ($ids) ";
         }
         if (!empty($where)) {
@@ -480,7 +481,7 @@ class PredefinedChart
             foreach ($legends as $key=>$value) {
                 $legendItem[] = "'".$key."'";
             }
-            $legendItems = join(",",$legendItem);
+            $legendItems = join(",", $legendItem);
             $where .= " opportunities.lead_source IN	($legendItems) ";
         }
         $query = "SELECT lead_source,sum(amount_usdollar/1000) as total,count(*) as opp_count FROM opportunities ";
@@ -490,10 +491,10 @@ class PredefinedChart
         return $query;
     }
 
-    function myModuleUsageLast30Days()
+    public function myModuleUsageLast30Days()
     {
         global $current_user;
-        $dateValue = db_convert("'".$timedate->getNow()->modify("-30 days")->asDb()."'" ,"datetime");
+        $dateValue = db_convert("'".$timedate->getNow()->modify("-30 days")->asDb()."'", "datetime");
 
         $query  = "SELECT tracker.module_name as module_name ";
         $query .= ",COUNT(*) count FROM tracker ";
@@ -505,13 +506,12 @@ class PredefinedChart
 
 
     // This function will grab a query from the custom directory to be used for charting
-    function customChartQuery($chart)
+    public function customChartQuery($chart)
     {
         if (file_exists('custom/Charts/' . $chart . '.php')) {
             require_once('custom/Charts/' . $chart . '.php');
             return customChartQuery();
-        } else {
-            return false;
         }
+        return false;
     }
 }

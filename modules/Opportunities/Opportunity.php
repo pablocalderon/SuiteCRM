@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,14 +37,14 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
+/**
 
  * Description:
- ********************************************************************************/
+ */
 
 
 
@@ -60,57 +61,57 @@ if (!defined('sugarEntry') || !sugarEntry) {
 // Opportunity is used to store customer information.
 class Opportunity extends SugarBean
 {
-    var $field_name_map;
+    public $field_name_map;
     // Stored fields
-    var $id;
-    var $lead_source;
-    var $date_entered;
-    var $date_modified;
-    var $modified_user_id;
-    var $assigned_user_id;
-    var $created_by;
-    var $created_by_name;
-    var $modified_by_name;
-    var $description;
-    var $name;
-    var $opportunity_type;
-    var $amount;
-    var $amount_usdollar;
-    var $currency_id;
-    var $date_closed;
-    var $next_step;
-    var $sales_stage;
-    var $probability;
-    var $campaign_id;
+    public $id;
+    public $lead_source;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $assigned_user_id;
+    public $created_by;
+    public $created_by_name;
+    public $modified_by_name;
+    public $description;
+    public $name;
+    public $opportunity_type;
+    public $amount;
+    public $amount_usdollar;
+    public $currency_id;
+    public $date_closed;
+    public $next_step;
+    public $sales_stage;
+    public $probability;
+    public $campaign_id;
 
     // These are related
-    var $account_name;
-    var $account_id;
-    var $contact_id;
-    var $task_id;
-    var $note_id;
-    var $meeting_id;
-    var $call_id;
-    var $email_id;
-    var $assigned_user_name;
+    public $account_name;
+    public $account_id;
+    public $contact_id;
+    public $task_id;
+    public $note_id;
+    public $meeting_id;
+    public $call_id;
+    public $email_id;
+    public $assigned_user_name;
 
-    var $table_name = "opportunities";
-    var $rel_account_table = "accounts_opportunities";
-    var $rel_contact_table = "opportunities_contacts";
-    var $module_dir = "Opportunities";
+    public $table_name = "opportunities";
+    public $rel_account_table = "accounts_opportunities";
+    public $rel_contact_table = "opportunities_contacts";
+    public $module_dir = "Opportunities";
 
-    var $importable = true;
-    var $object_name = "Opportunity";
+    public $importable = true;
+    public $object_name = "Opportunity";
 
     // This is used to retrieve related fields from form posts.
-    var $additional_column_fields = Array('assigned_user_name', 'assigned_user_id', 'account_name', 'account_id', 'contact_id', 'task_id', 'note_id', 'meeting_id', 'call_id', 'email_id'
-	);
+    public $additional_column_fields = array('assigned_user_name', 'assigned_user_id', 'account_name', 'account_id', 'contact_id', 'task_id', 'note_id', 'meeting_id', 'call_id', 'email_id'
+    );
 
-    var $relationship_fields = Array('task_id'=>'tasks', 'note_id'=>'notes', 'account_id'=>'accounts',
-									'meeting_id'=>'meetings', 'call_id'=>'calls', 'email_id'=>'emails', 'project_id'=>'project',
-									// Bug 38529 & 40938
-									'currency_id' => 'currencies',
-									);
+    public $relationship_fields = array('task_id'=>'tasks', 'note_id'=>'notes', 'account_id'=>'accounts',
+                                    'meeting_id'=>'meetings', 'call_id'=>'calls', 'email_id'=>'emails', 'project_id'=>'project',
+                                    // Bug 38529 & 40938
+                                    'currency_id' => 'currencies',
+                                    );
 
     public function __construct()
     {
@@ -124,7 +125,7 @@ class Opportunity extends SugarBean
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function Opportunity()
+    public function Opportunity()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -135,16 +136,16 @@ class Opportunity extends SugarBean
         self::__construct();
     }
 
-    var $new_schema = true;
+    public $new_schema = true;
 
 
 
-    function get_summary_text()
+    public function get_summary_text()
     {
         return "$this->name";
     }
 
-    function create_list_query($order_by, $where, $show_deleted = 0)
+    public function create_list_query($order_by, $where, $show_deleted = 0)
     {
         $custom_join = $this->getCustomJoin();
         $query = "SELECT ";
@@ -192,7 +193,7 @@ class Opportunity extends SugarBean
     }
 
 
-    function create_export_query($order_by, $where, $relate_link_join='')
+    public function create_export_query($order_by, $where, $relate_link_join='')
     {
         $custom_join = $this->getCustomJoin(true, true, $where);
         $custom_join['join'] .= $relate_link_join;
@@ -228,14 +229,14 @@ class Opportunity extends SugarBean
         return $query;
     }
 
-    function fill_in_additional_list_fields()
+    public function fill_in_additional_list_fields()
     {
         if ($this->force_load_details == true) {
             $this->fill_in_additional_detail_fields();
         }
     }
 
-    function fill_in_additional_detail_fields()
+    public function fill_in_additional_detail_fields()
     {
         parent::fill_in_additional_detail_fields();
 
@@ -270,7 +271,7 @@ class Opportunity extends SugarBean
      * All Rights Reserved..
      * Contributor(s): ______________________________________..
     */
-    function get_contacts()
+    public function get_contacts()
     {
         $this->load_relationship('contacts');
         $query_array=$this->contacts->getQuery(true);
@@ -286,13 +287,13 @@ class Opportunity extends SugarBean
         foreach ((array)$query_array as $qstring) {
             $query.=' '.$qstring;
         }
-        $temp = Array('id', 'first_name', 'last_name', 'title', 'email1', 'phone_work', 'opportunity_role', 'opportunity_rel_id');
-		
+        $temp = array('id', 'first_name', 'last_name', 'title', 'email1', 'phone_work', 'opportunity_role', 'opportunity_rel_id');
+        
         $contact = new Contact();
         return $this->build_related_list2($query, $contact, $temp);
     }
 
-    function update_currency_id($fromid, $toid)
+    public function update_currency_id($fromid, $toid)
     {
         $idequals = '';
 
@@ -319,7 +320,7 @@ class Opportunity extends SugarBean
         }
     }
 
-    function get_list_view_data()
+    public function get_list_view_data()
     {
         global $locale, $current_language, $current_user, $mod_strings, $app_list_strings, $sugar_config;
         $app_strings = return_application_language($current_language);
@@ -331,7 +332,7 @@ class Opportunity extends SugarBean
         return $temp_array;
     }
 
-    function get_currency_symbol()
+    public function get_currency_symbol()
     {
         if (isset($this->currency_id)) {
             $cur_qry = "select * from currencies where id ='".$this->currency_id."'";
@@ -351,9 +352,9 @@ class Opportunity extends SugarBean
     	builds a generic search based on the query string using or
     	do not include any $this-> because this is called on without having the class instantiated
     */
-    function build_generic_where_clause($the_query_string)
+    public function build_generic_where_clause($the_query_string)
     {
-        $where_clauses = Array();
+        $where_clauses = array();
         $the_query_string = DBManagerFactory::getInstance()->quote($the_query_string);
         array_push($where_clauses, "opportunities.name like '$the_query_string%'");
         array_push($where_clauses, "accounts.name like '$the_query_string%'");
@@ -370,7 +371,7 @@ class Opportunity extends SugarBean
         return $the_where;
     }
 
-    function save($check_notify = FALSE)
+    public function save($check_notify = false)
     {
         // Bug 32581 - Make sure the currency_id is set to something
         global $current_user, $app_list_strings;
@@ -396,15 +397,15 @@ class Opportunity extends SugarBean
         return parent::save($check_notify);
     }
 
-    function save_relationship_changes($is_update, $exclude = array())
+    public function save_relationship_changes($is_update, $exclude = array())
     {
         //if account_id was replaced unlink the previous account_id.
         //this rel_fields_before_value is populated by sugarbean during the retrieve call.
         if (!empty($this->account_id) and !empty($this->rel_fields_before_value['account_id']) and
-				(trim($this->account_id) != trim($this->rel_fields_before_value['account_id']))) {
+                (trim($this->account_id) != trim($this->rel_fields_before_value['account_id']))) {
             //unlink the old record.
             $this->load_relationship('accounts');
-            $this->accounts->delete($this->id,$this->rel_fields_before_value['account_id']);
+            $this->accounts->delete($this->id, $this->rel_fields_before_value['account_id']);
         }
         // Bug 38529 & 40938 - exclude currency_id
         parent::save_relationship_changes($is_update, array('currency_id'));
@@ -414,15 +415,15 @@ class Opportunity extends SugarBean
         }
     }
 
-    function set_opportunity_contact_relationship($contact_id)
+    public function set_opportunity_contact_relationship($contact_id)
     {
         global $app_list_strings;
         $default = $app_list_strings['opportunity_relationship_type_default_key'];
         $this->load_relationship('contacts');
-        $this->contacts->add($contact_id,array('contact_role'=>$default));
+        $this->contacts->add($contact_id, array('contact_role'=>$default));
     }
 
-    function set_notification_body($xtpl, $oppty)
+    public function set_notification_body($xtpl, $oppty)
     {
         global $app_list_strings;
 
@@ -435,14 +436,14 @@ class Opportunity extends SugarBean
         return $xtpl;
     }
 
-    function bean_implements($interface)
+    public function bean_implements($interface)
     {
         switch ($interface) {
-			case 'ACL':return true;
-		}
+            case 'ACL':return true;
+        }
         return false;
     }
-    function listviewACLHelper()
+    public function listviewACLHelper()
     {
         $array_assign = parent::listviewACLHelper();
         $is_owner = false;
@@ -455,7 +456,7 @@ class Opportunity extends SugarBean
             /* BEGIN - SECURITY GROUPS */
             else {
                 global $current_user;
-                $parent_bean = BeanFactory::getBean('Accounts',$this->account_id);
+                $parent_bean = BeanFactory::getBean('Accounts', $this->account_id);
                 if ($parent_bean !== false) {
                     $is_owner = $current_user->id == $parent_bean->assigned_user_id;
                 }
@@ -481,17 +482,17 @@ class Opportunity extends SugarBean
     /**
      * Static helper function for getting releated account info.
      */
-    function get_account_detail($opp_id)
+    public function get_account_detail($opp_id)
     {
         $ret_array = array();
         $db = DBManagerFactory::getInstance();
         $query = "SELECT acc.id, acc.name, acc.assigned_user_id "
-			. "FROM accounts acc, accounts_opportunities a_o "
-			. "WHERE acc.id=a_o.account_id"
-			. " AND a_o.opportunity_id='$opp_id'"
-			. " AND a_o.deleted=0"
-			. " AND acc.deleted=0";
-        $result = $db->query($query, true,"Error filling in opportunity account details: ");
+            . "FROM accounts acc, accounts_opportunities a_o "
+            . "WHERE acc.id=a_o.account_id"
+            . " AND a_o.opportunity_id='$opp_id'"
+            . " AND a_o.deleted=0"
+            . " AND acc.deleted=0";
+        $result = $db->query($query, true, "Error filling in opportunity account details: ");
         $row = $db->fetchByAssoc($result);
         if ($row != null) {
             $ret_array['name'] = $row['name'];

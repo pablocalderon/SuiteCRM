@@ -87,26 +87,41 @@ class actionCreateRecord extends actionBase
                  '_table" width="100%" class="lines"></table></td>';
         $html .= '</tr>';
         $html .= '<tr>';
-        $html .= '<td colspan="4" scope="row"><input type="button" tabindex="116" style="display:none" class="button" value="'.translate('LBL_ADD_FIELD',
-                'AOW_Actions').'" id="addcrline'.$line.'" onclick="add_crLine('.$line.')" /></td>';
+        $html .= '<td colspan="4" scope="row"><input type="button" tabindex="116" style="display:none" class="button" value="'.translate(
+            'LBL_ADD_FIELD',
+                'AOW_Actions'
+        ).'" id="addcrline'.$line.'" onclick="add_crLine('.$line.')" /></td>';
         $html .= '</tr>';
         $html .= '<tr>';
         $html .= '<td colspan="4" scope="row"><table id="crRelLine'.$line.'_table" width="100%" class="relationship"></table></td>';
         $html .= '</tr>';
         $html .= '<tr>';
-        $html .= '<td colspan="4" scope="row"><input type="button" tabindex="116" style="display:none" class="button" value="'.translate('LBL_ADD_RELATIONSHIP',
-                'AOW_Actions').'" id="addcrrelline'.$line.'" onclick="add_crRelLine('.$line.')" /></td>';
+        $html .= '<td colspan="4" scope="row"><input type="button" tabindex="116" style="display:none" class="button" value="'.translate(
+            'LBL_ADD_RELATIONSHIP',
+                'AOW_Actions'
+        ).'" id="addcrrelline'.$line.'" onclick="add_crRelLine('.$line.')" /></td>';
         $html .= '</tr>';
 
 
         if (isset($params['record_type']) && $params['record_type'] != '') {
             require_once 'modules/AOW_WorkFlow/aow_utils.php';
             $html .= "<script id ='aow_script".$line."'>";
-            $html .= 'cr_fields[' . $line . '] = "' . trim(preg_replace('/\s+/', ' ',
-                    getModuleFields($params['record_type'], 'EditView', '', array(),
-                        array('email1', 'email2')))) . '";';
-            $html .= 'cr_relationships[' . $line . '] = "' . trim(preg_replace('/\s+/', ' ',
-                    getModuleRelationships($params['record_type']))) . '";';
+            $html .= 'cr_fields[' . $line . '] = "' . trim(preg_replace(
+                '/\s+/',
+                ' ',
+                    getModuleFields(
+                        $params['record_type'],
+                        'EditView',
+                        '',
+                        array(),
+                        array('email1', 'email2')
+                    )
+            )) . '";';
+            $html .= 'cr_relationships[' . $line . '] = "' . trim(preg_replace(
+                '/\s+/',
+                ' ',
+                    getModuleRelationships($params['record_type'])
+            )) . '";';
             $html .= 'cr_module[' .$line. '] = "' .$params['record_type']. '";';
             if (isset($params['field'])) {
                 foreach ($params['field'] as $key => $field) {
@@ -114,7 +129,7 @@ class actionCreateRecord extends actionBase
                         $params['value'][$key] = json_encode($params['value'][$key]);
                     }
 
-                    $html .= "load_crline('".$line."','".$field."','".str_replace(array("\r\n","\r","\n"), ' ',$params['value'][$key])."','".$params['value_type'][$key]."');";
+                    $html .= "load_crline('".$line."','".$field."','".str_replace(array("\r\n","\r","\n"), ' ', $params['value'][$key])."','".$params['value_type'][$key]."');";
                 }
             }
             if (isset($params['rel'])) {
@@ -205,14 +220,14 @@ class actionCreateRecord extends actionBase
                             case 'int':
                                 $value = format_number($bean->$fieldName);
                                 break;
-			    case 'relate':
-			        if (isset($data['id_name']) && $record_vardefs[$field]['type'] === 'relate') {
-			            $idName = $data['id_name'];
-			            $value = $bean->$idName;
-			        } else {
-			            $value = $bean->$fieldName;
-			        }
-				break;
+                case 'relate':
+                    if (isset($data['id_name']) && $record_vardefs[$field]['type'] === 'relate') {
+                        $idName = $data['id_name'];
+                        $value = $bean->$idName;
+                    } else {
+                        $value = $bean->$fieldName;
+                    }
+                break;
                             default:
                                 $value = $bean->$fieldName;
                                 break;
@@ -267,22 +282,22 @@ class actionCreateRecord extends actionBase
                                 break;
                         }
                         break;
-                    Case 'Round_Robin':
-                    Case 'Least_Busy':
-                    Case 'Random':
+                    case 'Round_Robin':
+                    case 'Least_Busy':
+                    case 'Random':
                         switch ($params['value'][$key][0]) {
-                            Case 'security_group':
+                            case 'security_group':
                                 require_once 'modules/SecurityGroups/SecurityGroup.php';
                                 $security_group = new SecurityGroup();
                                 $security_group->retrieve($params['value'][$key][1]);
-                                $group_users = $security_group->get_linked_beans('users','User');
+                                $group_users = $security_group->get_linked_beans('users', 'User');
                                 $users = array();
                                 $r_users = array();
                                 if ($params['value'][$key][2] != '') {
                                     require_once 'modules/ACLRoles/ACLRole.php';
                                     $role = new ACLRole();
                                     $role->retrieve($params['value'][$key][2]);
-                                    $role_users = $role->get_linked_beans('users','User');
+                                    $role_users = $role->get_linked_beans('users', 'User');
                                     foreach ($role_users as $role_user) {
                                         $r_users[$role_user->id] = $role_user->name;
                                     }
@@ -294,17 +309,17 @@ class actionCreateRecord extends actionBase
                                     $users[$group_user->id] = $group_user->name;
                                 }
                                 break;
-                            Case 'role':
+                            case 'role':
                                 require_once 'modules/ACLRoles/ACLRole.php';
                                 $role = new ACLRole();
                                 $role->retrieve($params['value'][$key][2]);
-                                $role_users = $role->get_linked_beans('users','User');
+                                $role_users = $role->get_linked_beans('users', 'User');
                                 $users = array();
                                 foreach ($role_users as $role_user) {
                                     $users[$role_user->id] = $role_user->name;
                                 }
                                 break;
-                            Case 'all':
+                            case 'all':
                             default:
                                 $users = get_user_array(false);
                                 break;
@@ -319,17 +334,17 @@ class actionCreateRecord extends actionBase
                             $value = $users[0];
                         } else {
                             switch ($params['value_type'][$key]) {
-                                Case 'Round_Robin':
+                                case 'Round_Robin':
                                     $value = getRoundRobinUser($users, $this->id);
                                     break;
-                                Case 'Least_Busy':
+                                case 'Least_Busy':
                                     $user_id = 'assigned_user_id';
                                     if (isset($record_vardefs[$field]['id_name']) && $record_vardefs[$field]['id_name'] != '') {
                                         $user_id = $record_vardefs[$field]['id_name'];
                                     }
                                     $value = getLeastBusyUser($users, $user_id, $record);
                                     break;
-                                Case 'Random':
+                                case 'Random':
                                 default:
                                     shuffle($users);
                                     $value = $users[0];

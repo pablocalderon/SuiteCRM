@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2017 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,8 +34,8 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 
@@ -48,31 +48,31 @@ class SugarDateTime extends DateTime
 {
     // Recognized properties and their formats
     protected $formats = array(
-		"sec" => "s",
-		"min" => "i",
-		"hour" => "G",
-		"zhour" => "H",
-		"day" => "j",
-		"zday" => "d",
-		"days_in_month" => "t",
-		"day_of_week" => "w",
-		"day_of_year" => "z",
-		"week" => "W",
-		"month" => "n",
-		"zmonth" => "m",
-		"year" => "Y",
-		"am_pm" => "A",
-		"hour_12" => "g",
-	);
+        "sec" => "s",
+        "min" => "i",
+        "hour" => "G",
+        "zhour" => "H",
+        "day" => "j",
+        "zday" => "d",
+        "days_in_month" => "t",
+        "day_of_week" => "w",
+        "day_of_year" => "z",
+        "week" => "W",
+        "month" => "n",
+        "zmonth" => "m",
+        "year" => "Y",
+        "am_pm" => "A",
+        "hour_12" => "g",
+    );
 
     // Property aliases
     protected $var_gets = array(
-		"24_hour" => "hour",
-		"day_of_week" => "day_of_week_long",
-		"day_of_week_short" => "day_of_week_short",
-		"month_name" => "month_long",
-		"hour" => "hour_12",
-	);
+        "24_hour" => "hour",
+        "day_of_week" => "day_of_week_long",
+        "day_of_week_short" => "day_of_week_short",
+        "month_name" => "month_long",
+        "hour" => "hour_12",
+    );
 
     /**
      * @var DateTimeZone
@@ -98,16 +98,16 @@ class SugarDateTime extends DateTime
     public static $use_strptime = true;
 
     /**
-	 * Copy of DateTime::createFromFormat
-	 *
-	 * Needed to return right type of the object
-	 *
-	 * @param string $format Format like in date()
-	 * @param string $time Time to parse
-	 * @param DateTimeZone $timezone
-	 * @return SugarDateTime
-	 * @see DateTime::createFromFormat
-	 */
+     * Copy of DateTime::createFromFormat
+     *
+     * Needed to return right type of the object
+     *
+     * @param string $format Format like in date()
+     * @param string $time Time to parse
+     * @param DateTimeZone $timezone
+     * @return SugarDateTime
+     * @see DateTime::createFromFormat
+     */
     public static function createFromFormat($format, $time, $timezone = null)
     {
         if (empty($time) || empty($format)) {
@@ -196,7 +196,7 @@ class SugarDateTime extends DateTime
     protected function _getStrings($name)
     {
         if (empty($this->_strings)) {
-            $this->_strings = return_mod_list_strings_language($GLOBALS['current_language'],"Calendar");
+            $this->_strings = return_mod_list_strings_language($GLOBALS['current_language'], "Calendar");
         }
         return $this->_strings[$name];
     }
@@ -214,26 +214,26 @@ class SugarDateTime extends DateTime
         }
         // conditional, derived and translated ones
         switch ($var) {
-			case "ts":
-				return $this->format("U")+0;
-			case "tz_offset":
-				return $this->getTimezone()->getOffset($this);
-			case "days_in_year":
-				return $this->format("L") == '1'?366:365;
-				break;
-			case "day_of_week_short":
-				$str = $this->_getStrings('dom_cal_weekdays');
-				return $str[$this->day_of_week];
-			case "day_of_week_long":
-				$str = $this->_getStrings('dom_cal_weekdays_long');
-				return $str[$this->day_of_week];
-			case "month_short":
-				$str = $this->_getStrings('dom_cal_month');
-				return $str[$this->month];
-			case "month_long":
-				$str = $this->_getStrings('dom_cal_month_long');
-				return $str[$this->month];
-		}
+            case "ts":
+                return $this->format("U")+0;
+            case "tz_offset":
+                return $this->getTimezone()->getOffset($this);
+            case "days_in_year":
+                return $this->format("L") == '1'?366:365;
+                break;
+            case "day_of_week_short":
+                $str = $this->_getStrings('dom_cal_weekdays');
+                return $str[$this->day_of_week];
+            case "day_of_week_long":
+                $str = $this->_getStrings('dom_cal_weekdays_long');
+                return $str[$this->day_of_week];
+            case "month_short":
+                $str = $this->_getStrings('dom_cal_month');
+                return $str[$this->month];
+            case "month_long":
+                $str = $this->_getStrings('dom_cal_month_long');
+                return $str[$this->month];
+        }
 
         return '';
     }
@@ -295,7 +295,7 @@ class SugarDateTime extends DateTime
      * Get the last second of current hour
      * @return SugarDateTime
      */
-    function get_hour_end_time()
+    public function get_hour_end_time()
     {
         $newdate = clone $this;
         $newdate->setTime($this->hour, 59, 59);
@@ -306,7 +306,7 @@ class SugarDateTime extends DateTime
      * Get the last second of the current day
      * @return SugarDateTime
      */
-    function get_day_end_time()
+    public function get_day_end_time()
     {
         $newdate = clone $this;
         return $newdate->setTime(23, 59, 59);
@@ -317,11 +317,11 @@ class SugarDateTime extends DateTime
      * @param int $day_index Day, 0 is Sunday, 1 is Monday, etc.
      * @return SugarDateTime
      */
-    function get_day_by_index_this_week($day_index)
+    public function get_day_by_index_this_week($day_index)
     {
         $newdate = clone $this;
         $newdate->setDate($this->year, $this->month, $this->day +
-			($day_index - $this->day_of_week))->setTime(0,0);
+            ($day_index - $this->day_of_week))->setTime(0, 0);
         return $newdate;
     }
 
@@ -332,11 +332,11 @@ class SugarDateTime extends DateTime
      * @param int $month_index Month, January is 0
      * @return SugarDateTime
      */
-    function get_day_by_index_this_year($month_index)
+    public function get_day_by_index_this_year($month_index)
     {
         $newdate = clone $this;
         $newdate->setDate($this->year, $month_index+1, 1);
-        $newdate->setDate($newdate->year, $newdate->month,  $newdate->days_in_month);
+        $newdate->setDate($newdate->year, $newdate->month, $newdate->days_in_month);
         $newdate->setTime(0, 0);
         return $newdate;
     }
@@ -346,7 +346,7 @@ class SugarDateTime extends DateTime
      * @param int $day_index 0 is the first day of the month (sic!)
      * @return SugarDateTime
      */
-    function get_day_by_index_this_month($day_index)
+    public function get_day_by_index_this_month($day_index)
     {
         $newdate = clone $this;
         return $newdate->setDate($this->year, $this->month, $day_index+1)->setTime(0, 0);
@@ -360,7 +360,7 @@ class SugarDateTime extends DateTime
      * @param string $expression
      * @return SugarDateTime
      */
-    function get($expression)
+    public function get($expression)
     {
         $newdate = clone $this;
         $newdate->modify($expression);
@@ -372,7 +372,7 @@ class SugarDateTime extends DateTime
      * @param string $str
      * @return SugarDateTime
      */
-    static public function parse_utc_date_time($str)
+    public static function parse_utc_date_time($str)
     {
         return new self($str);
     }
@@ -385,7 +385,7 @@ class SugarDateTime extends DateTime
      * @param SugarDateTime $end_time End time
      * @return array
      */
-    static function getHashList($view, $start_time, $end_time)
+    public static function getHashList($view, $start_time, $end_time)
     {
         $hash_list = array();
 
@@ -421,13 +421,14 @@ class SugarDateTime extends DateTime
      * @param int $year Year, default is current
      * @return SugarDateTime
      */
-    function get_day_begin($day = null, $month = null, $year = null)
+    public function get_day_begin($day = null, $month = null, $year = null)
     {
         $newdate = clone $this;
         $newdate->setDate(
-	         $year?$year:$this->year,
-	         $month?$month:$this->month,
-	         $day?$day:$this->day);
+             $year?$year:$this->year,
+             $month?$month:$this->month,
+             $day?$day:$this->day
+        );
         $newdate->setTime(0, 0);
         return $newdate;
     }
@@ -439,13 +440,14 @@ class SugarDateTime extends DateTime
      * @param int $year Year, default is current
      * @return SugarDateTime
      */
-    function get_day_end($day = null, $month = null, $year = null)
+    public function get_day_end($day = null, $month = null, $year = null)
     {
         $newdate = clone $this;
         $newdate->setDate(
-	         $year?$year:$this->year,
-	         $month?$month:$this->month,
-	         $day?$day:$this->day);
+             $year?$year:$this->year,
+             $month?$month:$this->month,
+             $day?$day:$this->day
+        );
         $newdate->setTime(23, 59, 59);
         return $newdate;
     }
@@ -455,11 +457,11 @@ class SugarDateTime extends DateTime
      * @param int $year
      * @return SugarDateTime
      */
-    function get_year_begin($year)
+    public function get_year_begin($year)
     {
         $newdate = clone $this;
         $newdate->setDate($year, 1, 1);
-        $newdate->setTime(0,0);
+        $newdate->setTime(0, 0);
         return $newdate;
     }
 
@@ -471,7 +473,7 @@ class SugarDateTime extends DateTime
      * @param bool $tz do conversion to UTC
      * @return string
      */
-    function asDb($tz = true)
+    public function asDb($tz = true)
     {
         if ($tz) {
             if (empty(self::$_gmt)) {
@@ -490,7 +492,7 @@ class SugarDateTime extends DateTime
      * @param bool $tz do conversion to UTC
      * @return string
      */
-    function asDbDate($tz = true)
+    public function asDbDate($tz = true)
     {
         if ($tz) {
             if (empty(self::$_gmt)) {
@@ -505,7 +507,7 @@ class SugarDateTime extends DateTime
      * Get query string for the date, year=%d&month=%d&day=%d&hour=%d
      * @return string
      */
-    function get_date_str()
+    public function get_date_str()
     {
         return sprintf("&year=%d&month=%d&day=%d&hour=%d", $this->year, $this->month, $this->day, $this->hour);
     }
@@ -514,7 +516,7 @@ class SugarDateTime extends DateTime
      * Convert date to string - 'r' format, like: Thu, 21 Dec 2000 16:01:07 +0200
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->format('r');
     }

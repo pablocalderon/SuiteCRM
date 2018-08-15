@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2017 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -146,7 +146,7 @@ class ListViewDataEmailsSearchOnCrm extends ListViewDataEmailsSearchAbstract
             $id_list = '('.substr($id_list, 1).')';
         }
 
-        SugarVCR::store($this->lvde->seed->module_dir,  $crmEmailsQuery);
+        SugarVCR::store($this->lvde->seed->module_dir, $crmEmailsQuery);
         if ($count != 0) {
             //NOW HANDLE SECONDARY QUERIES
             if (!empty($ret_array['secondary_select'])) {
@@ -229,9 +229,11 @@ class ListViewDataEmailsSearchOnCrm extends ListViewDataEmailsSearchAbstract
                             $additionalDetailsFile = 'custom/modules/' . $this->lvde->seed->module_dir . '/metadata/additionalDetails.php';
                         }
                         require_once($additionalDetailsFile);
-                        $ar = $this->lvde->getAdditionalDetails($data[$dataIndex],
+                        $ar = $this->lvde->getAdditionalDetails(
+                            $data[$dataIndex],
                             (empty($this->lvde->additionalDetailsFunction) ? 'additionalDetails' : $this->lvde->additionalDetailsFunction) . $this->lvde->seed->object_name,
-                            $additionalDetailsEdit);
+                            $additionalDetailsEdit
+                        );
                     }
                     $pageData['additionalDetails'][$dataIndex] = $ar['string'];
                     $pageData['additionalDetails']['fieldToAddTo'] = $ar['fieldToAddTo'];
@@ -265,7 +267,7 @@ class ListViewDataEmailsSearchOnCrm extends ListViewDataEmailsSearchAbstract
         $pageData['ordering'] = $order;
         $pageData['ordering']['sortOrder'] = $this->lvde->getReverseSortOrder($pageData['ordering']['sortOrder']);
         //get url parameters as an array
-        $pageData['queries'] = $this->lvde->callGenerateQueries($pageData['ordering']['sortOrder'], $offset, $prevOffset, $nextOffset,  $endOffset, $totalCounted);
+        $pageData['queries'] = $this->lvde->callGenerateQueries($pageData['ordering']['sortOrder'], $offset, $prevOffset, $nextOffset, $endOffset, $totalCounted);
         //join url parameters from array to a string
         $pageData['urls'] = $this->lvde->callGenerateURLS($pageData['queries']);
         $pageData['offsets'] = array( 'current'=>$offset, 'next'=>$nextOffset, 'prev'=>$prevOffset, 'end'=>$endOffset, 'total'=>$totalCount, 'totalCounted'=>$totalCounted);

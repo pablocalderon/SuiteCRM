@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -65,13 +66,13 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
          * @access private
          * @var    string
          */
-        var $base = "";
-        var $vcal_focus;
-        var $vcal_type = "";
-        var $source = "";
-        var $publish_key = "";
+        public $base = "";
+        public $vcal_focus;
+        public $vcal_type = "";
+        public $source = "";
+        public $publish_key = "";
 
-        function __construct()
+        public function __construct()
         {
             $this->vcal_focus = new vCal();
             $this->user_focus = new User();
@@ -80,7 +81,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
         /**
          * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
          */
-        function HTTP_WebDAV_Server_vCal()
+        public function HTTP_WebDAV_Server_vCal()
         {
             $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
             if (isset($GLOBALS['log'])) {
@@ -99,7 +100,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
          * @access public
          * @param  string
          */
-        function ServeRequest($base = false)
+        public function ServeRequest($base = false)
         {
             global $sugar_config;
             global $current_language;
@@ -136,7 +137,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
                 if (strtolower($_SERVER["REQUEST_METHOD"]) == 'get') {
                     $query_arr = $_REQUEST;
                 } else {
-                    parse_str($_REQUEST['parms'],$query_arr);
+                    parse_str($_REQUEST['parms'], $query_arr);
                 }
             } else {
                 $this->path = $this->_urldecode($_SERVER["PATH_INFO"]);
@@ -145,9 +146,9 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
                     $this->path = stripslashes($this->path);
                 }
 
-                $query_str = preg_replace('/^\//','',$this->path);
+                $query_str = preg_replace('/^\//', '', $this->path);
                 $query_arr =  array();
-                parse_str($query_str,$query_arr);
+                parse_str($query_str, $query_arr);
             }
 
 
@@ -221,7 +222,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
          * @param  string $password Password
          * @return bool    true on successful authentication
          */
-        function check_auth($type, $user, $password)
+        public function check_auth($type, $user, $password)
         {
             if (isset($_SESSION['authenticated_user_id'])) {
                 // allow logged in users access to freebusy info
@@ -241,7 +242,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
         }
 
 
-        function GET()
+        public function GET()
         {
             return true;
         }
@@ -254,7 +255,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
         * @param void
         * @returns void
         */
-        function http_GET()
+        public function http_GET()
         {
             global $log;
 
@@ -278,9 +279,9 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
         * @param  void
         * @return void
         */
-        function http_PUT()
+        public function http_PUT()
         {
-            $options = Array();
+            $options = array();
             $options["path"] = $this->path;
             $options["content_length"] = $_SERVER["CONTENT_LENGTH"];
 
@@ -340,7 +341,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
                     echo "The service does not support content MD5 checksum verification";
                     return;
 
-				case 'HTTP_CONTENT_LENGTH': // RFC 2616 14.14
+                case 'HTTP_CONTENT_LENGTH': // RFC 2616 14.14
                     /* The meaning of the Content-Location header in PUT
                        or POST requests is undefined; servers are free
                        to ignore it in those cases. */
@@ -402,7 +403,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
          * @param  array  parameter passing array
          * @return bool   true on success
          */
-        function PUT(&$options)
+        public function PUT(&$options)
         {
         }
 
@@ -412,7 +413,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
          * @param  array  general parameter passing array
          * @return bool   true on success
          */
-        function lock(&$options)
+        public function lock(&$options)
         {
             $options["timeout"] = time()+300; // 5min. hardcoded
             return true;
@@ -424,7 +425,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
          * @param  array  general parameter passing array
          * @return bool   true on success
          */
-        function unlock(&$options)
+        public function unlock(&$options)
         {
             return "200 OK";
         }
@@ -436,7 +437,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
          * @param  string resource path to check for locks
          * @return bool   true on success
          */
-        function checkLock($path)
+        public function checkLock($path)
         {
             return false;
         }

@@ -40,7 +40,6 @@
 
 namespace SuiteCRM\API\JsonApi\v1\Resource;
 
-
 use Psr\Http\Message\ServerRequestInterface;
 use SuiteCRM\API\JsonApi\v1\Enumerator\RelationshipType;
 use SuiteCRM\API\JsonApi\v1\Links;
@@ -134,7 +133,8 @@ class SuiteBeanResource extends Resource
                 if ($datetime === false) {
                     throw new ApiException(
                         '[Unable to convert datetime field to ISO 8601] "' . $fieldName . '"',
-                        ExceptionCode::API_DATE_CONVERTION_SUGARBEAN);
+                        ExceptionCode::API_DATE_CONVERTION_SUGARBEAN
+                    );
                 }
                 $this->attributes[$fieldName] = $datetimeISO8601;
             } elseif ($sugarBean instanceof \File && $definition['type'] === 'file') {
@@ -150,7 +150,8 @@ class SuiteBeanResource extends Resource
                     $links
                         ->withRelated(
                             $config['site_url'] . '/api/v' . $apiController->getVersionMajor().'/modules/' .
-                            $sugarBean->module_name . '/'.$this->id. '/relationships/'.$definition['name'])
+                            $sugarBean->module_name . '/'.$this->id. '/relationships/'.$definition['name']
+                        )
                         ->toJsonApiResponse();
                 // remove data element from relationship
                 if (isset($this->relationships[$definition['name']]['data'])) {
@@ -436,7 +437,7 @@ class SuiteBeanResource extends Resource
     {
         $sugarBeanResource = clone $this;
         $objValues = get_object_vars($resource); // return array of object values
-        foreach ($objValues AS $key => $value) {
+        foreach ($objValues as $key => $value) {
             $sugarBeanResource->$key = $value;
         }
 

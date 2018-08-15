@@ -1,10 +1,10 @@
 <?php
  /**
- * 
- * 
- * @package 
+ *
+ *
+ * @package
  * @copyright SalesAgility Ltd http://www.salesagility.com
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -20,7 +20,7 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author Salesagility Ltd <support@salesagility.com>
+ * @author SalesAgility Ltd <support@salesagility.com>
  */
 require_once 'include/MVC/View/views/view.detail.php';
 require_once 'modules/AOW_WorkFlow/aow_utils.php';
@@ -32,13 +32,13 @@ class AOR_ReportsViewDetail extends ViewDetail
         if (!$this->bean->id) {
             return array();
         }
-        $conditions = $this->bean->get_linked_beans('aor_conditions','AOR_Conditions', 'condition_order');
+        $conditions = $this->bean->get_linked_beans('aor_conditions', 'AOR_Conditions', 'condition_order');
         $parameters = array();
         foreach ($conditions as $condition) {
             if (!$condition->parameter) {
                 continue;
             }
-            $condition->module_path = implode(":",unserialize(base64_decode($condition->module_path)));
+            $condition->module_path = implode(":", unserialize(base64_decode($condition->module_path)));
             if ($condition->value_type == 'Date') {
                 $condition->value = unserialize(base64_decode($condition->value));
             }
@@ -69,14 +69,14 @@ class AOR_ReportsViewDetail extends ViewDetail
         $canExport = $this->bean->ACLAccess('Export');
         $this->ss->assign('can_export', $canExport);
 
-        $this->ss->assign('report_module',$this->bean->report_module);
+        $this->ss->assign('report_module', $this->bean->report_module);
 
 
 
         $this->bean->user_parameters = requestToUserParameters($this->bean);
 
         //$reportHTML = $this->bean->build_group_report(0,true);
-        $reportHTML = $this->bean->buildMultiGroupReport(0,true);
+        $reportHTML = $this->bean->buildMultiGroupReport(0, true);
 
         $chartsHTML = $this->bean->build_report_chart(null, AOR_Report::CHART_TYPE_RGRAPH);
 
@@ -88,7 +88,7 @@ class AOR_ReportsViewDetail extends ViewDetail
 
         echo "<input type='hidden' name='report_module' id='report_module' value='{$this->bean->report_module}'>";
         if (!is_file('cache/jsLanguage/AOR_Conditions/' . $GLOBALS['current_language'] . '.js')) {
-            require_once ('include/language/jsLanguage.php');
+            require_once('include/language/jsLanguage.php');
             jsLanguage::createModuleStringsCache('AOR_Conditions', $GLOBALS['current_language']);
         }
         echo '<script src="cache/jsLanguage/AOR_Conditions/'. $GLOBALS['current_language'] . '.js"></script>';

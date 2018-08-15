@@ -19,7 +19,7 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author Salesagility Ltd <support@salesagility.com>
+ * @author SalesAgility Ltd <support@salesagility.com>
  */
 if (!defined('sugarEntry')) {
     define('sugarEntry', true);
@@ -35,7 +35,7 @@ require_once('modules/Contacts/Contact.php');
 $bean = new Contact();
 $bean->retrieve($_REQUEST['record']);
 
-if (array_key_exists("aop",$sugar_config) && array_key_exists("joomla_url",$sugar_config['aop'])) {
+if (array_key_exists("aop", $sugar_config) && array_key_exists("joomla_url", $sugar_config['aop'])) {
     $portalURL = $sugar_config['aop']['joomla_url'];
     $wbsv = file_get_contents($portalURL.'/index.php?option=com_advancedopenportal&task=enable_user&sug='.$_REQUEST['record'].'&uid='.$bean->joomla_account_id);
     $res = json_decode($wbsv);

@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,24 +37,24 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
     function wrapTD($html, $options)
     {
-        return wrapTag("td",$html, $options);
+        return wrapTag("td", $html, $options);
     }
 
     function wrapTR($html, $options)
     {
-        return wrapTag("tr",$html, $options);
+        return wrapTag("tr", $html, $options);
     }
 
     function wrapTable($html, $options)
     {
-        return wrapTag("table",$html, $options);
+        return wrapTag("table", $html, $options);
     }
 
     function wrapB($html)
@@ -186,7 +187,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
         if (empty($params['human'])) {
             $amount = number_format(round($amount, $round), $decimals, $dec_sep, $num_grp_sep);
-            $amount = format_place_symbol($amount, $symbol,(empty($params['symbol_space']) ? false : true));
+            $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true));
         } else {
             // If amount is more greater than a thousand(positive or negative)
             if (strpos($amount, '.') > 0) {
@@ -196,9 +197,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
             if ($checkAmount >= 1000 || $checkAmount <= -1000) {
                 $amount = round(($amount / 1000), 0);
                 $amount = $amount . 'k';
-                $amount = format_place_symbol($amount, $symbol,(empty($params['symbol_space']) ? false : true));
+                $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true));
             } else {
-                $amount = format_place_symbol($amount, $symbol,(empty($params['symbol_space']) ? false : true));
+                $amount = format_place_symbol($amount, $symbol, (empty($params['symbol_space']) ? false : true));
             }
         }
 

@@ -3,12 +3,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +20,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,16 +38,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
+/**
 
  * Description:  Contains a variety of utility functions for the Import module
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- ********************************************************************************/
+ */
 
 /**
  * Returns an input control for this fieldname given
@@ -66,7 +67,7 @@ function getControl(
     global $current_language, $app_strings, $dictionary, $app_list_strings, $current_user;
     
     // use the mod_strings for this module
-    $mod_strings = return_module_language($current_language,$module);
+    $mod_strings = return_module_language($current_language, $module);
     
     // set the filename for this control
     $file = create_cache_directory('modules/Import/') . $module . $fieldname . '.tpl';
@@ -90,8 +91,8 @@ function getControl(
         }
         
         // remove the special text entry field function 'getEmailAddressWidget'
-        if (isset($vardef['function']) 
-                && ($vardef['function'] == 'getEmailAddressWidget' 
+        if (isset($vardef['function'])
+                && ($vardef['function'] == 'getEmailAddressWidget'
                     || $vardef['function']['name'] == 'getEmailAddressWidget')) {
             unset($vardef['function']);
         }
@@ -105,7 +106,7 @@ function getControl(
         }
         
         $displayParams = array();
-        $displayParams['formName'] = 'importstep3';  
+        $displayParams['formName'] = 'importstep3';
 
         $contents = $sfh->displaySmarty('fields', $vardef, 'ImportView', $displayParams);
         
@@ -113,8 +114,8 @@ function getControl(
         $contents = preg_replace('/\{\*[^\}]*?\*\}/', '', $contents);
         
         // hack to disable one of the js calls in this control
-        if (isset($vardef['function']) 
-                && ($vardef['function'] == 'getCurrencyDropDown' 
+        if (isset($vardef['function'])
+                && ($vardef['function'] == 'getCurrencyDropDown'
                     || $vardef['function']['name'] == 'getCurrencyDropDown')) {
             $contents .= "{literal}<script>function CurrencyConvertAll() { return; }</script>{/literal}";
         }
@@ -176,7 +177,7 @@ function getControl(
         }
     }
     // fill in function return values
-    if (!in_array($fieldname,array('email1','email2'))) {
+    if (!in_array($fieldname, array('email1','email2'))) {
         if (!empty($fieldlist[$fieldname]['function']['returns']) && $fieldlist[$fieldname]['function']['returns'] == 'html') {
             $function = $fieldlist[$fieldname]['function']['name'];
             // include various functions required in the various vardefs
@@ -185,8 +186,8 @@ function getControl(
             }
             $value = $function($focus, $fieldname, $value, 'EditView');
             // Bug 22730 - add a hack for the currency type dropdown, since it's built by a function.
-            if (preg_match('/getCurrency.*DropDown/s',$function)) {
-                $value = str_ireplace('</select>','<option value="">'.$app_strings['LBL_NONE'].'</option></select>',$value);
+            if (preg_match('/getCurrency.*DropDown/s', $function)) {
+                $value = str_ireplace('</select>', '<option value="">'.$app_strings['LBL_NONE'].'</option></select>', $value);
             }
         } elseif ($fieldname == 'assigned_user_name' && empty($value)) {
             $fieldlist['assigned_user_id']['value'] = $GLOBALS['current_user']->id;
@@ -196,9 +197,9 @@ function getControl(
         }
     }
     $fieldlist[$fieldname]['value'] = $value;
-    $ss->assign("fields",$fieldlist);
-    $ss->assign("form_name",'importstep3');
-    $ss->assign("bean",$focus);
+    $ss->assign("fields", $fieldlist);
+    $ss->assign("form_name", 'importstep3');
+    $ss->assign("bean", $focus);
     
     // add in any additional strings
     $ss->assign("MOD", $mod_strings);

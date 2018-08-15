@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -48,15 +49,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class Popup_Picker
 {
-    var $_popupMeta;
-    var $_create = false;
-    var $_hide_clear_button = false;
+    public $_popupMeta;
+    public $_create = false;
+    public $_hide_clear_button = false;
 
     /**
      * Creates a new Popup_Picker object. Controls displaying of single select and multi select popups
      *
      */
-    function __construct()
+    public function __construct()
     {
         global $currentModule, $popupMeta;
 
@@ -83,7 +84,7 @@ class Popup_Picker
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function Popup_Picker()
+    public function Popup_Picker()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -97,7 +98,7 @@ class Popup_Picker
     /*
      *
      */
-    function _get_where_clause()
+    public function _get_where_clause()
     {
         $where = '';
         $whereClauses = array();
@@ -121,7 +122,7 @@ class Popup_Picker
     /**
      *
      */
-    function process_page()
+    public function process_page()
     {
         global $theme;
         global $mod_strings;
@@ -160,9 +161,9 @@ class Popup_Picker
             $formbody = $formBase->$getFormMethod($prefix, $mod, $formBody);
 
             $addform = '<table><tr><td nowrap="nowrap" valign="top">'
-				. str_replace('<br>', '</td><td nowrap="nowrap" valign="top">&nbsp;', $formbody)
-				. '</td></tr></table>'
-				. '<input type="hidden" name="action" value="Popup" />';
+                . str_replace('<br>', '</td><td nowrap="nowrap" valign="top">&nbsp;', $formbody)
+                . '</td></tr></table>'
+                . '<input type="hidden" name="action" value="Popup" />';
             $formSave = <<<EOQ
 			<input type="hidden" name="create" value="true">
 			<input type="hidden" name="popup" value="true">
@@ -209,19 +210,19 @@ EOQ;
             $multi_select = true;
             $button .= "<input type='hidden' name='mode' value='MultiSelect'>";
             $button .= "<input type='button' name='button' class='button' onclick=\"send_back_selected('$currentModule',document.MassUpdate,'mass[]','" .$app_strings['ERR_NOTHING_SELECTED']."', request_data.field_to_name_array);\" title='"
-				.$app_strings['LBL_SELECT_BUTTON_TITLE']."' value='  "
-				.$app_strings['LBL_SELECT_BUTTON_LABEL']."  ' />\n";
+                .$app_strings['LBL_SELECT_BUTTON_TITLE']."' value='  "
+                .$app_strings['LBL_SELECT_BUTTON_LABEL']."  ' />\n";
         }
 
         //END:FOR MULTI-SELECT
         if (!$hide_clear_button) {
             $button .= "<input type='button' name='button' class='button' onclick=\"send_back('','');\" title='"
-				.$app_strings['LBL_CLEAR_BUTTON_TITLE']."' value='  "
-				.$app_strings['LBL_CLEAR_BUTTON_LABEL']."  ' />\n";
+                .$app_strings['LBL_CLEAR_BUTTON_TITLE']."' value='  "
+                .$app_strings['LBL_CLEAR_BUTTON_LABEL']."  ' />\n";
         }
         $button .= "<input type='submit' name='button' class='button' onclick=\"window.close();\" title='"
-			.$app_strings['LBL_CANCEL_BUTTON_TITLE']."' value='  "
-			.$app_strings['LBL_CANCEL_BUTTON_LABEL']."  ' />\n";
+            .$app_strings['LBL_CANCEL_BUTTON_TITLE']."' value='  "
+            .$app_strings['LBL_CANCEL_BUTTON_LABEL']."  ' />\n";
 
         if (isset($this->_popupMeta['templateForm'])) {
             $form = new XTemplate($this->_popupMeta['templateForm']);

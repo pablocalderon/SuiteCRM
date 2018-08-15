@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -106,11 +107,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
             //process each group array
             foreach ($fg as $loc=>$trgt) {
-                $already_minified = FALSE;
+                $already_minified = false;
                 $minified_loc = str_replace('.js', '-min.js', $loc);
                 if (is_file($minified_loc)) {
                     $loc = $minified_loc;
-                    $already_minified = TRUE;
+                    $already_minified = true;
                 }
                 $relpath = $loc;
                 $loc = $from_path.'/'.$loc;
@@ -208,7 +209,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     {
         $bu_path = str_replace('\\', '/', $bu_path);
         //get path after root
-        $jpos = strpos($bu_path,'jssource');
+        $jpos = strpos($bu_path, 'jssource');
         if ($jpos===false) {
             $process_path = $bu_path;
         } else {
@@ -243,7 +244,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
      * @from_path file name and path to be processed
      * @to_path file name and path to be  used to place newly compressed contents
      */
-    function CompressFiles($from_path,$to_path)
+    function CompressFiles($from_path, $to_path)
     {
         if (!defined('JSMIN_AS_LIB')) {
             define('JSMIN_AS_LIB', true);
@@ -323,7 +324,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
                 //minify javascript
                 //$jMin = new JSMin($from_path,$to_path,$lic_arr);
                 $min_file = str_replace('.js', '-min.js', $from_path);
-                if (strpos($from_path, '-min.js') !== FALSE) {
+                if (strpos($from_path, '-min.js') !== false) {
                     $min_file = $from_path;
                 }
 
@@ -349,7 +350,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
         }
     }
 
-    function reverseScripts($from_path,$to_path='')
+    function reverseScripts($from_path, $to_path='')
     {
         $from_path = str_replace('\\', '/', $from_path);
         if (empty($to_path)) {
@@ -415,16 +416,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
      * @from_path root directory where processing should take place
      * @to_path root directory where processing should take place, this gets filled in dynamically
      */
-    function BackUpAndCompressScriptFiles($from_path,$to_path = '', $backup = true)
+    function BackUpAndCompressScriptFiles($from_path, $to_path = '', $backup = true)
     {
         //check to see if provided paths are legit
         if (!file_exists($from_path)) {
             //log error
             echo "The from directory, $from_path Does Not Exist<p>\n";
             return;
-        } else {
-            $from_path = str_replace('\\', '/', $from_path);
         }
+        $from_path = str_replace('\\', '/', $from_path);
+        
 
         if (empty($to_path)) {
             $to_path = $from_path;
@@ -454,7 +455,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
                       //make sure you go into directory tree and not out of tree
                     if ($dir!= '.' && $dir!= '..') {
                         //make recursive call to process this directory
-                        BackUpAndCompressScriptFiles($from_path.'/'.$dir, $to_path,$backup);
+                        BackUpAndCompressScriptFiles($from_path.'/'.$dir, $to_path, $backup);
                     }
                 }
             }

@@ -1,11 +1,12 @@
 <?php
 //if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +17,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +35,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 /**
@@ -210,7 +211,7 @@ class SugarSpot
         // make sure the current module appears first in the list
         if (isset($modules[$this->module])) {
             unset($modules[$this->module]);
-            $modules = array_merge(array($this->module=>$this->module),$modules);
+            $modules = array_merge(array($this->module=>$this->module), $modules);
         }
 
         return $modules;
@@ -257,7 +258,7 @@ class SugarSpot
 
         // bug49650 - strip out asterisks from query in case
         // user thinks asterisk is a wildcard value
-        $query = str_replace('*' , '' , $query);
+        $query = str_replace('*', '', $query);
         
         $limit = !empty($GLOBALS['sugar_config']['max_spotresults_initial']) ? $GLOBALS['sugar_config']['max_spotresults_initial'] : 5;
         if ($offset !== -1) {
@@ -313,7 +314,7 @@ class SugarSpot
                         }
                         # Bug 42961 Spot search for custom fields
                         if (!$keep && (isset($v['force_unifiedsearch']) == false || $v['force_unifiedsearch'] != true)) {
-                            if (strpos($k,'email') === false || !$searchEmail) {
+                            if (strpos($k, 'email') === false || !$searchEmail) {
                                 unset($searchFields[$moduleName][$k]);
                             }
                         }
@@ -324,7 +325,7 @@ class SugarSpot
                     }
                 } elseif (empty($GLOBALS['dictionary'][$class]['fields'][$k])) {
                     //If module did not have unified_search defined, then check the exception for an email search before we unset
-                    if (strpos($k,'email') === false || !$searchEmail) {
+                    if (strpos($k, 'email') === false || !$searchEmail) {
                         unset($searchFields[$moduleName][$k]);
                     }
                 } elseif (!$this->filterSearchType($GLOBALS['dictionary'][$class]['fields'][$k]['type'], $query)) {
@@ -386,8 +387,8 @@ class SugarSpot
             }
 
 
-            $searchForm = new SearchForm ($seed, $moduleName) ;
-            $searchForm->setup (array ( $moduleName => array() ) , $searchFields , '' , 'saved_views' /* hack to avoid setup doing further unwanted processing */) ;
+            $searchForm = new SearchForm($seed, $moduleName) ;
+            $searchForm->setup(array( $moduleName => array() ), $searchFields, '', 'saved_views' /* hack to avoid setup doing further unwanted processing */) ;
             $where_clauses = $searchForm->generateSearchWhere() ;
 
             if (empty($where_clauses)) {
@@ -489,13 +490,13 @@ class SugarSpot
     {
         //make the module name singular....
         if ($patterns[1][strlen($patterns[1])-1] == 's') {
-            $patterns[1]=substr($patterns[1],0,(strlen($patterns[1])-1));
+            $patterns[1]=substr($patterns[1], 0, (strlen($patterns[1])-1));
         }
 
-        $module_exists = stripos($key,$patterns[1]); //primary module name.
-        $pattern_exists = stripos($key,$patterns[0]); //pattern provided by the user.
+        $module_exists = stripos($key, $patterns[1]); //primary module name.
+        $pattern_exists = stripos($key, $patterns[0]); //pattern provided by the user.
         if ($module_exists !== false and $pattern_exists !== false) {
-            $GLOBALS['matching_keys']= array_merge(array(array('NAME'=>$key, 'ID'=>$key, 'VALUE'=>$item1)),$GLOBALS['matching_keys']);
+            $GLOBALS['matching_keys']= array_merge(array(array('NAME'=>$key, 'ID'=>$key, 'VALUE'=>$item1)), $GLOBALS['matching_keys']);
         } else {
             if ($pattern_exists !== false) {
                 $GLOBALS['matching_keys'][]=array('NAME'=>$key, 'ID'=>$key, 'VALUE'=>$item1);
@@ -508,7 +509,7 @@ class SugarSpot
      * filterSearchType
      *
      * This is a private function to determine if the search type field should be filtered out based on the query string value
-     * 
+     *
      * @param String $type The string value of the field type (e.g. phone, date, datetime, int, etc.)
      * @param String $query The search string value sent from the global search
      * @return boolean True if the search type fits the query string value; false otherwise

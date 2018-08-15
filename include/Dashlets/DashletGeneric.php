@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('include/Dashlets/Dashlet.php');
 require_once('include/ListView/ListViewSmarty.php');
@@ -54,70 +55,70 @@ class DashletGeneric extends Dashlet
       * Fields that are searchable
       * @var array
       */
-    var $searchFields;
+    public $searchFields;
     /**
      * Displayable columns (ones available to display)
      * @var array
      */
-    var $columns;
+    public $columns;
     /**
      * Bean file used in this Dashlet
      * @var bean
      */
-    var $seedBean;
+    public $seedBean;
     /**
      * collection of filters to apply
      * @var array
      */
-    var $filters = null;
+    public $filters = null;
     /**
      * Number of Rows to display
      * @var int
      */
-    var $displayRows = '5';
+    public $displayRows = '5';
     /**
      * Actual columns to display, will be a subset of $columns
      * @var array
      */
-    var $displayColumns = null;
+    public $displayColumns = null;
     /**
      * Flag to display only the current users's items.
      * @var bool
      */
-    var $myItemsOnly = true;
+    public $myItemsOnly = true;
     /**
      * Flag to display "myItemsOnly" checkbox in the DashletGenericConfigure.
      * @var bool
      */
-    var $showMyItemsOnly = true;
+    public $showMyItemsOnly = true;
     /**
      * location of Smarty template file for display
      * @var string
      */
-    var $displayTpl = 'include/Dashlets/DashletGenericDisplay.tpl';
+    public $displayTpl = 'include/Dashlets/DashletGenericDisplay.tpl';
     /**
      * location of smarty template file for configuring
      * @var string
      */
-    var $configureTpl = 'include/Dashlets/DashletGenericConfigure.tpl';
+    public $configureTpl = 'include/Dashlets/DashletGenericConfigure.tpl';
     /**
      * smarty object for the generic configuration template
      * @var string
      */
-    var $configureSS;
+    public $configureSS;
     /** search inputs to be populated in configure template.
      *  modify this after processDisplayOptions, but before displayOptions to modify search inputs
      *  @var array
      */
-    var $currentSearchFields;
+    public $currentSearchFields;
     /**
      * ListView Smarty Class
      * @var Smarty
      */
-    var $lvs;
-    var $layoutManager;
+    public $lvs;
+    public $layoutManager;
 
-    function __construct($id, $options = null)
+    public function __construct($id, $options = null)
     {
         parent::__construct($id);
         $this->isConfigurable = true;
@@ -154,7 +155,7 @@ class DashletGeneric extends Dashlet
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function DashletGeneric($id, $options = null)
+    public function DashletGeneric($id, $options = null)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -170,7 +171,7 @@ class DashletGeneric extends Dashlet
      *
      * @return string HTML that shows options
      */
-    function processDisplayOptions()
+    public function processDisplayOptions()
     {
         require_once('include/templates/TemplateGroupChooser.php');
 
@@ -309,13 +310,13 @@ class DashletGeneric extends Dashlet
      *
      * @return string HTML that shows options
      */
-    function displayOptions()
+    public function displayOptions()
     {
         $this->processDisplayOptions();
         return parent::displayOptions() . $this->configureSS->fetch($this->configureTpl);
     }
 
-    function buildWhere()
+    public function buildWhere()
     {
         global $current_user;
 
@@ -394,7 +395,7 @@ class DashletGeneric extends Dashlet
     protected function loadCustomMetadata()
     {
         $customMetadate = 'custom/modules/'.$this->seedBean->module_dir.'/metadata/dashletviewdefs.php';
-        if (file_exists ($customMetadate)) {
+        if (file_exists($customMetadate)) {
             require($customMetadate);
             $this->searchFields = $dashletData[$this->seedBean->module_dir.'Dashlet']['searchFields'];
             foreach ($this->searchFields  as $key =>$def) {
@@ -412,7 +413,7 @@ class DashletGeneric extends Dashlet
     /**
      * Does all dashlet processing, here's your chance to modify the rows being displayed!
      */
-    function process($lvsParams = array(), $id = null)
+    public function process($lvsParams = array(), $id = null)
     {
         $currentSearchFields = array();
         $configureView = true; // configure view or regular view
@@ -470,8 +471,8 @@ class DashletGeneric extends Dashlet
         // Check for 'last_name' column sorting with related fields (last_name, first_name)
         // See ListViewData.php for actual sorting change.
         if ($lvdOrderBy['orderBy'] == 'last_name' && !empty($displayColumns['NAME']) && !empty($displayColumns['NAME']['related_fields']) &&
-			in_array('last_name', $displayColumns['NAME']['related_fields']) &&
-			in_array('first_name', $displayColumns['NAME']['related_fields'])) {
+            in_array('last_name', $displayColumns['NAME']['related_fields']) &&
+            in_array('first_name', $displayColumns['NAME']['related_fields'])) {
             $lvsParams['overrideLastNameOrder'] = true;
         }
 
@@ -481,7 +482,7 @@ class DashletGeneric extends Dashlet
             if (!empty($whereArray)) {
                 $where = '(' . implode(') AND (', $whereArray) . ')';
             }
-            $this->lvs->setup($this->seedBean, $this->displayTpl, $where , $lvsParams, 0, $this->displayRows/*, $filterFields*/, array(), 'id', $id);
+            $this->lvs->setup($this->seedBean, $this->displayTpl, $where, $lvsParams, 0, $this->displayRows/*, $filterFields*/, array(), 'id', $id);
             if (in_array('CREATED_BY', array_keys($displayColumns))) { // handle the created by field
                 foreach ($this->lvs->data['data'] as $row => $data) {
                     $this->lvs->data['data'][$row]['CREATED_BY'] = get_assigned_user_name($data['CREATED_BY']);
@@ -506,7 +507,7 @@ class DashletGeneric extends Dashlet
       *
       * @return string HTML that displays Dashlet
       */
-    function display()
+    public function display()
     {
         return parent::display() . $this->lvs->display(false) . $this->processAutoRefresh();
     }
@@ -517,7 +518,7 @@ class DashletGeneric extends Dashlet
      *
      * @return array options array
      */
-    function saveOptions($req)
+    public function saveOptions($req)
     {
         $options = array();
 
@@ -575,7 +576,7 @@ class DashletGeneric extends Dashlet
      * Internal function to add custom fields
      *
      */
-    function addCustomFields()
+    public function addCustomFields()
     {
         foreach ($this->seedBean->field_defs as $fieldName => $def) {
             if (!empty($def['type']) && $def['type'] == 'html') {

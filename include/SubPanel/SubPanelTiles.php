@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,10 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
-
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('include/SubPanel/SubPanel.php');
 require_once('include/SubPanel/SubPanelTilesTabs.php');
@@ -51,33 +51,39 @@ require_once('include/SubPanel/SubPanelDefinitions.php');
  */
 class SubPanelTiles
 {
-    var $id;
-    var $module;
-    var $focus;
-    var $start_on_field;
-    var $layout_manager;
-    var $layout_def_key;
-    var $show_tabs = false;
+    public $id;
+    public $module;
+    public $focus;
+    public $start_on_field;
+    public $layout_manager;
+    public $layout_def_key;
+    public $show_tabs = false;
 
-    var $subpanel_definitions;
+    /**
+     * @var \SuiteCRM\SubPanel\SubPanelRowCounter
+     */
+    protected $rowCounter;
 
-    var $hidden_tabs=array(); //consumer of this class can array of tabs that should be hidden. the tab name
+    public $subpanel_definitions;
+
+    public $hidden_tabs=array(); //consumer of this class can array of tabs that should be hidden. the tab name
     //should be the array.
 
-    function __construct(&$focus, $layout_def_key='', $layout_def_override = '')
+    public function __construct(&$focus, $layout_def_key='', $layout_def_override = '')
     {
         $this->focus = $focus;
         $this->id = $focus->id;
         $this->module = $focus->module_dir;
         $this->layout_def_key = $layout_def_key;
         $this->subpanel_definitions=new SubPanelDefinitions($focus, $layout_def_key, $layout_def_override);
+        $this->rowCounter = new \SuiteCRM\SubPanel\SubPanelRowCounter($focus);
     }
 
     /*
      * Return the current selected or requested subpanel tab
      * @return	string	The identifier for the selected subpanel tab (e.g., 'Other')
      */
-    function getSelectedGroup()
+    public function getSelectedGroup()
     {
         global $current_user;
 
@@ -124,7 +130,7 @@ class SubPanelTiles
      * @param string $selectedGroup	The requested tab group
      * @return array Visible tabs
      */
-    function getTabs($showTabs = true, $selectedGroup='')
+    public function getTabs($showTabs = true, $selectedGroup='')
     {
         global $current_user;
 
@@ -138,36 +144,36 @@ class SubPanelTiles
             $tabs = $objSubPanelTilesTabs->getTabs($tabs, $showTabs, $selectedGroup);
             unset($objSubPanelTilesTabs);
             return $tabs;
-        } else {
-            // see if user current user has custom subpanel layout
-            $objSubPanelTilesTabs = new SubPanelTilesTabs($this->focus);
-            $tabs = $objSubPanelTilesTabs->applyUserCustomLayoutToTabs($tabs);
-
-            /* Check if the preference is set now,
-             * because there's no point in executing this code if
-             * we aren't going to render anything.
-             */
-            $subpanelLinksPref = $current_user->getPreference('subpanel_links');
-            if (!isset($subpanelLinksPref)) {
-                $subpanelLinksPref = $GLOBALS['sugar_config']['default_subpanel_links'];
-            }
-
-            if ($showTabs && $subpanelLinksPref) {
-                require_once('include/SubPanel/SugarTab.php');
-                $sugarTab = new SugarTab();
-
-                $displayTabs = array();
-
-                foreach ($tabs as $tab) {
-                    $displayTabs []= array('key'=>$tab, 'label'=>translate($this->subpanel_definitions->layout_defs['subpanel_setup'][$tab]['title_key']));
-                }
-                $sugarTab->setup(array(),array(),$displayTabs);
-                $sugarTab->display();
-            }
         }
+        // see if user current user has custom subpanel layout
+        $objSubPanelTilesTabs = new SubPanelTilesTabs($this->focus);
+        $tabs = $objSubPanelTilesTabs->applyUserCustomLayoutToTabs($tabs);
+
+        /* Check if the preference is set now,
+         * because there's no point in executing this code if
+         * we aren't going to render anything.
+         */
+        $subpanelLinksPref = $current_user->getPreference('subpanel_links');
+        if (!isset($subpanelLinksPref)) {
+            $subpanelLinksPref = $GLOBALS['sugar_config']['default_subpanel_links'];
+        }
+
+        if ($showTabs && $subpanelLinksPref) {
+            require_once('include/SubPanel/SugarTab.php');
+            $sugarTab = new SugarTab();
+
+            $displayTabs = array();
+
+            foreach ($tabs as $tab) {
+                $displayTabs []= array('key'=>$tab, 'label'=>translate($this->subpanel_definitions->layout_defs['subpanel_setup'][$tab]['title_key']));
+            }
+            $sugarTab->setup(array(), array(), $displayTabs);
+            $sugarTab->display();
+        }
+        
         return $tabs;
     }
-    function display($showContainer = true, $forceTabless = false)
+    public function display($showContainer = true, $forceTabless = false)
     {
         global $layout_edit_mode, $sugar_version, $sugar_config, $current_user, $app_strings, $modListHeader;
 
@@ -187,7 +193,7 @@ class SubPanelTiles
         $default_div_display = 'inline';
         if (!empty($sugar_config['hide_subpanels_on_login'])) {
             if (!isset($_SESSION['visited_details'][$this->focus->module_dir])) {
-                setcookie($this->focus->module_dir . '_divs', '',0,null,null,false,true);
+                setcookie($this->focus->module_dir . '_divs', '', 0, null, null, false, true);
                 unset($_COOKIE[$this->focus->module_dir . '_divs']);
                 $_SESSION['visited_details'][$this->focus->module_dir] = true;
             }
@@ -211,8 +217,8 @@ class SubPanelTiles
 
             if (!empty($usersLayout)) {
                 $availableTabs = $tabs ;
-                $tabs = array_intersect ($usersLayout , $availableTabs) ; // remove any tabs that have been removed since the user's layout was saved
-                foreach (array_diff ($availableTabs , $usersLayout) as $tab) {
+                $tabs = array_intersect($usersLayout, $availableTabs) ; // remove any tabs that have been removed since the user's layout was saved
+                foreach (array_diff($availableTabs, $usersLayout) as $tab) {
                     $tabs [] = $tab;
                 }
             }
@@ -249,7 +255,7 @@ class SubPanelTiles
                 // ignore when data source is a function
 
                 if (!isset($this->focus->field_defs[$thisPanel->_instance_properties['get_subpanel_data']])) {
-                    if (stripos($thisPanel->_instance_properties['get_subpanel_data'],'function:') === false) {
+                    if (stripos($thisPanel->_instance_properties['get_subpanel_data'], 'function:') === false) {
                         $GLOBALS['log']->fatal("Bad subpanel definition, it has incorrect value for get_subpanel_data property " .$tab);
                         continue;
                     }
@@ -347,11 +353,25 @@ class SubPanelTiles
                 $arr = array();
                 // TODO: Remove x-template:
                 $tabs_properties[$t]['subpanel_body'] = $subpanel_object->ProcessSubPanelListView(
-                    'include/SubPanel/tpls/SubPanelDynamic.tpl', $arr);
+                    'include/SubPanel/tpls/SubPanelDynamic.tpl',
+                    $arr
+                );
 
                 // Get subpanel buttons
-                $tabs_properties[$t]['buttons'] = $this->get_buttons($thisPanel,$subpanel_object->subpanel_query);
+                $tabs_properties[$t]['buttons'] = $this->get_buttons($thisPanel, $subpanel_object->subpanel_query);
+            } elseif ($current_user->getPreference('count_collapsed_subpanels')) {
+                $subPanelDef = $this->subpanel_definitions->layout_defs['subpanel_setup'][$tab];
+                $count = $this->rowCounter->getSubPanelRowCount($subPanelDef);
+
+                if ($count === 0) {
+                    $tabs_properties[$t]['title'] .= ' (0)';
+                }
+                elseif ($count > 0) {
+                    $tabs_properties[$t]['title'] .= ' +';
+                    $tabs_properties[$t]['collapsed_override'] = 1;
+                }
             }
+
 
             array_push($tab_names, $tab);
         }
@@ -380,8 +400,7 @@ class SubPanelTiles
         return $template_header . $template_body . $template_footer;
     }
 
-
-    function getLayoutManager()
+    public function getLayoutManager()
     {
         require_once('include/generic/LayoutManager.php');
         if ($this->layout_manager == null) {
@@ -390,7 +409,7 @@ class SubPanelTiles
         return $this->layout_manager;
     }
 
-    function get_buttons($thisPanel,$panel_query=null)
+    public function get_buttons($thisPanel, $panel_query=null)
     {
         $subpanel_def = $thisPanel->get_buttons();
         $layout_manager = $this->getLayoutManager();

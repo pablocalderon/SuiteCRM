@@ -26,7 +26,7 @@ require_once('include/MVC/View/views/view.detail.php');
 
 class AM_ProjectTemplatesViewDetail extends ViewDetail
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -34,7 +34,7 @@ class AM_ProjectTemplatesViewDetail extends ViewDetail
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function AM_ProjectTemplatesViewDetail()
+    public function AM_ProjectTemplatesViewDetail()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -46,7 +46,7 @@ class AM_ProjectTemplatesViewDetail extends ViewDetail
     }
 
 
-    function display()
+    public function display()
     {
         global $app_strings, $mod_strings;
         parent::display();
@@ -144,7 +144,7 @@ class AM_ProjectTemplatesViewDetail extends ViewDetail
                              <select id="tasks" name="tasks[]" multiple style="margin-bottom:12px; width:95%; padding: .4em;" >';
                                 
         $this->bean->load_relationship('am_tasktemplates_am_projecttemplates');
-        $task_list = $this->bean->get_linked_beans('am_tasktemplates_am_projecttemplates','AM_TaskTemplates');
+        $task_list = $this->bean->get_linked_beans('am_tasktemplates_am_projecttemplates', 'AM_TaskTemplates');
 
         //From the query above, populates the select box
         foreach ($task_list as $task) {

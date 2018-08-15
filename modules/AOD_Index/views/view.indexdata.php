@@ -1,10 +1,10 @@
 <?php
  /**
- * 
- * 
- * @package 
+ *
+ *
+ * @package
  * @copyright SalesAgility Ltd http://www.salesagility.com
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -20,7 +20,7 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author Salesagility Ltd <support@salesagility.com>
+ * @author SalesAgility Ltd <support@salesagility.com>
  */
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
@@ -50,7 +50,7 @@ class AOD_IndexViewIndexData extends SugarView
 
         foreach ($beanList as $beanModule => $beanName) {
             $bean = BeanFactory::getBean($beanModule);
-            if (!$bean || !method_exists($bean,"getTableName") || !$bean->getTableName()) {
+            if (!$bean || !method_exists($bean, "getTableName") || !$bean->getTableName()) {
                 continue;
             }
             $query = "SELECT COUNT(DISTINCT b.id) FROM ".$bean->getTableName()." b WHERE b.deleted = 0";
@@ -64,11 +64,11 @@ class AOD_IndexViewIndexData extends SugarView
 
         $indexFiles = count(glob($index->location."/*.cfs"));
 
-        $this->ss->assign("revisionCount",$revisionCount);
-        $this->ss->assign("indexedCount",$indexedCount);
-        $this->ss->assign("failedCount",$failedCount);
-        $this->ss->assign("index",$index);
-        $this->ss->assign("indexFiles",$indexFiles);
+        $this->ss->assign("revisionCount", $revisionCount);
+        $this->ss->assign("indexedCount", $indexedCount);
+        $this->ss->assign("failedCount", $failedCount);
+        $this->ss->assign("index", $index);
+        $this->ss->assign("indexFiles", $indexFiles);
         echo $this->ss->fetch('modules/AOD_Index/tpls/indexdata.tpl');
 
 

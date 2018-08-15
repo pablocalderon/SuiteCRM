@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 require_once('modules/Contacts/ContactFormBase.php');
@@ -48,7 +49,7 @@ class Popup_Picker
     /*
      *
      */
-    function _get_where_clause()
+    public function _get_where_clause()
     {
         $where = '';
         if (isset($_REQUEST['query'])) {
@@ -65,7 +66,7 @@ class Popup_Picker
     /**
      *
      */
-    function process_page_for_address()
+    public function process_page_for_address()
     {
         global $theme;
         global $mod_strings;
@@ -94,11 +95,11 @@ class Popup_Picker
         $lbl_save_button_label = $app_strings['LBL_SAVE_BUTTON_LABEL'];
 
         // TODO: cleanup the construction of $addform
-        $formbody = $formBase->getFormBody('','','EmailEditView');
+        $formbody = $formBase->getFormBody('', '', 'EmailEditView');
         $addform = '<table><tr><td nowrap="nowrap" valign="top">'
-			.str_replace('<br>', '</td><td nowrap="nowrap" valign="top">&nbsp;', $formbody)
-			. '</td></tr></table>'
-			. '<input type="hidden" name="action" value="Popup" />';
+            .str_replace('<br>', '</td><td nowrap="nowrap" valign="top">&nbsp;', $formbody)
+            . '</td></tr></table>'
+            . '<input type="hidden" name="action" value="Popup" />';
         $formSave = <<<EOQ
 		<input type="submit" name="button" class="button" title="$lbl_save_button_title" value="  $lbl_save_button_label  " />
 		<input type="button" name="button" class="button" title="{$app_strings['LBL_CANCEL_BUTTON_TITLE']}" accesskey="{$app_strings['LBL_CANCEL_BUTTON_KEY']}" value="{$app_strings['LBL_CANCEL_BUTTON_LABEL']}" onclick="toggleDisplay('addform');" />
@@ -110,13 +111,13 @@ EOQ;
         $button  = "<form action='index.php' method='post' name='form' id='form'>\n";
         if (!$hide_clear_button) {
             $button .= "<input type='button' name='button' class='button' onclick=\"send_back('','');\" title='"
-				.$app_strings['LBL_CLEAR_BUTTON_TITLE']."' value='  "
-				.$app_strings['LBL_CLEAR_BUTTON_LABEL']."  ' />\n";
+                .$app_strings['LBL_CLEAR_BUTTON_TITLE']."' value='  "
+                .$app_strings['LBL_CLEAR_BUTTON_LABEL']."  ' />\n";
         }
         $button .= "<input type='submit' name='button' class='button' onclick=\"window.close();\" title='"
-			.$app_strings['LBL_CANCEL_BUTTON_TITLE']."' accesskey='"
-			.$app_strings['LBL_CANCEL_BUTTON_KEY']."' value='  "
-			.$app_strings['LBL_CANCEL_BUTTON_LABEL']."  ' />\n";
+            .$app_strings['LBL_CANCEL_BUTTON_TITLE']."' accesskey='"
+            .$app_strings['LBL_CANCEL_BUTTON_KEY']."' value='  "
+            .$app_strings['LBL_CANCEL_BUTTON_LABEL']."  ' />\n";
         $button .= "</form>\n";
 
         $form = new XTemplate('modules/Contacts/Address_picker.html');
@@ -133,11 +134,11 @@ EOQ;
 
         // fill in for mass update
         $button = "<input type='hidden' name='module' value='Contacts'>".
-		          "<input type='hidden' id='form_action' name='action' value='CloseContactAddressPopup'>".
-		          "<input type='hidden' name='massupdate' value='true'>".
-		          "<input type='hidden' name='delete' value='false'>".
-		          "<input type='hidden' name='mass' value='Array'>".
-		          "<input type='hidden' name='Update' value='Update'>";
+                  "<input type='hidden' id='form_action' name='action' value='CloseContactAddressPopup'>".
+                  "<input type='hidden' name='massupdate' value='true'>".
+                  "<input type='hidden' name='delete' value='false'>".
+                  "<input type='hidden' name='mass' value='Array'>".
+                  "<input type='hidden' name='Update' value='Update'>";
 
         if (isset($_REQUEST['mass']) && is_array($_REQUEST['mass'])) {
             foreach (array_unique($_REQUEST['mass']) as $record) {
@@ -234,7 +235,7 @@ EOJS;
         return $output_html;
     }
 
-    function process_page_for_merge()
+    public function process_page_for_merge()
     {
         global $theme;
         global $mod_strings;
@@ -257,20 +258,20 @@ EOJS;
         if (!empty($_REQUEST['mode']) && strtoupper($_REQUEST['mode']) == 'MULTISELECT') {
             $multi_select=true;
             $button .= "<input type='button' name='button' class='button' onclick=\"send_back_selected('Contacts',document.MassUpdate,'mass[]','" .$app_strings['ERR_NOTHING_SELECTED']."');\" title='"
-				.$app_strings['LBL_SELECT_BUTTON_TITLE']."' accesskey='"
-				.$app_strings['LBL_SELECT_BUTTON_KEY']."' value='  "
-				.$app_strings['LBL_SELECT_BUTTON_LABEL']."  ' />\n";
+                .$app_strings['LBL_SELECT_BUTTON_TITLE']."' accesskey='"
+                .$app_strings['LBL_SELECT_BUTTON_KEY']."' value='  "
+                .$app_strings['LBL_SELECT_BUTTON_LABEL']."  ' />\n";
         }
         //END:FOR MULTI-SELECT
         if (!$hide_clear_button) {
             $button .= "<input type='button' name='button' class='button' onclick=\"send_back('','');\" title='"
-				.$app_strings['LBL_CLEAR_BUTTON_TITLE']."' value='  "
-				.$app_strings['LBL_CLEAR_BUTTON_LABEL']."  ' />\n";
+                .$app_strings['LBL_CLEAR_BUTTON_TITLE']."' value='  "
+                .$app_strings['LBL_CLEAR_BUTTON_LABEL']."  ' />\n";
         }
         $button .= "<input type='submit' name='button' class='button' onclick=\"window.close();\" title='"
-			.$app_strings['LBL_CANCEL_BUTTON_TITLE']."' accesskey='"
-			.$app_strings['LBL_CANCEL_BUTTON_KEY']."' value='  "
-			.$app_strings['LBL_CANCEL_BUTTON_LABEL']."  ' />\n";
+            .$app_strings['LBL_CANCEL_BUTTON_TITLE']."' accesskey='"
+            .$app_strings['LBL_CANCEL_BUTTON_KEY']."' value='  "
+            .$app_strings['LBL_CANCEL_BUTTON_LABEL']."  ' />\n";
         $button .= "</form>\n";
 
         $form = new XTemplate('modules/Contacts/MailMergePicker.html');
@@ -306,9 +307,9 @@ EOJS;
         $ListView->setXTemplate($form);
         $ListView->multi_select_popup=$multi_select;
         if ($multi_select) {
-            $ListView->xTemplate->assign("TAG_TYPE","SPAN");
+            $ListView->xTemplate->assign("TAG_TYPE", "SPAN");
         } else {
-            $ListView->xTemplate->assign("TAG_TYPE","A");
+            $ListView->xTemplate->assign("TAG_TYPE", "A");
         }
         $ListView->setHeaderTitle($mod_strings['LBL_LIST_FORM_TITLE']);
         $ListView->setQuery($where, '', 'contacts.last_name, contacts.first_name', 'CONTACT');
@@ -322,9 +323,9 @@ EOJS;
         $id = empty($_REQUEST['id'])?'': $_REQUEST['id'];
 
         $query = get_merge_query($seed_bean, $rel_module, $id);
-        $result = $seed_bean->db->query($query,true,"Error retrieving $seed_bean->object_name list: ");
+        $result = $seed_bean->db->query($query, true, "Error retrieving $seed_bean->object_name list: ");
 
-        $list = Array();
+        $list = array();
         while (($row = $seed_bean->db->fetchByAssoc($result)) != null) {
             $seed_bean = new Contact();
             foreach ($seed_bean->field_defs as $field=>$value) {

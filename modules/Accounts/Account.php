@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,15 +37,15 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
+/**
 
  * Description:  Defines the Account SugarBean Account entity with the necessary
  * methods and variables.
- ********************************************************************************/
+ */
 
 require_once("include/SugarObjects/templates/company/Company.php");
 require_once __DIR__ . '/../../include/EmailInterface.php';
@@ -52,95 +53,95 @@ require_once __DIR__ . '/../../include/EmailInterface.php';
 // Account is used to store account information.
 class Account extends Company implements EmailInterface
 {
-    var $field_name_map = array();
+    public $field_name_map = array();
     // Stored fields
-    var $date_entered;
-    var $date_modified;
-    var $modified_user_id;
-    var $assigned_user_id;
-    var $annual_revenue;
-    var $billing_address_street;
-    var $billing_address_city;
-    var $billing_address_state;
-    var $billing_address_country;
-    var $billing_address_postalcode;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $assigned_user_id;
+    public $annual_revenue;
+    public $billing_address_street;
+    public $billing_address_city;
+    public $billing_address_state;
+    public $billing_address_country;
+    public $billing_address_postalcode;
 
-    var $billing_address_street_2;
-    var $billing_address_street_3;
-    var $billing_address_street_4;
+    public $billing_address_street_2;
+    public $billing_address_street_3;
+    public $billing_address_street_4;
 
-    var $description;
-    var $email1;
-    var $email2;
-    var $email_opt_out;
-    var $invalid_email;
-    var $employees;
-    var $id;
-    var $industry;
-    var $name;
-    var $ownership;
-    var $parent_id;
-    var $phone_alternate;
-    var $phone_fax;
-    var $phone_office;
-    var $rating;
-    var $shipping_address_street;
-    var $shipping_address_city;
-    var $shipping_address_state;
-    var $shipping_address_country;
-    var $shipping_address_postalcode;
+    public $description;
+    public $email1;
+    public $email2;
+    public $email_opt_out;
+    public $invalid_email;
+    public $employees;
+    public $id;
+    public $industry;
+    public $name;
+    public $ownership;
+    public $parent_id;
+    public $phone_alternate;
+    public $phone_fax;
+    public $phone_office;
+    public $rating;
+    public $shipping_address_street;
+    public $shipping_address_city;
+    public $shipping_address_state;
+    public $shipping_address_country;
+    public $shipping_address_postalcode;
 
-    var $shipping_address_street_2;
-    var $shipping_address_street_3;
-    var $shipping_address_street_4;
+    public $shipping_address_street_2;
+    public $shipping_address_street_3;
+    public $shipping_address_street_4;
 
-    var $campaign_id;
+    public $campaign_id;
 
-    var $sic_code;
-    var $ticker_symbol;
-    var $account_type;
-    var $website;
-    var $custom_fields;
+    public $sic_code;
+    public $ticker_symbol;
+    public $account_type;
+    public $website;
+    public $custom_fields;
 
-    var $created_by;
-    var $created_by_name;
-    var $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $modified_by_name;
 
     // These are for related fields
-    var $opportunity_id;
-    var $case_id;
-    var $contact_id;
-    var $task_id;
-    var $note_id;
-    var $meeting_id;
-    var $call_id;
-    var $email_id;
-    var $member_id;
-    var $parent_name;
-    var $assigned_user_name;
-    var $account_id = '';
-    var $account_name = '';
-    var $bug_id ='';
-    var $module_dir = 'Accounts';
-    var $emailAddress;
+    public $opportunity_id;
+    public $case_id;
+    public $contact_id;
+    public $task_id;
+    public $note_id;
+    public $meeting_id;
+    public $call_id;
+    public $email_id;
+    public $member_id;
+    public $parent_name;
+    public $assigned_user_name;
+    public $account_id = '';
+    public $account_name = '';
+    public $bug_id ='';
+    public $module_dir = 'Accounts';
+    public $emailAddress;
 
 
-    var $table_name = "accounts";
-    var $object_name = "Account";
-    var $importable = true;
-    var $new_schema = true;
+    public $table_name = "accounts";
+    public $object_name = "Account";
+    public $importable = true;
+    public $new_schema = true;
     // This is used to retrieve related fields from form posts.
-    var $additional_column_fields = Array('assigned_user_name', 'assigned_user_id', 'opportunity_id', 'bug_id', 'case_id', 'contact_id', 'task_id', 'note_id', 'meeting_id', 'call_id', 'email_id', 'parent_name', 'member_id'
-	);
-    var $relationship_fields = Array('opportunity_id'=>'opportunities', 'bug_id' => 'bugs', 'case_id'=>'cases',
-									'contact_id'=>'contacts', 'task_id'=>'tasks', 'note_id'=>'notes',
-									'meeting_id'=>'meetings', 'call_id'=>'calls', 'email_id'=>'emails','member_id'=>'members',
-									'project_id'=>'project',
-									);
+    public $additional_column_fields = array('assigned_user_name', 'assigned_user_id', 'opportunity_id', 'bug_id', 'case_id', 'contact_id', 'task_id', 'note_id', 'meeting_id', 'call_id', 'email_id', 'parent_name', 'member_id'
+    );
+    public $relationship_fields = array('opportunity_id'=>'opportunities', 'bug_id' => 'bugs', 'case_id'=>'cases',
+                                    'contact_id'=>'contacts', 'task_id'=>'tasks', 'note_id'=>'notes',
+                                    'meeting_id'=>'meetings', 'call_id'=>'calls', 'email_id'=>'emails','member_id'=>'members',
+                                    'project_id'=>'project',
+                                    );
 
     //Meta-Data Framework fields
-    var $push_billing;
-    var $push_shipping;
+    public $push_billing;
+    public $push_shipping;
 
     public function __construct()
     {
@@ -158,7 +159,7 @@ class Account extends Company implements EmailInterface
 
         //Email logic
         if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['parent_type']) && $_REQUEST['parent_type'] == 'Emails'
-        	&& !empty($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Emails') {
+            && !empty($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Emails') {
             $_REQUEST['parent_name'] = '';
             $_REQUEST['parent_id'] = '';
         }
@@ -178,19 +179,19 @@ class Account extends Company implements EmailInterface
         self::__construct();
     }
 
-    function get_summary_text()
+    public function get_summary_text()
     {
         return $this->name;
     }
 
-    function get_contacts()
+    public function get_contacts()
     {
-        return $this->get_linked_beans('contacts','Contact');
+        return $this->get_linked_beans('contacts', 'Contact');
     }
 
 
 
-    function clear_account_case_relationship($account_id='', $case_id='')
+    public function clear_account_case_relationship($account_id='', $case_id='')
     {
         if (empty($case_id)) {
             $where = '';
@@ -198,31 +199,31 @@ class Account extends Company implements EmailInterface
             $where = " and id = '$case_id'";
         }
         $query = "UPDATE cases SET account_name = '', account_id = '' WHERE account_id = '$account_id' AND deleted = 0 " . $where;
-        $this->db->query($query,true,"Error clearing account to case relationship: ");
+        $this->db->query($query, true, "Error clearing account to case relationship: ");
     }
 
     /**
     * This method is used to provide backward compatibility with old data that was prefixed with http://
     * We now automatically prefix http://
     * @deprecated.
- 	*/
-    function remove_redundant_http()
+    */
+    public function remove_redundant_http()
     {	/*
-		if(preg_match("@http://@", $this->website))
-		{
-			$this->website = substr($this->website, 7);
-		}
-		*/
+        if(preg_match("@http://@", $this->website))
+        {
+            $this->website = substr($this->website, 7);
+        }
+        */
     }
 
-    function fill_in_additional_list_fields()
+    public function fill_in_additional_list_fields()
     {
         parent::fill_in_additional_list_fields();
         // Fill in the assigned_user_name
-	//	$this->assigned_user_name = get_assigned_user_name($this->assigned_user_id);
+    //	$this->assigned_user_name = get_assigned_user_name($this->assigned_user_id);
     }
 
-    function fill_in_additional_detail_fields()
+    public function fill_in_additional_detail_fields()
     {
         parent::fill_in_additional_detail_fields();
 
@@ -230,7 +231,7 @@ class Account extends Company implements EmailInterface
         //is empty then go ahead and fill it.
         if (empty($this->parent_name) && !empty($this->id)) {
             $query = "SELECT a1.name from accounts a1, accounts a2 where a1.id = a2.parent_id and a2.id = '$this->id' and a1.deleted=0";
-            $result = $this->db->query($query,true," Error filling in additional detail fields: ");
+            $result = $this->db->query($query, true, " Error filling in additional detail fields: ");
 
             // Get the id and the name.
             $row = $this->db->fetchByAssoc($result);
@@ -251,7 +252,7 @@ class Account extends Company implements EmailInterface
         }
     }
 
-    function get_list_view_data()
+    public function get_list_view_data()
     {
         $temp_array = parent::get_list_view_data();
 
@@ -271,9 +272,9 @@ class Account extends Company implements EmailInterface
     	builds a generic search based on the query string using or
     	do not include any $this-> because this is called on without having the class instantiated
     */
-    function build_generic_where_clause($the_query_string)
+    public function build_generic_where_clause($the_query_string)
     {
-        $where_clauses = Array();
+        $where_clauses = array();
         $the_query_string = $this->db->quote($the_query_string);
         array_push($where_clauses, "accounts.name like '$the_query_string%'");
         if (is_numeric($the_query_string)) {
@@ -294,7 +295,7 @@ class Account extends Company implements EmailInterface
     }
 
 
-    function create_export_query($order_by, $where, $relate_link_join='')
+    public function create_export_query($order_by, $where, $relate_link_join='')
     {
         $relatedJoins = [];
         $relatedSelects = [];
@@ -357,7 +358,7 @@ class Account extends Company implements EmailInterface
         return $query;
     }
 
-    function set_notification_body($xtpl, $account)
+    public function set_notification_body($xtpl, $account)
     {
         $xtpl->assign("ACCOUNT_NAME", $account->name);
         $xtpl->assign("ACCOUNT_TYPE", $account->account_type);
@@ -366,14 +367,14 @@ class Account extends Company implements EmailInterface
         return $xtpl;
     }
 
-    function bean_implements($interface)
+    public function bean_implements($interface)
     {
         switch ($interface) {
-			case 'ACL':return true;
-		}
+            case 'ACL':return true;
+        }
         return false;
     }
-    function get_unlinked_email_query($type=array())
+    public function get_unlinked_email_query($type=array())
     {
         return get_unlinked_email_query($type, $this);
     }

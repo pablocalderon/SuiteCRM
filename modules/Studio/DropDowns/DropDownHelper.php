@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 
@@ -46,8 +47,8 @@ require_once('modules/Administration/Common.php');
 require_once('modules/Administration/QuickRepairAndRebuild.php');
 class DropDownHelper
 {
-    var $modules = array();
-    function getDropDownModules()
+    public $modules = array();
+    public function getDropDownModules()
     {
         $dir = dir('modules');
         while ($entry = $dir->read()) {
@@ -57,7 +58,7 @@ class DropDownHelper
         }
     }
 
-    function scanForDropDowns($filepath, $module)
+    public function scanForDropDowns($filepath, $module)
     {
         $contents = file_get_contents($filepath);
         $matches = array();
@@ -76,7 +77,7 @@ class DropDownHelper
      * @param array dropdown
      * @return array Filtered dropdown list
      */
-    function filterDropDown($name,$dropdown)
+    public function filterDropDown($name, $dropdown)
     {
         $results = array();
         switch ($name) {
@@ -106,7 +107,7 @@ class DropDownHelper
      *
      * @param REQUEST params  $params
      */
-    function saveDropDown($params)
+    public function saveDropDown($params)
     {
         $count = 0;
         $dropdown = array();

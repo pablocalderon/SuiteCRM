@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,17 +37,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('modules/DynamicFields/templates/Fields/TemplateEnum.php');
 require_once('include/utils/array_utils.php');
 class TemplateMultiEnum extends TemplateEnum
 {
-    var $type = 'text';
+    public $type = 'text';
 
-    function get_html_edit()
+    public function get_html_edit()
     {
         $this->prepare();
         $xtpl_var = strtoupper($this->name);
@@ -54,7 +55,7 @@ class TemplateMultiEnum extends TemplateEnum
         return "<input type='hidden' name='". $this->name. "' value='0'><select name='". $this->name . "[]' size='5' title='{" . $xtpl_var ."_HELP}' MULTIPLE=true>{OPTIONS_".$xtpl_var. "}</select>";
     }
 
-    function get_xtpl_edit()
+    public function get_xtpl_edit()
     {
         $name = $this->name;
         $value = '';
@@ -80,14 +81,14 @@ class TemplateMultiEnum extends TemplateEnum
 
         return $returnXTPL;
     }
-    function prepSave()
+    public function prepSave()
     {
     }
-    function get_xtpl_list()
+    public function get_xtpl_list()
     {
         return $this->get_xtpl_detail();
     }
-    function get_xtpl_detail()
+    public function get_xtpl_detail()
     {
         $name = $this->name;
         $value = '';
@@ -118,14 +119,14 @@ class TemplateMultiEnum extends TemplateEnum
         return $returnXTPL;
     }
 
-    function get_field_def()
+    public function get_field_def()
     {
         $def = parent::get_field_def();
-        if (!empty ($this->ext4)) {
+        if (!empty($this->ext4)) {
             // turn off error reporting in case we are unpacking a value that hasn't been packed...
             // this is kludgy, but unserialize doesn't throw exceptions correctly
             if ($this->ext4[0] == 'a' && $this->ext4[1] == ':') {
-                $unpacked = @unserialize ($this->ext4) ;
+                $unpacked = @unserialize($this->ext4) ;
             } else {
                 $unpacked = false;
             }
@@ -136,10 +137,10 @@ class TemplateMultiEnum extends TemplateEnum
                 $def [ 'default' ] = $this->ext4 ;
             } else {
                 // we have a packed representation containing one or both of default and dependency
-                if (isset ($unpacked [ 'default' ]) && !isset($this->no_default)) {
+                if (isset($unpacked [ 'default' ]) && !isset($this->no_default)) {
                     $def [ 'default' ] = $unpacked [ 'default' ] ;
                 }
-                if (isset ($unpacked [ 'dependency' ])) {
+                if (isset($unpacked [ 'dependency' ])) {
                     $def [ 'dependency' ] = $unpacked [ 'dependency' ] ;
                 }
             }
@@ -149,21 +150,21 @@ class TemplateMultiEnum extends TemplateEnum
         return $def;
     }
 
-    function get_db_default($modify = false)
+    public function get_db_default($modify = false)
     {
         return '';
     }
 
-    function save($df)
+    public function save($df)
     {
-        if (isset ($this->default)) {
-            if (is_array ($this->default)) {
+        if (isset($this->default)) {
+            if (is_array($this->default)) {
                 $this->default = encodeMultienumValue($this->default);
             }
-            $this->ext4 = (isset ($this->dependency)) ? serialize (array ( 'default' => $this->default , 'dependency' => html_entity_decode($this->dependency) ))  : $this->default ;
+            $this->ext4 = (isset($this->dependency)) ? serialize(array( 'default' => $this->default , 'dependency' => html_entity_decode($this->dependency) ))  : $this->default ;
         } else {
-            if (isset ($this->dependency)) {
-                $this->ext4 = serialize (array ( 'dependency' => html_entity_decode($this->dependency) )) ;
+            if (isset($this->dependency)) {
+                $this->ext4 = serialize(array( 'dependency' => html_entity_decode($this->dependency) )) ;
             }
         }
         parent::save($df);

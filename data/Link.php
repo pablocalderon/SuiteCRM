@@ -2,12 +2,13 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -18,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,11 +37,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
-/*********************************************************************************
+/**
 
 * Description:  Defines the base class for new data type, Relationship, methods in the class will
 * be used to manipulate relationship between object instances.
@@ -53,30 +54,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class Link
 {
 
-	/* Private variables.*/
-    var $_log;
-    var $_relationship_name; //relationship this attribute is tied to.
-	var $_bean; //stores a copy of the bean.
-	var $_relationship= '';
-    var $_bean_table_name;
-    var $_bean_key_name='id';
+    /* Private variables.*/
+    public $_log;
+    public $_relationship_name; //relationship this attribute is tied to.
+    public $_bean; //stores a copy of the bean.
+    public $_relationship= '';
+    public $_bean_table_name;
+    public $_bean_key_name='id';
     private $relationship_fields = array();
-    var $_db;
-    var $_swap_sides = false;
-    var $_rhs_key_override = false;
-    var $_bean_filter_field = '';
+    public $_db;
+    public $_swap_sides = false;
+    public $_rhs_key_override = false;
+    public $_bean_filter_field = '';
 
     //if set to true role column will not be added to the filter criteria.
-    var $ignore_role_filter=false;
+    public $ignore_role_filter=false;
     //if set to true distinct clause will be added to the select list.
-    var $add_distinct=false;
+    public $add_distinct=false;
     //value of this variable dictates the action to be taken when a duplicate relationship record is found.
     //1-ignore,2-update,3-delete.
     //var $when_dup_relationship_found=2; // deprecated - only used by Queues, which is also no longer used
 
     // a value for duplicate variable is stored by the _relatinship_exists method.
-    var $_duplicate_key;
-    var $_duplicate_where;
+    public $_duplicate_key;
+    public $_duplicate_where;
 
     /* Parameters:
      * 		$_rel_name: use this relationship key.
@@ -85,7 +86,7 @@ class Link
      * 		$_table_name: optional, fetch from the bean's table name property.
      * 		$_key_name: optional, name of the primary key column for _table_name
      */
-    function __construct($_rel_name, &$_bean, $fieldDef, $_table_name='', $_key_name='')
+    public function __construct($_rel_name, &$_bean, $fieldDef, $_table_name='', $_key_name='')
     {
         global $dictionary;
         require_once("modules/TableDictionary.php");
@@ -154,7 +155,7 @@ class Link
         }
     }
 
-    function loadedSuccesfully()
+    public function loadedSuccesfully()
     {
         return !empty($this->_relationship->id);
     }
@@ -168,12 +169,12 @@ class Link
      * For a self referencing relationship the function will behave as if the user is trying
      * to access the child records. To get to the parent records use the getParent() method.
      */
-    function get($role = false)
+    public function get($role = false)
     {
         if ($role) {
             $role_field = $this->_get_link_table_role_field($this->_relationship_name);
             if ($role_field !== false) {
-                $query = $this->getQuery(false, array(),0, "", false, "", $role_field);
+                $query = $this->getQuery(false, array(), 0, "", false, "", $role_field);
             } else {
                 return array();
             }
@@ -181,7 +182,7 @@ class Link
             $query = $this->getQuery();
         }
         $result = $this->_db->query($query, true);
-        $list = Array();
+        $list = array();
         while ($row = $this->_db->fetchByAssoc($result)) {
             if ($role) {
                 $list[] = $row;
@@ -192,7 +193,7 @@ class Link
         return $list;
     }
 
-    function getRelatedTableName()
+    public function getRelatedTableName()
     {
         $bean_is_lhs=$this->_get_bean_position();
         if (!isset($bean_is_lhs)) {
@@ -202,12 +203,11 @@ class Link
 
         if ($bean_is_lhs) {
             return $this->_relationship->rhs_table;
-        } else {
-            return $this->_relationship->lhs_table;
         }
+        return $this->_relationship->lhs_table;
     }
 
-    function getRelatedModuleName()
+    public function getRelatedModuleName()
     {
         $bean_is_lhs=$this->_get_bean_position();
         if (!isset($bean_is_lhs)) {
@@ -217,28 +217,27 @@ class Link
 
         if ($bean_is_lhs) {
             return $this->_relationship->rhs_module;
-        } else {
-            return $this->_relationship->lhs_module;
         }
+        return $this->_relationship->lhs_module;
     }
 
 
-    function getRelatedFields()
+    public function getRelatedFields()
     {
         return $this->relationship_fields;
     }
 
-    function getRelatedField($name)
+    public function getRelatedField($name)
     {
         return (!empty($this->relationship_fields[$name]))? $this->relationship_fields[$name]: null;
     }
 
-    function getRelationshipObject()
+    public function getRelationshipObject()
     {
         return $this->_relationship;
     }
 
-    function _get_bean_position()
+    public function _get_bean_position()
     {
         //current beans module and table are on the left side or the right side.
         $position = false;
@@ -255,7 +254,7 @@ class Link
         return $position;
     }
 
-    function _is_self_relationship()
+    public function _is_self_relationship()
     {
         if ($this->_relationship->lhs_table == $this->_relationship->rhs_table) {
             return true;
@@ -263,7 +262,7 @@ class Link
         return false;
     }
 
-    function getJoin($params, $return_array =false)
+    public function getJoin($params, $return_array =false)
     {
         $join_type= ' INNER JOIN ';
         if (isset($params['join_type'])) {
@@ -274,7 +273,7 @@ class Link
         $bean_is_lhs=$this->_get_bean_position();
 
         if ($this->_relationship->relationship_type=='one-to-one' or $this->_relationship->relationship_type=='many-to-one' or
-   			($this->_relationship->relationship_type=='one-to-many' && !$bean_is_lhs)) {
+            ($this->_relationship->relationship_type=='one-to-many' && !$bean_is_lhs)) {
             if ($bean_is_lhs) {
                 $table = $this->_relationship->rhs_table;
                 $key = $this->_relationship->rhs_key;
@@ -313,8 +312,8 @@ class Link
                 $table_with_alias = $this->_relationship->join_table. " ".$params['join_table_alias'];
                 $table = $params['join_table_alias'];
                 $rel_table_with_alias =
-					$this->_relationship->join_table. " ".
-					$params['join_table_link_alias'];
+                    $this->_relationship->join_table. " ".
+                    $params['join_table_link_alias'];
                 $rel_table = $params['join_table_link_alias'];
             }
 
@@ -371,7 +370,7 @@ class Link
     }
 
 
-    function _add_deleted_clause($deleted=0,$add_and='',$prefix='')
+    public function _add_deleted_clause($deleted=0, $add_and='', $prefix='')
     {
         if (!empty($prefix)) {
             $prefix.='.';
@@ -385,12 +384,11 @@ class Link
         }
         if ($deleted==1) {
             return $add_and.$prefix.'deleted=1';
-        } else {
-            return '';
         }
+        return '';
     }
 
-    function _add_optional_where_clause($optional_array, $add_and='',$prefix='')
+    public function _add_optional_where_clause($optional_array, $add_and='', $prefix='')
     {
         if (!empty($prefix)) {
             $prefix.='.';
@@ -408,7 +406,7 @@ class Link
 
 
 
-    function getQuery($return_as_array=false, $sort_array = array(),$deleted=0, $optional_where="", $return_join = false, $bean_filter="", $role="", $for_subpanels = false)
+    public function getQuery($return_as_array=false, $sort_array = array(), $deleted=0, $optional_where="", $return_join = false, $bean_filter="", $role="", $for_subpanels = false)
     {
         $select='';
         $from='';
@@ -436,7 +434,7 @@ class Link
         $GLOBALS['log']->debug("getQuery, Relationship role column name=".$this->_relationship->relationship_role_column);
 
         if ($this->_relationship->relationship_type=='one-to-one' or $this->_relationship->relationship_type=='many-to-one' or
-		     ($this->_relationship->relationship_type=='one-to-many' && !$bean_is_lhs)) {
+             ($this->_relationship->relationship_type=='one-to-many' && !$bean_is_lhs)) {
             $GLOBALS['log']->debug("Processing one-to-one,many-to-one,one-to-many.");
 
             if ($this->add_distinct) {
@@ -461,23 +459,23 @@ class Link
 
                 //add deleted clause - but not if we're dealing with a Custom table which will lack the 'deleted' field
                 if (substr_count($this->_relationship->rhs_table, '_cstm') == 0) {
-                    $where.=$this->_add_deleted_clause($deleted,'AND',$this->_relationship->rhs_table);
+                    $where.=$this->_add_deleted_clause($deleted, 'AND', $this->_relationship->rhs_table);
                 }
 
                 if ($optional_where!="") {
                     //process optional where
-                    $where.=$this->_add_optional_where_clause($optional_where,'AND');
+                    $where.=$this->_add_optional_where_clause($optional_where, 'AND');
                 }
             } else {
                 $from= 'FROM '.$this->_relationship->lhs_table;
                 $where='WHERE '.$this->_relationship->lhs_table.'.'.$this->_relationship->lhs_key."= '".$this->_bean->{$this->_relationship->rhs_key}."'";
                 //added deleted clause.
-                $where.=$this->_add_deleted_clause($deleted,'AND', $this->_relationship->lhs_table);
+                $where.=$this->_add_deleted_clause($deleted, 'AND', $this->_relationship->lhs_table);
 
 
                 if ($optional_where!="") {
                     //process optional where
-                    $where.=$this->_add_optional_where_clause($optional_where,'AND');
+                    $where.=$this->_add_optional_where_clause($optional_where, 'AND');
                 }
             }
         }
@@ -503,12 +501,12 @@ class Link
 
             //add deleted clause - but not if we're dealing with a Custom table which will lack the 'deleted' field
             if (substr_count($this->_relationship->rhs_table, '_cstm') == 0) {
-                $where.=$this->_add_deleted_clause($deleted,'AND',$this->_relationship->rhs_table);
+                $where.=$this->_add_deleted_clause($deleted, 'AND', $this->_relationship->rhs_table);
             }
 
             if ($optional_where!="") {
                 //process optional where
-                $where.=$this->_add_optional_where_clause($optional_where,'AND');
+                $where.=$this->_add_optional_where_clause($optional_where, 'AND');
             }
         }
 
@@ -543,13 +541,13 @@ class Link
 
                 //add deleted clause.
                 if ($deleted == 0 or $deleted==1) {
-                    $where.=' WHERE '.$this->_add_deleted_clause($deleted,'',$this->_relationship->join_table).$this->_add_deleted_clause($deleted,'AND',$this->_relationship->rhs_table);
+                    $where.=' WHERE '.$this->_add_deleted_clause($deleted, '', $this->_relationship->join_table).$this->_add_deleted_clause($deleted, 'AND', $this->_relationship->rhs_table);
                 }
 
 
                 if ($optional_where!="") {
                     //process optional where
-                    $where.=$this->_add_optional_where_clause($optional_where,'AND', $this->_relationship->rhs_table);
+                    $where.=$this->_add_optional_where_clause($optional_where, 'AND', $this->_relationship->rhs_table);
                 }
             } else {
                 if ($this->add_distinct) {
@@ -576,13 +574,13 @@ class Link
                 $from .= $subjoin;
                 //add deleted clause.
                 if ($deleted == 0 or $deleted==1) {
-                    $where.=' WHERE '.$this->_add_deleted_clause($deleted,'',$this->_relationship->join_table).$this->_add_deleted_clause($deleted,'AND',$this->_relationship->lhs_table);
+                    $where.=' WHERE '.$this->_add_deleted_clause($deleted, '', $this->_relationship->join_table).$this->_add_deleted_clause($deleted, 'AND', $this->_relationship->lhs_table);
                 }
 
 
                 if ($optional_where!="") {
                     //process optional where
-                    $where.=$this->_add_optional_where_clause($optional_where,'AND', $this->_relationship->lhs_table);
+                    $where.=$this->_add_optional_where_clause($optional_where, 'AND', $this->_relationship->lhs_table);
                 }
             }
             if (!empty($role)) {
@@ -598,20 +596,19 @@ class Link
                 $query_as_array['join_tables'] = $join_tables;
             }
             return $query_as_array;
-        } else {
-            $query = $select.' '.$from.' '.$where;
-            $GLOBALS['log']->debug("Link Query=".$query);
-            return $query;
         }
+        $query = $select.' '.$from.' '.$where;
+        $GLOBALS['log']->debug("Link Query=".$query);
+        return $query;
     }
 
-    function getBeans($template, $sort_array = array(), $begin_index = 0, $end_index = -1, $deleted=0, $optional_where="")
+    public function getBeans($template, $sort_array = array(), $begin_index = 0, $end_index = -1, $deleted=0, $optional_where="")
     {
-        $query = $this->getQuery(false,array(), $deleted, $optional_where); //get array of IDs
+        $query = $this->getQuery(false, array(), $deleted, $optional_where); //get array of IDs
         return $this->_bean->build_related_list($query, $template);
     }
 
-    function _add_one_to_many_table_based($key,$bean_is_lhs)
+    public function _add_one_to_many_table_based($key, $bean_is_lhs)
     {
         if ($bean_is_lhs) {
             $set_key_value=$this->_bean->id;
@@ -636,10 +633,10 @@ class Link
     }
 
     /* handles many to one*/
-    function _add_many_to_one_bean_based($key)
+    public function _add_many_to_one_bean_based($key)
     {
 
-		//make a copy of this bean to avoid recursion.
+        //make a copy of this bean to avoid recursion.
         $bean=new $this->_bean->object_name;
         $bean->retrieve($this->_bean->id);
 
@@ -661,7 +658,7 @@ class Link
      * updated to save the relationship, in case of many-to-many relationships this would be the join table.
      * the values should be passed as key value pairs with column name as the key name and column value as key value.
      */
-    function add($rel_keys,$additional_values=array())
+    public function add($rel_keys, $additional_values=array())
     {
         if (!isset($rel_keys) or empty($rel_keys)) {
             $GLOBALS['log']->fatal("Link.add, Null key passed, no-op, returning... ");
@@ -688,8 +685,8 @@ class Link
         //if multiple keys are passed then check for unsupported relationship types.
         if (count($keys) > 1) {
             if (($this->_relationship->relationship_type == 'one-to-one')
-				or ($this->_relationship->relationship_type == 'one-to-many' and !$bean_is_lhs)
-				or ($this->_relationship->relationship_type == 'many-to-one')) {
+                or ($this->_relationship->relationship_type == 'one-to-many' and !$bean_is_lhs)
+                or ($this->_relationship->relationship_type == 'many-to-one')) {
                 $GLOBALS['log']->fatal("Invalid parameters passed to function, the relationship does not support addition of multiple records.");
                 return;
             }
@@ -697,9 +694,9 @@ class Link
         $GLOBALS['log']->debug("Relationship type = {$this->_relationship->relationship_type}");
         foreach ($keys as $key) {
 
-			//fetch the related record using the key and update.
+            //fetch the related record using the key and update.
             if ($this->_relationship->relationship_type=='one-to-one' || $this->_relationship->relationship_type == 'one-to-many') {
-                $this->_add_one_to_many_table_based($key,$bean_is_lhs);
+                $this->_add_one_to_many_table_based($key, $bean_is_lhs);
             }
 
             //updates the bean passed to the instance....
@@ -712,7 +709,7 @@ class Link
             if ($this->_relationship->relationship_type=='many-to-many') {
                 //replace existing relationships for one-to-one
                 if (!empty($GLOBALS['dictionary'][$this->_relationship_name]['true_relationship_type']) &&
-					($GLOBALS['dictionary'][$this->_relationship_name]['true_relationship_type'] == 'one-to-one')) {
+                    ($GLOBALS['dictionary'][$this->_relationship_name]['true_relationship_type'] == 'one-to-one')) {
                     //Remove all existing links with either bean.
                     $old_rev = isset($this->_relationship->reverse) ? false : $this->_relationship->reverse;
                     $this->_relationship->reverse = true;
@@ -743,9 +740,9 @@ class Link
 
                 //reverse will be set to true only for self-referencing many-to-many relationships.
                 if ($this->_is_self_relationship() && !empty($GLOBALS['dictionary'][$this->_relationship_name]) &&
-					!empty($GLOBALS['dictionary'][$this->_relationship_name]['true_relationship_type']) &&
-					$GLOBALS['dictionary'][$this->_relationship_name]['true_relationship_type'] == 'many-to-many' ||
-				(!empty($this->_relationship->reverse) && $this->_relationship->reverse == true)) {
+                    !empty($GLOBALS['dictionary'][$this->_relationship_name]['true_relationship_type']) &&
+                    $GLOBALS['dictionary'][$this->_relationship_name]['true_relationship_type'] == 'many-to-many' ||
+                (!empty($this->_relationship->reverse) && $this->_relationship->reverse == true)) {
                     //swap key values;
                     $temp=$additional_values[$this->_relationship->join_key_lhs];
                     $additional_values[$this->_relationship->join_key_lhs]=$additional_values[$this->_relationship->join_key_rhs];
@@ -786,29 +783,29 @@ class Link
         }
     }
 
-    function _add_many_to_many($add_values)
+    public function _add_many_to_many($add_values)
     {
 
-		//add date modified.
+        //add date modified.
         $add_values['date_modified']=  $GLOBALS['timedate']->nowDb();
 
         //check whether duplicate exist or not.
-        if ($this->relationship_exists($this->_relationship->join_table,$add_values)) {
+        if ($this->relationship_exists($this->_relationship->join_table, $add_values)) {
 
 /*			switch($this->when_dup_relationship_found) {
 
-				case 1: //do nothing.
-					$GLOBALS['log']->debug("Executing default option, no action.");
-					break;
+                case 1: //do nothing.
+                    $GLOBALS['log']->debug("Executing default option, no action.");
+                    break;
 
-				case 3: //delete the record first, then create a new entry.
-					$this->_delete_row($this->_relationship->join_table,$this->_duplicate_key);
-					$this->_insert_row($add_values);
-					break;
+                case 3: //delete the record first, then create a new entry.
+                    $this->_delete_row($this->_relationship->join_table,$this->_duplicate_key);
+                    $this->_insert_row($add_values);
+                    break;
 
-				default:
-				case 2: //update the record.
-*/					$this->_update_row($add_values,$this->_relationship->join_table,$this->_duplicate_where);
+                default:
+                case 2: //update the record.
+*/                    $this->_update_row($add_values, $this->_relationship->join_table, $this->_duplicate_where);
         /*					break;
         			}*/
         } else {
@@ -816,7 +813,7 @@ class Link
         }
     }
 
-    function _delete_row($table_name,$key)
+    public function _delete_row($table_name, $key)
     {
         $query="UPDATE $table_name SET deleted=1, date_modified='" .$GLOBALS['timedate']->nowDb()."' WHERE id='".$this->_db->quote($key)."'";
         $GLOBALS['log']->debug("Relationship Delete Statement :".$query);
@@ -824,7 +821,7 @@ class Link
         $result=$this->_db->query($query, true);
     }
 
-    function _update_row(&$value_array,$table_name,$where)
+    public function _update_row(&$value_array, $table_name, $where)
     {
         $query='UPDATE '.$table_name.' SET ';
         $delimiter='';
@@ -838,7 +835,7 @@ class Link
         $result=$this->_db->query($query, true);
     }
 
-    function _insert_row(&$value_array)
+    public function _insert_row(&$value_array)
     {
         //add key column
         $value_array['id']= create_guid();
@@ -868,9 +865,9 @@ class Link
      * parameters: id of the bean being deleted.
      *
      */
-    function delete($id,$related_id='')
+    public function delete($id, $related_id='')
     {
-        $GLOBALS['log']->debug(sprintf("delete called with these parameter values. id=%s, related_id=%s",$id,$related_id));
+        $GLOBALS['log']->debug(sprintf("delete called with these parameter values. id=%s, related_id=%s", $id, $related_id));
 
         $_relationship=&$this->_relationship;
         $_bean=&$this->_bean;
@@ -897,19 +894,18 @@ class Link
                 if (!empty($related_id)) {
                     $query.=" AND ".$_relationship->rhs_table.".id='".$related_id."'";
                 }
-            } else {
-                //do nothing because the row that stores the relationship keys is being deleted.
-    			//todo log an error message here.
-    			//if this is the case and related_id is passed then log a message asking the user
-    			//to clear the relationship using the bean.
             }
+            //do nothing because the row that stores the relationship keys is being deleted.
+                //todo log an error message here.
+                //if this is the case and related_id is passed then log a message asking the user
+                //to clear the relationship using the bean.
         }
 
         if ($_relationship->relationship_type=='many-to-one') {
             //do nothing because the row that stores the relationship keys is being deleted.
-			//todo log an error message here.
-   			//if this is the case and related_id is passed then log a message asking the user
-   			//to clear the relationship using the bean.
+            //todo log an error message here.
+            //if this is the case and related_id is passed then log a message asking the user
+            //to clear the relationship using the bean.
         }
 
         if ($_relationship->relationship_type=='many-to-many') {
@@ -951,7 +947,7 @@ class Link
         //if query string is not empty execute it.
         if (isset($query)) {
             $GLOBALS['log']->fatal('Link.Delete:Delete Query: '.$query);
-            $this->_db->query($query,true);
+            $this->_db->query($query, true);
         }
         $custom_logic_arguments = array();
         $custom_logic_arguments['id'] = $id;
@@ -987,10 +983,10 @@ class Link
         }
     }
 
-    function relationship_exists($table_name, $join_key_values)
+    public function relationship_exists($table_name, $join_key_values)
     {
 
-		//find the key values for the table.
+        //find the key values for the table.
         $dup_keys=$this->_get_alternate_key_fields($table_name);
         if (empty($dup_keys)) {
             $GLOBALS['log']->debug("No alternate key define, skipping duplicate check..");
@@ -1021,20 +1017,19 @@ class Link
 
         if ($row == null) {
             return false;
-        } else {
-            $this->_duplicate_key=$row['id'];
-            return true;
         }
+        $this->_duplicate_key=$row['id'];
+        return true;
     }
 
     /* returns array of keys for duplicate checking, first check for an index of type alternate_key, if not found searches for
      * primary key.
      *
      */
-    function _get_alternate_key_fields($table_name)
+    public function _get_alternate_key_fields($table_name)
     {
         $alternateKey=null;
-        $indices=Link::_get_link_table_definition($table_name,'indices');
+        $indices=Link::_get_link_table_definition($table_name, 'indices');
         if (!empty($indices)) {
             foreach ($indices as $index) {
                 if (isset($index['type']) && $index['type'] == 'alternate_key') {
@@ -1042,7 +1037,7 @@ class Link
                 }
             }
         }
-        $relationships=Link::_get_link_table_definition($table_name,'relationships');
+        $relationships=Link::_get_link_table_definition($table_name, 'relationships');
         if (!empty($relationships)) {//bug 32623, when the relationship is built in old version, there is no alternate_key. we have to use join_key_lhs and join_key_lhs.
             if (!empty($relationships[$this->_relationship_name]) && !empty($relationships[$this->_relationship_name]['join_key_lhs']) && !empty($relationships[$this->_relationship_name]['join_key_rhs'])) {
                 return array($relationships[$this->_relationship_name]['join_key_lhs'], $relationships[$this->_relationship_name]['join_key_rhs']);
@@ -1051,7 +1046,7 @@ class Link
     }
 
 
-    function _get_link_table_definition($table_name,$def_name)
+    public function _get_link_table_definition($table_name, $def_name)
     {
         global $dictionary;
 
@@ -1067,36 +1062,35 @@ class Link
         // first check to see if already loaded - assumes hasn't changed in the meantime
         if (isset($dictionary[$table_name][$def_name])) {
             return $dictionary[$table_name][$def_name];
-        } else {
-            if (isset($dictionary[$this->_relationship_name][$def_name])) {
-                return ($dictionary[$this->_relationship_name][$def_name]);
-            }
-            // custom metadata is found in custom/metadata (naturally) and the naming follows the convention $relationship_name_c, and $relationship_name = $table_name$locations = array( 'metadata/' , 'custom/metadata/' ) ;
-            $relationshipName = preg_replace('/_c$/' , '' , $table_name) ;
+        }
+        if (isset($dictionary[$this->_relationship_name][$def_name])) {
+            return ($dictionary[$this->_relationship_name][$def_name]);
+        }
+        // custom metadata is found in custom/metadata (naturally) and the naming follows the convention $relationship_name_c, and $relationship_name = $table_name$locations = array( 'metadata/' , 'custom/metadata/' ) ;
+        $relationshipName = preg_replace('/_c$/', '', $table_name) ;
 
-            $locations = array ( 'metadata/' , 'custom/metadata/' ) ;
+        $locations = array( 'metadata/' , 'custom/metadata/' ) ;
 
-            foreach ($locations as $basepath) {
-                $path = $basepath . $relationshipName . 'MetaData.php' ;
+        foreach ($locations as $basepath) {
+            $path = $basepath . $relationshipName . 'MetaData.php' ;
 
-                if (file_exists($path)) {
-                    include($path);
-                    if (isset($dictionary[$relationshipName][$def_name])) {
-                        return $dictionary[$relationshipName][$def_name];
-                    }
+            if (file_exists($path)) {
+                include($path);
+                if (isset($dictionary[$relationshipName][$def_name])) {
+                    return $dictionary[$relationshipName][$def_name];
                 }
             }
-            // couldn't find the metadata for the table in either the standard or custom locations
-            $GLOBALS['log']->debug('Error fetching field defs for join table '.$table_name);
-
-            return null;
         }
+        // couldn't find the metadata for the table in either the standard or custom locations
+        $GLOBALS['log']->debug('Error fetching field defs for join table '.$table_name);
+
+        return null;
     }
     /*
      * Return the name of the role field for the passed many to many table.
      * if there is no role filed : return false
      */
-    function _get_link_table_role_field($table_name)
+    public function _get_link_table_role_field($table_name)
     {
         $varDefs = $this->_get_link_table_definition($table_name, 'fields');
         $role_field = false;
@@ -1111,4 +1105,3 @@ class Link
         return $role_field;
     }
 }
-

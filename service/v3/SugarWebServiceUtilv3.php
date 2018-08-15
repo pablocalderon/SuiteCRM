@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,14 +34,14 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 require_once('service/core/SoapHelperWebService.php');
 class SugarWebServiceUtilv3 extends SoapHelperWebServices
 {
-    function get_name_value($field,$value)
+    public function get_name_value($field, $value)
     {
         if ($value instanceof Link2 && !method_exists($value, '__toString')) {
             $value = '';
@@ -48,7 +49,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
         return array('name'=>$field, 'value'=>$value);
     }
 
-    function filter_fields($value, $fields)
+    public function filter_fields($value, $fields)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->filter_fields');
         global $invalid_contact_fields;
@@ -83,7 +84,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
         return $filterFields;
     }
 
-    function getRelationshipResults($bean, $link_field_name, $link_module_fields, $optional_where = '', $order_by = '')
+    public function getRelationshipResults($bean, $link_field_name, $link_module_fields, $optional_where = '', $order_by = '')
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->getRelationshipResults');
         require_once('include/TimeDate.php');
@@ -128,13 +129,13 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
             }
             $GLOBALS['log']->info('End: SoapHelperWebServices->getRelationshipResults');
             return array('rows' => $list, 'fields_set_on_rows' => $filterFields);
-        } else {
-            $GLOBALS['log']->info('End: SoapHelperWebServices->getRelationshipResults - ' . $link_field_name . ' relationship does not exists');
-            return false;
-        } // else
+        }
+        $GLOBALS['log']->info('End: SoapHelperWebServices->getRelationshipResults - ' . $link_field_name . ' relationship does not exists');
+        return false;
+        // else
     } // fn
 
-    function get_field_list($value, $fields, $translate=true)
+    public function get_field_list($value, $fields, $translate=true)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_field_list');
         $module_fields = array();
@@ -165,7 +166,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
                         $options_dom = array();
                     }
                     foreach ($options_dom as $key=>$oneOption) {
-                        $options_ret[$key] = $this->get_name_value($key,$oneOption);
+                        $options_ret[$key] = $this->get_name_value($key, $oneOption);
                     }
                 }
 
@@ -201,27 +202,27 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
             } //foreach
         } //if
 
-		if ($value->module_dir == 'Bugs') {
-		    require_once('modules/Releases/Release.php');
-		    $seedRelease = new Release();
-		    $options = $seedRelease->get_releases(TRUE, "Active");
-		    $options_ret = array();
-		    foreach ($options as $name=>$value) {
-		        $options_ret[] =  array('name'=> $name , 'value'=>$value);
-		    }
-		    if (isset($module_fields['fixed_in_release'])) {
-		        $module_fields['fixed_in_release']['type'] = 'enum';
-		        $module_fields['fixed_in_release']['options'] = $options_ret;
-		    }
-		    if (isset($module_fields['release'])) {
-		        $module_fields['release']['type'] = 'enum';
-		        $module_fields['release']['options'] = $options_ret;
-		    }
-		    if (isset($module_fields['release_name'])) {
-		        $module_fields['release_name']['type'] = 'enum';
-		        $module_fields['release_name']['options'] = $options_ret;
-		    }
-		}
+        if ($value->module_dir == 'Bugs') {
+            require_once('modules/Releases/Release.php');
+            $seedRelease = new Release();
+            $options = $seedRelease->get_releases(true, "Active");
+            $options_ret = array();
+            foreach ($options as $name=>$value) {
+                $options_ret[] =  array('name'=> $name , 'value'=>$value);
+            }
+            if (isset($module_fields['fixed_in_release'])) {
+                $module_fields['fixed_in_release']['type'] = 'enum';
+                $module_fields['fixed_in_release']['options'] = $options_ret;
+            }
+            if (isset($module_fields['release'])) {
+                $module_fields['release']['type'] = 'enum';
+                $module_fields['release']['options'] = $options_ret;
+            }
+            if (isset($module_fields['release_name'])) {
+                $module_fields['release_name']['type'] = 'enum';
+                $module_fields['release_name']['options'] = $options_ret;
+            }
+        }
 
         if (isset($value->assigned_user_name) && isset($module_fields['assigned_user_id'])) {
             $module_fields['assigned_user_name'] = $module_fields['assigned_user_id'];
@@ -244,20 +245,20 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
         return array('module_fields' => $module_fields, 'link_fields' => $link_fields);
     }
 
-    function get_subpanel_defs($module, $type)
+    public function get_subpanel_defs($module, $type)
     {
         global $beanList, $beanFiles;
         $results = array();
         switch ($type) {
-	        case 'default':
-	        default:
-	            if (file_exists ('modules/'.$module.'/metadata/subpaneldefs.php')) {
-	                require ('modules/'.$module.'/metadata/subpaneldefs.php');
-	            }
-	            if (file_exists('custom/modules/'.$module.'/Ext/Layoutdefs/layoutdefs.ext.php')) {
-	                require ('custom/modules/'.$module.'/Ext/Layoutdefs/layoutdefs.ext.php');
-	            }
-	    }
+            case 'default':
+            default:
+                if (file_exists('modules/'.$module.'/metadata/subpaneldefs.php')) {
+                    require('modules/'.$module.'/metadata/subpaneldefs.php');
+                }
+                if (file_exists('custom/modules/'.$module.'/Ext/Layoutdefs/layoutdefs.ext.php')) {
+                    require('custom/modules/'.$module.'/Ext/Layoutdefs/layoutdefs.ext.php');
+                }
+        }
 
         //Filter results for permissions
         foreach ($layout_defs[$module]['subpanel_setup'] as $subpanel => $subpaneldefs) {
@@ -275,7 +276,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
         return $results;
     }
 
-    function get_module_view_defs($module_name, $type, $view)
+    public function get_module_view_defs($module_name, $type, $view)
     {
         require_once('include/MVC/View/SugarView.php');
         $metadataFile = null;
@@ -287,7 +288,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
                 if ($view == 'subpanel') {
                     $results = $this->get_subpanel_defs($module_name, $type);
                 } else {
-                    $v = new SugarView(null,array());
+                    $v = new SugarView(null, array());
                     $v->module = $module_name;
                     $v->type = $view;
                     $fullView = ucfirst($view) . 'View';
@@ -310,7 +311,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
      * @param array $availModules An array of all the modules the user already has access to.
      * @return array Modules enabled within the application.
      */
-    function get_visible_modules($availModules)
+    public function get_visible_modules($availModules)
     {
         require_once("modules/MySettings/TabController.php");
         $controller = new TabController();
@@ -331,7 +332,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
      *
      * @return array
      */
-    function get_upcoming_activities()
+    public function get_upcoming_activities()
     {
         global $beanList;
         $maxCount = 10;
@@ -351,16 +352,21 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
             $seed = new $class_name();
             $query = $this->generateUpcomingActivitiesWhereClause($seed, $meta);
 
-            $response = $seed->get_list(/* Order by date field */"{$meta['date_field']} ASC",  /*Where clause */$query, /* No Offset */ 0,
-                                        /* No limit */-1, /* Max 10 items */10, /*No Deleted */ 0);
+            $response = $seed->get_list(/* Order by date field */"{$meta['date_field']} ASC",  /*Where clause */
+                $query, /* No Offset */
+                0,
+                                        /* No limit */-1, /* Max 10 items */
+                10, /*No Deleted */
+                0
+            );
 
             $result = array();
 
             if (isset($response['list'])) {
-                $result = $this->format_upcoming_activities_entries($response['list'],$meta['date_field']);
+                $result = $this->format_upcoming_activities_entries($response['list'], $meta['date_field']);
             }
 
-            $results = array_merge($results,$result);
+            $results = array_merge($results, $result);
         }
 
         //Sort the result list by the date due flag in ascending order
@@ -372,7 +378,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
         return $results;
     }
 
-    function generateUpcomingActivitiesWhereClause($seed,$meta)
+    public function generateUpcomingActivitiesWhereClause($seed, $meta)
     {
         $query = array();
         $query_date = TimeDate::getInstance()->nowDb();
@@ -386,7 +392,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
             $query[] = "{$seed->table_name}.{$meta['status_field']} {$meta['status_opp']} '".$GLOBALS['db']->quote($meta['status'])."' ";
         }
 
-        return implode(" AND ",$query);
+        return implode(" AND ", $query);
     }
     /**
      * Given a list of bean entries, format the expected response.
@@ -395,7 +401,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
      * @param string $date_field Name of the field storing the date field we are examining
      * @return array The results.
      */
-    function format_upcoming_activities_entries($list,$date_field)
+    public function format_upcoming_activities_entries($list, $date_field)
     {
         $results = array();
         foreach ($list as $bean) {
@@ -413,7 +419,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
      * @param array $b
      * @return int Indicates equality for date due flag
      */
-    static function cmp_datedue($a, $b)
+    public static function cmp_datedue($a, $b)
     {
         $a_date = strtotime($a['date_due']) ;
         $b_date = strtotime($b['date_due']) ;

@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,9 +34,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
 
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -48,16 +49,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class VarDefHandler
 {
-    var $meta_array_name;
-    var $target_meta_array = false;
-    var $start_none = false;
-    var $extra_array = array();					//used to add custom items
-    var $options_array = array();
-    var $module_object;
-    var $start_none_lbl = null;
+    public $meta_array_name;
+    public $target_meta_array = false;
+    public $start_none = false;
+    public $extra_array = array();					//used to add custom items
+    public $options_array = array();
+    public $module_object;
+    public $start_none_lbl = null;
 
 
-    function __construct($module, $meta_array_name=null)
+    public function __construct($module, $meta_array_name=null)
     {
         $this->meta_array_name = $meta_array_name;
         $this->module_object = $module;
@@ -73,7 +74,7 @@ class VarDefHandler
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function VarDefHandler($module, $meta_array_name=null)
+    public function VarDefHandler($module, $meta_array_name=null)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -84,7 +85,7 @@ class VarDefHandler
         self::__construct($module, $meta_array_name);
     }
 
-    function get_vardef_array($use_singular=false, $remove_dups = false, $use_field_name = false, $use_field_label = false)
+    public function get_vardef_array($use_singular=false, $remove_dups = false, $use_field_name = false, $use_field_label = false)
     {
         global $dictionary;
         global $current_language;
@@ -169,18 +170,18 @@ class VarDefHandler
         }
         if ($use_singular == true) {
             return convert_module_to_singular($this->options_array);
-        } else {
-            return $this->options_array;
         }
+        return $this->options_array;
+        
 
         //end get_vardef_array
     }
 
 
-    function compare_type($value_array)
+    public function compare_type($value_array)
     {
 
-		//Filter nothing?
+        //Filter nothing?
         if (!is_array($this->target_meta_array)) {
             return true;
         }

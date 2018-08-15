@@ -1,10 +1,11 @@
 <?php
-/*********************************************************************************
+/**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
-
- * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
- * Copyright (C) 2011 - 2014 Salesagility Ltd.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -33,9 +34,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
- * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- ********************************************************************************/
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
 
  define('VCREND', '50');
  define('VCRSTART', '10');
@@ -45,10 +46,10 @@
  class SugarVCR
  {
 
- 	/**
- 	 * records the query in the session for later retrieval
- 	 */
-     static function store($module, $query)
+    /**
+     * records the query in the session for later retrieval
+     */
+     public static function store($module, $query)
      {
          $_SESSION[$module .'2_QUERY'] = $query;
      }
@@ -56,7 +57,7 @@
      /**
       * This function retrieves a query from the session
       */
-     static function retrieve($module)
+     public static function retrieve($module)
      {
          return (!empty($_SESSION[$module .'2_QUERY']) ? $_SESSION[$module .'2_QUERY'] : '');
      }
@@ -64,7 +65,7 @@
      /**
       * return the start, prev, next, end
       */
-     static function play($module, $offset)
+     public static function play($module, $offset)
      {
          //given some global offset try to determine if we have this
          //in our array.
@@ -85,7 +86,7 @@
          return $menu;
      }
 
-     static function menu($module, $offset, $isAuditEnabled, $saveAndContinue = false)
+     public static function menu($module, $offset, $isAuditEnabled, $saveAndContinue = false)
      {
          $html_text = "";
          if ($offset < 0) {
@@ -151,14 +152,14 @@
          return $html_text;
      }
 
-     static function record($module, $offset)
+     public static function record($module, $offset)
      {
          $GLOBALS['log']->debug('SUGARVCR is recording more records');
          $start = max(0, $offset - VCRSTART);
          $index = $start;
          $db = DBManagerFactory::getInstance();
 
-         $result = $db->limitQuery(SugarVCR::retrieve($module),$start,($offset+VCREND),false);
+         $result = $db->limitQuery(SugarVCR::retrieve($module), $start, ($offset+VCREND), false);
          $index++;
 
          $ids = array();
@@ -171,7 +172,7 @@
          return $ids;
      }
 
-     static function recordIDs($module, $rids, $offset, $totalCount)
+     public static function recordIDs($module, $rids, $offset, $totalCount)
      {
          $index = $offset;
          $index++;
@@ -185,7 +186,7 @@
          $_SESSION[$module.'total'] = $totalCount;
      }
 
-     static function erase($module)
+     public static function erase($module)
      {
          if (isset($_SESSION) && isset($_SESSION[$module. 'QUERY_ARRAY'])) {
              unset($_SESSION[$module. 'QUERY_ARRAY']);
