@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -50,7 +49,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 logThis('At upload.php');
 
 //set the upgrade progress status.
-set_upgrade_progress('upload', 'in_progress');
+set_upgrade_progress('upload','in_progress');
 
 
 $stop = true; // flag to show "next"
@@ -64,61 +63,61 @@ if (file_exists('ModuleInstall/PackageManager/PackageManagerDisplay.php')) {
 ///////////////////////////////////////////////////////////////////////////////
 ////	UPLOAD FILE PROCESSING
 switch ($run) {
-    case 'upload':
-        logThis('running upload');
+	case 'upload':
+		logThis('running upload');
         $perform = false;
         $tempFile = '';
 
-        if (isset($_REQUEST['release_id']) && $_REQUEST['release_id'] != "") {
-            require_once('ModuleInstall/PackageManager/PackageManager.php');
-            $pm = new PackageManager();
-            $tempFile = '';
-            $perform = false;
-            if (!empty($_SESSION['ML_PATCHES'])) {
-                $release_map = $_SESSION['ML_PATCHES'][$_REQUEST['release_id']];
-                if (!empty($release_map)) {
-                    $tempFile = $pm->download($release_map['category_id'], $release_map['package_id'], $_REQUEST['release_id']);
-                    $perform = true;
-                    if ($release_map['type'] != 'patch') {
-                        $pm->performSetup($tempFile, $release_map['type'], false);
-                        header('Location: index.php?module=Administration&action=UpgradeWizard&view=module');
-                    }
-                }
-            }
+		if (isset($_REQUEST['release_id']) && $_REQUEST['release_id'] != "") {
+		    require_once('ModuleInstall/PackageManager/PackageManager.php');
+		    $pm = new PackageManager();
+		    $tempFile = '';
+		    $perform = false;
+		    if (!empty($_SESSION['ML_PATCHES'])) {
+		        $release_map = $_SESSION['ML_PATCHES'][$_REQUEST['release_id']];
+		        if (!empty($release_map)) {
+		            $tempFile = $pm->download($release_map['category_id'], $release_map['package_id'], $_REQUEST['release_id']);
+		            $perform = true;
+		            if ($release_map['type'] != 'patch') {
+		                $pm->performSetup($tempFile, $release_map['type'], false);
+		                header('Location: index.php?module=Administration&action=UpgradeWizard&view=module');
+		            }
+		        }
+		    }
 
-            $base_filename = urldecode($tempFile);
-        } else {
-            $upload = new UploadFile('upgrade_zip');
-            /* Bug 51722 - Cannot Upload Upgrade File if System Settings Are Not Sufficient, Just Make sure that we can
-            upload no matter what, set the default to 60M */
-            global $sugar_config;
-            $upload_maxsize_backup = $sugar_config['upload_maxsize'];
-            $sugar_config['upload_maxsize'] = 60000000;
-            /* End Bug 51722 */
-            if (!$upload->confirm_upload()) {
-                logThis('ERROR: no file uploaded!');
-                echo $mod_strings['ERR_UW_NO_FILE_UPLOADED'];
-                $error = $upload->get_upload_error();
-                // add PHP error if isset
-                if ($error) {
-                    $out = "<b><span class='error'>{$mod_strings['ERR_UW_PHP_FILE_ERRORS'][$error]}</span></b><br />";
-                }
-            } else {
-                $tempFile = "upload://".$upload->get_stored_file_name();
-                if (!$upload->final_move($tempFile)) {
-                    logThis('ERROR: could not move temporary file to final destination!');
-                    unlinkUWTempFiles();
-                    $out = "<b><span class='error'>{$mod_strings['ERR_UW_NOT_VALID_UPLOAD']}</span></b><br />";
-                } else {
-                    logThis('File uploaded to '.$tempFile);
-                    $base_filename = urldecode(basename($tempFile));
-                    $perform = true;
-                }
-            }
-            /* Bug 51722 - Restore the upload size in the config */
-            $sugar_config['upload_maxsize'] = $upload_maxsize_backup;
-            /* End Bug 51722 */
-        }
+		    $base_filename = urldecode($tempFile);
+		} else {
+		    $upload = new UploadFile('upgrade_zip');
+		    /* Bug 51722 - Cannot Upload Upgrade File if System Settings Are Not Sufficient, Just Make sure that we can
+		    upload no matter what, set the default to 60M */
+		    global $sugar_config;
+		    $upload_maxsize_backup = $sugar_config['upload_maxsize'];
+		    $sugar_config['upload_maxsize'] = 60000000;
+		    /* End Bug 51722 */
+		    if (!$upload->confirm_upload()) {
+		        logThis('ERROR: no file uploaded!');
+		        echo $mod_strings['ERR_UW_NO_FILE_UPLOADED'];
+		        $error = $upload->get_upload_error();
+		        // add PHP error if isset
+		        if ($error) {
+		            $out = "<b><span class='error'>{$mod_strings['ERR_UW_PHP_FILE_ERRORS'][$error]}</span></b><br />";
+		        }
+		    } else {
+		        $tempFile = "upload://".$upload->get_stored_file_name();
+		        if (!$upload->final_move($tempFile)) {
+		            logThis('ERROR: could not move temporary file to final destination!');
+		            unlinkUWTempFiles();
+		            $out = "<b><span class='error'>{$mod_strings['ERR_UW_NOT_VALID_UPLOAD']}</span></b><br />";
+		        } else {
+		            logThis('File uploaded to '.$tempFile);
+		            $base_filename = urldecode(basename($tempFile));
+		            $perform = true;
+		        }
+		    }
+		    /* Bug 51722 - Restore the upload size in the config */
+		    $sugar_config['upload_maxsize'] = $upload_maxsize_backup;
+		    /* End Bug 51722 */
+		}
         if ($perform) {
             $manifest_file = extractManifest($tempFile);
 
@@ -145,12 +144,12 @@ switch ($run) {
 
                 if (isset($manifest['icon']) && $manifest['icon'] != "") {
                     logThis('extracting icons.');
-                    $icon_location = extractFile($tempFile, $manifest['icon']);
+                    $icon_location = extractFile($tempFile ,$manifest['icon']);
                     $path_parts = pathinfo($icon_location);
                     copy($icon_location, remove_file_extension($target_path) . "-icon." . pathinfo($icon_location, PATHINFO_EXTENSION));
                 }
 
-                if (rename($tempFile, $target_path)) {
+                if (rename($tempFile , $target_path)) {
                     logThis('copying manifest.php to final destination.');
                     copy($manifest_file, $target_manifest);
                     $out .= "<b>{$base_filename} {$mod_strings['LBL_UW_FILE_UPLOADED']}.</b><br>\n";
@@ -175,16 +174,16 @@ switch ($run) {
             $_SESSION['install_manifest'] = base64_encode(serialize($serial_manifest));
         }
 
-        if (!empty($tempFile)) {
-            upgradeUWFiles($target_path);
-            //set the upgrade progress status. actually it should be set when a file is uploaded
-            set_upgrade_progress('upload', 'done');
-        }
+		if (!empty($tempFile)) {
+		    upgradeUWFiles($target_path);
+		    //set the upgrade progress status. actually it should be set when a file is uploaded
+		    set_upgrade_progress('upload','done');
+		}
 
-    break; // end 'upload'
+	break; // end 'upload'
 
-    case 'delete':
-        logThis('running delete');
+	case 'delete':
+		logThis('running delete');
 
         if (!isset($_REQUEST['install_file']) || ($_REQUEST['install_file'] == "")) {
             logThis('ERROR: trying to delete non-existent file: ['.$_REQUEST['install_file'].']');
@@ -207,9 +206,9 @@ switch ($run) {
 
         unlinkUWTempFiles();
         //set the upgrade progress status. actually it should be set when a file is uploaded
-        set_upgrade_progress('upload', 'in_progress');
+		set_upgrade_progress('upload','in_progress');
 
-    break;
+	break;
 }
 ////	END UPLOAD FILE PROCESSING FORM
 ///////////////////////////////////////////////////////////////////////////////
@@ -229,7 +228,7 @@ if (isset($_SESSION['install_file']) && !empty($_SESSION['install_file']) && is_
     $stop = true;
 }
 if ($stop == false) {
-    set_upgrade_progress('upload', 'done');
+    set_upgrade_progress('upload','done');
 }
 $frozen = $out;
 
@@ -286,7 +285,7 @@ $hidden_fields .= "<input type=\"hidden\" name=\"run\" value=\"upload\">";
 $form2 = '';
 /*  Removing Install From Sugar tab from Upgradewizard.
 if(class_exists("PackageManagerDisplay")) {
-    $form2 = PackageManagerDisplay::buildPatchDisplay($form, $hidden_fields, 'index.php', array('patch', 'module'));
+	$form2 = PackageManagerDisplay::buildPatchDisplay($form, $hidden_fields, 'index.php', array('patch', 'module'));
 }
 */
 if ($form2 == null) {

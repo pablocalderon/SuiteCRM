@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/Dashlets/Dashlet.php');
@@ -47,8 +46,8 @@ require_once('include/Dashlets/Dashlet.php');
 
 class JotPadDashlet extends Dashlet
 {
-    public $savedText; // users's saved text
-    public $height = '200'; // height of the pad
+    var $savedText; // users's saved text
+    var $height = '200'; // height of the pad
 
     /**
      * Constructor
@@ -57,7 +56,7 @@ class JotPadDashlet extends Dashlet
      * @param guid $id id for the current dashlet (assigned from Home module)
      * @param array $def options saved for this dashlet
      */
-    public function __construct($id, $def)
+    function __construct($id, $def)
     {
         $this->loadLanguage('JotPadDashlet'); // load the language strings here
 
@@ -87,7 +86,7 @@ class JotPadDashlet extends Dashlet
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function JotPadDashlet($id, $def)
+    function JotPadDashlet($id, $def)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -104,7 +103,7 @@ class JotPadDashlet extends Dashlet
      *
      * @return string html to display dashlet
      */
-    public function display()
+    function display()
     {
         $ss = new Sugar_Smarty();
         $ss->assign('savedText', SugarCleaner::cleanHtml($this->savedText));
@@ -122,7 +121,7 @@ class JotPadDashlet extends Dashlet
      *
      * @return string javascript to use with this dashlet
      */
-    public function displayScript()
+    function displayScript()
     {
         $ss = new Sugar_Smarty();
         $ss->assign('saving', $this->dashletStrings['LBL_SAVING']);
@@ -138,7 +137,7 @@ class JotPadDashlet extends Dashlet
      *
      * @return string html to display form
      */
-    public function displayOptions()
+    function displayOptions()
     {
         global $app_strings;
 
@@ -160,7 +159,7 @@ class JotPadDashlet extends Dashlet
      * @param array $req $_REQUEST
      * @return array filtered options to save
      */
-    public function saveOptions($req)
+    function saveOptions($req)
     {
         global $sugar_config, $timedate, $current_user, $theme;
         $options = array();
@@ -183,7 +182,7 @@ class JotPadDashlet extends Dashlet
      * Used to save text on textarea blur. Accessed via Home/CallMethodDashlet.php
      * This is an example of how to to call a custom method via ajax
      */
-    public function saveText()
+    function saveText()
     {
         $json = getJSONobj();
         if (isset($_REQUEST['savedText'])) {
@@ -198,3 +197,4 @@ class JotPadDashlet extends Dashlet
                                        'savedText' => $optionsArray['savedText']));
     }
 }
+

@@ -7,8 +7,8 @@ require_once('include/MVC/View/views/view.detail.php');
 
 class FP_eventsViewDetail extends ViewDetail
 {
-    public $currSymbol;
-    public function __construct()
+    var $currSymbol;
+    function __construct()
     {
         parent::__construct();
     }
@@ -16,7 +16,7 @@ class FP_eventsViewDetail extends ViewDetail
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function FP_eventsViewDetail()
+    function FP_eventsViewDetail()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -28,9 +28,10 @@ class FP_eventsViewDetail extends ViewDetail
     }
 
 
-    public function display()
+    function display()
     {
         $this->bean->email_templates();
         parent::display();
     }
 }
+

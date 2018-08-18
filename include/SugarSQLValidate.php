@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once 'include/php-sql-parser.php';
@@ -87,12 +86,12 @@ class SugarSQLValidate
             return false;
         }
         // verify SELECT didn't change
-        if (count($parsed["SELECT"]) != 1 || $parsed["SELECT"][0] !== array('expr_type' => 'colref','alias' => '`dummy`', 'base_expr' => 'dummy', 'sub_tree' => false)) {
+        if (count($parsed["SELECT"]) != 1 || $parsed["SELECT"][0] !== array ('expr_type' => 'colref','alias' => '`dummy`', 'base_expr' => 'dummy', 'sub_tree' => false)) {
             $GLOBALS['log']->debug("validation failed SELECT");
             return false;
         }
         // verify FROM didn't change
-        if (count($parsed["FROM"]) != 1 || $parsed["FROM"][0] !== array('table' => 'dummytable', 'alias' => 'dummytable', 'join_type' => 'JOIN', 'ref_type' => '', 'ref_clause' => '', 'base_expr' => false, 'sub_tree' => false)) {
+        if (count($parsed["FROM"]) != 1 || $parsed["FROM"][0] !== array ('table' => 'dummytable', 'alias' => 'dummytable', 'join_type' => 'JOIN', 'ref_type' => '', 'ref_clause' => '', 'base_expr' => false, 'sub_tree' => false)) {
             $GLOBALS['log']->debug("validation failed FROM");
             return false;
         }
@@ -114,8 +113,8 @@ class SugarSQLValidate
      * @var array
      */
     protected $bad_functions = array("benchmark", "encode", "sleep",
-    "generate_series", "load_file", "sys_eval", "user_name",
-    "xp_cmdshell", "sys_exec", "sp_replwritetovarbin");
+	"generate_series", "load_file", "sys_eval", "user_name",
+	"xp_cmdshell", "sys_exec", "sp_replwritetovarbin");
 
     /**
      * Validate parsed SQL expression
@@ -172,13 +171,13 @@ class SugarSQLValidate
      * @var array
      */
     protected $subquery_allowed_tables = array(
-        'email_addr_bean_rel' => true,
-        'email_addresses' => true,
-        'emails' => true,
-        'emails_beans' => true,
-        'emails_text' => true,
-        'teams' => true,
-        'team_sets_teams' => true);
+		'email_addr_bean_rel' => true,
+		'email_addresses' => true,
+		'emails' => true,
+		'emails_beans' => true,
+		'emails_text' => true,
+		'teams' => true,
+		'team_sets_teams' => true);
 
     /**
      * Allow some subqueries to pass
@@ -239,15 +238,15 @@ class SugarSQLValidate
         if ($name == ",") {
             return true;
         } // sometimes , gets as column name
-        $name = strtolower($name); // case does not matter
+	    $name = strtolower($name); // case does not matter
 
-        $parts = explode(".", $name);
+	    $parts = explode(".", $name);
         if (count($parts) > 2) {
             // too many dots
             return false;
         }
 
-        foreach ($parts as $part) {
+        foreach ($parts AS $part) {
             //the user_hash column is forbidden in passed in SQL
             if ($part == "user_hash") {
                 return false;

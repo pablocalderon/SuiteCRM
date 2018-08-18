@@ -10,3 +10,4 @@ $container['CurrentLanguage'] = function ($container) {
     $currentLanguage = new CurrentLanguage($container);
     return $currentLanguage;
 };
+

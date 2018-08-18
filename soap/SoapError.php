@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,18 +36,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('soap/SoapErrorDefinitions.php');
 class SoapError
 {
-    public $name;
-    public $number;
-    public $description;
+    var $name;
+    var $number;
+    var $description;
 
-    public function __construct()
+    function __construct()
     {
         $this->set_error('no_error');
     }
@@ -56,7 +55,7 @@ class SoapError
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function SoapError()
+    function SoapError()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -68,7 +67,7 @@ class SoapError
     }
 
 
-    public function set_error($error_name)
+    function set_error($error_name)
     {
         global $error_defs;
         if (!isset($error_defs[$error_name])) {
@@ -82,24 +81,24 @@ class SoapError
         }
     }
 
-    public function get_soap_array()
+    function get_soap_array()
     {
-        return array('number'=>$this->number,
-                     'name'=>$this->name,
-                     'description'=>$this->description);
+        return Array('number'=>$this->number,
+					 'name'=>$this->name,
+					 'description'=>$this->description);
     }
 
-    public function getName()
+    function getName()
     {
         return $this->name;
     } // fn
 
-    public function getFaultCode()
+    function getFaultCode()
     {
         return $this->number;
     } // fn
 
-    public function getDescription()
+    function getDescription()
     {
         return $this->description;
     } // fn

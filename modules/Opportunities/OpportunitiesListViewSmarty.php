@@ -4,7 +4,7 @@ require_once('include/ListView/ListViewSmarty.php');
 
 class OpportunitiesListViewSmarty extends ListViewSmarty
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -12,7 +12,7 @@ class OpportunitiesListViewSmarty extends ListViewSmarty
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function OpportunitiesListViewSmarty()
+    function OpportunitiesListViewSmarty()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -24,7 +24,7 @@ class OpportunitiesListViewSmarty extends ListViewSmarty
     }
 
 
-    public function buildExportLink($id = 'export_link')
+    function buildExportLink($id = 'export_link')
     {
         global $app_strings;
 

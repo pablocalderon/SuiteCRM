@@ -7,7 +7,7 @@ require_once('include/MVC/View/views/view.edit.php');
 
 class AOS_InvoicesViewEdit extends ViewEdit
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -15,7 +15,7 @@ class AOS_InvoicesViewEdit extends ViewEdit
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function AOS_InvoicesViewEdit()
+    function AOS_InvoicesViewEdit()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -27,13 +27,13 @@ class AOS_InvoicesViewEdit extends ViewEdit
     }
 
 
-    public function display()
+    function display()
     {
         $this->populateInvoiceTemplates();
         parent::display();
     }
 
-    public function populateInvoiceTemplates()
+    function populateInvoiceTemplates()
     {
         global $app_list_strings;
 

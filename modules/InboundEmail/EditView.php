@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 require_once 'modules/AOP_Case_Updates/util.php';
 
 $_REQUEST['edit']='true';
@@ -95,7 +94,7 @@ $GLOBALS['log']->info("InboundEmail Edit View");
 
 /* Start custom setup logic */
 // status drop down
-$status = get_select_options_with_id_separate_key($app_list_strings['user_status_dom'], $app_list_strings['user_status_dom'], $focus->status);
+$status = get_select_options_with_id_separate_key($app_list_strings['user_status_dom'],$app_list_strings['user_status_dom'], $focus->status);
 // default MAILBOX value
 if (empty($focus->mailbox)) {
     $mailbox = 'INBOX';
@@ -139,7 +138,7 @@ if ($focus->is_personal) {
 $mailbox_type = get_select_options_with_id($domMailBoxType, $focus->mailbox_type);
 
 // auto-reply email template
-$email_templates_arr = get_bean_select_array(true, 'EmailTemplate', 'name', '', 'name', true);
+$email_templates_arr = get_bean_select_array(true, 'EmailTemplate','name', '','name',true);
 
 if (!empty($focus->stored_options)) {
     $storedOptions = unserialize(base64_decode($focus->stored_options));
@@ -177,7 +176,7 @@ if (!empty($focus->stored_options)) {
         $leaveMessagesOnMailServer = 0;
     } // else
 } else { // initialize empty vars for template
-    $from_name = $current_user->name;
+	$from_name = $current_user->name;
     $from_addr = $current_user->email1;
     isValidEmailAddress($from_addr);
     $reply_to_name = '';
@@ -198,10 +197,10 @@ if (!empty($focus->stored_options)) {
 // return action
 if (isset($focus->id)) {
     $return_action = 'DetailView';
-    $validatePass = false;
+    $validatePass = FALSE;
 } else {
     $return_action = 'ListView';
-    $validatePass = true;
+    $validatePass = TRUE;
 }
 
 // javascript
@@ -306,9 +305,9 @@ $xtpl->assign('REPLY_TO_NAME', $reply_to_name);
 $xtpl->assign('REPLY_TO_ADDR', $reply_to_addr);
 $createCaseRowStyle = "display:none";
 if ($focus->template_id) {
-    $xtpl->assign("EDIT_TEMPLATE", "visibility:inline");
+    $xtpl->assign("EDIT_TEMPLATE","visibility:inline");
 } else {
-    $xtpl->assign("EDIT_TEMPLATE", "visibility:hidden");
+    $xtpl->assign("EDIT_TEMPLATE","visibility:hidden");
 }
 if ($focus->port == 110 || $focus->port == 995) {
     $xtpl->assign('DISPLAY', "display:''");
@@ -349,13 +348,13 @@ if ($focus->is_personal) {
 }
 
 
-$xtpl->assign('hasGrpFld', $focus->groupfolder_id == null ? '' : 'checked="1"');
+$xtpl->assign('hasGrpFld',$focus->groupfolder_id == null ? '' : 'checked="1"');
 $xtpl->assign('LEAVEMESSAGESONMAILSERVER_STYLE', $leaveMessagesOnMailServerStyle);
 $xtpl->assign('LEAVEMESSAGESONMAILSERVER', get_select_options_with_id($app_list_strings['dom_int_bool'], $leaveMessagesOnMailServer));
 
 $distributionMethod = get_select_options_with_id($app_list_strings['dom_email_distribution_for_auto_create'], $distrib_method);
 $xtpl->assign('DISTRIBUTION_METHOD', $distributionMethod);
-$xtpl->assign('DISTRIBUTION_OPTIONS', getAOPAssignField('distribution_options', $distributionAssignOptions));
+$xtpl->assign('DISTRIBUTION_OPTIONS', getAOPAssignField('distribution_options',$distributionAssignOptions));
 $xtpl->assign('distribution_user_name', $distribution_user_name);
 $xtpl->assign('distribution_user_id', $distribution_user_id);
 
@@ -364,9 +363,9 @@ $xtpl->assign('distribution_user_id', $distribution_user_id);
 $xtpl->assign('CREATE_CASE_ROW_STYLE', $createCaseRowStyle);
 $xtpl->assign('CREATE_CASE_EMAIL_TEMPLATE_OPTIONS', get_select_options_with_id($email_templates_arr, $create_case_email_template));
 if (!empty($create_case_email_template)) {
-    $xtpl->assign("CREATE_CASE_EDIT_TEMPLATE", "visibility:inline");
+    $xtpl->assign("CREATE_CASE_EDIT_TEMPLATE","visibility:inline");
 } else {
-    $xtpl->assign("CREATE_CASE_EDIT_TEMPLATE", "visibility:hidden");
+    $xtpl->assign("CREATE_CASE_EDIT_TEMPLATE","visibility:hidden");
 }
 
 $quicksearch_js = "";

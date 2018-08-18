@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2016 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,15 +34,15 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 require_once('modules/AOS_Products_Quotes/AOS_Products_Quotes_sugar.php');
 
 class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -50,7 +50,7 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function AOS_Products_Quotes()
+    function AOS_Products_Quotes()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -62,7 +62,7 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
     }
 
 
-    public function save_lines($post_data, $parent, $groups = array(), $key = '')
+    function save_lines($post_data, $parent, $groups = array(), $key = '')
     {
         $line_count = isset($post_data[$key . 'name']) ? count($post_data[$key . 'name']) : 0;
         $j = 0;
@@ -122,7 +122,7 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
         }
     }
 
-    public function save($check_notify = false)
+    function save($check_notify = FALSE)
     {
         require_once('modules/AOS_Products_Quotes/AOS_Utils.php');
         perform_aos_save($this);
@@ -132,7 +132,7 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
     /**
      * @param $parent SugarBean
      */
-    public function mark_lines_deleted($parent)
+    function mark_lines_deleted($parent)
     {
         require_once('modules/Relationships/Relationship.php');
         $product_quotes = $parent->get_linked_beans('aos_products_quotes', $this->object_name);

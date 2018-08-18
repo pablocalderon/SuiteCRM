@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 class RepairAndClear
@@ -156,7 +155,7 @@ class RepairAndClear
                 ob_flush();
             }
             $sql = '';
-            if (!isset($mod_strings['LBL_ALL_MODULES']) || ($this->module_list && !in_array($mod_strings['LBL_ALL_MODULES'], $this->module_list))) {
+            if (!isset($mod_strings['LBL_ALL_MODULES']) || ($this->module_list && !in_array($mod_strings['LBL_ALL_MODULES'],$this->module_list))) {
                 $repair_related_modules = array_keys($dictionary);
                 //repair DB
                 $dm = inDeveloperMode();
@@ -165,7 +164,7 @@ class RepairAndClear
                     if (isset($beanFiles[$bean_name]) && file_exists($beanFiles[$bean_name])) {
                         require_once($beanFiles[$bean_name]);
                         $GLOBALS['reload_vardefs'] = true;
-                        $focus = new $bean_name();
+                        $focus = new $bean_name ();
                         #30273
                         if ($focus->disable_vardefs == false) {
                             include('modules/' . $focus->module_dir . '/vardefs.php');
@@ -184,10 +183,10 @@ class RepairAndClear
                 if ($this->show_output) {
                     echo "<script type=\"text/javascript\">document.getElementById('rdloading').style.display = \"none\";</script>";
                 }
-                if (isset($sql) && !empty($sql)) {
+                if (isset ($sql) && !empty ($sql)) {
                     $qry_str = "";
                     foreach (explode("\n", $sql) as $line) {
-                        if (!empty($line) && substr($line, -2) != "*/") {
+                        if (!empty ($line) && substr($line, -2) != "*/") {
                             $line .= ";";
                         }
 
@@ -295,7 +294,7 @@ class RepairAndClear
         if ($this->show_output) {
             echo "<h3>{$mod_strings['LBL_QR_CLEARVADEFS']}</h3>";
         }
-        if (!empty($this->module_list) && is_array($this->module_list) && !in_array(translate('LBL_ALL_MODULES'), $this->module_list)) {
+        if (!empty($this->module_list) && is_array($this->module_list) && !in_array(translate('LBL_ALL_MODULES'),$this->module_list)) {
             foreach ($this->module_list as $module_name_singular) {
                 $this->_clearCache(sugar_cached('modules/').$this->_getModuleNamePlural($module_name_singular), 'vardefs.php');
             }
@@ -310,7 +309,7 @@ class RepairAndClear
             echo "<h3>{$mod_strings['LBL_QR_CLEARJS']}</h3>";
         }
 
-        if (!in_array(translate('LBL_ALL_MODULES'), $this->module_list) && !empty($this->module_list)) {
+        if (!in_array(translate('LBL_ALL_MODULES'),$this->module_list) && !empty($this->module_list)) {
             foreach ($this->module_list as $module_name_singular) {
                 $this->_clearCache(sugar_cached('modules/').$this->_getModuleNamePlural($module_name_singular), '.js');
             }
@@ -324,7 +323,7 @@ class RepairAndClear
         if ($this->show_output) {
             echo "<h3>{$mod_strings['LBL_QR_CLEARJSLANG']}</h3>";
         }
-        if (!in_array(translate('LBL_ALL_MODULES'), $this->module_list) && !empty($this->module_list)) {
+        if (!in_array(translate('LBL_ALL_MODULES'),$this->module_list) && !empty($this->module_list)) {
             foreach ($this->module_list as $module_name_singular) {
                 $this->_clearCache(sugar_cached('jsLanguage/').$this->_getModuleNamePlural($module_name_singular), '.js');
             }
@@ -424,7 +423,7 @@ class RepairAndClear
         global $mod_strings;
 
         // skip if not a SugarBean object
-        if (!($focus instanceof SugarBean)) {
+        if (!($focus instanceOf SugarBean)) {
             return;
         }
 
@@ -436,7 +435,7 @@ class RepairAndClear
                 $focus->create_audit_table();
             } else {
                 if ($this->show_output) {
-                    $echo=str_replace('%1$', $focus->object_name, $mod_strings['LBL_REBUILD_AUDIT_SKIP']);
+                    $echo=str_replace('%1$',$focus->object_name,$mod_strings['LBL_REBUILD_AUDIT_SKIP']);
                     echo $echo;
                 }
             }

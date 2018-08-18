@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /**
  * Reminder_Invitee class
@@ -44,19 +43,19 @@
  */
 class Reminder_Invitee extends Basic
 {
-    public $name;
+    var $name;
 
-    public $new_schema = true;
-    public $module_dir = 'Reminders_Invitees';
-    public $object_name = 'Reminder_Invitee';
-    public $table_name = 'reminders_invitees';
-    public $tracker_visibility = false;
-    public $importable = false;
-    public $disable_row_level_security = true;
+    var $new_schema = true;
+    var $module_dir = 'Reminders_Invitees';
+    var $object_name = 'Reminder_Invitee';
+    var $table_name = 'reminders_invitees';
+    var $tracker_visibility = false;
+    var $importable = false;
+    var $disable_row_level_security = true;
 
-    public $reminder_id;
-    public $related_invitee_module;
-    public $related_invitee_module_id;
+    var $reminder_id;
+    var $related_invitee_module;
+    var $related_invitee_module_id;
 
     /**
      * Save multiple reminders invitees data.

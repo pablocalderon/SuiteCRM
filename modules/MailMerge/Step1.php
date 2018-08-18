@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*
  * Created on Oct 4, 2005
@@ -106,12 +105,12 @@ if (!empty($_REQUEST['record'])) {
         $where = substr(trim($where), 5, strlen($where));
     }
     $orderBy = '';
-    $query = $focus->create_export_query($orderBy, $where);
+    $query = $focus->create_export_query($orderBy,$where);
 
-    $result = $db->query($query, true, "Error mail merging {$_SESSION['MAILMERGE_MODULE']}: "."<BR>$query");
+    $result = $db->query($query,true,"Error mail merging {$_SESSION['MAILMERGE_MODULE']}: "."<BR>$query");
 
     $new_arr = array();
-    while ($val = $db->fetchByAssoc($result, false)) {
+    while ($val = $db->fetchByAssoc($result,false)) {
         array_push($new_arr, $val['id']);
     }
     $_SESSION['MAILMERGE_RECORD'] = $new_arr;
@@ -161,8 +160,8 @@ if (isset($_SESSION['MAILMERGE_RECORD'])) {
 
 
         if ($rModule != 'Contacts'
-           && $rModule != 'Leads' && $rModule != 'Products' && $rModule != 'Campaigns' && $rModule != 'Projects'
-           ) {
+    	   && $rModule != 'Leads' && $rModule != 'Products' && $rModule != 'Campaigns' && $rModule != 'Projects'
+    	   ) {
             $_SESSION['MAILMERGE_SKIP_REL'] = false;
             $xtpl->assign("STEP", "2");
             $xtpl->assign("SELECTED_OBJECTS", $selected_objects);
@@ -189,7 +188,7 @@ $xtpl->assign("MAILMERGE_TEMPLATES", get_select_options_with_id(getDocumentRevis
 
 if (isset($_SESSION['MAILMERGE_MODULE'])) {
     $module_select_text = $mod_strings['LBL_MAILMERGE_SELECTED_MODULE'];
-    $xtpl->assign("MAILMERGE_NUM_SELECTED_OBJECTS", count($_SESSION['MAILMERGE_RECORD'])." ".$_SESSION['MAILMERGE_MODULE']." Selected");
+    $xtpl->assign("MAILMERGE_NUM_SELECTED_OBJECTS",count($_SESSION['MAILMERGE_RECORD'])." ".$_SESSION['MAILMERGE_MODULE']." Selected");
 } else {
     $module_select_text = $mod_strings['LBL_MAILMERGE_MODULE'];
 }
@@ -211,12 +210,12 @@ $xtpl->parse("main");
 $xtpl->out("main");
 
 /*function get_user_module_list($user){
-    global $app_list_strings, $current_language;
-    $app_list_strings = return_app_list_strings_language($current_language);
-    $modules = query_module_access_list($user);
-    global $modInvisList;
+	global $app_list_strings, $current_language;
+	$app_list_strings = return_app_list_strings_language($current_language);
+	$modules = query_module_access_list($user);
+	global $modInvisList;
 
-    return $modules;
+	return $modules;
 }*/
 
 function getDocumentRevisions()
@@ -233,9 +232,9 @@ WHERE ((active_date <= $currentDate AND exp_date > $currentDate)
 	OR (active_date <= $currentDate AND ((exp_date = $empty_date OR (exp_date is NULL)))))
 AND is_template = 1 AND template_type = 'mailmerge' AND documents.deleted = 0 ORDER BY document_name";
 
-    $result = $document->db->query($query, true, "Error retrieving $document->object_name list: ");
+    $result = $document->db->query($query,true,"Error retrieving $document->object_name list: ");
 
-    $list = array();
+    $list = Array();
     $list['None'] = 'None';
     while (($row = $document->db->fetchByAssoc($result)) != null) {
         $revision = null;
@@ -249,3 +248,4 @@ AND is_template = 1 AND template_type = 'mailmerge' AND documents.deleted = 0 OR
     }
     return $list;
 }
+

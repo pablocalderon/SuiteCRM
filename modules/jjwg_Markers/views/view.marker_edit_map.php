@@ -6,7 +6,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class Jjwg_MarkersViewMarker_Edit_Map extends SugarView
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -14,7 +14,7 @@ class Jjwg_MarkersViewMarker_Edit_Map extends SugarView
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function Jjwg_MarkersViewMarker_Edit_Map()
+    function Jjwg_MarkersViewMarker_Edit_Map()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -26,7 +26,7 @@ class Jjwg_MarkersViewMarker_Edit_Map extends SugarView
     }
 
 
-    public function display()
+    function display()
     {
 
     // Users local settings for decimal seperator and number grouping seperator
@@ -139,7 +139,7 @@ function initialize() {
   );
   var shape = {coord: [1, 1, 1, 37, 32, 37, 32, 1],type: 'poly'};
 <?php
-  } // empty image?>
+  } // empty image ?>
 
   var marker = new google.maps.Marker({
     position: latLng,

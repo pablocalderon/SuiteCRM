@@ -3,13 +3,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -38,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -55,7 +54,7 @@ require_once('include/MVC/View/views/view.list.php');
 
 class ProjectTaskViewList extends ViewList
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -63,7 +62,7 @@ class ProjectTaskViewList extends ViewList
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function ProjectTaskViewList()
+    function ProjectTaskViewList()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -75,7 +74,7 @@ class ProjectTaskViewList extends ViewList
     }
 
 
-    public function display()
+    function display()
     {
         if (!$this->bean->ACLAccess('list')) {
             ACLController::displayNoAccess();
@@ -115,7 +114,7 @@ class ProjectTaskViewList extends ViewList
                     $blockVariables[] = 'lvso';
                 }
 
-                $current_query_by_page = json_decode(html_entity_decode($_REQUEST['current_query_by_page']), true);
+                $current_query_by_page = json_decode(html_entity_decode($_REQUEST['current_query_by_page']),true);
                 foreach ($current_query_by_page as $search_key=>$search_value) {
                     if ($search_key != $module.'2_'.strtoupper($this->bean->object_name).'_offset' && !in_array($search_key, $blockVariables)) {
                         if (!is_array($search_value)) {
@@ -230,17 +229,17 @@ class ProjectTaskViewList extends ViewList
 
         if (isset($this->options['show_title']) && $this->options['show_title']) {
             $moduleName = isset($this->seed->module_dir) ? $this->seed->module_dir : $GLOBALS['mod_strings']['LBL_MODULE_NAME'];
-            echo getClassicModuleTitle($moduleName, array($GLOBALS['mod_strings']['LBL_MODULE_TITLE']), false);
+            echo getClassicModuleTitle($moduleName, array($GLOBALS['mod_strings']['LBL_MODULE_TITLE']), FALSE);
         }
 
         $where = '';
         if (isset($_REQUEST['query'])) {
             // we have a query
-            if (!empty($_SERVER['HTTP_REFERER']) && preg_match('/action=EditView/', $_SERVER['HTTP_REFERER'])) { // from EditView cancel
-                   $searchForm->populateFromArray($storeQuery->query);
-            } else {
-                $searchForm->populateFromRequest();
-            }
+	    	if (!empty($_SERVER['HTTP_REFERER']) && preg_match('/action=EditView/', $_SERVER['HTTP_REFERER'])) { // from EditView cancel
+	       		$searchForm->populateFromArray($storeQuery->query);
+	    	} else {
+	    	    $searchForm->populateFromRequest();
+	    	}
             $where_clauses = $searchForm->generateSearchWhere(true, $this->seed->module_dir);
             if (count($where_clauses) > 0) {
                 $where = '('. implode(' ) AND ( ', $where_clauses) . ')';
@@ -249,18 +248,18 @@ class ProjectTaskViewList extends ViewList
         }
         if ($use_old_search) {
             switch ($view) {
-                case 'basic_search':
-                    $searchForm->setup();
-                    $searchForm->displayBasic($headers);
-                    break;
-                 case 'advanced_search':
-                     $searchForm->setup();
-                    $searchForm->displayAdvanced($headers);
-                    break;
-                 case 'saved_views':
-                     echo $searchForm->displaySavedViews($listViewDefs, $lv, $headers);
-                   break;
-            }
+				case 'basic_search':
+			    	$searchForm->setup();
+			        $searchForm->displayBasic($headers);
+			        break;
+			     case 'advanced_search':
+			     	$searchForm->setup();
+			        $searchForm->displayAdvanced($headers);
+			        break;
+			     case 'saved_views':
+			     	echo $searchForm->displaySavedViews($listViewDefs, $lv, $headers);
+			       break;
+			}
         } else {
             echo $searchForm->display($headers);
         }

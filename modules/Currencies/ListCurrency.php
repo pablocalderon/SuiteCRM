@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,28 +36,28 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
  
  class ListCurrency
  {
-     public $focus = null;
-     public $list = null;
-     public $javascript = '<script>';
-     public function lookupCurrencies()
+     var $focus = null;
+     var $list = null;
+     var $javascript = '<script>';
+     function lookupCurrencies()
      {
          $this->focus = new Currency();
          $this->list = $this->focus->get_full_list('name');
          $this->focus->retrieve('-99');
          if (is_array($this->list)) {
-             $this->list = array_merge(array($this->focus), $this->list);
+             $this->list = array_merge(Array($this->focus), $this->list);
          } else {
-             $this->list = array($this->focus);
+             $this->list = Array($this->focus);
          }
      }
-     public function handleAdd()
+     function handleAdd()
      {
          global $current_user;
          if ($current_user->is_admin) {
@@ -77,8 +76,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
              }
          }
      }
-        
-     public function handleUpdate()
+		
+     function handleUpdate()
      {
          global $current_user;
          if ($current_user->is_admin) {
@@ -92,7 +91,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
                  if ($size != sizeof($names)|| $size != sizeof($isos) || $size != sizeof($symbols) || $size != sizeof($rates)) {
                      return;
                  }
-            
+			
                  $temp = new Currency();
                  for ($i = 0; $i < $size; $i++) {
                      $temp->id = $ids[$i];
@@ -105,10 +104,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
              }
          }
      }
-    
-     public function getJavascript()
+	
+     function getJavascript()
      {
-         // wp: DO NOT add formatting and unformatting numbers in here, add them prior to calling these to avoid double calling
+         // wp: DO NOT add formatting and unformatting numbers in here, add them prior to calling these to avoid double calling 
          // of unformat number
          return $this->javascript . <<<EOQ
 					function get_rate(id){
@@ -162,12 +161,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
 				</script>
 EOQ;
      }
-    
-    
-     public function getSelectOptions($id = '')
+	
+	
+     function getSelectOptions($id = '')
      {
          global $current_user;
-         $this->javascript .="var ConversionRates = new Array(); \n";
+         $this->javascript .="var ConversionRates = new Array(); \n";		
          $this->javascript .="var CurrencySymbols = new Array(); \n";
          $options = '';
          $this->lookupCurrencies();
@@ -182,7 +181,7 @@ EOQ;
                      } else {
                          $options .= '<option value="'. $data->id . '">'	;
                      }
-                     $options .= $data->name . ' : ' . $data->symbol;
+                     $options .= $data->name . ' : ' . $data->symbol; 
                      $this->javascript .=" ConversionRates['".$data->id."'] = '".$data->conversion_rate."';\n";
                      $this->javascript .=" CurrencySymbols['".$data->id."'] = '".$data->symbol."';\n";
                  }
@@ -193,7 +192,7 @@ EOQ;
          }
          return $options;
      }
-     public function getTable()
+     function getTable()
      {
          $this->lookupCurrencies();
          $usdollar = translate('LBL_US_DOLLAR');
@@ -203,7 +202,7 @@ EOQ;
          $add = translate('LBL_ADD');
          $delete = translate('LBL_DELETE');
          $update = translate('LBL_UPDATE');
-        
+		
          $form = $html = "<br><table cellpadding='0' cellspacing='0' border='0'  class='tabForm'><tr><td><tableborder='0' cellspacing='0' cellpadding='0'>";
          $form .= <<<EOQ
 					<form name='DeleteCurrency' action='index.php' method='post'><input type='hidden' name='action' value='{$_REQUEST['action']}'>
@@ -230,8 +229,8 @@ EOQ;
 EOQ;
          return $form;
      }
-    
-     public function setCurrencyFields($fields)
+	
+     function setCurrencyFields($fields)
      {
          $json = getJSONobj();
          $this->javascript .= 'var currencyFields = ' . $json->encode($fields) . ";\n";

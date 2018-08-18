@@ -3,13 +3,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -38,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 class InsideViewLogicHook
@@ -72,10 +71,10 @@ class InsideViewLogicHook
 
         $outStr = '';
         foreach ($outArray as $k => $v) {
-            $outStr .= $k.'='.rawurlencode(html_entity_decode($v, ENT_QUOTES)).'&';
+            $outStr .= $k.'='.rawurlencode(html_entity_decode($v,ENT_QUOTES)).'&';
         }
         
-        $outStr = rtrim($outStr, '&');
+        $outStr = rtrim($outStr,'&');
         
         return $outStr;
     }
@@ -86,14 +85,14 @@ class InsideViewLogicHook
         $fieldMap = array('crm_account_name'=>'name',
                           'crm_account_id'=>'id',
                           'crm_account_website'=>'website',
-                          'crm_account_ticker'=>'ticker_symbol',
-                          'crm_account_city'=>array('primary_address_city', 'secondary_address_city', 'billing_address_city', 'shipping_address_city'),
-                          'crm_account_state'=>array('primary_address_state', 'secondary_address_state', 'billing_address_state', 'shipping_address_state'),
-                          'crm_account_country'=>array('primary_address_country', 'secondary_address_country', 'billing_address_country', 'shipping_address_country'),
+                          'crm_account_ticker'=>'ticker_symbol', 
+                          'crm_account_city'=>array('primary_address_city', 'secondary_address_city', 'billing_address_city', 'shipping_address_city'), 
+                          'crm_account_state'=>array('primary_address_state', 'secondary_address_state', 'billing_address_state', 'shipping_address_state'), 
+                          'crm_account_country'=>array('primary_address_country', 'secondary_address_country', 'billing_address_country', 'shipping_address_country'), 
                           'crm_account_postalcode'=>array('primary_address_postalcode', 'secondary_address_postalcode', 'billing_address_postalcode', 'shipping_address_postalcode')
         );
         
-        $url .= $this->handleFieldMap($bean, $fieldMap).'&'.$extraUrl;
+        $url .= $this->handleFieldMap($bean,$fieldMap).'&'.$extraUrl;
         
         return $url;
     }
@@ -106,7 +105,7 @@ class InsideViewLogicHook
                           'crm_opportunity_id'=>'id',
         );
         
-        $url .= $this->handleFieldMap($bean, $fieldMap).'&'.$extraUrl;
+        $url .= $this->handleFieldMap($bean,$fieldMap).'&'.$extraUrl;
         
         return $url;
     }
@@ -122,7 +121,7 @@ class InsideViewLogicHook
                           'crm_account_website'=>'website',
         );
         
-        $url .= $this->handleFieldMap($bean, $fieldMap).'&'.$extraUrl;
+        $url .= $this->handleFieldMap($bean,$fieldMap).'&'.$extraUrl;
         
         return $url;
     }
@@ -137,7 +136,7 @@ class InsideViewLogicHook
                           'crm_account_name'=>'account_name',
         );
         
-        $url .= $this->handleFieldMap($bean, $fieldMap).'&'.$extraUrl;
+        $url .= $this->handleFieldMap($bean,$fieldMap).'&'.$extraUrl;
         
         return $url;
     }
@@ -161,12 +160,12 @@ class InsideViewLogicHook
 
 
         if ($GLOBALS['current_user']->id != '1') {
-            $extraUrl = $this->handleFieldMap($GLOBALS['current_user'], $userFieldMap);
+            $extraUrl = $this->handleFieldMap($GLOBALS['current_user'],$userFieldMap);
         } else {
             // Need some extra code here for the '1' admin user
             $myUserFieldMap = $userFieldMap;
             unset($myUserFieldMap['crm_user_id']);
-            $extraUrl = 'crm_user_id='.urlencode($GLOBALS['sugar_config']['unique_key']).'&'.$this->handleFieldMap($GLOBALS['current_user'], $myUserFieldMap);
+            $extraUrl = 'crm_user_id='.urlencode($GLOBALS['sugar_config']['unique_key']).'&'.$this->handleFieldMap($GLOBALS['current_user'],$myUserFieldMap);
         }
         $extraUrl .= '&crm_org_id='.urlencode($GLOBALS['sugar_config']['unique_key'])
             .'&crm_org_name='.(!empty($GLOBALS['system_config']->settings['system_name']) ? urlencode($GLOBALS['system_config']->settings['system_name']) : '')
@@ -174,11 +173,11 @@ class InsideViewLogicHook
             .'&crm_session_id=&crm_version=v62&crm_deploy_id=3&crm_size=400&is_embed_version=true';
         
         // Use the per-module functions to build the frame
-        if (is_a($bean, 'Account')) {
+        if (is_a($bean,'Account')) {
             $url = $this->getAccountFrameUrl($bean, $extraUrl);
-        } elseif (is_a($bean, 'Contact')) {
+        } elseif (is_a($bean,'Contact')) {
             $url = $this->getContactFrameUrl($bean, $extraUrl);
-        } elseif (is_a($bean, 'Lead')) {
+        } elseif (is_a($bean,'Lead')) {
             $url = $this->getLeadFrameUrl($bean, $extraUrl);
         } elseif (is_a($bean, 'Opportunity')) {
             $url = $this->getOpportunityFrameUrl($bean, $extraUrl);
@@ -193,21 +192,21 @@ class InsideViewLogicHook
             require_once('include/connectors/utils/ConnectorUtils.php');
             $connector_language = ConnectorUtils::getConnectorStrings('ext_rest_insideview');
             $smarty->assign('connector_language', $connector_language);
-            $smarty->assign('logo', getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/insideview.png'));
-            $smarty->assign('video', getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/video.png'));
+            $smarty->assign('logo',getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/insideview.png'));
+            $smarty->assign('video',getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/video.png'));
 
-            $smarty->assign('close', getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/close.png'));
-            $smarty->assign('logo_expanded', getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/insideview_expanded.png'));
-            $smarty->assign('logo_collapsed', getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/insideview_collapsed.png'));
+            $smarty->assign('close',getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/close.png'));
+            $smarty->assign('logo_expanded',getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/insideview_expanded.png'));
+            $smarty->assign('logo_collapsed',getWebPath('modules/Connectors/connectors/sources/ext/rest/insideview/images/insideview_collapsed.png'));
 
-            $smarty->assign('AJAX_URL', $url);
+            $smarty->assign('AJAX_URL',$url);
             $smarty->assign('APP', $GLOBALS['app_strings']);
 
-            if ($GLOBALS['current_user']->getPreference('allowInsideView', 'Connectors') != 1) {
-                $smarty->assign('showInsideView', false);
+            if ($GLOBALS['current_user']->getPreference('allowInsideView','Connectors') != 1) {
+                $smarty->assign('showInsideView',false);
             } else {
-                $smarty->assign('showInsideView', true);
-                $smarty->assign('URL', $url);
+                $smarty->assign('showInsideView',true);
+                $smarty->assign('URL',$url);
                 //echo "<div id='insideViewDiv' style='width:100%;height:400px;overflow:hidden'><iframe id='insideViewFrame' src='$url' style='border:0px; width:100%;height:480px;overflow:hidden'></iframe></div>";
             }
             echo $smarty->fetch($tplName);

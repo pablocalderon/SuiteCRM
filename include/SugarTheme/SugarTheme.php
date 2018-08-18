@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,17 +36,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
-/**
+/*********************************************************************************
 
  * Description:  Contains a variety of utility functions used to display UI
  * components such as form headers and footers.  Intended to be modified on a per
  * theme basis.
- */
+ ********************************************************************************/
 
 include_once __DIR__ . '/SugarThemeRegistry.php';
 
@@ -269,7 +268,7 @@ class SugarTheme
         'imageCache'    => 0,
         'jsCache'       => 0,
         'templateCache' => 0,
-        'spriteCache'	=> 0,
+		'spriteCache'	=> 0,
         );
 
     /**
@@ -301,11 +300,11 @@ class SugarTheme
             $themedef = array();
             include("themes/{$defaults['parentTheme']}/themedef.php");
             foreach ($themedef as $key => $value) {
-                if (property_exists(__CLASS__, $key)) {
+                if (property_exists(__CLASS__,$key)) {
                     // For all arrays ( except colors and fonts ) you can just specify the items
                     // to change instead of all of the values
-                    if (is_array($this->$key) && !in_array($key, array('colors','fonts'))) {
-                        $this->$key = array_merge($this->$key, $value);
+                    if (is_array($this->$key) && !in_array($key,array('colors','fonts'))) {
+                        $this->$key = array_merge($this->$key,$value);
                     } else {
                         $this->$key = $value;
                     }
@@ -313,11 +312,11 @@ class SugarTheme
             }
         }
         foreach ($defaults as $key => $value) {
-            if (property_exists(__CLASS__, $key)) {
+            if (property_exists(__CLASS__,$key)) {
                 // For all arrays ( except colors and fonts ) you can just specify the items
                 // to change instead of all of the values
-                if (is_array($this->$key) && !in_array($key, array('colors','fonts'))) {
-                    $this->$key = array_merge($this->$key, $value);
+                if (is_array($this->$key) && !in_array($key,array('colors','fonts'))) {
+                    $this->$key = array_merge($this->$key,$value);
                 } else {
                     $this->$key = $value;
                 }
@@ -349,12 +348,12 @@ class SugarTheme
             'cssCache'      => count($this->_cssCache),
             'imageCache'    => count($this->_imageCache),
             'templateCache' => count($this->_templateCache),
-            'spriteCache' 	=> count($this->_spriteCache),
+			'spriteCache' 	=> count($this->_spriteCache),
             );
     }
 
     /**
-     * This is needed to prevent unserialize vulnerability
+	 * This is needed to prevent unserialize vulnerability
      */
     public function __wakeup()
     {
@@ -417,9 +416,9 @@ class SugarTheme
             }
             if (count($this->_spriteCache) != $this->_initialCacheSize['spriteCache']) {
                 sugar_file_put_contents(
-                    "$cachedir/spriteCache.php",
-                    serialize($this->_spriteCache)
-                );
+					"$cachedir/spriteCache.php",
+					serialize($this->_spriteCache)
+				);
             }
         }
     }
@@ -547,7 +546,7 @@ class SugarTheme
      *
      * @return string
      */
-    final public function getDefaultFilePath()
+    public final function getDefaultFilePath()
     {
         return 'themes/default';
     }
@@ -557,7 +556,7 @@ class SugarTheme
      *
      * @return string
      */
-    final public function getDefaultImagePath()
+    public final function getDefaultImagePath()
     {
         return $this->getDefaultFilePath().'/images';
     }
@@ -567,7 +566,7 @@ class SugarTheme
      *
      * @return string
      */
-    final public function getDefaultCSSPath()
+    public final function getDefaultCSSPath()
     {
         return $this->getDefaultFilePath().'/css';
     }
@@ -577,7 +576,7 @@ class SugarTheme
      *
      * @return string
      */
-    final public function getDefaultTemplatePath()
+    public final function getDefaultTemplatePath()
     {
         return $this->getDefaultFilePath().'/tpls';
     }
@@ -587,7 +586,7 @@ class SugarTheme
      *
      * @return string
      */
-    final public function getDefaultJSPath()
+    public final function getDefaultJSPath()
     {
         return $this->getDefaultFilePath().'/js';
     }
@@ -612,7 +611,7 @@ class SugarTheme
         // sprites
         if (!empty($GLOBALS['sugar_config']['use_sprites']) && $GLOBALS['sugar_config']['use_sprites']) {
 
-            // system wide sprites
+			// system wide sprites
             if (file_exists("cache/sprites/default/sprites.css")) {
                 $html .= '<link rel="stylesheet" type="text/css" href="'.getJSPath('cache/sprites/default/sprites.css').'" />';
             }
@@ -692,7 +691,7 @@ EOHTML;
         } elseif (is_file($this->getTemplatePath().'/'.$templateName)) {
             $templatePath = $this->getTemplatePath().'/'.$templateName;
         } elseif (isset($this->parentTheme)
-                && SugarThemeRegistry::get($this->parentTheme) instanceof SugarTheme
+                && SugarThemeRegistry::get($this->parentTheme) instanceOf SugarTheme
                 && ($filename = SugarThemeRegistry::get($this->parentTheme)->getTemplate($templateName)) != '') {
             $templatePath = $filename;
         } elseif (is_file('custom/'.$this->getDefaultTemplatePath().'/'.$templateName)) {
@@ -714,9 +713,9 @@ EOHTML;
      *
      * @param  string $image image name
      * @param  string $other_attributes optional, other attributes to add to the image tag, not cached
-     * @param  string $width optional, defaults to the actual image's width
-     * @param  string $height optional, defaults to the actual image's height
-     * @param  string $ext optional, image extension (TODO can we deprecate this one ?)
+	 * @param  string $width optional, defaults to the actual image's width
+	 * @param  string $height optional, defaults to the actual image's height
+	 * @param  string $ext optional, image extension (TODO can we deprecate this one ?)
      * @param  string $alt optional, only used when image contains something useful, i.e. "Sally's profile pic"
      * @param  string $imageJSONEncode optional, some of template javascript need the exact image-html-string to build HTML contents so this parameter make a json_encode call on the return SVG or image source
      * @param  string $forceExt optional, force image extension
@@ -744,7 +743,7 @@ EOHTML;
 
         // trap deprecated use of image extension
         if (is_null($ext)) {
-            $imageNameExp = explode('.', $imageName);
+            $imageNameExp = explode('.',$imageName);
             if (count($imageNameExp) == 1) {
                 $imageName .= '.gif';
             }
@@ -762,7 +761,7 @@ EOHTML;
             if ($sp = $this->getSpriteMeta($imageName)) {
                 // requested size should match
                 if ((!is_null($width) && $sp['width'] == $width) || (is_null($width)) &&
-                    (!is_null($height) && $sp['height'] == $height) || (is_null($height))) {
+					(!is_null($height) && $sp['height'] == $height) || (is_null($height))) {
                     $other_attributes .= ' data-orig="'.$imageName.'"';
 
                     if ($sprite = $this->getSprite($sp['class'], $other_attributes, $alt)) {
@@ -774,7 +773,7 @@ EOHTML;
 
         // img caching
         if (empty($cached_results[$imageName])) {
-            $imageURL = $this->getImageURL($imageName, false);
+            $imageURL = $this->getImageURL($imageName,false);
             if (empty($imageURL)) {
                 return false;
             }
@@ -804,13 +803,13 @@ EOHTML;
     public function getSpriteMeta($imageName)
     {
 
-        // return from cache
+		// return from cache
         if (isset($this->_spriteCache[$imageName])) {
             return $this->_spriteCache[$imageName];
         }
 
         // sprite keys are base on imageURL
-        $imageURL = $this->getImageURL($imageName, false);
+        $imageURL = $this->getImageURL($imageName,false);
         if (empty($imageURL)) {
             $this->_spriteCache[$imageName] = false;
             return false;
@@ -830,7 +829,7 @@ EOHTML;
         if (isset($meta->sprites[$imageURL])) {
             $this->_spriteCache[$imageName] = $meta->sprites[$imageURL];
         // add imageURL to cache
-            //$this->_spriteCache[$imageName]['imageURL'] = $imageURL;
+			//$this->_spriteCache[$imageName]['imageURL'] = $imageURL;
         } else {
             $this->_spriteCache[$imageName] = false;
             $GLOBALS['log']->debug("Sprites: miss for $imageURL");
@@ -849,7 +848,7 @@ EOHTML;
     public function getSprite($class, $attr, $title)
     {
 
-        // handle multiple class tags
+		// handle multiple class tags
         $class_regex = '/class=["\']([^\'"]+)["\']/i';
         preg_match($class_regex, $attr, $match);
         if (isset($match[1])) {
@@ -873,15 +872,15 @@ EOHTML;
      * Returns a link HTML tag with or without an embedded image
      */
     public function getLink(
-        $url,
-        $title,
-        $other_attributes = '',
+		$url,
+		$title,
+		$other_attributes = '',
         $img_name = '',
         $img_other_attributes = '',
-        $img_width = null,
-        $img_height = null,
-        $img_alt = '',
-        $img_placement = 'imageonly'
+		$img_width = null,
+		$img_height = null,
+		$img_alt = '',
+		$img_placement = 'imageonly'
     ) {
         if ($img_name) {
             $img = $this->getImage($img_name, $img_other_attributes, $img_width, $img_height, null, $img_alt);
@@ -890,10 +889,10 @@ EOHTML;
                 $img = 'unknown';
             }
             switch ($img_placement) {
-                case 'left': 	$inner_html = $img."<span class='title'>".$title."</span>"; break;
-                case 'right':	$inner_html = "<span class='title'>".$title."</span>".$img; break;
-                default:		$inner_html = $img; break;
-            }
+				case 'left': 	$inner_html = $img."<span class='title'>".$title."</span>"; break;
+				case 'right':	$inner_html = "<span class='title'>".$title."</span>".$img; break;
+				default:		$inner_html = $img; break;
+			}
         } else {
             $inner_html = $title;
         }
@@ -915,8 +914,9 @@ EOHTML;
         if (isset($this->_imageCache[$imageName])) {
             if ($addJSPath) {
                 return getJSPath($this->_imageCache[$imageName]);
+            } else {
+                return $this->_imageCache[$imageName];
             }
-            return $this->_imageCache[$imageName];
         }
         $imagePath = '';
         if (($filename = $this->_getImageFileName('custom/'.$this->getImagePath().'/'.$imageName)) != '') {
@@ -924,8 +924,8 @@ EOHTML;
         } elseif (($filename = $this->_getImageFileName($this->getImagePath().'/'.$imageName)) != '') {
             $imagePath = $filename;
         } elseif (isset($this->parentTheme)
-                && SugarThemeRegistry::get($this->parentTheme) instanceof SugarTheme
-                && ($filename = SugarThemeRegistry::get($this->parentTheme)->getImageURL($imageName, false)) != '') {
+                && SugarThemeRegistry::get($this->parentTheme) instanceOf SugarTheme
+                && ($filename = SugarThemeRegistry::get($this->parentTheme)->getImageURL($imageName,false)) != '') {
             $imagePath = $filename;
         } elseif (($filename = $this->_getImageFileName('custom/'.$this->getDefaultImagePath().'/'.$imageName)) != '') {
             $imagePath = $filename;
@@ -996,16 +996,17 @@ EOHTML;
         if (isset($this->_cssCache[$cssFileName]) && is_file(sugar_cached($this->_cssCache[$cssFileName]))) {
             if ($returnURL) {
                 return getJSPath("cache/".$this->_cssCache[$cssFileName]);
+            } else {
+                return sugar_cached($this->_cssCache[$cssFileName]);
             }
-            return sugar_cached($this->_cssCache[$cssFileName]);
         }
 
         $cssFileContents = '';
         $defaultFileName = $this->getDefaultCSSPath().'/'.$cssFileName;
         $fullFileName = $this->getCSSPath().'/'.$cssFileName;
         if (isset($this->parentTheme)
-                && SugarThemeRegistry::get($this->parentTheme) instanceof SugarTheme
-                && ($filename = SugarThemeRegistry::get($this->parentTheme)->getCSSURL($cssFileName, false)) != '') {
+                && SugarThemeRegistry::get($this->parentTheme) instanceOf SugarTheme
+                && ($filename = SugarThemeRegistry::get($this->parentTheme)->getCSSURL($cssFileName,false)) != '') {
             $cssFileContents .= file_get_contents($filename);
         } else {
             if (is_file($defaultFileName)) {
@@ -1027,11 +1028,9 @@ EOHTML;
         }
 
         // fix any image references that may be defined in css files
-        $cssFileContents = str_ireplace(
-            "entryPoint=getImage&",
+        $cssFileContents = str_ireplace("entryPoint=getImage&",
             "entryPoint=getImage&themeName={$this->dirName}&",
-            $cssFileContents
-        );
+            $cssFileContents);
 
         // create the cached file location
         $cssFilePath = create_cache_directory($fullFileName);
@@ -1052,7 +1051,7 @@ EOHTML;
         }
 
         // now write the css to cache
-        sugar_file_put_contents($cssFilePath, $cssFileContents);
+        sugar_file_put_contents($cssFilePath,$cssFileContents);
 
         $this->_cssCache[$cssFileName] = $fullFileName;
 
@@ -1076,16 +1075,17 @@ EOHTML;
         if (isset($this->_jsCache[$jsFileName]) && is_file(sugar_cached($this->_jsCache[$jsFileName]))) {
             if ($returnURL) {
                 return getJSPath("cache/".$this->_jsCache[$jsFileName]);
+            } else {
+                return sugar_cached($this->_jsCache[$jsFileName]);
             }
-            return sugar_cached($this->_jsCache[$jsFileName]);
         }
 
         $jsFileContents = '';
         $fullFileName = $this->getJSPath().'/'.$jsFileName;
         $defaultFileName = $this->getDefaultJSPath().'/'.$jsFileName;
         if (isset($this->parentTheme)
-                && SugarThemeRegistry::get($this->parentTheme) instanceof SugarTheme
-                && ($filename = SugarThemeRegistry::get($this->parentTheme)->getJSURL($jsFileName, false)) != ''    && !in_array($jsFileName, $this->ignoreParentFiles)) {
+                && SugarThemeRegistry::get($this->parentTheme) instanceOf SugarTheme
+                && ($filename = SugarThemeRegistry::get($this->parentTheme)->getJSURL($jsFileName,false)) != ''    && !in_array($jsFileName,$this->ignoreParentFiles)) {
             $jsFileContents .= file_get_contents($filename);
         } else {
             if (is_file($defaultFileName)) {
@@ -1110,14 +1110,14 @@ EOHTML;
         $jsFilePath = create_cache_directory($fullFileName);
 
         // minify the js
-        if (!inDeveloperMode()&& !is_file(str_replace('.js', '-min.js', $jsFilePath))) {
+        if (!inDeveloperMode()&& !is_file(str_replace('.js','-min.js',$jsFilePath))) {
             $jsFileContents = SugarMin::minify($jsFileContents);
-            $jsFilePath = str_replace('.js', '-min.js', $jsFilePath);
-            $fullFileName = str_replace('.js', '-min.js', $fullFileName);
+            $jsFilePath = str_replace('.js','-min.js',$jsFilePath);
+            $fullFileName = str_replace('.js','-min.js',$fullFileName);
         }
 
         // now write the js to cache
-        sugar_file_put_contents($jsFilePath, $jsFileContents);
+        sugar_file_put_contents($jsFilePath,$jsFileContents);
 
         $this->_jsCache[$jsFileName] = $fullFileName;
 
@@ -1138,7 +1138,7 @@ EOHTML;
         // first, lets get all the paths of where to look
         $pathsToSearch = array($this->getImagePath());
         $theme = $this;
-        while (isset($theme->parentTheme) && SugarThemeRegistry::get($theme->parentTheme) instanceof SugarTheme) {
+        while (isset($theme->parentTheme) && SugarThemeRegistry::get($theme->parentTheme) instanceOf SugarTheme) {
             $theme = SugarThemeRegistry::get($theme->parentTheme);
             $pathsToSearch[] = $theme->getImagePath();
         }
@@ -1161,7 +1161,7 @@ EOHTML;
                         continue;
                     }
                     if (!isset($imageArray[$file])) {
-                        $imageArray[$file] = $this->getImageURL($file, false);
+                        $imageArray[$file] = $this->getImageURL($file,false);
                     }
                 }
                 closedir($dir);

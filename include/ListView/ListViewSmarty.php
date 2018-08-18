@@ -16,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,8 +34,8 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -107,7 +107,7 @@ class ListViewSmarty extends ListViewDisplay
      * @param string $htmlVar the corresponding html public in xtpl per row
      *
      */
-    public function process($file, $data, $htmlpublic)
+    function process($file, $data, $htmlpublic)
     {
         global $mod_strings;
         if (!$this->should_process) {
@@ -161,8 +161,8 @@ class ListViewSmarty extends ListViewDisplay
         $this->ss->assign('form', isset($this->templateMeta['form']) ? $this->templateMeta['form'] : null);
         $this->ss->assign('includes', isset($this->templateMeta['includes']) ? $this->templateMeta['includes'] : null);
 
-        $this->ss->assign('APP', $app_strings);
-        $this->ss->assign('MOD', $mod_strings);
+        $this->ss->assign('APP',$app_strings);
+        $this->ss->assign('MOD',$mod_strings);
 
         $this->ss->assign('bgHilite', $hilite_bg);
         $this->ss->assign('colCount', count((array)$this->displayColumns) + 10);
@@ -170,10 +170,10 @@ class ListViewSmarty extends ListViewDisplay
         $this->ss->assign('moduleString', $this->moduleString);
         $this->ss->assign('editLinkString', $app_strings['LBL_EDIT_BUTTON']);
         $this->ss->assign('viewLinkString', $app_strings['LBL_VIEW_BUTTON']);
-        $this->ss->assign('allLinkString', $app_strings['LBL_LINK_ALL']);
-        $this->ss->assign('noneLinkString', $app_strings['LBL_LINK_NONE']);
-        $this->ss->assign('recordsLinkString', $app_strings['LBL_LINK_RECORDS']);
-        $this->ss->assign('selectLinkString', $app_strings['LBL_LINK_SELECT']);
+        $this->ss->assign('allLinkString',$app_strings['LBL_LINK_ALL']);
+        $this->ss->assign('noneLinkString',$app_strings['LBL_LINK_NONE']);
+        $this->ss->assign('recordsLinkString',$app_strings['LBL_LINK_RECORDS']);
+        $this->ss->assign('selectLinkString',$app_strings['LBL_LINK_SELECT']);
 
         if (!isset($this->data['pageData']['offsets'])) {
             $GLOBALS['log']->warn('Incorrect pageData: offset is not set');
@@ -199,7 +199,7 @@ class ListViewSmarty extends ListViewDisplay
                 $this->ss->assign('actionDisabledLink', preg_replace("/id\s*\=(\"\w+\"|w+)/i", "", $action_menu['buttons'][0]));
             }
             $menu_location = 'bottom';
-            $this->ss->assign('actionsLinkBottom', $this->buildActionsLink('actions_link', $menu_location));
+            $this->ss->assign('actionsLinkBottom', $this->buildActionsLink('actions_link' ,$menu_location));
         }
 
         $this->ss->assign('quickViewLinks', $this->quickViewLinks);
@@ -211,8 +211,8 @@ class ListViewSmarty extends ListViewDisplay
             $this->ss->assign('multiSelectData', '<textarea style="display: none" name="uid"></textarea>');
         }
         // include button for Adding to Target List if in one of four applicable modules
-        if (isset($_REQUEST['module']) && in_array($_REQUEST['module'], array( 'Contacts','Prospects','Leads','Accounts' ))
-            && ACLController::checkAccess('ProspectLists', 'edit', true)) {
+        if (isset ($_REQUEST['module']) && in_array ($_REQUEST['module'] , array ( 'Contacts','Prospects','Leads','Accounts' ))
+            && ACLController::checkAccess('ProspectLists','edit',true)) {
             $this->ss->assign('targetLink', $this->buildTargetList()) ;
         }
 
@@ -252,11 +252,11 @@ class ListViewSmarty extends ListViewDisplay
      * @param ordering array data that contains the ordering info
      *
      */
-    public function processArrows($ordering)
+    function processArrows($ordering)
     {
-        $pathParts = pathinfo(SugarThemeRegistry::current()->getImageURL('arrow.gif', false));
+        $pathParts = pathinfo(SugarThemeRegistry::current()->getImageURL('arrow.gif',false));
 
-        list($width, $height) = getimagesize($pathParts['dirname'].'/'.$pathParts['basename']);
+        list($width,$height) = getimagesize($pathParts['dirname'].'/'.$pathParts['basename']);
 
         $this->ss->assign('arrowExt', $pathParts['extension']);
         $this->ss->assign('arrowWidth', $width);
@@ -272,7 +272,7 @@ class ListViewSmarty extends ListViewDisplay
      * @param end bool display the ending of the listview data (ie MassUpdate)
      *
      */
-    public function display($end = true)
+    function display($end = true)
     {
         if (!$this->should_process) {
             return $this->getSearchIcon().$GLOBALS['app_strings']['LBL_SEARCH_POPULATE_ONLY'];
@@ -300,12 +300,12 @@ class ListViewSmarty extends ListViewDisplay
             'of' => $app_strings['LBL_LIST_OF']);
         $this->ss->assign('navStrings', $navStrings);
 
-        $displayEmptyDataMessages = true;
+        $displayEmptyDataMessages = TRUE;
         //TODO: Cleanup, better logic for which modules are exempt from the new messaging.
         $modulesExemptFromEmptyDataMessages = array('WorkFlow','ContractTypes', 'OAuthKeys', 'TimePeriods');
         if ((isset($GLOBALS['moduleTabMap'][$currentModule]) && $GLOBALS['moduleTabMap'][$currentModule] == 'Administration')
             || isset($GLOBALS['adminOnlyList'][$currentModule]) || in_array($currentModule, $modulesExemptFromEmptyDataMessages)) {
-            $displayEmptyDataMessages = false;
+            $displayEmptyDataMessages = FALSE;
         }
         $this->ss->assign('displayEmptyDataMesssages', $displayEmptyDataMessages);
 
@@ -330,7 +330,7 @@ class ListViewSmarty extends ListViewDisplay
     }
 
 
-    public function displayEnd()
+    function displayEnd()
     {
         $str = '';
         if ($this->show_mass_update_form) {

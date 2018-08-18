@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/utils/array_utils.php');
@@ -55,7 +54,7 @@ function clean_path($path)
     // clean directory/file path with a functional equivalent
     $appendpath = '';
     if (is_windows() && strlen($path) >= 2 && $path[0].$path[1] == "\\\\") {
-        $path = substr($path, 2);
+        $path = substr($path,2);
         $appendpath = "\\\\";
     }
     $path = str_replace("\\", "/", $path);
@@ -66,7 +65,7 @@ function clean_path($path)
 
 function create_cache_directory($file)
 {
-    $paths = explode('/', $file);
+    $paths = explode('/',$file);
     $dir = rtrim($GLOBALS['sugar_config']['cache_dir'], '/\\');
     if (!file_exists($dir)) {
         sugar_mkdir($dir, 0775);
@@ -165,7 +164,7 @@ function write_encoded_file($soap_result, $write_to_dir, $write_to_file="")
 
 function create_custom_directory($file)
 {
-    $paths = explode('/', $file);
+    $paths = explode('/',$file);
     $dir = 'custom';
     if (!file_exists($dir)) {
         sugar_mkdir($dir, 0755);
@@ -278,7 +277,7 @@ function getFiles(&$arr, $dir, $pattern = null)
  * @param string $filename
  * @param int $retbytes
  */
-function readfile_chunked($filename, $retbytes=true)
+function readfile_chunked($filename,$retbytes=true)
 {
     $chunksize = 1*(1024*1024); // how many bytes per chunk
     $buffer = '';
@@ -436,7 +435,7 @@ function get_mime_content_type_from_filename($filename)
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
         );
 
-        $exp = explode('.', $filename);
+        $exp = explode('.',$filename);
         $pop = array_pop($exp);
         $ext = strtolower($pop);
         if (array_key_exists($ext, $mime_types)) {
@@ -483,3 +482,4 @@ function cleanDirName($name)
 {
     return str_replace(array("\\", "/", "."), "", $name);
 }
+

@@ -21,7 +21,7 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author SalesAgility Ltd <support@salesagility.com>
+ * @author Salesagility Ltd <support@salesagility.com>
  */
 
 /**
@@ -30,7 +30,7 @@
 require_once('modules/AOS_Invoices/AOS_Invoices_sugar.php');
 class AOS_Invoices extends AOS_Invoices_sugar
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -38,7 +38,7 @@ class AOS_Invoices extends AOS_Invoices_sugar
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function AOS_Invoices()
+    function AOS_Invoices()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -50,7 +50,7 @@ class AOS_Invoices extends AOS_Invoices_sugar
     }
 
 
-    public function save($check_notify = false)
+    function save($check_notify = false)
     {
         global $sugar_config;
 
@@ -88,7 +88,7 @@ class AOS_Invoices extends AOS_Invoices_sugar
         $productQuoteGroup->save_groups($_POST, $this, 'group_');
     }
 
-    public function mark_deleted($id)
+    function mark_deleted($id)
     {
         $productQuote = new AOS_Products_Quotes();
         $productQuote->mark_lines_deleted($this);

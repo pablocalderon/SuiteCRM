@@ -308,14 +308,12 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
         for ($count=0; $count < $fieldsCount; $count++) {
             $fieldName = $fnmFile->readString();
             $fieldBits = $fnmFile->readByte();
-            $this->_fields[$count] = new Zend_Search_Lucene_Index_FieldInfo(
-                $fieldName,
+            $this->_fields[$count] = new Zend_Search_Lucene_Index_FieldInfo($fieldName,
                                                                             $fieldBits & 0x01 /* field is indexed */,
                                                                             $count,
                                                                             $fieldBits & 0x02 /* termvectors are stored */,
                                                                             $fieldBits & 0x10 /* norms are omitted */,
-                                                                            $fieldBits & 0x20 /* payloads are stored */
-            );
+                                                                            $fieldBits & 0x20 /* payloads are stored */);
             if ($fieldBits & 0x10) {
                 // norms are omitted for the indexed field
                 $this->_norms[$count] = str_repeat(chr(Zend_Search_Lucene_Search_Similarity::encodeNorm(1.0)), $docCount);
@@ -354,9 +352,10 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
             // It's a segment with pre-2.1 format delete file
             // Try to load deletions file
             return $this->_loadPre21DelFile();
+        } else {
+            // It's 2.1+ format deleteions file
+            return $this->_load21DelFile();
         }
-        // It's 2.1+ format deleteions file
-        return $this->_load21DelFile();
     }
 
     /**
@@ -387,18 +386,19 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
 
             if (extension_loaded('bitset')) {
                 return $delBytes;
-            }
-            $deletions = array();
-            for ($count = 0; $count < $byteCount; $count++) {
-                $byte = ord($delBytes[$count]);
-                for ($bit = 0; $bit < 8; $bit++) {
-                    if ($byte & (1<<$bit)) {
-                        $deletions[$count*8 + $bit] = 1;
+            } else {
+                $deletions = array();
+                for ($count = 0; $count < $byteCount; $count++) {
+                    $byte = ord($delBytes[$count]);
+                    for ($bit = 0; $bit < 8; $bit++) {
+                        if ($byte & (1<<$bit)) {
+                            $deletions[$count*8 + $bit] = 1;
+                        }
                     }
                 }
-            }
 
-            return $deletions;
+                return $deletions;
+            }
         } catch (Zend_Search_Lucene_Exception $e) {
             if (strpos($e->getMessage(), 'is not readable') === false) {
                 throw new Zend_Search_Lucene_Exception($e->getMessage(), $e->getCode(), $e);
@@ -450,13 +450,14 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
                         }
                     }
                     return $deletions;
-                }
-                for ($bit = 0; $bit < 8; $bit++) {
-                    if ($nonZeroByte & (1<<$bit)) {
-                        $deletions[$byteNum*8 + $bit] = 1;
+                } else {
+                    for ($bit = 0; $bit < 8; $bit++) {
+                        if ($nonZeroByte & (1<<$bit)) {
+                            $deletions[$byteNum*8 + $bit] = 1;
+                        }
                     }
+                    return (count($deletions) > 0) ? $deletions : null;
                 }
-                return (count($deletions) > 0) ? $deletions : null;
             } while ($delFile->tell() < $delFileSize);
         } else {
             // $format is actually byte count
@@ -471,18 +472,19 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
 
             if (extension_loaded('bitset')) {
                 return $delBytes;
-            }
-            $deletions = array();
-            for ($count = 0; $count < $byteCount; $count++) {
-                $byte = ord($delBytes[$count]);
-                for ($bit = 0; $bit < 8; $bit++) {
-                    if ($byte & (1<<$bit)) {
-                        $deletions[$count*8 + $bit] = 1;
+            } else {
+                $deletions = array();
+                for ($count = 0; $count < $byteCount; $count++) {
+                    $byte = ord($delBytes[$count]);
+                    for ($bit = 0; $bit < 8; $bit++) {
+                        if ($byte & (1<<$bit)) {
+                            $deletions[$count*8 + $bit] = 1;
+                        }
                     }
                 }
-            }
 
-            return (count($deletions) > 0) ? $deletions : null;
+                return (count($deletions) > 0) ? $deletions : null;
+            }
         }
     }
 
@@ -507,14 +509,15 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
                 if ($extension == '.fdx') {
                     // '.fdx' file is requested
                     return $fdxFile;
+                } else {
+                    // '.fdt' file is requested
+                    $fdtStartOffset = $fdxFile->readLong();
+
+                    $fdtFile = $this->_directory->getFileObject($fdtFName, $shareHandler);
+                    $fdtFile->seek($fdtStartOffset, SEEK_CUR);
+
+                    return $fdtFile;
                 }
-                // '.fdt' file is requested
-                $fdtStartOffset = $fdxFile->readLong();
-
-                $fdtFile = $this->_directory->getFileObject($fdtFName, $shareHandler);
-                $fdtFile->seek($fdtStartOffset, SEEK_CUR);
-
-                return $fdtFile;
             }
 
             if (!isset($this->_sharedDocStoreOptions['files'][$fdxFName])) {
@@ -538,16 +541,17 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
             if ($extension == '.fdx') {
                 // '.fdx' file is requested
                 return $cfxFile;
+            } else {
+                // '.fdt' file is requested
+                $fdtStartOffset = $cfxFile->readLong();
+
+                // Seek to the start of '.fdt' file within compound file
+                $cfxFile->seek($this->_sharedDocStoreOptions['files'][$fdtFName]);
+                // Seek to the start of current segment documents section
+                $cfxFile->seek($fdtStartOffset, SEEK_CUR);
+
+                return $fdtFile;
             }
-            // '.fdt' file is requested
-            $fdtStartOffset = $cfxFile->readLong();
-
-            // Seek to the start of '.fdt' file within compound file
-            $cfxFile->seek($this->_sharedDocStoreOptions['files'][$fdtFName]);
-            // Seek to the start of current segment documents section
-            $cfxFile->seek($fdtStartOffset, SEEK_CUR);
-
-            return $fdtFile;
         }
 
         $filename = $this->_name . $extension;
@@ -697,8 +701,9 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
 
         if (extension_loaded('bitset')) {
             return count(bitset_to_array($this->_deleted));
+        } else {
+            return count($this->_deleted);
         }
-        return count($this->_deleted);
     }
 
     /**
@@ -710,8 +715,9 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
     {
         if ($this->hasDeletions()) {
             return $this->_docCount - $this->_deletedCount();
+        } else {
+            return $this->_docCount;
         }
-        return $this->_docCount;
     }
 
     /**
@@ -947,7 +953,7 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
         }
 
         $frqFile = $this->openCompoundFile('.frq');
-        $frqFile->seek($termInfo->freqPointer, SEEK_CUR);
+        $frqFile->seek($termInfo->freqPointer,SEEK_CUR);
         $docId  = 0;
         $result = array();
 
@@ -1068,7 +1074,7 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
         }
 
         $frqFile = $this->openCompoundFile('.frq');
-        $frqFile->seek($termInfo->freqPointer, SEEK_CUR);
+        $frqFile->seek($termInfo->freqPointer,SEEK_CUR);
         $result = array();
         $docId = 0;
 
@@ -1195,7 +1201,7 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
         }
 
         $frqFile = $this->openCompoundFile('.frq');
-        $frqFile->seek($termInfo->freqPointer, SEEK_CUR);
+        $frqFile->seek($termInfo->freqPointer,SEEK_CUR);
 
         $docId = 0;
         $freqs = array();
@@ -1422,10 +1428,8 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
         if ($fieldNum == -1  ||  !($this->_fields[$fieldNum]->isIndexed)) {
             $similarity = Zend_Search_Lucene_Search_Similarity::getDefault();
 
-            return str_repeat(
-                chr($similarity->encodeNorm($similarity->lengthNorm($fieldName, 0))),
-                              $this->_docCount
-            );
+            return str_repeat(chr($similarity->encodeNorm($similarity->lengthNorm($fieldName, 0))),
+                              $this->_docCount);
         }
 
         if (!isset($this->_norms[$fieldNum])) {
@@ -1505,8 +1509,9 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
 
         if (extension_loaded('bitset')) {
             return bitset_in($this->_deleted, $id);
+        } else {
+            return isset($this->_deleted[$id]);
         }
-        return isset($this->_deleted[$id]);
     }
 
     /**
@@ -1535,10 +1540,11 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
             // There is no deletions file for current segment in the directory
             // Set deletions file generation number to 1
             return -1;
+        } else {
+            // There are some deletions files for current segment in the directory
+            // Set deletions file generation number to the highest nuber
+            return max($delFileList);
         }
-        // There are some deletions files for current segment in the directory
-        // Set deletions file generation number to the highest nuber
-        return max($delFileList);
     }
 
     /**
@@ -1568,9 +1574,10 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
                 $this->_deleted = $this->_loadDelFile();
 
                 return;
+            } else {
+                require_once 'Zend/Search/Lucene/Exception.php';
+                throw new Zend_Search_Lucene_Exception('Delete file processing workflow is corrupted for the segment \'' . $this->_name . '\'.');
             }
-            require_once 'Zend/Search/Lucene/Exception.php';
-            throw new Zend_Search_Lucene_Exception('Delete file processing workflow is corrupted for the segment \'' . $this->_name . '\'.');
         }
 
         if ($latestDelGen > $this->_delGen) {
@@ -1939,16 +1946,12 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
         }
         $this->_tisFile->seek($this->_tisFileOffset + $prevTermInfo[4], SEEK_SET);
 
-        $this->_lastTerm     = new Zend_Search_Lucene_Index_Term(
-            $prevTerm[1] /* text */,
-                                                                 ($prevTerm[0] == -1) ? '' : $this->_fields[$prevTerm[0] /* field */]->name
-        );
-        $this->_lastTermInfo = new Zend_Search_Lucene_Index_TermInfo(
-            $prevTermInfo[0] /* docFreq */,
+        $this->_lastTerm     = new Zend_Search_Lucene_Index_Term($prevTerm[1] /* text */,
+                                                                 ($prevTerm[0] == -1) ? '' : $this->_fields[$prevTerm[0] /* field */]->name);
+        $this->_lastTermInfo = new Zend_Search_Lucene_Index_TermInfo($prevTermInfo[0] /* docFreq */,
                                                                      $prevTermInfo[1] /* freqPointer */,
                                                                      $prevTermInfo[2] /* proxPointer */,
-                                                                     $prevTermInfo[3] /* skipOffset */
-        );
+                                                                     $prevTermInfo[3] /* skipOffset */);
         $this->_termCount  =  $this->_termNum - $prevPosition*$this->_indexInterval;
 
         if ($highIndex == 0) {
@@ -2130,3 +2133,4 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
         return $this->_lastTermPositions;
     }
 }
+

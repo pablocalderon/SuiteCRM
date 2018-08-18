@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,37 +15,37 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
  * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
- *
+ * 
  * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
  * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
- *
+ * 
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- *
+ * 
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('include/SugarObjects/forms/PersonFormBase.php');
 
 class LeadFormBase extends PersonFormBase
 {
-    public $moduleName = 'Leads';
-    public $objectName = 'Lead';
+    var $moduleName = 'Leads';
+    var $objectName = 'Lead';
 
     /**
      * getDuplicateQuery
@@ -77,7 +76,7 @@ class LeadFormBase extends PersonFormBase
     }
 
 
-    public function getWideFormBody($prefix, $mod='', $formname='')
+    function getWideFormBody($prefix, $mod='', $formname='')
     {
         if (!ACLController::checkAccess('Leads', 'edit', true)) {
             return '';
@@ -121,15 +120,15 @@ EOQ;
         $javascript = new javascript();
         $javascript->setFormName($formname);
         $javascript->setSugarBean(new Lead());
-        $javascript->addField('email1', 'false', $prefix);
-        $javascript->addField('email2', 'false', $prefix);
+        $javascript->addField('email1','false',$prefix);
+        $javascript->addField('email2','false',$prefix);
         $javascript->addRequiredFields($prefix);
         $form .=$javascript->getScript();
         $mod_strings = $temp_strings;
         return $form;
     }
 
-    public function getFormBody($prefix, $mod='', $formname='')
+    function getFormBody($prefix, $mod='', $formname='')
     {
         if (!ACLController::checkAccess('Leads', 'edit', true)) {
             return '';
@@ -168,14 +167,14 @@ EOQ;
         $javascript = new javascript();
         $javascript->setFormName($formname);
         $javascript->setSugarBean(new Lead());
-        $javascript->addField('email1', 'false', $prefix);
-        $javascript->addField('email2', 'false', $prefix);
+        $javascript->addField('email1','false',$prefix);
+        $javascript->addField('email2','false',$prefix);
         $javascript->addRequiredFields($prefix);
         $form .=$javascript->getScript();
         $mod_strings = $temp_strings;
         return $form;
     }
-    public function getForm($prefix, $mod='Leads')
+    function getForm($prefix, $mod='Leads')
     {
         if (!ACLController::checkAccess('Leads', 'edit', true)) {
             return '';
@@ -213,7 +212,7 @@ EOQ;
     }
 
 
-    public function handleSave($prefix, $redirect=true, $useRequired=false, $do_save=true, $exist_lead=null)
+    function handleSave($prefix,$redirect=true, $useRequired=false, $do_save=true, $exist_lead=null)
     {
         require_once('modules/Campaigns/utils.php');
         require_once('include/formbase.php');
@@ -332,7 +331,7 @@ EOQ;
             if (!empty($GLOBALS['check_notify'])) {
                 $focus->save($GLOBALS['check_notify']);
             } else {
-                $focus->save(false);
+                $focus->save(FALSE);
             }
         }
 
@@ -351,7 +350,7 @@ EOQ;
                 //create campaing_log entry
 
                 if (isset($focus->campaign_id) && $focus->campaign_id != null) {
-                    campaign_log_lead_entry($focus->campaign_id, $prospect, $focus, 'lead');
+                    campaign_log_lead_entry($focus->campaign_id,$prospect, $focus,'lead');
                 }
             }
         }

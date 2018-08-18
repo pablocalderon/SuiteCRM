@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /**
@@ -68,7 +67,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class LogicHook
 {
-    public $bean = null;
+    var $bean = null;
 
     public function __construct()
     {
@@ -94,7 +93,7 @@ class LogicHook
      *
      * @return unknown
      */
-    public static function initialize()
+    static function initialize()
     {
         if (empty($GLOBALS['logic_hook'])) {
             $GLOBALS['logic_hook'] = new LogicHook();
@@ -102,7 +101,7 @@ class LogicHook
         return $GLOBALS['logic_hook'];
     }
 
-    public function setBean($bean)
+    function setBean($bean)
     {
         $this->bean = $bean;
         return $this;
@@ -145,7 +144,7 @@ class LogicHook
 
     protected static $hooks = array();
 
-    public static function refreshHooks()
+    static public function refreshHooks()
     {
         self::$hooks = array();
     }
@@ -194,7 +193,7 @@ class LogicHook
      * @param array $arguments
      * @param SugarBean $bean
      */
-    public function call_custom_logic($module_dir, $event, $arguments = null)
+    function call_custom_logic($module_dir, $event, $arguments = null)
     {
         // declare the hook array variable, it will be defined in the included file.
         $hook_array = null;
@@ -224,12 +223,12 @@ class LogicHook
      * @param array $arguments
      * @param SugarBean $bean
      */
-    public function process_hooks($hook_array, $event, $arguments)
+    function process_hooks($hook_array, $event, $arguments)
     {
         // Now iterate through the array for the appropriate hook
         if (!empty($hook_array[$event])) {
 
-            // Apply sorting to the hooks using the sort index.
+			// Apply sorting to the hooks using the sort index.
             // Hooks with matching sort indexes will be processed in no particular order.
             $sorted_indexes = array();
             foreach ($hook_array[$event] as $idx => $hook_details) {

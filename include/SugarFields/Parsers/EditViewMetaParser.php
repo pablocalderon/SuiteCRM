@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /**
@@ -54,7 +53,7 @@ require_once('include/SugarFields/Parsers/MetaParser.php');
 
 class EditViewMetaParser extends MetaParser
 {
-    public function __construct()
+    function __construct()
     {
         $this->mView = 'EditView';
     }
@@ -62,7 +61,7 @@ class EditViewMetaParser extends MetaParser
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function EditViewMetaParser()
+    function EditViewMetaParser()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -84,7 +83,7 @@ class EditViewMetaParser extends MetaParser
      * @param array|null $masterCopy The file path of the mater copy of the metadata file to merge against
      * @return string format of metadata contents
      **/
-    public function parse($filePath, $vardefs = array(), $moduleDir = '', $merge=false, $masterCopy=null)
+    function parse($filePath, $vardefs = array(), $moduleDir = '', $merge=false, $masterCopy=null)
     {
         global $app_strings;
         $contents = file_get_contents($filePath);
@@ -100,7 +99,7 @@ class EditViewMetaParser extends MetaParser
         $hiddenInputs = array();
         foreach ($formElements as $elem) {
             $type = $this->getTagAttribute("type", $elem);
-            if (preg_match('/hidden/si', $type)) {
+            if (preg_match('/hidden/si',$type)) {
                 $name = $this->getTagAttribute("name", $elem);
                 $value = $this->getTagAttribute("value", $elem);
                 $hiddenInputs[$name] = $value;
@@ -316,7 +315,7 @@ class EditViewMetaParser extends MetaParser
                } //if($sugarAttValue)
            } //foreach
 
-           // One last final check.  If $emptyCount does not equal Array $col count, don't add
+		   // One last final check.  If $emptyCount does not equal Array $col count, don't add
            if ($emptyCount != count($col)) {
                if ($hasRequiredLabel) {
                    if (is_array($col)) {
@@ -334,7 +333,7 @@ class EditViewMetaParser extends MetaParser
            } //if
        } //foreach
 
-       $panels[$id] = $metarow;
+	   $panels[$id] = $metarow;
    } //foreach
 
         $this->mCustomPanels = $panels;

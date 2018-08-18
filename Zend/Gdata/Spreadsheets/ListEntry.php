@@ -42,6 +42,7 @@ require_once 'Zend/Gdata/Spreadsheets/Extension/Custom.php';
  */
 class Zend_Gdata_Spreadsheets_ListEntry extends Zend_Gdata_Entry
 {
+
     protected $_entryClassName = 'Zend_Gdata_Spreadsheets_ListEntry';
 
     /**
@@ -176,8 +177,7 @@ class Zend_Gdata_Spreadsheets_ListEntry extends Zend_Gdata_Entry
         } else {
             require_once 'Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
-                'Element does not exist.'
-            );
+                'Element does not exist.');
         }
         return $this;
     }
@@ -200,9 +200,9 @@ class Zend_Gdata_Spreadsheets_ListEntry extends Zend_Gdata_Entry
         } else {
             require_once 'Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
-                'Element does not exist.'
-            );
+                'Element does not exist.');
         }
         return $this;
     }
+
 }

@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('soap/SoapHelperFunctions.php');
@@ -51,7 +50,7 @@ require_once('soap/SoapPortalHelper.php');
 
 
 
-/******
+/*************************************************************************************
 
 THIS IS FOR PORTAL USERS
 
@@ -64,8 +63,7 @@ $server->register(
         'portal_login',
         array('portal_auth'=>'tns:user_auth','user_name'=>'xsd:string', 'application_name'=>'xsd:string'),
         array('return'=>'tns:set_entry_result'),
-        $NAMESPACE
-);
+        $NAMESPACE);
 
 function portal_login($portal_auth, $user_name, $application_name)
 {
@@ -100,22 +98,22 @@ function portal_login($portal_auth, $user_name, $application_name)
         $GLOBALS['log']->debug("Saving new session");
         login_success();
         return array('id'=>session_id(), 'error'=>$error->get_soap_array());
-    }
-    $contact = $contact->retrieve_by_string_fields(array('portal_name'=>$user_name, 'portal_active'=>'1', 'deleted'=>0));
-    if ($contact != null) {
-        session_start();
-        $_SESSION['is_valid_session']= true;
-        $_SESSION['ip_address'] = query_client_ip();
-        $_SESSION['user_id'] = $contact->id;
-        $_SESSION['portal_id'] = $current_user->id;
+    } else {
+        $contact = $contact->retrieve_by_string_fields(array('portal_name'=>$user_name, 'portal_active'=>'1', 'deleted'=>0));
+        if ($contact != null) {
+            session_start();
+            $_SESSION['is_valid_session']= true;
+            $_SESSION['ip_address'] = query_client_ip();
+            $_SESSION['user_id'] = $contact->id;
+            $_SESSION['portal_id'] = $current_user->id;
 
-        $_SESSION['type'] = 'contact';
-        $_SESSION['assigned_user_id'] = $contact->assigned_user_id;
-        login_success();
-        build_relationship_tree($contact);
-        return array('id'=>session_id(), 'error'=>$error->get_soap_array());
+            $_SESSION['type'] = 'contact';
+            $_SESSION['assigned_user_id'] = $contact->assigned_user_id;
+            login_success();
+            build_relationship_tree($contact);
+            return array('id'=>session_id(), 'error'=>$error->get_soap_array());
+        }
     }
-    
     $error->set_error('invalid_login');
     return array('id'=>-1, 'error'=>$error->get_soap_array());
 }
@@ -153,8 +151,7 @@ $server->register(
         'portal_logout',
         array('session'=>'xsd:string'),
         array('return'=>'tns:error_value'),
-        $NAMESPACE
-);
+        $NAMESPACE);
 function portal_logout($session)
 {
     $error = new SoapError();
@@ -170,8 +167,7 @@ $server->register(
         'portal_get_sugar_id',
         array('session'=>'xsd:string'),
         array('return'=>'tns:set_entry_result'),
-        $NAMESPACE
-);
+        $NAMESPACE);
 function portal_get_sugar_id($session)
 {
     $error = new SoapError();
@@ -186,8 +182,7 @@ $server->register(
         'portal_get_sugar_contact_id',
         array('session'=>'xsd:string'),
         array('return'=>'tns:set_entry_result'),
-        $NAMESPACE
-);
+        $NAMESPACE);
 function portal_get_sugar_contact_id($session)
 {
     $error = new SoapError();
@@ -203,10 +198,9 @@ $server->register(
     'portal_get_entry_list',
     array('session'=>'xsd:string', 'module_name'=>'xsd:string','where'=>'xsd:string', 'order_by'=>'xsd:string', 'select_fields'=>'tns:select_fields'),
     array('return'=>'tns:get_entry_list_result'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
-function portal_get_entry_list($session, $module_name, $where, $order_by, $select_fields)
+function portal_get_entry_list($session, $module_name,$where, $order_by, $select_fields)
 {
     return portal_get_entry_list_limited($session, $module_name, $where, $order_by, $select_fields, 0, "");
 }
@@ -219,8 +213,7 @@ $server->register(
     'portal_get_entry_list_filter',
     array('session'=>'xsd:string', 'module_name'=>'xsd:string', 'order_by'=>'xsd:string', 'select_fields'=>'tns:select_fields', 'row_offset' => 'xsd:int', 'limit'=>'xsd:int', 'filter' =>'tns:name_value_operator_list'),
     array('return'=>'tns:get_entry_list_result'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
 
 function portal_get_entry_list_filter($session, $module_name, $order_by, $select_fields, $row_offset, $limit, $filter)
@@ -294,9 +287,10 @@ function portal_get_entry_list_filter($session, $module_name, $order_by, $select
             }
         }
         return portal_get_entry_list_limited($session, $module_name, $where, $order_by, $select_fields, $row_offset, $limit);
+    } else {
+        $error->set_error('no_module_support');
+        return array('result_count'=>-1, 'entry_list'=>array(), 'error'=>$error->get_soap_array());
     }
-    $error->set_error('no_module_support');
-    return array('result_count'=>-1, 'entry_list'=>array(), 'error'=>$error->get_soap_array());
 }
 
 
@@ -304,10 +298,9 @@ $server->register(
     'portal_get_entry',
     array('session'=>'xsd:string', 'module_name'=>'xsd:string', 'id'=>'xsd:string', 'select_fields'=>'tns:select_fields'),
     array('return'=>'tns:get_entry_result'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
-function portal_get_entry($session, $module_name, $id, $select_fields)
+function portal_get_entry($session, $module_name, $id,$select_fields)
 {
     global  $beanList, $beanFiles;
     $error = new SoapError();
@@ -343,7 +336,7 @@ function portal_get_entry($session, $module_name, $id, $select_fields)
         $seed->description = $body;
     }
 
-    $output_list = array();
+    $output_list = Array();
     $output_list[] = get_return_value($seed, $module_name);
 
     //$output_list[0]['name_value_list']['description'] = array('name'=>'description', 'value'=>$seed->description);
@@ -353,7 +346,7 @@ function portal_get_entry($session, $module_name, $id, $select_fields)
         $field_list = get_field_list($seed, true);
     }
     $output_list = filter_return_list($output_list, $select_fields, $module_name);
-    $field_list = filter_field_list($field_list, $select_fields, $module_name);
+    $field_list = filter_field_list($field_list,$select_fields, $module_name);
 
     return array('field_list'=>$field_list, 'entry_list'=>$output_list, 'error'=>$error->get_soap_array());
 }
@@ -363,10 +356,9 @@ $server->register(
     'portal_set_entry',
     array('session'=>'xsd:string', 'module_name'=>'xsd:string',  'name_value_list'=>'tns:name_value_list'),
     array('return'=>'tns:set_entry_result'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
-function portal_set_entry($session, $module_name, $name_value_list)
+function portal_set_entry($session,$module_name, $name_value_list)
 {
     global  $beanList, $beanFiles, $valid_modules_for_contact;
 
@@ -440,7 +432,7 @@ function portal_set_entry($session, $module_name, $name_value_list)
             $id = $seed->save();
         } else {
             $contact = new Contact();
-            $contact->disable_row_level_security = true;
+            $contact->disable_row_level_security = TRUE;
             $contact->retrieve($_SESSION['user_id']);
             $seed->contact_id = $contact;
 
@@ -463,10 +455,9 @@ $server->register(
         'portal_set_note_attachment',
         array('session'=>'xsd:string','note'=>'tns:note_attachment'),
         array('return'=>'tns:set_entry_result'),
-        $NAMESPACE
-);
+        $NAMESPACE);
 
-function portal_set_note_attachment($session, $note)
+function portal_set_note_attachment($session,$note)
 {
     $error = new SoapError();
     if (!portal_validate_authenticated($session)) {
@@ -487,8 +478,7 @@ $server->register(
     'portal_remove_note_attachment',
     array('session'=>'xsd:string', 'id'=>'xsd:string'),
     array('return'=>'tns:error_value'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
 function portal_remove_note_attachment($session, $id)
 {
@@ -513,10 +503,9 @@ $server->register(
     'portal_get_note_attachment',
     array('session'=>'xsd:string', 'id'=>'xsd:string'),
     array('return'=>'tns:return_note_attachment'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
-function portal_get_note_attachment($session, $id)
+function portal_get_note_attachment($session,$id)
 {
     $error = new SoapError();
     if (! portal_validate_authenticated($session)) {
@@ -536,7 +525,7 @@ function portal_get_note_attachment($session, $id)
     if (!isset($note->filename)) {
         $note->filename = '';
     }
-    $file= $ns->retrieveFile($id, $note->filename);
+    $file= $ns->retrieveFile($id,$note->filename);
     if ($file == -1) {
         $error->set_error('no_file');
         $file = '';
@@ -548,10 +537,9 @@ $server->register(
     'portal_relate_note_to_module',
     array('session'=>'xsd:string', 'note_id'=>'xsd:string', 'module_name'=>'xsd:string', 'module_id'=>'xsd:string'),
     array('return'=>'tns:error_value'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
-function portal_relate_note_to_module($session, $note_id, $module_name, $module_id)
+function portal_relate_note_to_module($session,$note_id, $module_name, $module_id)
 {
     global  $beanList, $beanFiles, $current_user;
     $error = new SoapError();
@@ -586,10 +574,9 @@ $server->register(
     'portal_get_related_notes',
     array('session'=>'xsd:string', 'module_name'=>'xsd:string', 'module_id'=>'xsd:string',  'select_fields'=>'tns:select_fields', 'order_by'=>'xsd:string'),
     array('return'=>'tns:get_entry_result'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
-function portal_get_related_notes($session, $module_name, $module_id, $select_fields, $order_by)
+function portal_get_related_notes($session,$module_name, $module_id, $select_fields, $order_by)
 {
     global  $beanList, $beanFiles;
     $error = new SoapError();
@@ -622,8 +609,8 @@ function portal_get_related_notes($session, $module_name, $module_id, $select_fi
 
 
 
-    $output_list = array();
-    $field_list = array();
+    $output_list = Array();
+    $field_list = Array();
     foreach ($list as $value) {
         $output_list[] = get_return_value($value, 'Notes');
         $_SESSION['viewable']['Notes'][$value->id] = $value->id;
@@ -632,7 +619,7 @@ function portal_get_related_notes($session, $module_name, $module_id, $select_fi
         }
     }
     $output_list = filter_return_list($output_list, $select_fields, $module_name);
-    $field_list = filter_field_list($field_list, $select_fields, $module_name);
+    $field_list = filter_field_list($field_list,$select_fields, $module_name);
 
 
     return array('result_count'=>sizeof($output_list), 'next_offset'=>0,'field_list'=>$field_list, 'entry_list'=>$output_list, 'error'=>$error->get_soap_array());
@@ -642,8 +629,7 @@ $server->register(
     'portal_get_related_list',
     array('session'=>'xsd:string', 'module_name'=>'xsd:string', 'rel_module'=>'xsd:string', 'module_id'=>'xsd:string',  'select_fields'=>'tns:select_fields', 'order_by'=>'xsd:string', 'offset' => 'xsd:int', 'limit' => 'xsd:int'),
     array('return'=>'tns:get_entry_result'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
 function portal_get_related_list($session, $module_name, $rel_module, $module_id, $select_fields, $order_by, $offset, $limit)
 {
@@ -668,8 +654,8 @@ function portal_get_related_list($session, $module_name, $rel_module, $module_id
 
     $list = get_related_in_module("('".DBManagerFactory::getInstance()->quote($module_id)."')", $module_name, $rel_module, $order_by, $offset, $limit);
 
-    $output_list = array();
-    $field_list = array();
+    $output_list = Array();
+    $field_list = Array();
     foreach ($list as $value) {
         $output_list[] = get_return_value($value, $rel_module);
         $_SESSION['viewable'][$rel_module][$value->id] = $value->id;
@@ -678,7 +664,7 @@ function portal_get_related_list($session, $module_name, $rel_module, $module_id
         }
     }
     $output_list = filter_return_list($output_list, $select_fields, $module_name);
-    $field_list = filter_field_list($field_list, $select_fields, $module_name);
+    $field_list = filter_field_list($field_list,$select_fields, $module_name);
 
 
     return array('result_count'=>$list['result_count'], 'next_offset'=>0,'field_list'=>$field_list, 'entry_list'=>$output_list, 'error'=>$error->get_soap_array());
@@ -688,8 +674,7 @@ $server->register(
     'portal_get_module_fields',
     array('session'=>'xsd:string', 'module_name'=>'xsd:string'),
     array('return'=>'tns:module_fields'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
 function portal_get_module_fields($session, $module_name)
 {
@@ -732,8 +717,7 @@ $server->register(
     'portal_get_subscription_lists',
     array('session'=>'xsd:string'),
     array('return'=>'tns:get_subscription_lists_result'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
 function portal_get_subscription_lists($session)
 {
@@ -775,8 +759,7 @@ $server->register(
     'portal_set_newsletters',
     array('session'=>'xsd:string', 'subscribe_ids' => 'tns:select_fields', 'unsubscribe_ids' => 'tns:select_fields'),
     array('return'=>'tns:error_value'),
-    $NAMESPACE
-);
+    $NAMESPACE);
 
 function portal_set_newsletters($session, $subscribe_ids, $unsubscribe_ids)
 {

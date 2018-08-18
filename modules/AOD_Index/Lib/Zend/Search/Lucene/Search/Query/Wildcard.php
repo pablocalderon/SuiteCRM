@@ -138,7 +138,7 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
 
         $prefix          = self::_getPrefix($this->_pattern->text);
         $prefixLength    = strlen($prefix);
-        $matchExpression = '/^' . str_replace(array('\\?', '\\*'), array('.', '.*'), preg_quote($this->_pattern->text, '/')) . '$/';
+        $matchExpression = '/^' . str_replace(array('\\?', '\\*'), array('.', '.*') , preg_quote($this->_pattern->text, '/')) . '$/';
 
         if ($prefixLength < self::$_minPrefixLength) {
             require_once 'Zend/Search/Lucene/Exception.php';
@@ -200,15 +200,16 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
         } elseif (count($this->_matches) == 1) {
             require_once 'Zend/Search/Lucene/Search/Query/Term.php';
             return new Zend_Search_Lucene_Search_Query_Term(reset($this->_matches));
-        }
-        require_once 'Zend/Search/Lucene/Search/Query/MultiTerm.php';
-        $rewrittenQuery = new Zend_Search_Lucene_Search_Query_MultiTerm();
+        } else {
+            require_once 'Zend/Search/Lucene/Search/Query/MultiTerm.php';
+            $rewrittenQuery = new Zend_Search_Lucene_Search_Query_MultiTerm();
 
-        foreach ($this->_matches as $matchedTerm) {
-            $rewrittenQuery->addTerm($matchedTerm);
-        }
+            foreach ($this->_matches as $matchedTerm) {
+                $rewrittenQuery->addTerm($matchedTerm);
+            }
 
-        return $rewrittenQuery;
+            return $rewrittenQuery;
+        }
     }
 
     /**
@@ -316,7 +317,7 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
     {
         $words = array();
 
-        $matchExpression = '/^' . str_replace(array('\\?', '\\*'), array('.', '.*'), preg_quote($this->_pattern->text, '/')) . '$/';
+        $matchExpression = '/^' . str_replace(array('\\?', '\\*'), array('.', '.*') , preg_quote($this->_pattern->text, '/')) . '$/';
         if (@preg_match('/\pL/u', 'a') == 1) {
             // PCRE unicode support is turned on
             // add Unicode modifier to the match expression
@@ -358,3 +359,4 @@ class Zend_Search_Lucene_Search_Query_Wildcard extends Zend_Search_Lucene_Search
         return $query;
     }
 }
+

@@ -5,32 +5,32 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class SecurityGroupMessage extends Basic
 {
-    public $new_schema = true;
-    public $module_dir = 'SecurityGroups';
-    public $object_name = 'SecurityGroupMessage';
-    public $table_name = 'securitygroups_message';
-    public $importable = false;
+    var $new_schema = true;
+    var $module_dir = 'SecurityGroups';
+    var $object_name = 'SecurityGroupMessage';
+    var $table_name = 'securitygroups_message';
+    var $importable = false;
 
-    public $id;
-    public $name;
-    public $date_entered;
-    public $date_modified;
-    public $modified_user_id;
-    public $modified_by_name;
-    public $created_by;
-    public $created_by_name;
-    public $description;
-    public $deleted;
-    public $created_by_link;
-    public $modified_user_link;
+    var $id;
+    var $name;
+    var $date_entered;
+    var $date_modified;
+    var $modified_user_id;
+    var $modified_by_name;
+    var $created_by;
+    var $created_by_name;
+    var $description;
+    var $deleted;
+    var $created_by_link;
+    var $modified_user_link;
 
 
-    public $additional_column_fields = array();
-    public $field_defs = array(
+    var $additional_column_fields = Array();
+    var $field_defs = array (
        'id'=>array('name' =>'id', 'type' =>'char', 'len'=>'36', 'default'=>'')
       , 'name'=>array('name' =>'name', 'type' =>'varchar', 'len'=>'255', )
-      , 'date_entered'=>array('name' => 'date_entered','type' => 'datetime')
-      , 'date_modified'=>array('name' => 'date_modified','type' => 'datetime')
+      , 'date_entered'=>array ('name' => 'date_entered','type' => 'datetime')
+      , 'date_modified'=>array ('name' => 'date_modified','type' => 'datetime')
       , 'modified_user_id'=>array('name' =>'modified_user_id', 'type' =>'char', 'len'=>'36',)
       , 'created_by'=>array('name' =>'created_by', 'type' =>'char', 'len'=>'36',)
       , 'description'=>array('name' =>'description', 'type' =>'text', 'len'=>'',)
@@ -39,7 +39,7 @@ class SecurityGroupMessage extends Basic
     );
 
 
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -47,7 +47,7 @@ class SecurityGroupMessage extends Basic
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function SecurityGroupMessage()
+    function SecurityGroupMessage()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -60,7 +60,7 @@ class SecurityGroupMessage extends Basic
 
 
 
-    public function get_list_view_data()
+    function get_list_view_data()
     {
         $data = parent::get_list_view_data();
         $delete = '';
@@ -81,7 +81,7 @@ class SecurityGroupMessage extends Basic
         }
 
         if (is_admin($GLOBALS['current_user']) || $data['CREATED_BY'] == $GLOBALS['current_user']->id || $group_owner) {
-            $delete = SugarThemeRegistry::current()->getImage('delete_inline', 'width="12" height="12" border="0" align="absmiddle" style="vertical-align: bottom;" onclick=\'Message.deleteMessage("'. $data['ID'] . '", "{this.id}")\'', null, null, '.gif', '');
+            $delete = SugarThemeRegistry::current()->getImage('delete_inline', 'width="12" height="12" border="0" align="absmiddle" style="vertical-align: bottom;" onclick=\'Message.deleteMessage("'. $data['ID'] . '", "{this.id}")\'',null,null,'.gif','');
         }
 
         $username = "";
@@ -102,7 +102,7 @@ class SecurityGroupMessage extends Basic
     }
 
 
-    public static function saveMessage($text, $securitygroup_id)
+    static function saveMessage($text, $securitygroup_id)
     {
         //if no security group id then must be admin. Otherwise, make sure the user is a member of the group
         global $current_user;
@@ -123,13 +123,13 @@ class SecurityGroupMessage extends Basic
         $message->save();
     }
 
-    public function getTimeLapse($startDate)
+    function getTimeLapse($startDate)
     {
         $startDate = $GLOBALS['timedate']->to_db($startDate);
         $start = array();
         preg_match('/(\d+)\-(\d+)\-(\d+) (\d+)\:(\d+)\:(\d+)/', $startDate, $start);
         $end = gmdate('Y-m-d H:i:s');
-        $start_time = gmmktime($start[4], $start[5], $start[6], $start[2], $start[3], $start[1]);
+        $start_time = gmmktime($start[4],$start[5], $start[6], $start[2], $start[3], $start[1]);
         $seconds = time()- $start_time;
         $minutes =   $seconds/60;
         $seconds = $seconds % 60;
@@ -141,49 +141,49 @@ class SecurityGroupMessage extends Basic
         $days = $days % 7;
         $result = '';
         if ($weeks == 1) {
-            $result = translate('LBL_TIME_LAST_WEEK', 'SugarFeed').' ';
+            $result = translate('LBL_TIME_LAST_WEEK','SugarFeed').' ';
             return $result;
         } elseif ($weeks > 1) {
-            $result .= $weeks . ' '.translate('LBL_TIME_WEEKS', 'SugarFeed').' ';
+            $result .= $weeks . ' '.translate('LBL_TIME_WEEKS','SugarFeed').' ';
             if ($days > 0) {
-                $result .= $days . ' '.translate('LBL_TIME_DAYS', 'SugarFeed').' ';
+                $result .= $days . ' '.translate('LBL_TIME_DAYS','SugarFeed').' ';
             }
         } else {
             if ($days == 1) {
-                $result = translate('LBL_TIME_YESTERDAY', 'SugarFeed').' ';
+                $result = translate('LBL_TIME_YESTERDAY','SugarFeed').' ';
                 return $result;
             } elseif ($days > 1) {
-                $result .= $days . ' '. translate('LBL_TIME_DAYS', 'SugarFeed').' ';
+                $result .= $days . ' '. translate('LBL_TIME_DAYS','SugarFeed').' ';
             } else {
                 if ($hours == 1) {
-                    $result .= $hours . ' '.translate('LBL_TIME_HOUR', 'SugarFeed').' ';
+                    $result .= $hours . ' '.translate('LBL_TIME_HOUR','SugarFeed').' ';
                 } else {
-                    $result .= $hours . ' '.translate('LBL_TIME_HOURS', 'SugarFeed').' ';
+                    $result .= $hours . ' '.translate('LBL_TIME_HOURS','SugarFeed').' ';
                 }
                 if ($hours < 6) {
                     if ($minutes == 1) {
-                        $result .= $minutes . ' ' . translate('LBL_TIME_MINUTE', 'SugarFeed'). ' ';
+                        $result .= $minutes . ' ' . translate('LBL_TIME_MINUTE','SugarFeed'). ' ';
                     } else {
-                        $result .= $minutes . ' ' . translate('LBL_TIME_MINUTES', 'SugarFeed'). ' ';
+                        $result .= $minutes . ' ' . translate('LBL_TIME_MINUTES','SugarFeed'). ' ';
                     }
                 }
                 if ($hours == 0 && $minutes == 0) {
                     if ($seconds == 1) {
-                        $result = $seconds . ' ' . translate('LBL_TIME_SECOND', 'SugarFeed');
+                        $result = $seconds . ' ' . translate('LBL_TIME_SECOND','SugarFeed');
                     } else {
-                        $result = $seconds . ' ' . translate('LBL_TIME_SECONDS', 'SugarFeed');
+                        $result = $seconds . ' ' . translate('LBL_TIME_SECONDS','SugarFeed');
                     }
                 }
             }
         }
-        return $result . ' ' . translate('LBL_TIME_AGO', 'SugarFeed');
+        return $result . ' ' . translate('LBL_TIME_AGO','SugarFeed');
     }
 
-    public function bean_implements($interface)
+    function bean_implements($interface)
     {
         switch ($interface) {
-            case 'ACL':return false;
-        }
+			case 'ACL':return false;
+		}
         return false;
     }
 }

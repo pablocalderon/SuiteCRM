@@ -122,10 +122,8 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $email = new Email();
 
         $this->assertEquals('some text', $email->decodeDuringSend('some text'));
-        $this->assertEquals(
-            '&lt; some text &gt;',
-            $email->decodeDuringSend('sugarLessThan some text sugarGreaterThan')
-        );
+        $this->assertEquals('&lt; some text &gt;',
+            $email->decodeDuringSend('sugarLessThan some text sugarGreaterThan'));
     }
 
     public function testisDraftEmail()
@@ -218,7 +216,7 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testsaveAndOthers()
     {
 
-    // save state
+	// save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushTable('email_addresses');
@@ -878,7 +876,7 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function test_generateSearchImportWhereClause()
     {
         
-    // save state
+	// save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -925,14 +923,10 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $email = new Email();
 
         $this->assertEquals('test string', $email->trimLongTo('test string')); //test without any separator
-        $this->assertEquals(
-            'test string 1...',
-            $email->trimLongTo('test string 1, test string2')
-        ); //test with , separator
-        $this->assertEquals(
-            'test string 1...',
-            $email->trimLongTo('test string 1; test string2')
-        );//test with ; separator
+        $this->assertEquals('test string 1...',
+            $email->trimLongTo('test string 1, test string2')); //test with , separator
+        $this->assertEquals('test string 1...',
+            $email->trimLongTo('test string 1; test string2'));//test with ; separator
     }
 
     public function testget_summary_text()
@@ -950,7 +944,7 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testdistributionForm()
     {
 
-    // save state
+	// save state
 
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();

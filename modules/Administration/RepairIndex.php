@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -56,7 +55,7 @@ function compare($table_name, $db_indexes, $var_indexes)
         $sel_db_index = null;
         $var_fields_string ='';
         if (count($var_i_def['fields'])>0) {
-            $var_fields_string = implode('', $var_i_def['fields']);
+            $var_fields_string = implode('',$var_i_def['fields']);
         }
         $field_list_match = false;
         if (isset($db_indexes[$var_i_name])) {
@@ -68,8 +67,8 @@ function compare($table_name, $db_indexes, $var_indexes)
         } else {
             //search by column list.
             foreach ($db_indexes as $db_i_name=>$db_i_def) {
-                $db_fields_string=implode('', $db_i_def['fields']);
-                if (strcasecmp($var_fields_string, $db_fields_string)==0) {
+                $db_fields_string=implode('',$db_i_def['fields']);
+                if (strcasecmp($var_fields_string , $db_fields_string)==0) {
                     $sel_db_index=$db_indexes[$db_i_name];
                     $field_list_match=true;
                     break;
@@ -79,22 +78,22 @@ function compare($table_name, $db_indexes, $var_indexes)
 
         //no matching index in database.
         if (empty($sel_db_index)) {
-            $add_index[]=DBManagerFactory::getInstance()->add_drop_constraint($table_name, $var_i_def);
+            $add_index[]=DBManagerFactory::getInstance()->add_drop_constraint($table_name,$var_i_def);
             continue;
         }
         if (!$field_list_match) {
             //drop the db index and create new index based on vardef
-            $drop_index[]=DBManagerFactory::getInstance()->add_drop_constraint($table_name, $sel_db_index, true);
-            $add_index[]=DBManagerFactory::getInstance()->add_drop_constraint($table_name, $var_i_def);
+            $drop_index[]=DBManagerFactory::getInstance()->add_drop_constraint($table_name,$sel_db_index,true);
+            $add_index[]=DBManagerFactory::getInstance()->add_drop_constraint($table_name,$var_i_def);
             continue;
         }
         //check for name match.
         //it should not occur for indexes of type primary or unique.
         if ($var_i_def['type'] != 'primary' and $var_i_def['type'] != 'unique' and $var_i_def['name'] != $sel_db_index['name']) {
             //rename index.
-            $rename=DBManagerFactory::getInstance()->renameIndexDefs($sel_db_index, $var_i_def, $table_name);
+            $rename=DBManagerFactory::getInstance()->renameIndexDefs($sel_db_index,$var_i_def,$table_name);
             if (is_array($rename)) {
-                $change_index=array_merge($change_index, $rename);
+                $change_index=array_merge($change_index,$rename);
             } else {
                 $change_index[]=$rename;
             }
@@ -124,7 +123,7 @@ $drop_index=array();
 $change_index=array();
 
 global $current_user, $beanFiles, $dictionary, $sugar_config, $mod_strings;;
-include_once('include/database/DBManager.php');
+include_once ('include/database/DBManager.php');
 
 $db = &DBManagerFactory::getInstance();
 $processed_tables=array();
@@ -141,9 +140,9 @@ foreach ($beanFiles as $beanname=>$beanpath) {
     //skips beans based on same tables. user, employee and group are an example.
     if (empty($focus->table_name) || isset($processed_tables[$focus->table_name])) {
         continue;
+    } else {
+        $processed_tables[$focus->table_name]=$focus->table_name;
     }
-    $processed_tables[$focus->table_name]=$focus->table_name;
-    
 
     if (!empty($dictionary[$focus->object_name]['indices'])) {
         $indices=$dictionary[$focus->object_name]['indices'];
@@ -166,7 +165,7 @@ foreach ($beanFiles as $beanname=>$beanpath) {
     }
 
     $db_indices=$focus->db->get_indices($focus->table_name);
-    compare($focus->table_name, $db_indices, $var_indices);
+    compare($focus->table_name,$db_indices,$var_indices);
 }
 ////	END PROCESS MODULE BEANS
 ///////////////////////////////////////////////////////////////////////////////
@@ -193,7 +192,7 @@ foreach ($dictionary as $rel=>$rel_def) {
 
     $db_indices=$focus->db->get_indices($rel_def['table']);
 
-    compare($rel_def['table'], $db_indices, $var_indices);
+    compare($rel_def['table'],$db_indices,$var_indices);
 }
 ////	END PROCESS RELATIONSHIP METADATA
 ///////////////////////////////////////////////////////////////////////////////

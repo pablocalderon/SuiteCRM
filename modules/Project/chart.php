@@ -1,41 +1,41 @@
 <?php
-/**
- *
- * SugarCRM Community Edition is a customer relationship management program developed by
- * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License version 3 as published by the
- * Free Software Foundation with the addition of the following permission added
- * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
- * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
- * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- * details.
- *
- * You should have received a copy of the GNU Affero General Public License along with
- * this program; if not, see http://www.gnu.org/licenses or write to the Free
- * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- * 02110-1301 USA.
- *
- * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
- * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
- *
- * The interactive user interfaces in modified source and object code versions
- * of this program must display Appropriate Legal Notices, as required under
- * Section 5 of the GNU Affero General Public License version 3.
- *
- * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+/** 
+ * 
+ * SugarCRM Community Edition is a customer relationship management program developed by 
+ * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc. 
+ * 
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd. 
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd. 
+ * 
+ * This program is free software; you can redistribute it and/or modify it under 
+ * the terms of the GNU Affero General Public License version 3 as published by the 
+ * Free Software Foundation with the addition of the following permission added 
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK 
+ * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY 
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS. 
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT 
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more 
+ * details. 
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with 
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free 
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
+ * 02110-1301 USA. 
+ * 
+ * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road, 
+ * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com. 
+ * 
+ * The interactive user interfaces in modified source and object code versions 
+ * of this program must display Appropriate Legal Notices, as required under 
+ * Section 5 of the GNU Affero General Public License version 3. 
+ * 
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3, 
+ * these Appropriate Legal Notices must retain the display of the "Powered by 
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not 
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must 
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM". 
  */
 
 if (!defined('sugarEntry') || !sugarEntry) {
@@ -66,14 +66,14 @@ class chart
         $this->draw($this->start_date, $this->end_date, $this->projects, $this->users, $this->contacts, $this->tasks, $this->chart_type);
     }
 
-    public function draw($start_date, $end_date, $sel_projects, $sel_users, $sel_contacts, $resources, $chart_type)
+    public function draw($start_date, $end_date, $sel_projects ,$sel_users, $sel_contacts, $resources, $chart_type)
     {
         global $current_user, $db, $mod_strings;
 
         if ($chart_type == "monthly") {
-            list($time_span, $day_count) = $this->year_week($start_date, $end_date);
+            list($time_span,$day_count) = $this->year_week($start_date, $end_date);
         } elseif ($chart_type == "quarterly") {
-            list($time_span, $day_count) = $this->year_quarter($start_date, $end_date);
+            list($time_span,$day_count) = $this->year_quarter($start_date, $end_date);
         } else {
             $time_span = $this->year_month($start_date, $end_date);
             $day_count = $this->count_days($start_date, $end_date) + 1;
@@ -224,7 +224,7 @@ class chart
         echo '</select><br /><br />';
         echo '</td>';
 
-            
+			
         echo '<td scope="row_label" nowrap="nowrap" >
                   <label for="field_chart">'.$mod_strings["LBL_DATE_START"].'</label>
               </td>
@@ -377,7 +377,7 @@ class chart
         elseif ($chart_type == "monthly") {
             echo '<td class="main_table week">'.$mod_strings['LBL_RESOURCE_CHART_MONTH'].'</td>';
             /*foreach ($weeks as $week)
-            {
+			{
                 echo '<td class="main_table weeks" colspan="7">'.$week.'</td>';
             }*/
 
@@ -391,9 +391,9 @@ class chart
             echo '</tr><tr><td rowspan="3" class="main_table day">'.$mod_strings['LBL_RESOURCE_CHART_WEEK'].'</td>';
             foreach ($time_span as $year => $months) {
                 $wcount= 0;
-                foreach ($months as $month => $weeks) {//count the number of weeks in each month
+                foreach ($months as $month => $weeks) {//count the number of weeks in each month        
                     /*foreach ($weeks as $week)
-                    {
+					{
                         $wcount++;
                     }*/
                     $wcount+= count($weeks);
@@ -481,7 +481,7 @@ class chart
             echo '</tr><tr><td rowspan="3" class="main_table day">'.$mod_strings['LBL_RESOURCE_CHART_MONTH'].'</td>';
             foreach ($time_span as $year => $quarters) {
                 $qcount= 0;
-                foreach ($quarters as $quarter => $months) {//count the number of months in each quarter
+                foreach ($quarters as $quarter => $months) {//count the number of months in each quarter        
                 
                     $qcount+= count($months);
                 }
@@ -530,15 +530,15 @@ class chart
                 $i=0;
                 for ($x=0; $x< $day_count; $x++) {
                     //Get date for each day
-                    $dateq = $this->get_month_dates($start_date, $x);
+                    $dateq = $this->get_month_dates($start_date,$x);
 
                     $class = '';
                     $square = '';
                     $dup = 0;
 
                     for ($c=0; $c < $count; $c++) {
-                        $ds_month = $this->count_months($start_date, $resource->tasks[$c]['start_day'], $x);
-                        $de_month = $this->count_months($start_date, $resource->tasks[$c]['end_day'], $x);
+                        $ds_month = $this->count_months($start_date, $resource->tasks[$c]['start_day'],$x);
+                        $de_month = $this->count_months($start_date, $resource->tasks[$c]['end_day'],$x);
 
                         if (($ds_month == 0 || $de_month == 0) && $resource->tasks[$c]['start_day'] <= $resource->tasks[$c]['end_day'] && $resource->tasks[$c]['start_day'] >=0 && $resource->tasks[$c]['end_day']>=0) {
                             $dup++;
@@ -576,7 +576,7 @@ class chart
             $count++;
             $y = $dt->format('Y');
             $c = ceil($dt->format('m')/3);
-            $m = mb_substr($GLOBALS['app_list_strings']['dom_cal_month_short'][$dt->format('n')], 0, 3);
+            $m = mb_substr($GLOBALS['app_list_strings']['dom_cal_month_short'][$dt->format('n')],0, 3);
             
             $aResult[$y][$c][$count] = $m;
         }
@@ -621,9 +621,9 @@ class chart
     
         foreach ($period as $dt) {
             $y = $dt->format('Y');
-            $m = mb_substr($GLOBALS['app_list_strings']['dom_cal_month_short'][$dt->format('n')], 0, 3);
+            $m = mb_substr($GLOBALS['app_list_strings']['dom_cal_month_short'][$dt->format('n')],0, 3);
             $j = $dt->format('j');
-            $d = mb_substr($GLOBALS['app_list_strings']['dom_cal_day_short'][$dt->format('w')+1], 0, 1);
+            $d = mb_substr($GLOBALS['app_list_strings']['dom_cal_day_short'][$dt->format('w')+1],0, 1);
 
             $aResult[$y][$m][$j] = $d;
         }
@@ -631,7 +631,7 @@ class chart
         return $aResult;
     }
 
-    public function get_weeks($start_date, $end_date)
+    function get_weeks($start_date, $end_date)
     {
         $begin = new DateTime($start_date);
         $end = new DateTime($end_date);
@@ -648,8 +648,8 @@ class chart
     }
 
 
-    //count number of months between task start day and chart current month
-    public function count_months($start, $day, $x)
+    //count number of months between task start day and chart current month 
+    function count_months($start, $day,$x)
     {
         $sdate = DateTime::createFromFormat('Y-m-d', $start);
         $edate = DateTime::createFromFormat('Y-m-d', $start);
@@ -663,13 +663,14 @@ class chart
 
         if ($sdate->format('m') != $edate->format('m')) {
             return -1;
+        } else {
+            return 0;
         }
-        return 0;
     }
 
 
     //Returns the total number of days between two dates
-    public function count_days($start_date, $end_date)
+    function count_days($start_date, $end_date)
     {
         $d1 = new DateTime($start_date);
         $d2 = new DateTime($end_date);
@@ -686,7 +687,7 @@ class chart
 
 
     //returns first and last date of a week
-    public function get_week_dates($start, $weeks)
+    function get_week_dates($start, $weeks)
     {
         $date = DateTime::createFromFormat('Y-m-d', $start);
 
@@ -698,7 +699,7 @@ class chart
     }
 
     //returns first and last date of a month
-    public function get_month_dates($start, $months)
+    function get_month_dates($start, $months)
     {
         $date = DateTime::createFromFormat('Y-m-d', $start);
 
@@ -709,7 +710,7 @@ class chart
 
 
     //get date of passed in day in relation to the charts start date
-    public function get_date($start, $day)
+    function get_date($start, $day)
     {
         $date = DateTime::createFromFormat('Y-m-d', $start);
         // $date->setTimezone(new DateTimeZone("Europe/London"));
@@ -720,7 +721,7 @@ class chart
 
 
     //checks if the day is a weekend and if the day is today.
-    public function check_weekend($day)
+    function check_weekend($day)
     {
         global $current_user;
         //get users timezone setting
@@ -742,8 +743,9 @@ class chart
             return 'weekend';
         } elseif ($date == $now) {
             return 'today';
+        } else {
+            return false;
         }
-        return false;
     }
 
 
@@ -762,7 +764,8 @@ class chart
     {
         if ($days > 1) {
             return " d";
+        } else {
+            return " h";
         }
-        return " h";
     }
 }

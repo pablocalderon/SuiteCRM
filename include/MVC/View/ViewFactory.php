@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -66,7 +66,7 @@ class ViewFactory
      * @param string $target_module
      * @return a|null
      */
-    public static function loadView(
+    static function loadView(
         $type = 'default',
         $module = '',
         $bean = null,
@@ -117,7 +117,7 @@ class ViewFactory
     /**
      * Load the view_<view>_config.php file which holds options used by the view.
      */
-    public static function _loadConfig(&$view, $type)
+    static function _loadConfig(&$view, $type)
     {
         $view_config_custom = array();
         $view_config_module = array();
@@ -224,7 +224,7 @@ class ViewFactory
      *
      * @return a valid SugarView
      */
-    public static function _buildFromFile($file, &$bean, $view_object_map, $type, $module)
+    static function _buildFromFile($file, &$bean, $view_object_map, $type, $module)
     {
         require_once($file);
         //try ModuleViewType first then try ViewType if that fails then use SugarView
@@ -268,13 +268,14 @@ class ViewFactory
      *
      * @return SugarView
      */
-    public static function _buildClass($class, $bean, $view_object_map)
+    static function _buildClass($class, $bean, $view_object_map)
     {
         $view = new $class();
         $view->init($bean, $view_object_map);
         if ($view instanceof SugarView) {
             return $view;
+        } else {
+            return new SugarView($bean, $view_object_map);
         }
-        return new SugarView($bean, $view_object_map);
     }
 }

@@ -435,8 +435,7 @@ abstract class BaseFacebook
         $this->destroySession();
 
         $this->setPersistentData(
-      'access_token',
-            $response_params['access_token']
+      'access_token', $response_params['access_token']
     );
     }
 
@@ -551,8 +550,7 @@ abstract class BaseFacebook
         );
             } elseif (!empty($_COOKIE[$this->getSignedRequestCookieName()])) {
                 $this->signedRequest = $this->parseSignedRequest(
-          $_COOKIE[$this->getSignedRequestCookieName()]
-                );
+          $_COOKIE[$this->getSignedRequestCookieName()]);
             }
         }
         return $this->signedRequest;
@@ -659,8 +657,7 @@ abstract class BaseFacebook
           'sdk' => 'php-sdk-'.self::VERSION
         ),
         $params
-      )
-        );
+      ));
     }
 
     /**
@@ -710,8 +707,9 @@ abstract class BaseFacebook
         $args = func_get_args();
         if (is_array($args[0])) {
             return $this->_restserver($args[0]);
+        } else {
+            return call_user_func_array(array($this, '_graph'), $args);
         }
-        return call_user_func_array(array($this, '_graph'), $args);
     }
 
     /**
@@ -842,8 +840,7 @@ abstract class BaseFacebook
           $params = array('client_id' => $this->getAppId(),
                           'client_secret' => $this->getAppSecret(),
                           'redirect_uri' => $redirect_uri,
-                          'code' => $code)
-        );
+                          'code' => $code));
         } catch (FacebookApiException $e) {
             // most likely that user very recently revoked authorization.
             // In any event, we don't have an access token, so say so.
@@ -1039,11 +1036,8 @@ abstract class BaseFacebook
         if ($errno == 60 || $errno == 77) {
             self::errorLog('Invalid or no certificate authority found, '.
                      'using bundled information');
-            curl_setopt(
-                $ch,
-                CURLOPT_CAINFO,
-                  dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fb_ca_chain_bundle.crt'
-            );
+            curl_setopt($ch, CURLOPT_CAINFO,
+                  dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fb_ca_chain_bundle.crt');
             $result = curl_exec($ch);
         }
 
@@ -1105,18 +1099,13 @@ abstract class BaseFacebook
         || strtoupper($data['algorithm']) !==  self::SIGNED_REQUEST_ALGORITHM
     ) {
             self::errorLog(
-        'Unknown algorithm. Expected ' . self::SIGNED_REQUEST_ALGORITHM
-            );
+        'Unknown algorithm. Expected ' . self::SIGNED_REQUEST_ALGORITHM);
             return null;
         }
 
         // check sig
-        $expected_sig = hash_hmac(
-            'sha256',
-            $payload,
-                              $this->getAppSecret(),
-            $raw = true
-        );
+        $expected_sig = hash_hmac('sha256', $payload,
+                              $this->getAppSecret(), $raw = true);
 
         if (strlen($expected_sig) !== strlen($sig)) {
             self::errorLog('Bad Signed JSON signature!');
@@ -1130,9 +1119,10 @@ abstract class BaseFacebook
 
         if ($result == 0) {
             return $data;
+        } else {
+            self::errorLog('Bad Signed JSON signature!');
+            return null;
         }
-        self::errorLog('Bad Signed JSON signature!');
-        return null;
     }
 
     /**
@@ -1146,8 +1136,7 @@ abstract class BaseFacebook
     {
         if (!is_array($data)) {
             throw new InvalidArgumentException(
-        'makeSignedRequest expects an array. Got: ' . print_r($data, true)
-            );
+        'makeSignedRequest expects an array. Got: ' . print_r($data, true));
         }
         $data['algorithm'] = self::SIGNED_REQUEST_ALGORITHM;
         $data['issued_at'] = time();

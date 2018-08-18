@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -52,17 +51,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
 // User is used to store customer information.
 class UserSignature extends SugarBean
 {
-    public $id;
-    public $date_entered;
-    public $date_modified;
-    public $deleted;
-    public $user_id;
-    public $name;
-    public $signature;
-    public $table_name = 'users_signatures';
-    public $module_dir = 'Users';
-    public $object_name ='UserSignature';
-    public $disable_custom_fields = true;
+    var $id;
+    var $date_entered;
+    var $date_modified;
+    var $deleted;
+    var $user_id;
+    var $name;
+    var $signature;
+    var $table_name = 'users_signatures';
+    var $module_dir = 'Users';
+    var $object_name ='UserSignature';
+    var $disable_custom_fields = true;
 
     public function __construct()
     {
@@ -81,7 +80,7 @@ class UserSignature extends SugarBean
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function UserSignature()
+    function UserSignature()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -95,7 +94,7 @@ class UserSignature extends SugarBean
     /**
      * returns the bean name - overrides SugarBean's
      */
-    public function get_summary_text()
+    function get_summary_text()
     {
         return $this->name;
     }
@@ -103,15 +102,15 @@ class UserSignature extends SugarBean
     /**
      * Override's SugarBean's
      */
-    public function create_export_query($order_by, $where, $show_deleted = 0)
+    function create_export_query($order_by, $where, $show_deleted = 0)
     {
-        return $this->create_new_list_query($order_by, $where, array(), array(), $show_deleted);
+        return $this->create_new_list_query($order_by, $where,array(),array(), $show_deleted);
     }
 
     /**
      * Override's SugarBean's
      */
-    public function get_list_view_data()
+    function get_list_view_data()
     {
         global $mod_strings;
         global $app_list_strings;
@@ -123,7 +122,7 @@ class UserSignature extends SugarBean
     /**
      * Override's SugarBean's
      */
-    public function fill_in_additional_list_fields()
+    function fill_in_additional_list_fields()
     {
         $this->fill_in_additional_detail_fields();
     }
@@ -131,7 +130,7 @@ class UserSignature extends SugarBean
     /**
      * Override's SugarBean's
      */
-    public function fill_in_additional_detail_fields()
+    function fill_in_additional_detail_fields()
     {
     }
 } // end class definition

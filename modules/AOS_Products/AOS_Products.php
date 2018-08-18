@@ -21,7 +21,7 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author SalesAgility Ltd <support@salesagility.com>
+ * @author Salesagility Ltd <support@salesagility.com>
  */
 
 /**
@@ -30,7 +30,7 @@
 require_once('modules/AOS_Products/AOS_Products_sugar.php');
 class AOS_Products extends AOS_Products_sugar
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -38,7 +38,7 @@ class AOS_Products extends AOS_Products_sugar
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function AOS_Products()
+    function AOS_Products()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -49,23 +49,24 @@ class AOS_Products extends AOS_Products_sugar
         self::__construct();
     }
 
-    public function getGUID()
+    function getGUID()
     {
         if (function_exists('com_create_guid')) {
             return com_create_guid();
-        }
-        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
-        $charid = strtoupper(md5(uniqid(rand(), true)));
-        $hyphen = chr(45);// "-"
-        $uuid = substr($charid, 0, 8).$hyphen
+        } else {
+            mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+            $charid = strtoupper(md5(uniqid(rand(), true)));
+            $hyphen = chr(45);// "-"
+            $uuid = substr($charid, 0, 8).$hyphen
                 .substr($charid, 8, 4).$hyphen
-                .substr($charid, 12, 4).$hyphen
-                .substr($charid, 16, 4).$hyphen
-                .substr($charid, 20, 12);
-        return $uuid;
+                .substr($charid,12, 4).$hyphen
+                .substr($charid,16, 4).$hyphen
+                .substr($charid,20,12);
+            return $uuid;
+        }
     }
 
-    public function save($check_notify=false)
+    function save($check_notify=false)
     {
         global $sugar_config,$mod_strings;
 
@@ -80,10 +81,11 @@ class AOS_Products extends AOS_Products_sugar
         if (isset($_FILES['uploadimage']['tmp_name'])&&$_FILES['uploadimage']['tmp_name']!="") {
             if ($_FILES['uploadimage']['size'] > $sugar_config['upload_maxsize']) {
                 die($mod_strings['LBL_IMAGE_UPLOAD_FAIL'].$sugar_config['upload_maxsize']);
+            } else {
+                $prefix_image = $this->getGUID().'_';
+                $this->product_image=$sugar_config['site_url'].'/'.$sugar_config['upload_dir'].$prefix_image.$_FILES['uploadimage']['name'];
+                move_uploaded_file($_FILES['uploadimage']['tmp_name'], $sugar_config['upload_dir'].$prefix_image.$_FILES['uploadimage']['name']);
             }
-            $prefix_image = $this->getGUID().'_';
-            $this->product_image=$sugar_config['site_url'].'/'.$sugar_config['upload_dir'].$prefix_image.$_FILES['uploadimage']['name'];
-            move_uploaded_file($_FILES['uploadimage']['tmp_name'], $sugar_config['upload_dir'].$prefix_image.$_FILES['uploadimage']['name']);
         }
 
         require_once('modules/AOS_Products_Quotes/AOS_Utils.php');

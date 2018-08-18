@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /**
  * Config manager
@@ -47,9 +46,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class SugarConfig
 {
-    public $_cached_values = array();
+    var $_cached_values = array();
 
-    public static function getInstance()
+    static function getInstance()
     {
         static $instance = null;
         if (is_null($instance)) {
@@ -58,7 +57,7 @@ class SugarConfig
         return $instance;
     }
 
-    public function get($key, $default = null)
+    function get($key, $default = null)
     {
         if (!isset($this->_cached_values[$key])) {
             if (!class_exists('SugarArray', true)) {
@@ -71,7 +70,7 @@ class SugarConfig
         return $this->_cached_values[$key];
     }
 
-    public function clearCache($key = null)
+    function clearCache($key = null)
     {
         if (is_null($key)) {
             $this->_cached_values = array();
@@ -80,3 +79,4 @@ class SugarConfig
         }
     }
 }
+

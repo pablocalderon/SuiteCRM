@@ -47,7 +47,7 @@ if (!isset($_SESSION['SHOW_DUPLICATES'])) {
 }
 // retrieve $_POST values out of the $_SESSION variable - placed in there by ContactFormBase to avoid the length limitations on URLs implicit with GETS
 //$GLOBALS['log']->debug('ShowDuplicates.php: _POST = '.print_r($_SESSION['SHOW_DUPLICATES'],true));
-parse_str($_SESSION['SHOW_DUPLICATES'], $_POST);
+parse_str($_SESSION['SHOW_DUPLICATES'],$_POST);
 $post = array_map("securexss", $_POST);
 foreach ($post as $k => $v) {
     $_POST[$k] = $v;
@@ -64,7 +64,7 @@ global $current_language;
 $mod_strings = return_module_language($current_language, 'Contacts');
 $moduleName = $GLOBALS['app_list_strings']['moduleList']['Contacts'];
 echo getClassicModuleTitle('Contacts', array($moduleName,$mod_strings['LBL_SAVE_CONTACT']), true);
-$xtpl=new XTemplate('modules/Contacts/ShowDuplicates.html');
+$xtpl=new XTemplate ('modules/Contacts/ShowDuplicates.html');
 $xtpl->assign("MOD", $mod_strings);
 $xtpl->assign("APP", $app_strings);
 $xtpl->assign("PRINT_URL", "index.php?".$GLOBALS['request_string']);
@@ -82,7 +82,7 @@ if ((isset($_REQUEST['popup']) && $_REQUEST['popup'] == 'true') ||(isset($_POST[
 $contact = new Contact();
 require_once('modules/Contacts/ContactFormBase.php');
 $contactForm = new ContactFormBase();
-$GLOBALS['check_notify'] = false;
+$GLOBALS['check_notify'] = FALSE;
 
 
 $query = 'select id, first_name, last_name, title from contacts where deleted=0 ';
@@ -189,6 +189,6 @@ if (!empty($_POST['return_id'])) {
     $xtpl->assign('RETURN_ID', $_POST['return_id']);
 }
 
-$xtpl->assign('INPUT_FIELDS', $input);
+$xtpl->assign('INPUT_FIELDS',$input);
 $xtpl->parse('main');
 $xtpl->out('main');

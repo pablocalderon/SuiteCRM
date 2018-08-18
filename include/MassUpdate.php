@@ -53,18 +53,18 @@ class MassUpdate
     /*
      * internal sugarbean reference
      */
-    public $sugarbean = null;
+    var $sugarbean = null;
 
     /**
      * where clauses used to filter rows that have to be updated
      */
-    public $where_clauses = '';
+    var $where_clauses = '';
 
     /**
      * set the sugar bean to its internal member
      * @param sugar bean reference
      */
-    public function setSugarBean($sugar)
+    function setSugarBean($sugar)
     {
         $this->sugarbean = $sugar;
     }
@@ -74,7 +74,7 @@ class MassUpdate
      * @param bool boolean need to execute the massupdate form or not
      * @param multi_select_popup booleanif it is a multi-select value
      */
-    public function getDisplayMassUpdateForm($bool, $multi_select_popup = false)
+    function getDisplayMassUpdateForm($bool, $multi_select_popup = false)
     {
         require_once('include/formbase.php');
 
@@ -102,7 +102,7 @@ class MassUpdate
      * returns the mass update's html form header
      * @param multi_select_popup boolean if it is a mult-select or not
      */
-    public function getMassUpdateFormHeader($multi_select_popup = false)
+    function getMassUpdateFormHeader($multi_select_popup = false)
     {
         global $sugar_version;
         global $sugar_config;
@@ -157,7 +157,7 @@ eoq;
      * @param displayname Name to display in the popup window
      * @param varname name of the variable
      */
-    public function handleMassUpdate()
+    function handleMassUpdate()
     {
         require_once('include/formbase.php');
         global $current_user, $db, $disable_date_format, $timedate, $app_list_strings;
@@ -177,17 +177,14 @@ eoq;
 
             if (is_string($value) && isset($this->sugarbean->field_defs[$post])) {
                 if (($this->sugarbean->field_defs[$post]['type'] == 'bool'
-                    || (
-                        !empty($this->sugarbean->field_defs[$post]['custom_type']) && $this->sugarbean->field_defs[$post]['custom_type'] == 'bool'
+                    || (!empty($this->sugarbean->field_defs[$post]['custom_type']) && $this->sugarbean->field_defs[$post]['custom_type'] == 'bool'
                     ))
                 ) {
                     if (strcmp($value, '2') == 0) {
                         $_POST[$post] = 0;
                     }
-                    if (!empty($this->sugarbean->field_defs[$post]['dbType']) && strcmp(
-                            $this->sugarbean->field_defs[$post]['dbType'],
-                            'varchar'
-                        ) == 0
+                    if (!empty($this->sugarbean->field_defs[$post]['dbType']) && strcmp($this->sugarbean->field_defs[$post]['dbType'],
+                            'varchar') == 0
                     ) {
                         if (strcmp($value, '1') == 0) {
                             $_POST[$post] = 'on';
@@ -235,18 +232,8 @@ eoq;
 
             // TODO: define filter array here to optimize the query
             // by not joining the unneeded tables
-            $query = $this->sugarbean->create_new_list_query(
-                $order_by,
-                $this->where_clauses,
-                array(),
-                array(),
-                0,
-                '',
-                false,
-                $this,
-                true,
-                true
-            );
+            $query = $this->sugarbean->create_new_list_query($order_by, $this->where_clauses, array(), array(), 0, '',
+                false, $this, true, true);
             $result = $db->query($query, true);
             $new_arr = array();
             while ($val = $db->fetchByAssoc($result, false)) {
@@ -381,7 +368,7 @@ eoq;
 
                                     if ($parentenum_value != $dynamic_field_value) {
 
-                                        // Change to the default value of the correct value set.
+										// Change to the default value of the correct value set.
                                         $defaultValue = '';
                                         foreach ($app_list_strings[$field_name['options']] as $key => $value) {
                                             if (strpos($key, $parentenum_value) === 0) {
@@ -426,7 +413,7 @@ eoq;
     /**
      * Displays the massupdate form
      */
-    public function getMassUpdateForm(
+    function getMassUpdateForm(
         $hideDeleteIfNoFieldsAvailable = false
     ) {
         global $app_strings;
@@ -434,11 +421,8 @@ eoq;
         $configurator = new Configurator();
         $sugar_config = $configurator->config;
 
-        if ($this->sugarbean->bean_implements('ACL') && (!ACLController::checkAccess(
-                    $this->sugarbean->module_dir,
-                    'edit',
-                    true
-                ) || !ACLController::checkAccess($this->sugarbean->module_dir, 'massupdate', true))
+        if ($this->sugarbean->bean_implements('ACL') && (!ACLController::checkAccess($this->sugarbean->module_dir,
+                    'edit', true) || !ACLController::checkAccess($this->sugarbean->module_dir, 'massupdate', true))
         ) {
             return '';
         }
@@ -552,30 +536,24 @@ eoq;
                         case "multienum":
                             if (!empty($field['isMultiSelect'])) {
                                 $even = !$even;
-                                $newhtml .= $this->addStatusMulti(
-                                    $displayname,
-                                    $field["name"],
-                                    translate($field["options"])
-                                );
+                                $newhtml .= $this->addStatusMulti($displayname, $field["name"],
+                                    translate($field["options"]));
                                 break;
+                            } else {
+                                if (!empty($field['options'])) {
+                                    $even = !$even;
+                                    $newhtml .= $this->addStatus($displayname, $field["name"],
+                                        translate($field["options"]));
+                                    break;
+                                } else {
+                                    if (!empty($field['function'])) {
+                                        $functionValue = $this->getFunctionValue($this->sugarbean, $field);
+                                        $even = !$even;
+                                        $newhtml .= $this->addStatus($displayname, $field["name"], $functionValue);
+                                        break;
+                                    }
+                                }
                             }
-                            if (!empty($field['options'])) {
-                                $even = !$even;
-                                $newhtml .= $this->addStatus(
-                                    $displayname,
-                                    $field["name"],
-                                    translate($field["options"])
-                                );
-                                break;
-                            }
-                            if (!empty($field['function'])) {
-                                $functionValue = $this->getFunctionValue($this->sugarbean, $field);
-                                $even = !$even;
-                                $newhtml .= $this->addStatus($displayname, $field["name"], $functionValue);
-                                break;
-                            }
-
-
                             break;
                         case "radioenum":
                             $even = !$even;
@@ -679,19 +657,20 @@ EOJS;
 
         if ($field_count > 0) {
             return $html;
-        }
-        //If no fields are found, render either a form that still permits Mass Update deletes or just display a message that no fields are available
-        $html = "<div id='massupdate_form' style='display:none;'><table width='100%' cellpadding='0' cellspacing='0' border='0' class='formHeader h3Row'><tr><td nowrap><h3><span>" . $app_strings['LBL_MASS_UPDATE'] . "</h3></td></tr></table>";
-        if ($this->sugarbean->ACLAccess('Delete', true) && !$hideDeleteIfNoFieldsAvailable) {
-            $html .= "<table cellpadding='0' cellspacing='0' border='0' width='100%'><tr><td><input type='submit' name='Delete' value='$lang_delete' onclick=\"return confirm('{$lang_confirm}')\" class='button'></td></tr></table></div>";
         } else {
-            $html .= $app_strings['LBL_NO_MASS_UPDATE_FIELDS_AVAILABLE'] . "</div>";
-        }
+            //If no fields are found, render either a form that still permits Mass Update deletes or just display a message that no fields are available
+            $html = "<div id='massupdate_form' style='display:none;'><table width='100%' cellpadding='0' cellspacing='0' border='0' class='formHeader h3Row'><tr><td nowrap><h3><span>" . $app_strings['LBL_MASS_UPDATE'] . "</h3></td></tr></table>";
+            if ($this->sugarbean->ACLAccess('Delete', true) && !$hideDeleteIfNoFieldsAvailable) {
+                $html .= "<table cellpadding='0' cellspacing='0' border='0' width='100%'><tr><td><input type='submit' name='Delete' value='$lang_delete' onclick=\"return confirm('{$lang_confirm}')\" class='button'></td></tr></table></div>";
+            } else {
+                $html .= $app_strings['LBL_NO_MASS_UPDATE_FIELDS_AVAILABLE'] . "</div>";
+            }
 
-        return $html;
+            return $html;
+        }
     }
 
-    public function getFunctionValue($focus, $vardef)
+    function getFunctionValue($focus, $vardef)
     {
         $function = $vardef['function'];
         if (is_array($function) && isset($function['name'])) {
@@ -705,15 +684,15 @@ EOJS;
             }
 
             return call_user_func($function, $focus, $vardef['name'], '', 'MassUpdate');
+        } else {
+            return call_user_func($function, $focus, $vardef['name'], '', 'MassUpdate');
         }
-
-        return call_user_func($function, $focus, $vardef['name'], '', 'MassUpdate');
     }
 
     /**
      * Returns end of the massupdate form
      */
-    public function endMassUpdateForm()
+    function endMassUpdateForm()
     {
         return '</form>';
     }
@@ -723,7 +702,7 @@ EOJS;
      * @param displayname Name to display in the popup window
      * @param field name of the field to update
      */
-    public function handleRelationship($displayname, $field)
+    function handleRelationship($displayname, $field)
     {
         $ret_val = '';
         if (isset($field['module'])) {
@@ -749,12 +728,8 @@ EOJS;
                     break;
                 default:
                     if (!empty($field['massupdate'])) {
-                        $ret_val = $this->addGenericModuleID(
-                            $displayname,
-                            $field['name'],
-                            $field['id_name'],
-                            $field['module']
-                        );
+                        $ret_val = $this->addGenericModuleID($displayname, $field['name'], $field['id_name'],
+                            $field['module']);
                     }
                     break;
             }
@@ -768,7 +743,7 @@ EOJS;
      * @param displayname Name to display in the popup window
      * @param field_name name of the field
      */
-    public function addParent($displayname, $field)
+    function addParent($displayname, $field)
     {
         global $app_strings, $app_list_strings;
 
@@ -881,7 +856,7 @@ EOHTML;
      * @param displayname Name to display in the popup window
      * @param field_name name of the field
      */
-    public function addInputType($displayname, $varname)
+    function addInputType($displayname, $varname)
     {
         //letrium ltd
         $displayname = addslashes($displayname);
@@ -974,7 +949,7 @@ EOHTML;
      * @param string $mod_type Name of the module, either "Contact" or "Releases" currently
      * @return string
      */
-    public function addGenericModuleID($displayname, $varname, $id_name, $mod_type = null)
+    function addGenericModuleID($displayname, $varname, $id_name, $mod_type = null)
     {
         global $app_strings;
 
@@ -1043,7 +1018,7 @@ EOHTML;
      * @param varname name of the variable
      * @param id_name name of the id in vardef
      */
-    public function addAccountID($displayname, $varname, $id_name = '')
+    function addAccountID($displayname, $varname, $id_name = '')
     {
         global $app_strings;
 
@@ -1102,7 +1077,7 @@ EOHTML;
      * @param displayname Name to display in the popup window
      * @param varname name of the variable
      */
-    public function addAssignedUserID($displayname, $varname)
+    function addAssignedUserID($displayname, $varname)
     {
         global $app_strings;
 
@@ -1149,7 +1124,7 @@ EOQ;
      * @param varname name of the variable
      * @param options array of options for status
      */
-    public function addStatus($displayname, $varname, $options)
+    function addStatus($displayname, $varname, $options)
     {
         global $app_strings, $app_list_strings;
 
@@ -1185,14 +1160,14 @@ EOQ;
      * @param varname name of the variable
      * @param options array of options for status
      */
-    public function addBool($displayname, $varname)
+    function addBool($displayname, $varname)
     {
         global $app_strings, $app_list_strings;
 
         return $this->addStatus($displayname, $varname, $app_list_strings['checkbox_dom']);
     }
 
-    public function addStatusMulti($displayname, $varname, $options)
+    function addStatusMulti($displayname, $varname, $options)
     {
         global $app_strings, $app_list_strings;
 
@@ -1204,7 +1179,8 @@ EOQ;
             }
             $options = $new_options;
         }
-        $options = get_select_options_with_id_separate_key($options, $options, '', true);;
+        $options = get_select_options_with_id_separate_key($options, $options, '', true);
+        ;
 
         // cn: added "mass_" to the id tag to differentiate from the status id in StoreQuery
         $html = '<td scope="row" width="15%">' . $displayname . '</td>
@@ -1218,7 +1194,7 @@ EOQ;
      * @param displayname Name to display in the popup window
      * @param varname name of the variable
      */
-    public function addDate($displayname, $varname)
+    function addDate($displayname, $varname)
     {
         global $timedate;
         //letrium ltd
@@ -1245,7 +1221,7 @@ EOQ;
         return $html;
     }
 
-    public function addRadioenumItem($name, $value, $output)
+    function addRadioenumItem($name, $value, $output)
     {
         $_output = '';
         $_output .= '<label>';
@@ -1259,7 +1235,7 @@ EOQ;
         return $_output;
     }
 
-    public function addRadioenum($displayname, $varname, $options)
+    function addRadioenum($displayname, $varname, $options)
     {
         foreach ($options as $_key => $_val) {
             $_html_result[] = $this->addRadioenumItem($varname, $_key, $_val);
@@ -1276,7 +1252,7 @@ EOQ;
      * @param displayname Name to display in the popup window
      * @param varname name of the variable
      */
-    public function addDatetime($displayname, $varname)
+    function addDatetime($displayname, $varname)
     {
         global $timedate;
         $userformat = $timedate->get_user_time_format();
@@ -1340,7 +1316,7 @@ EOQ;
         return $html;
     }
 
-    public function date_to_dateTime($field, $value)
+    function date_to_dateTime($field, $value)
     {
         global $timedate;
         //Check if none was set
@@ -1372,7 +1348,7 @@ EOQ;
         return $value . " " . $oldTime;
     }
 
-    public function checkClearField($field, $value)
+    function checkClearField($field, $value)
     {
         if ($value == 1 && strpos($field, '_flag')) {
             $fName = substr($field, -5);
@@ -1385,7 +1361,7 @@ EOQ;
         }
     }
 
-    public function generateSearchWhere($module, $query)
+    function generateSearchWhere($module, $query)
     {//this function is similar with function prepareSearchForm() in view.list.php
         $seed = loadBean($module);
         $this->use_old_search = true;

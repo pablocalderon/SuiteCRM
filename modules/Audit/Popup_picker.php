@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -64,17 +64,17 @@ class Popup_Picker
 {
 
 
-    /*
-     *
-     */
-    public function __construct()
+	/*
+	 *
+	 */
+    function __construct()
     {
     }
 
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function Popup_Picker()
+    function Popup_Picker()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -89,7 +89,7 @@ class Popup_Picker
     /**
      *
      */
-    public function process_page()
+    function process_page()
     {
         global $theme;
         global $focus;
@@ -105,7 +105,7 @@ class Popup_Picker
 
         $auditObject = new Audit();
         $audit_list =  $auditObject->get_audit_list();
-        $xtpl=new XTemplate('modules/Audit/Popup_picker.html');
+        $xtpl=new XTemplate ('modules/Audit/Popup_picker.html');
 
         $xtpl->assign('MOD', $mod_strings);
         $xtpl->assign('APP', $app_strings);
@@ -116,7 +116,7 @@ class Popup_Picker
                 
                 
         if (!isset($focus->module_dir)) {
-            LoggerManager::getLogger()->fatal("Popup picker needs module dir from focus bean but global focus is none.");
+            LoggerManager::getLogger()->fatal("Popup picker needs module dir from focus bean but global focus is none.");    
             throw new Exception('There is not selected focus bean for popup picker process page.');
         }
                 
@@ -143,7 +143,7 @@ EOHTML;
         $params[] = translate('LBL_MODULE_NAME', $focus->module_dir);
         $params[] = $focus->get_summary_text();
         $params[] = translate('LBL_CHANGE_LOG', 'Audit');
-        echo str_replace('</div>', "<span class='utils'>$titleExtra</span></div>", getClassicModuleTitle($focus->module_dir, $params, false));
+        echo str_replace('</div>',"<span class='utils'>$titleExtra</span></div>",getClassicModuleTitle($focus->module_dir, $params, false));
 
         $oddRow = true;
         $audited_fields = $focus->getAuditEnabledFieldDefinitions();
@@ -195,12 +195,12 @@ EOHTML;
 
             $activity_fields = array(
                 'ID' => $audit['id'],
-                'NAME' => $audit['field_name'],
+			    'NAME' => $audit['field_name'],
                 'BEFORE_VALUE' => $before_value,
                 'AFTER_VALUE' => $after_value,
                 'CREATED_BY' => $audit['created_by'],
                 'DATE_CREATED' => $audit['date_created'],
-            );
+			);
 
             $xtpl->assign("ACTIVITY", $activity_fields);
 
@@ -219,7 +219,7 @@ EOHTML;
             // Put the rows in.
         }//end foreach
 
-        $xtpl->parse("audit");
+		$xtpl->parse("audit");
         $xtpl->out("audit");
         insert_popup_footer();
     }

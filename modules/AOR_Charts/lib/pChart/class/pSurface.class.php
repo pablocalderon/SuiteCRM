@@ -13,24 +13,24 @@
      You can find the whole class documentation on the pChart web site.
  */
 
- define("UNKNOWN", 0.123456789);
- define("IGNORED", -1);
+ define("UNKNOWN"		, 0.123456789);
+ define("IGNORED"		, -1);
 
- define("LABEL_POSITION_LEFT", 880001);
- define("LABEL_POSITION_RIGHT", 880002);
- define("LABEL_POSITION_TOP", 880003);
- define("LABEL_POSITION_BOTTOM", 880004);
+ define("LABEL_POSITION_LEFT"	, 880001);
+ define("LABEL_POSITION_RIGHT"	, 880002);
+ define("LABEL_POSITION_TOP"	, 880003);
+ define("LABEL_POSITION_BOTTOM"	, 880004);
 
  /* pStock class definition */
  class pSurface
  {
-     public $pChartObject;
-     public $GridSizeX;
-     public $GridSizeY;
-     public $Points;
+     var $pChartObject;
+     var $GridSizeX;
+     var $GridSizeY;
+     var $Points;
 
      /* Class creator */
-     public function pSurface($pChartObject)
+     function pSurface($pChartObject)
      {
          $this->pChartObject = $pChartObject;
          $this->GridSize     = 10;
@@ -38,20 +38,20 @@
      }
 
      /* Define the grid size and initialise the 2D matrix */
-     public function setGrid($XSize=10, $YSize=10)
+     function setGrid($XSize=10,$YSize=10)
      {
          for ($X=0; $X<=$XSize; $X++) {
              for ($Y=0; $Y<=$YSize; $Y++) {
                  $this->Points[$X][$Y]=UNKNOWN;
              }
-         }
+         } 
 
          $this->GridSizeX = $XSize;
          $this->GridSizeY = $YSize;
      }
 
      /* Add a point on the grid */
-     public function addPoint($X, $Y, $Value, $Force=true)
+     function addPoint($X,$Y,$Value,$Force=TRUE)
      {
          if ($X < 0 || $X >$this->GridSizeX) {
              return(0);
@@ -70,7 +70,7 @@
      }
 
      /* Write the X labels */
-     public function writeXLabels($Format="")
+     function writeXLabels($Format="")
      {
          $R			= isset($Format["R"]) ? $Format["R"] : $this->pChartObject->FontColorR;
          $G			= isset($Format["G"]) ? $Format["G"] : $this->pChartObject->FontColorG;
@@ -79,10 +79,10 @@
          $Angle		= isset($Format["Angle"]) ? $Format["Angle"] : 0;
          $Padding		= isset($Format["Padding"]) ? $Format["Padding"] : 5;
          $Position		= isset($Format["Position"]) ? $Format["Position"] : LABEL_POSITION_TOP;
-         $Labels		= isset($Format["Labels"]) ? $Format["Labels"] : null;
+         $Labels		= isset($Format["Labels"]) ? $Format["Labels"] : NULL;
          $CountOffset	= isset($Format["CountOffset"]) ? $Format["CountOffset"] : 0;
 
-         if ($Labels != null && !is_array($Labels)) {
+         if ($Labels != NULL && !is_array($Labels)) {
              $Label = $Labels;
              $Labels = "";
              $Labels[] = $Label;
@@ -115,18 +115,18 @@
          for ($X=0;$X<=$this->GridSizeX;$X++) {
              $XPos = floor($X0+$X*$XSize + $XSize/2);
 
-             if ($Labels == null || !isset($Labels[$X])) {
+             if ($Labels == NULL || !isset($Labels[$X])) {
                  $Value = $X+$CountOffset;
              } else {
                  $Value = $Labels[$X];
              }
 
-             $this->pChartObject->drawText($XPos, $YPos, $Value, $Settings);
+             $this->pChartObject->drawText($XPos,$YPos,$Value,$Settings);
          }
      }
 
      /* Write the Y labels */
-     public function writeYLabels($Format="")
+     function writeYLabels($Format="")
      {
          $R			= isset($Format["R"]) ? $Format["R"] : $this->pChartObject->FontColorR;
          $G			= isset($Format["G"]) ? $Format["G"] : $this->pChartObject->FontColorG;
@@ -135,10 +135,10 @@
          $Angle		= isset($Format["Angle"]) ? $Format["Angle"] : 0;
          $Padding		= isset($Format["Padding"]) ? $Format["Padding"] : 5;
          $Position		= isset($Format["Position"]) ? $Format["Position"] : LABEL_POSITION_LEFT;
-         $Labels		= isset($Format["Labels"]) ? $Format["Labels"] : null;
+         $Labels		= isset($Format["Labels"]) ? $Format["Labels"] : NULL;
          $CountOffset	= isset($Format["CountOffset"]) ? $Format["CountOffset"] : 0;
 
-         if ($Labels != null && !is_array($Labels)) {
+         if ($Labels != NULL && !is_array($Labels)) {
              $Label = $Labels;
              $Labels = "";
              $Labels[] = $Label;
@@ -161,18 +161,18 @@
          for ($Y=0;$Y<=$this->GridSizeY;$Y++) {
              $YPos = floor($Y0+$Y*$YSize + $YSize/2);
 
-             if ($Labels == null || !isset($Labels[$Y])) {
+             if ($Labels == NULL || !isset($Labels[$Y])) {
                  $Value = $Y+$CountOffset;
              } else {
                  $Value = $Labels[$Y];
              }
 
-             $this->pChartObject->drawText($XPos, $YPos, $Value, $Settings);
+             $this->pChartObject->drawText($XPos,$YPos,$Value,$Settings);
          }
      }
 
      /* Draw the area arround the specified Threshold */
-     public function drawContour($Threshold, $Format="")
+     function drawContour($Threshold,$Format="")
      {
          $R		= isset($Format["R"]) ? $Format["R"] : 0;
          $G		= isset($Format["G"]) ? $Format["G"] : 0;
@@ -199,16 +199,16 @@
                      $Y2 = floor($Y0+$Y*$YSize+$YSize);
 
                      if ($X > 0 && $this->Points[$X-1][$Y] != UNKNOWN && $this->Points[$X-1][$Y] != IGNORED && $this->Points[$X-1][$Y] < $Threshold) {
-                         $this->pChartObject->drawLine($X1, $Y1, $X1, $Y2, $Color);
+                         $this->pChartObject->drawLine($X1,$Y1,$X1,$Y2,$Color);
                      }
                      if ($Y > 0 && $this->Points[$X][$Y-1] != UNKNOWN && $this->Points[$X][$Y-1] != IGNORED && $this->Points[$X][$Y-1] < $Threshold) {
-                         $this->pChartObject->drawLine($X1, $Y1, $X2, $Y1, $Color);
+                         $this->pChartObject->drawLine($X1,$Y1,$X2,$Y1,$Color);
                      }
                      if ($X < $this->GridSizeX && $this->Points[$X+1][$Y] != UNKNOWN && $this->Points[$X+1][$Y] != IGNORED && $this->Points[$X+1][$Y] < $Threshold) {
-                         $this->pChartObject->drawLine($X2, $Y1, $X2, $Y2, $Color);
+                         $this->pChartObject->drawLine($X2,$Y1,$X2,$Y2,$Color);
                      }
                      if ($Y < $this->GridSizeY && $this->Points[$X][$Y+1] != UNKNOWN && $this->Points[$X][$Y+1] != IGNORED && $this->Points[$X][$Y+1] < $Threshold) {
-                         $this->pChartObject->drawLine($X1, $Y2, $X2, $Y2, $Color);
+                         $this->pChartObject->drawLine($X1,$Y2,$X2,$Y2,$Color);
                      }
                  }
              }
@@ -216,9 +216,9 @@
      }
 
      /* Draw the surface chart */
-     public function drawSurface($Format="")
+     function drawSurface($Format="")
      {
-         $Palette		= isset($Format["Palette"]) ? $Format["Palette"] : null;
+         $Palette		= isset($Format["Palette"]) ? $Format["Palette"] : NULL;
          $ShadeR1		= isset($Format["ShadeR1"]) ? $Format["ShadeR1"] : 77;
          $ShadeG1		= isset($Format["ShadeG1"]) ? $Format["ShadeG1"] : 205;
          $ShadeB1		= isset($Format["ShadeB1"]) ? $Format["ShadeB1"] : 21;
@@ -227,7 +227,7 @@
          $ShadeG2		= isset($Format["ShadeG2"]) ? $Format["ShadeG2"] : 135;
          $ShadeB2		= isset($Format["ShadeB2"]) ? $Format["ShadeB2"] : 61;
          $ShadeA2		= isset($Format["ShadeA2"]) ? $Format["ShadeA2"] : 100;
-         $Border		= isset($Format["Border"]) ? $Format["Border"] : false;
+         $Border		= isset($Format["Border"]) ? $Format["Border"] : FALSE;
          $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : 0;
          $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : 0;
          $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : 0;
@@ -249,7 +249,7 @@
                      $X2 = floor($X0+$X*$XSize+$XSize);
                      $Y2 = floor($Y0+$Y*$YSize+$YSize);
 
-                     if ($Palette != null) {
+                     if ($Palette != NULL) {
                          if (isset($Palette[$Value]) && isset($Palette[$Value]["R"])) {
                              $R = $Palette[$Value]["R"];
                          } else {
@@ -289,14 +289,14 @@
                          $Settings["BorderB"] = $B+$Surrounding;
                      }
 
-                     $this->pChartObject->drawFilledRectangle($X1, $Y1, $X2-1, $Y2-1, $Settings);
+                     $this->pChartObject->drawFilledRectangle($X1,$Y1,$X2-1,$Y2-1,$Settings);
                  }
              }
          }
      }
 
      /* Compute the missing points */
-     public function computeMissing()
+     function computeMissing()
      {
          $Missing = "";
          for ($X=0;$X<=$this->GridSizeX;$X++) {
@@ -309,12 +309,12 @@
          shuffle($Missing);
      
          foreach ($Missing as $Key => $Pos) {
-             $Pos = preg_split("/,/", $Pos);
+             $Pos = preg_split("/,/",$Pos);
              $X   = $Pos[0];
              $Y   = $Pos[1];
 
              if ($this->Points[$X][$Y] == UNKNOWN) {
-                 $NearestNeighbor = $this->getNearestNeighbor($X, $Y);
+                 $NearestNeighbor = $this->getNearestNeighbor($X,$Y);
 
                  $Value = 0;
                  $Points = 0;
@@ -335,15 +335,15 @@
      }
 
      /* Return the nearest Neighbor distance of a point */
-     public function getNearestNeighbor($Xp, $Yp)
+     function getNearestNeighbor($Xp,$Yp)
      {
          $Nearest = UNKNOWN;
          for ($X=0;$X<=$this->GridSizeX;$X++) {
              for ($Y=0;$Y<=$this->GridSizeY;$Y++) {
                  if ($this->Points[$X][$Y] != UNKNOWN && $this->Points[$X][$Y] != IGNORED) {
-                     $DistanceX = max($Xp, $X)-min($Xp, $X);
-                     $DistanceY = max($Yp, $Y)-min($Yp, $Y);
-                     $Distance  = max($DistanceX, $DistanceY);
+                     $DistanceX = max($Xp,$X)-min($Xp,$X);
+                     $DistanceY = max($Yp,$Y)-min($Yp,$Y);
+                     $Distance  = max($DistanceX,$DistanceY);
                      if ($Distance < $Nearest || $Nearest == UNKNOWN) {
                          $Nearest = $Distance;
                      }

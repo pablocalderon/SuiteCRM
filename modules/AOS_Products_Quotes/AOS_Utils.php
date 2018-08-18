@@ -24,7 +24,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author SalesAgility Ltd <info@salesagility.com>
+ * @author Salesagility Ltd <info@salesagility.com>
  */
 
 function perform_aos_save($focus)

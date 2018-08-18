@@ -42,6 +42,7 @@ require_once 'Zend/Gdata/Calendar/Extension/Timezone.php';
  */
 class Zend_Gdata_Calendar_EventFeed extends Zend_Gdata_Feed
 {
+
     protected $_timezone = null;
 
     /**
@@ -101,4 +102,5 @@ class Zend_Gdata_Calendar_EventFeed extends Zend_Gdata_Feed
         $this->_timezone = $value;
         return $this;
     }
+
 }

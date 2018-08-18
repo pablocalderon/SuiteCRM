@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,16 +36,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
-/**
+/*********************************************************************************
 
  * Description: view handler for step 1 of the import process
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- */
+ ********************************************************************************/
 require_once('modules/Import/views/ImportView.php');
 require_once('include/externalAPI/ExternalAPIFactory.php');
 require_once('modules/Import/Importer.php');
@@ -65,14 +64,14 @@ class ImportViewStep1 extends ImportView
             $this->importModule = 'Administration';
         }
     }
-    
+ 	
     /**
-     * @see SugarView::_getModuleTitleParams()
-     */
+	 * @see SugarView::_getModuleTitleParams()
+	 */
     protected function _getModuleTitleParams($browserTitle = false)
     {
         global $mod_strings, $app_list_strings;
-        
+	    
         $iconPath = $this->getModuleTitleIconPath($this->module);
         $returnArray = array();
         if (!empty($iconPath) && !$browserTitle) {
@@ -82,11 +81,11 @@ class ImportViewStep1 extends ImportView
         }
         $returnArray[] = "<a href='index.php?module=Import&action=Step1&import_module={$_REQUEST['import_module']}'>".$mod_strings['LBL_MODULE_NAME']."</a>";
         $returnArray[] = $mod_strings['LBL_STEP_1_TITLE'];
-        
+    	
         return $returnArray;
     }
 
-    /**
+    /** 
      * @see SugarView::display()
      */
     public function display()
@@ -95,9 +94,9 @@ class ImportViewStep1 extends ImportView
         global $sugar_config;
 
         $this->ss->assign("MODULE_TITLE", $this->getModuleTitle(false));
-        $this->ss->assign("DELETE_INLINE_PNG", SugarThemeRegistry::current()->getImage('delete_inline', 'align="absmiddle" border="0"', null, null, '.gif', $app_strings['LNK_DELETE']));
-        $this->ss->assign("PUBLISH_INLINE_PNG", SugarThemeRegistry::current()->getImage('publish_inline', 'align="absmiddle" border="0"', null, null, '.gif', $mod_strings['LBL_PUBLISH']));
-        $this->ss->assign("UNPUBLISH_INLINE_PNG", SugarThemeRegistry::current()->getImage('unpublish_inline', 'align="absmiddle" border="0"', null, null, '.gif', $mod_strings['LBL_UNPUBLISH']));
+        $this->ss->assign("DELETE_INLINE_PNG",  SugarThemeRegistry::current()->getImage('delete_inline','align="absmiddle" border="0"',null,null,'.gif',$app_strings['LNK_DELETE']));
+        $this->ss->assign("PUBLISH_INLINE_PNG",  SugarThemeRegistry::current()->getImage('publish_inline','align="absmiddle" border="0"', null,null,'.gif',$mod_strings['LBL_PUBLISH']));
+        $this->ss->assign("UNPUBLISH_INLINE_PNG",  SugarThemeRegistry::current()->getImage('unpublish_inline','align="absmiddle" border="0"', null,null,'.gif',$mod_strings['LBL_UNPUBLISH']));
         $this->ss->assign("IMPORT_MODULE", $_REQUEST['import_module']);
 
         $showModuleSelection = ($this->importModule == 'Administration');
@@ -129,8 +128,8 @@ class ImportViewStep1 extends ImportView
         $submitContent .= "<input title=\"".$mod_strings['LBL_IMPORT_COMPLETE']."\" onclick=\"SUGAR.importWizard.closeDialog();\" class=\"button\" type=\"submit\" name=\"finished\" value=\"  ".$mod_strings['LBL_IMPORT_COMPLETE']."  \" id=\"finished\">";
         $submitContent .= "<input title=\"".$mod_strings['LBL_NEXT']."\" class=\"button primary\" type=\"submit\" name=\"button\" value=\"  ".$mod_strings['LBL_NEXT']."  \"  id=\"gonext\"></td></tr></table>";
 
-        $this->ss->assign("JAVASCRIPT", $this->_getJS());
-        $this->ss->assign("CONTENT", $content);
+        $this->ss->assign("JAVASCRIPT",$this->_getJS());
+        $this->ss->assign("CONTENT",$content);
         $this->ss->display('modules/Import/tpls/wizardWrapper.tpl');
     }
 
@@ -153,12 +152,12 @@ class ImportViewStep1 extends ImportView
     private function getAllImportableExternalEAPMs()
     {
         ExternalAPIFactory::clearCache();
-        return ExternalAPIFactory::getModuleDropDown('Import', true, false);
+        return ExternalAPIFactory::getModuleDropDown('Import', TRUE, FALSE);
     }
 
     private function getAuthenticatedImportableExternalEAPMs()
     {
-        return ExternalAPIFactory::getModuleDropDown('Import', false, false);
+        return ExternalAPIFactory::getModuleDropDown('Import', FALSE, FALSE);
     }
     /**
      * Returns JS used in this view

@@ -2,44 +2,42 @@
     if (!defined('sugarEntry') || !sugarEntry) {
         die('Not A Valid Entry Point');
     }
-/**
- *
- * SugarCRM Community Edition is a customer relationship management program developed by
- * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License version 3 as published by the
- * Free Software Foundation with the addition of the following permission added
- * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
- * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
- * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- * details.
- *
- * You should have received a copy of the GNU Affero General Public License along with
- * this program; if not, see http://www.gnu.org/licenses or write to the Free
- * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- * 02110-1301 USA.
- *
- * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
- * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
- *
- * The interactive user interfaces in modified source and object code versions
- * of this program must display Appropriate Legal Notices, as required under
- * Section 5 of the GNU Affero General Public License version 3.
- *
- * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "Powered by
- * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+    /*********************************************************************************
+     * SugarCRM Community Edition is a customer relationship management program developed by
+     * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
+     * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+     * Copyright (C) 2011 - 2014 Salesagility Ltd.
+     *
+     * This program is free software; you can redistribute it and/or modify it under
+     * the terms of the GNU Affero General Public License version 3 as published by the
+     * Free Software Foundation with the addition of the following permission added
+     * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+     * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
+     * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+     *
+     * This program is distributed in the hope that it will be useful, but WITHOUT
+     * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+     * details.
+     *
+     * You should have received a copy of the GNU Affero General Public License along with
+     * this program; if not, see http://www.gnu.org/licenses or write to the Free
+     * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+     * 02110-1301 USA.
+     *
+     * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
+     * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
+     *
+     * The interactive user interfaces in modified source and object code versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the "Powered by
+     * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+     * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+     * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+     ********************************************************************************/
 
 
     require_once('modules/Calendar/Calendar.php');
@@ -48,25 +46,25 @@
     {
 
         // Stored fields
-        public $id;
-        public $date_modified;
-        public $user_id;
-        public $content;
-        public $deleted;
-        public $type;
-        public $source;
-        public $module_dir = "vCals";
-        public $table_name = "vcals";
+        var $id;
+        var $date_modified;
+        var $user_id;
+        var $content;
+        var $deleted;
+        var $type;
+        var $source;
+        var $module_dir = "vCals";
+        var $table_name = "vcals";
 
-        public $object_name = "vCal";
-        public $tracker_visibility = false;
+        var $object_name = "vCal";
+        var $tracker_visibility = false;
 
-        public $new_schema = true;
+        var $new_schema = true;
 
-        public $field_defs = array();
+        var $field_defs = array();
 
         // This is used to retrieve related fields from form posts.
-        public $additional_column_fields = array();
+        var $additional_column_fields = Array();
 
         const UTC_FORMAT = 'Ymd\THi00\Z';
         const EOL = "\r\n";
@@ -95,26 +93,26 @@
         }
 
 
-        public function get_summary_text()
+        function get_summary_text()
         {
             return "";
         }
 
 
-        public function fill_in_additional_list_fields()
+        function fill_in_additional_list_fields()
         {
         }
 
-        public function fill_in_additional_detail_fields()
+        function fill_in_additional_detail_fields()
         {
         }
 
-        public function get_list_view_data()
+        function get_list_view_data()
         {
         }
 
         // combines all freebusy vcals and returns just the FREEBUSY lines as a string
-        public function get_freebusy_lines_cache(&$user_bean)
+        function get_freebusy_lines_cache(&$user_bean)
         {
             $ical_array = array();
             // First, get the list of IDs.
@@ -135,7 +133,7 @@
 
         // query and create the FREEBUSY lines for SugarCRM Meetings and Calls and
         // return the string
-        public function create_sugar_freebusy($user_bean, $start_date_time, $end_date_time)
+        function create_sugar_freebusy($user_bean, $start_date_time, $end_date_time)
         {
             $ical_array = array();
             global $DO_USER_TIME_OFFSET, $timedate, $current_user;
@@ -174,7 +172,7 @@
         }
 
         // return a freebusy vcal string
-        public function get_vcal_freebusy($user_focus, $cached = true)
+        function get_vcal_freebusy($user_focus, $cached = true)
         {
             global $locale, $timedate;
             $ical_array = array();
@@ -241,14 +239,14 @@
 
         // static function:
         // cache vcals
-        public static function cache_sugar_vcal(&$user_focus)
+        static function cache_sugar_vcal(&$user_focus)
         {
             self::cache_sugar_vcal_freebusy($user_focus);
         }
 
         // static function:
         // caches vcal for Activities in Sugar database
-        public static function cache_sugar_vcal_freebusy(&$user_focus)
+        static function cache_sugar_vcal_freebusy(&$user_focus)
         {
             $focus = new vCal();
             // set freebusy members and save
@@ -280,10 +278,7 @@
             $remainingchars = substr($iCalValue, self::CHARSPERLINE);
             $end = self::EOL . self::TAB;
 
-            $remainingchars = substr(
-                chunk_split($end . $remainingchars, self::CHARSPERLINE + strlen(self::EOL), $end),
-                0,
-                -strlen($end) // exclude last EOL and TAB chars
+            $remainingchars = substr(chunk_split($end . $remainingchars, self::CHARSPERLINE + strlen(self::EOL), $end), 0, -strlen($end) // exclude last EOL and TAB chars
             );
 
             return $firstchars . $remainingchars;

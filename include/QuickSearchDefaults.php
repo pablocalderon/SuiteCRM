@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /**
@@ -52,7 +51,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class QuickSearchDefaults
 {
-    public $form_name = 'EditView';
+    var $form_name = 'EditView';
 
     /**
      * getQuickSearchDefaults
@@ -62,7 +61,7 @@ class QuickSearchDefaults
      * @param array $lookup Array with custom files and class names for custom QuickSearchDefaults classes, optional
      * @return QuickSearchDefaults
      */
-    public static function getQuickSearchDefaults(array $lookup = array())
+    static public function getQuickSearchDefaults(array $lookup = array())
     {
         $lookup['custom/include/QuickSearchDefaults.php'] = 'QuickSearchDefaultsCustom';
         foreach ($lookup as $file => $class) {
@@ -74,12 +73,12 @@ class QuickSearchDefaults
         return new QuickSearchDefaults();
     }
 
-    public function setFormName($name = 'EditView')
+    function setFormName($name = 'EditView')
     {
         $this->form_name = $name;
     }
 
-    public function getQSParent($parent = 'Accounts')
+    function getQSParent($parent = 'Accounts')
     {
         global $app_strings;
 
@@ -100,7 +99,7 @@ class QuickSearchDefaults
         return $qsParent;
     }
 
-    public function getQSAccount($nameKey, $idKey, $billingKey = null, $shippingKey = null, $additionalFields = null)
+    function getQSAccount($nameKey, $idKey, $billingKey = null, $shippingKey = null, $additionalFields = null)
     {
         global $app_strings;
 
@@ -129,7 +128,7 @@ class QuickSearchDefaults
         }
 
         $qsParent = array(
-                    'form' => $this->form_name,
+					'form' => $this->form_name,
                     'method' => 'query',
                     'modules' => array('Accounts'),
                     'group' => 'or',
@@ -154,12 +153,12 @@ class QuickSearchDefaults
      * this widget non-functional.
      * @return The JSON format of a QuickSearch definition for the Contacts module
      */
-    public function getQSContact($name, $idName)
+    function getQSContact($name, $idName)
     {
         global $app_strings, $locale;
 
         $qsContact = array('form' => $this->form_name,
-                           'method'=>'get_contact_array',
+        				   'method'=>'get_contact_array',
                            'modules'=>array('Contacts'),
                            'field_list' => array('salutation', 'first_name', 'last_name', 'id'),
                            'populate_list' => array($name, $idName, $idName, $idName),
@@ -175,12 +174,12 @@ class QuickSearchDefaults
         return $qsContact;
     }
 
-    public function getQSUser($p_name = 'assigned_user_name', $p_id ='assigned_user_id')
+    function getQSUser($p_name = 'assigned_user_name', $p_id ='assigned_user_id')
     {
         global $app_strings;
 
         $qsUser = array('form' => $this->form_name,
-                        'method' => 'get_user_array', // special method
+        				'method' => 'get_user_array', // special method
                         'field_list' => array('user_name', 'id'),
                         'populate_list' => array($p_name, $p_id),
                         'required_list' => array($p_id),
@@ -188,12 +187,12 @@ class QuickSearchDefaults
                         'limit' => '30','no_match_text' => $app_strings['ERR_SQS_NO_MATCH']);
         return $qsUser;
     }
-    public function getQSCampaigns($c_name = 'campaign_name', $c_id = 'campaign_id')
+    function getQSCampaigns($c_name = 'campaign_name', $c_id = 'campaign_id')
     {
         global $app_strings;
 
         $qsCampaign = array('form' => $this->form_name,
-                            'method' => 'query',
+        					'method' => 'query',
                             'modules'=> array('Campaigns'),
                             'group' => 'or',
                             'field_list' => array('name', 'id'),
@@ -216,7 +215,7 @@ class QuickSearchDefaults
      * @param type $nameField the name of the field to populate
      * @param type $idField the id of the field to populate
      */
-    public function loadQSObject($module, $object, $relationName, $nameField, $idField)
+    function loadQSObject($module, $object, $relationName, $nameField, $idField)
     {
         $result = array();
         VardefManager::loadVardef($module, $object);
@@ -237,7 +236,7 @@ class QuickSearchDefaults
     }
 
     // BEGIN QuickSearch functions for 4.5.x backwards compatibility support
-    public function getQSScripts()
+    function getQSScripts()
     {
         global $sugar_version, $sugar_config, $theme;
         $qsScripts = '<script type="text/javascript">sqsWaitGif = "' . SugarThemeRegistry::current()->getImageURL('sqsWait.gif') . '";</script>
@@ -245,12 +244,12 @@ class QuickSearchDefaults
         return $qsScripts;
     }
 
-    public function getQSScriptsNoServer()
+    function getQSScriptsNoServer()
     {
         return $this->getQSScripts();
     }
 
-    public function getQSScriptsJSONAlreadyDefined()
+    function getQSScriptsJSONAlreadyDefined()
     {
         global $sugar_version, $sugar_config, $theme;
         $qsScriptsJSONAlreadyDefined = '<script type="text/javascript">sqsWaitGif = "' . SugarThemeRegistry::current()->getImageURL('sqsWait.gif') . '";</script><script type="text/javascript" src="' . getJSPath('include/javascript/quicksearch.js') . '"></script>';

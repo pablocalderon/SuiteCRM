@@ -3,13 +3,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -17,30 +16,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
  * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
- *
+ * 
  * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
  * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
- *
+ * 
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- *
+ * 
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('include/connectors/sources/SourceFactory.php');
 require_once('include/connectors/ConnectorFactory.php');
@@ -48,12 +47,12 @@ require_once('include/MVC/Controller/SugarController.php');
 
 class ConnectorsController extends SugarController
 {
-    public $admin_actions = array('ConnectorSettings', 'DisplayProperties', 'MappingProperties', 'ModifyMapping', 'ModifyDisplay', 'ModifyProperties',
-                               'ModifySearch', 'SearchProperties', 'SourceProperties',
-                               'SavedModifyDisplay', 'SaveModifyProperties', 'SaveModifySearch', 'RunTest');
+    var $admin_actions = array('ConnectorSettings', 'DisplayProperties', 'MappingProperties', 'ModifyMapping', 'ModifyDisplay', 'ModifyProperties',
+	                           'ModifySearch', 'SearchProperties', 'SourceProperties',
+	                           'SavedModifyDisplay', 'SaveModifyProperties', 'SaveModifySearch', 'RunTest');
 
 
-    public function process()
+    function process()
     {
         if (!is_admin($GLOBALS['current_user']) && in_array($this->action, $this->admin_actions)) {
             $this->hasAccess = false;
@@ -68,7 +67,7 @@ class ConnectorsController extends SugarController
      * the data that was saved in the session.
      *
      */
-    public function action_SetSearch()
+    function action_SetSearch()
     {
         if (empty($_REQUEST)) {
             return;
@@ -112,7 +111,7 @@ class ConnectorsController extends SugarController
      * This action it meant to handle the hover action on the listview.
      *
      */
-    public function action_RetrieveSourceDetails()
+    function action_RetrieveSourceDetails()
     {
         $this->view = 'ajax';
         $source_id = $_REQUEST['source_id'];
@@ -159,7 +158,7 @@ class ConnectorsController extends SugarController
     }
 
 
-    public function action_GetSearchForm()
+    function action_GetSearchForm()
     {
         $this->view = 'ajax';
         if (!empty($_REQUEST['source_id'])) {
@@ -194,7 +193,7 @@ class ConnectorsController extends SugarController
                 }//foreach
             }//fi
 
-            $ss->assign('mod', $GLOBALS['mod_strings']);
+			$ss->assign('mod', $GLOBALS['mod_strings']);
             $ss->assign('search_fields', $_trueFields);
             $ss->assign('source_id', $source);
             $ss->assign('fields', $seed->field_defs);
@@ -207,15 +206,15 @@ class ConnectorsController extends SugarController
     }
 
 
-    public function pre_save()
+    function pre_save()
     {
     }
-    public function post_save()
+    function post_save()
     {
     }
 
 
-    public function action_CallConnectorFunc()
+    function action_CallConnectorFunc()
     {
         $this->view = 'ajax';
         $json = getJSONobj();
@@ -226,7 +225,7 @@ class ConnectorsController extends SugarController
             $source = SourceFactory::getSource($source_id);
 
             $method = 'ext_'.$_REQUEST['source_func'];
-            if (method_exists($source, $method)) {
+            if (method_exists($source,$method)) {
                 echo $json->encode($source->$method($_REQUEST));
             } else {
                 echo $json->encode(array('error'=>true,'errorMessage'=>'Could Not Find Function: '.$method.' in class: '.get_class($source)));
@@ -264,7 +263,7 @@ class ConnectorsController extends SugarController
         return $ret;
     }
 
-    public function action_CallRest()
+    function action_CallRest()
     {
         $this->view = 'ajax';
 
@@ -295,7 +294,7 @@ class ConnectorsController extends SugarController
         }
     }
 
-    public function action_CallSoap()
+    function action_CallSoap()
     {
         $this->view = 'ajax';
         $source_id = $_REQUEST['source_id'];
@@ -321,7 +320,7 @@ class ConnectorsController extends SugarController
     }
 
 
-    public function action_DefaultSoapPopup()
+    function action_DefaultSoapPopup()
     {
         $this->view = 'ajax';
         $source_id = $_REQUEST['source_id'];
@@ -365,7 +364,7 @@ class ConnectorsController extends SugarController
         }
     }
 
-    public function action_SaveModifyProperties()
+    function action_SaveModifyProperties()
     {
         require_once('include/connectors/sources/SourceFactory.php');
         $sources = array();
@@ -398,7 +397,7 @@ class ConnectorsController extends SugarController
         // END SUGAR INT
     }
 
-    public function action_SaveModifyDisplay()
+    function action_SaveModifyDisplay()
     {
         if (empty($_REQUEST['display_sources'])) {
             return;
@@ -538,7 +537,7 @@ class ConnectorsController extends SugarController
         } //foreach
 
 
-        //Now update the field mapping entries
+		//Now update the field mapping entries
         foreach ($sources_modules as $id => $modules) {
             $source = SourceFactory::getSource($id);
             $mapping = $source->getMapping();
@@ -630,7 +629,7 @@ class ConnectorsController extends SugarController
     /**
      * action_SaveModifyMapping
      */
-    public function action_SaveModifyMapping()
+    function action_SaveModifyMapping()
     {
         $mapping_sources = !empty($_REQUEST['mapping_sources']) ? explode(',', $_REQUEST['mapping_sources']) : array();
         $mapping_values = !empty($_REQUEST['mapping_values']) ? explode(',', $_REQUEST['mapping_values']) : array();
@@ -700,7 +699,7 @@ class ConnectorsController extends SugarController
     }
 
 
-    public function action_RunTest()
+    function action_RunTest()
     {
         $this->view = 'ajax';
         $source_id = $_REQUEST['source_id'];
@@ -738,7 +737,7 @@ class ConnectorsController extends SugarController
      * Returns a JSON encoded format of the Connectors that are configured for the system
      *
      */
-    public function action_RetrieveSources()
+    function action_RetrieveSources()
     {
         require_once('include/connectors/utils/ConnectorUtils.php');
         $this->view = 'ajax';
@@ -751,24 +750,24 @@ class ConnectorsController extends SugarController
         echo $json->encode($results);
     }
 
-    public function add_social_field($module, $field_name)
+    function add_social_field($module, $field_name)
     {
         $field = array(
-                array(
-                        'name' => $field_name,
-                        'label' => 'LBL_' . strtoupper($field_name),
-                        'type' => 'varchar',
-                        'module' => $module,
-                        'ext1' => 'LIST',
-                        'default_value' => '',
-                        'mass_update' => false,
-                        'required' => false,
-                        'reportable' => false,
-                        'audited' => false,
-                        'importable' => 'false',
-                        'duplicate_merge' => false,
-                )
-        );
+				array(
+						'name' => $field_name,
+						'label' => 'LBL_' . strtoupper($field_name),
+						'type' => 'varchar',
+						'module' => $module,
+						'ext1' => 'LIST',
+						'default_value' => '',
+						'mass_update' => false,
+						'required' => false,
+						'reportable' => false,
+						'audited' => false,
+						'importable' => 'false',
+						'duplicate_merge' => false,
+				)
+		);
 
         $layout[$module] = $field_name;
 
@@ -789,7 +788,7 @@ class ConnectorsController extends SugarController
         require_once('modules/ModuleBuilder/parsers/ParserFactory.php');
         $parser = ParserFactory::getParser($view, $module);
 
-        if (!array_key_exists($field['0']['name'], $parser->_fielddefs)) {
+        if (!array_key_exists($field['0']['name'],$parser->_fielddefs)) {
             //add newly created fields to fielddefs as they wont be there.
             $parser->_fielddefs[ $field['0']['name'] ] = $field['0'];
         }

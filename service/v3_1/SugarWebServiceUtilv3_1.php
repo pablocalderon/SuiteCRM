@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,37 +33,37 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('service/v3/SugarWebServiceUtilv3.php');
 class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
 {
-    public function get_return_module_fields($value, $module, $fields, $translate=true)
+    function get_return_module_fields($value, $module,$fields, $translate=true)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_return_module_fields');
         global $module_name;
         $module_name = $module;
-        $result = $this->get_field_list($value, $fields, $translate);
+        $result = $this->get_field_list($value,$fields,  $translate);
         $GLOBALS['log']->info('End: SoapHelperWebServices->get_return_module_fields');
 
         $tableName = $value->getTableName();
 
-        return array('module_name'=>$module, 'table_name' => $tableName,
-                    'module_fields'=> $result['module_fields'],
-                    'link_fields'=> $result['link_fields'],
-                    );
+        return Array('module_name'=>$module, 'table_name' => $tableName,
+					'module_fields'=> $result['module_fields'],
+					'link_fields'=> $result['link_fields'],
+					);
     } // fn
 
 
     /**
-     * Track a view for a particular bean.
-     *
-     * @param SugarBean $seed
-     * @param string $current_view
-     */
-    public function trackView($seed, $current_view)
+	 * Track a view for a particular bean.
+	 *
+	 * @param SugarBean $seed
+	 * @param string $current_view
+	 */
+    function trackView($seed, $current_view)
     {
         $trackerManager = TrackerManager::getInstance();
         if ($monitor = $trackerManager->getMonitor('tracker')) {
@@ -74,8 +73,8 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
             $monitor->setValue('action', $current_view);
             $monitor->setValue('item_id', $seed->id);
             $monitor->setValue('item_summary', $seed->get_summary_text());
-            $monitor->setValue('visible', true);
-            $trackerManager->saveMonitor($monitor, true, true);
+            $monitor->setValue('visible',true);
+            $trackerManager->saveMonitor($monitor, TRUE, TRUE);
         }
     }
 
@@ -107,7 +106,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
      * @param array $availModules An array of all the modules the user already has access to.
      * @return array Modules enabled within the application.
      */
-    public function get_visible_modules($availModules)
+    function get_visible_modules($availModules)
     {
         require_once("modules/MySettings/TabController.php");
         $controller = new TabController();
@@ -121,7 +120,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
      * @param string $moduleName
      * @return array An array of fields to be searched against.
      */
-    public function generateUnifiedSearchFields($moduleName)
+    function generateUnifiedSearchFields($moduleName)
     {
         global $beanList, $beanFiles, $dictionary;
 
@@ -137,8 +136,8 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
 
         $beanName = BeanFactory::getObjectName($moduleName);
 
-        $manager = new VardefManager();
-        $manager->loadVardef($moduleName, $beanName) ;
+        $manager = new VardefManager ();
+        $manager->loadVardef($moduleName , $beanName) ;
 
         // obtain the field definitions used by generateSearchWhere (duplicate code in view.list.php)
         if (file_exists('custom/modules/'.$moduleName.'/metadata/metafiles.php')) {
@@ -155,16 +154,16 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
 
         $fields = array();
         foreach ($dictionary [ $beanName ][ 'fields' ] as $field => $def) {
-            if (strpos($field, 'email') !== false) {
+            if (strpos($field,'email') !== false) {
                 $field = 'email' ;
             }
 
             //bug: 38139 - allow phone to be searched through Global Search
-            if (strpos($field, 'phone') !== false) {
+            if (strpos($field,'phone') !== false) {
                 $field = 'phone' ;
             }
 
-            if (isset($def['unified_search']) && $def['unified_search'] && isset($searchFields [ $moduleName ] [ $field ])) {
+            if (isset($def['unified_search']) && $def['unified_search'] && isset ($searchFields [ $moduleName ] [ $field ])) {
                 $fields [ $field ] = $searchFields [ $moduleName ] [ $field ] ;
             }
         }
@@ -192,7 +191,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
      * @param string $module
      * @return array results containing access and boolean indicating access
      */
-    public function checkModuleRoleAccess($module)
+    function checkModuleRoleAccess($module)
     {
         $results = array();
         $actions = array('edit','delete','list','view','import','export');
@@ -204,7 +203,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
         return $results;
     }
 
-    public function get_field_list($value, $fields, $translate=true)
+    function get_field_list($value,$fields,  $translate=true)
     {
         $GLOBALS['log']->info('Begin: SoapHelperWebServices->get_field_list');
         $module_fields = array();
@@ -239,7 +238,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
                         $options_dom = array();
                     }
                     foreach ($options_dom as $key=>$oneOption) {
-                        $options_ret[$key] = $this->get_name_value($key, $oneOption);
+                        $options_ret[$key] = $this->get_name_value($key,$oneOption);
                     }
                 }
 
@@ -280,22 +279,22 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
             } //foreach
         } //if
 
-        if ($value->module_dir == 'Meetings' || $value->module_dir == 'Calls') {
-            if (isset($module_fields['duration_minutes']) && isset($GLOBALS['app_list_strings']['duration_intervals'])) {
-                $options_dom = $GLOBALS['app_list_strings']['duration_intervals'];
-                $options_ret = array();
-                foreach ($options_dom as $key=>$oneOption) {
-                    $options_ret[$key] = $this->get_name_value($key, $oneOption);
-                }
+		if ($value->module_dir == 'Meetings' || $value->module_dir == 'Calls') {
+		    if (isset($module_fields['duration_minutes']) && isset($GLOBALS['app_list_strings']['duration_intervals'])) {
+		        $options_dom = $GLOBALS['app_list_strings']['duration_intervals'];
+		        $options_ret = array();
+		        foreach ($options_dom as $key=>$oneOption) {
+		            $options_ret[$key] = $this->get_name_value($key,$oneOption);
+		        }
 
-                $module_fields['duration_minutes']['options'] = $options_ret;
-            }
-        }
+		        $module_fields['duration_minutes']['options'] = $options_ret;
+		    }
+		}
 
         if ($value->module_dir == 'Bugs') {
             require_once('modules/Releases/Release.php');
             $seedRelease = new Release();
-            $options = $seedRelease->get_releases(true, "Active");
+            $options = $seedRelease->get_releases(TRUE, "Active");
             $options_ret = array();
             foreach ($options as $name=>$value) {
                 $options_ret[] =  array('name'=> $name , 'value'=>$value);
@@ -347,7 +346,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
      *
      * @return string - Contents base64'd.
      */
-    public function get_file_contents_base64($filename, $remove = false)
+    function get_file_contents_base64($filename, $remove = FALSE)
     {
         $contents = "";
         if (file_exists($filename)) {
@@ -360,7 +359,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
         return $contents;
     }
 
-    public function get_module_view_defs($module_name, $type, $view)
+    function get_module_view_defs($module_name, $type, $view)
     {
         require_once('include/MVC/View/SugarView.php');
         $metadataFile = null;
@@ -372,7 +371,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
                 if ($view == 'subpanel') {
                     $results = $this->get_subpanel_defs($module_name, $type);
                 } else {
-                    $v = new SugarView(null, array());
+                    $v = new SugarView(null,array());
                     $v->module = $module_name;
                     $v->type = $view;
                     $fullView = ucfirst($view) . 'View';
@@ -394,7 +393,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
      * if the list should filter for favorites.  Should eventually update the SugarBean function as well.
      *
      */
-    public function get_data_list($seed, $order_by = "", $where = "", $row_offset = 0, $limit=-1, $max=-1, $show_deleted = 0, $favorites = false, $singleSelect=false)
+    function get_data_list($seed, $order_by = "", $where = "", $row_offset = 0, $limit=-1, $max=-1, $show_deleted = 0, $favorites = false, $singleSelect=false)
     {
         $GLOBALS['log']->debug("get_list:  order_by = '$order_by' and where = '$where' and limit = '$limit'");
         if (isset($_SESSION['show_deleted'])) {
@@ -418,7 +417,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
             $params['favorites'] = true;
         }
 
-        $query = $seed->create_new_list_query($order_by, $where, array(), $params, $show_deleted, '', false, null, $singleSelect);
+        $query = $seed->create_new_list_query($order_by, $where,array(),$params, $show_deleted,'',false,null,$singleSelect);
         return $seed->process_list_query($query, $row_offset, $limit, $max, $where);
     }
 
@@ -431,13 +430,14 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
      * @param array $metadata The metadata for the view type and view.
      * @return unknown
      */
-    public function addFieldLevelACLs($module_name, $view_type, $view, $metadata)
+    function addFieldLevelACLs($module_name,$view_type, $view, $metadata)
     {
         $functionName = "metdataAclParser" . ucfirst($view_type) . ucfirst($view);
         if (method_exists($this, $functionName)) {
             return $this->$functionName($module_name, $metadata);
+        } else {
+            return $metadata;
         }
-        return $metadata;
     }
 
 
@@ -450,7 +450,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
      * @param String $field Name of the field
      * @return int
      */
-    public function getFieldLevelACLValue($module, $field, $current_user = null)
+    function getFieldLevelACLValue($module, $field, $current_user = null)
     {
         if ($current_user == null) {
             $current_user = $GLOBALS['current_user'];

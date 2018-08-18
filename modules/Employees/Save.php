@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -54,7 +53,7 @@ require_once('include/SugarFields/SugarFieldHandler.php');
 
 $tabs_def = urldecode(isset($_REQUEST['display_tabs_def']) ? $_REQUEST['display_tabs_def'] : '');
 $DISPLAY_ARR = array();
-parse_str($tabs_def, $DISPLAY_ARR);
+parse_str($tabs_def,$DISPLAY_ARR);
 
 //there was an issue where a non-admin user could use a proxy tool to intercept the save on their own Employee
 //record and swap out their record_id with the admin employee_id which would cause the email address
@@ -63,7 +62,7 @@ parse_str($tabs_def, $DISPLAY_ARR);
 if (isset($_POST['record']) && !is_admin($GLOBALS['current_user']) && !$GLOBALS['current_user']->isAdminForModule('Employees') && ($_POST['record'] != $GLOBALS['current_user']->id)) {
     sugar_die("Unauthorized access to administration.");
 } elseif (!isset($_POST['record']) && !is_admin($GLOBALS['current_user']) && !$GLOBALS['current_user']->isAdminForModule('Employees')) {
-    sugar_die("Unauthorized access to user administration.");
+    sugar_die ("Unauthorized access to user administration.");
 }
 
 $focus = new Employee();
@@ -73,7 +72,7 @@ $focus->retrieve($_POST['record']);
 //rrs bug: 30035 - I am not sure how this ever worked b/c old_reports_to_id was not populated.
 $old_reports_to_id = $focus->reports_to_id;
 
-populateFromRow($focus, $_POST);
+populateFromRow($focus,$_POST);
 
 $focus->save();
 $return_id = $focus->id;
@@ -99,14 +98,14 @@ $GLOBALS['log']->debug("Saved record with id of ".$return_id);
 header("Location: index.php?action=$return_action&module=$return_module&record=$return_id");
 
 
-function populateFromRow(&$focus, $row)
+function populateFromRow(&$focus,$row)
 {
     
     
     //only employee specific field values need to be copied.
     $e_fields=array('first_name','last_name','reports_to_id','description','phone_home','phone_mobile','phone_work','phone_other','phone_fax','address_street','address_city','address_state','address_country','address_country', 'address_postalcode', 'messenger_id','messenger_type');
     if (is_admin($GLOBALS['current_user'])) {
-        $e_fields = array_merge($e_fields, array('title','department','employee_status'));
+        $e_fields = array_merge($e_fields,array('title','department','employee_status'));
     }
     // Also add custom fields
     $sfh = new SugarFieldHandler();

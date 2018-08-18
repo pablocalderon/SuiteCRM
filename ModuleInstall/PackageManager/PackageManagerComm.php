@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('include/nusoap/nusoap.php');
 require_once('ModuleInstall/PackageManager/PackageManagerDownloader.php');
@@ -51,7 +50,7 @@ class PackageManagerComm
      *
      * @param login    designates whether we want to try to login after we initialize or not
      */
-    public function initialize($login = true)
+    function initialize($login = true)
     {
         if (empty($GLOBALS['SugarDepot'])) {
             $GLOBALS['log']->debug('USING HTTPS TO CONNECT TO HEARTBEAT');
@@ -68,7 +67,7 @@ class PackageManagerComm
     /**
      * Check for errors in the response or error_str
      */
-    public function errorCheck()
+    function errorCheck()
     {
         if (!empty($GLOBALS['SugarDepot']->error_str)) {
             $GLOBALS['log']->fatal($GLOBALS['SugarDepot']->error_str);
@@ -83,7 +82,7 @@ class PackageManagerComm
      * @param password     Mambo password
      * @param download_key User's download key
      */
-    public function setCredentials($username, $password, $download_key)
+    function setCredentials($username, $password, $download_key)
     {
         $_SESSION['SugarDepotUsername'] = $username;
         $_SESSION['SugarDepotPassword'] = $password;
@@ -93,7 +92,7 @@ class PackageManagerComm
     /**
      * Clears out the session so we can reauthenticate.
      */
-    public function clearSession()
+    function clearSession()
     {
         $_SESSION['SugarDepotSessionID'] = null;
         unset($_SESSION['SugarDepotSessionID']);
@@ -105,7 +104,7 @@ class PackageManagerComm
      *
      * @return true if successful, false otherwise
      */
-    public function login($terms_checked = true)
+    function login($terms_checked = true)
     {
         if (empty($_SESSION['SugarDepotSessionID'])) {
             global $license;
@@ -134,14 +133,15 @@ class PackageManagerComm
             }
             $GLOBALS['log']->debug("End SugarDepot Login");
             return $result;
+        } else {
+            return $_SESSION['SugarDepotSessionID'];
         }
-        return $_SESSION['SugarDepotSessionID'];
     }
 
     /**
      * Logout from the depot
      */
-    public function logout()
+    function logout()
     {
         PackageManagerComm::initialize();
         $result = $GLOBALS['SugarDepot']->call('depotLogout', array('session_id' => $_SESSION['SugarDepotSessionID']));
@@ -150,7 +150,7 @@ class PackageManagerComm
     /**
      * Get all promotions from the depot
      */
-    public function getPromotion()
+    function getPromotion()
     {
         PackageManagerComm::initialize();
         //check for fault first and then return
@@ -167,7 +167,7 @@ class PackageManagerComm
      * @return categories_and_packages
      * @see categories_and_packages
     */
-    public function getCategoryPackages($category_id, $filter = array())
+    function getCategoryPackages($category_id, $filter = array())
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -182,7 +182,7 @@ class PackageManagerComm
      * @return categories_and_packages
      * @see categories_and_packages
      */
-    public function getCategories($category_id, $filter = array())
+    function getCategories($category_id, $filter = array())
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -197,7 +197,7 @@ class PackageManagerComm
      * @return packages
      * @see packages
     */
-    public function getPackages($category_id, $filter = array())
+    function getPackages($category_id, $filter = array())
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -212,7 +212,7 @@ class PackageManagerComm
      * @return packages
      * @see packages
     */
-    public function getReleases($category_id, $package_id, $filter = array())
+    function getReleases($category_id, $package_id, $filter = array())
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -228,7 +228,7 @@ class PackageManagerComm
      * @return download
      * @see download
     */
-    public function download($category_id, $package_id, $release_id)
+    function download($category_id, $package_id, $release_id)
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -243,7 +243,7 @@ class PackageManagerComm
      * @param release_id  the release we want to download
      * @return the filename to download
      */
-    public function addDownload($category_id, $package_id, $release_id)
+    function addDownload($category_id, $package_id, $release_id)
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -256,7 +256,7 @@ class PackageManagerComm
      * @param filename	the file to download
      * @return path to downloaded file
      */
-    public static function performDownload($filename)
+    static public function performDownload($filename)
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -272,17 +272,17 @@ class PackageManagerComm
      *
      * @return documents
      */
-    public function getDocumentation($package_id, $release_id)
+    function getDocumentation($package_id, $release_id)
     {
         PackageManagerComm::initialize();
         //check for fault
         return $GLOBALS['SugarDepot']->call('depotGetDocumentation', array('session_id' => $_SESSION['SugarDepotSessionID'], 'package_id' => $package_id, 'release_id' => $release_id));
     }
 
-    public function getTermsAndConditions()
+    function getTermsAndConditions()
     {
         PackageManagerComm::initialize(false);
-        return $GLOBALS['SugarDepot']->call('depotTermsAndConditions', array());
+        return $GLOBALS['SugarDepot']->call('depotTermsAndConditions',array());
     }
 
     /**
@@ -290,7 +290,7 @@ class PackageManagerComm
      *
      * @param document_id	the document the user has clicked on
      */
-    public function downloadedDocumentation($document_id)
+    function downloadedDocumentation($document_id)
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -307,7 +307,7 @@ class PackageManagerComm
      *
      * @return array of name_value_lists of corresponding updates
      */
-    public function checkForUpdates($objects_to_check)
+    function checkForUpdates($objects_to_check)
     {
         PackageManagerComm::initialize();
         //check for fault
@@ -318,15 +318,16 @@ class PackageManagerComm
     *
     * @return true if we can communicate with the server and false otherwise
     */
-    public function isAlive()
+    function isAlive()
     {
         PackageManagerComm::initialize(false);
 
         $status = $GLOBALS['SugarDepot']->call('sugarPing', array());
         if (empty($status) || $GLOBALS['SugarDepot']->getError() || $status != ACTIVE_STATUS) {
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
     ////////// END: Base Functions for Communicating with the depot
      ////////////////////////////////////////////////////////

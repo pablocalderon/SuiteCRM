@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -64,7 +63,7 @@ if (!$focus->ACLAccess('Save')) {
     sugar_cleanup(true);
 }
 if (!empty($_POST['assigned_user_id']) && ($focus->assigned_user_id != $_POST['assigned_user_id']) && ($_POST['assigned_user_id'] != $current_user->id)) {
-    $check_notify = true;
+    $check_notify = TRUE;
 }
 //populate the fields of this Email
 $allfields = array_merge($focus->column_fields, $focus->additional_column_fields);
@@ -96,13 +95,13 @@ $focus->to_addrs_arr = $focus->parse_addrs($_REQUEST['to_addrs'], $_REQUEST['to_
 
 // make sure the cc_* and bcc_* fields are at least empty if not set
 $fields_to_check = array(
-    'cc_addrs',
-    'cc_addrs_ids',
-    'bcc_addrs',
-    'bcc_addrs_ids',
-    'cc_addrs_names',
-    'cc_addrs_emails',
-    'bcc_addrs_emails',
+	'cc_addrs',
+	'cc_addrs_ids',
+	'bcc_addrs',
+	'bcc_addrs_ids',
+	'cc_addrs_names',
+	'cc_addrs_emails',
+	'bcc_addrs_emails',
 );
 foreach ($fields_to_check as $field_to_check) {
     if (!isset($_REQUEST[$field_to_check])) {
@@ -217,7 +216,7 @@ if (!empty($_REQUEST['to_addrs_ids'])) {
 if (isset($_REQUEST['object_type']) && !empty($_REQUEST['object_type']) && isset($_REQUEST['object_id']) && !empty($_REQUEST['object_id'])) {
     //run linking code only if the object_id has not been linked as part of the contacts above and it is an OOB relationship
     $GLOBALS['log']->debug("CESELY".$_REQUEST['object_type']);
-    if (!in_array($_REQUEST['object_id'], $exContactIds)) {
+    if (!in_array($_REQUEST['object_id'],$exContactIds)) {
         $rel = strtolower($_REQUEST['object_type']);
         if ($focus->load_relationship($rel)) {
             $focus->$rel->add($_REQUEST['object_id']);
@@ -231,7 +230,7 @@ if (isset($_REQUEST['object_type']) && !empty($_REQUEST['object_type']) && isset
 // If came from email archiving edit view, this would have been set from form input.
 if (!isset($focus->date_start)) {
     $timedate = TimeDate::getInstance();
-    list($focus->date_start, $focus->time_start) = $timedate->split_date_time($timedate->now());
+    list($focus->date_start,  $focus->time_start) = $timedate->split_date_time($timedate->now());
 }
 
 $focus->date_sent = "";
@@ -297,4 +296,5 @@ if ($focus->type == 'draft') {
 } elseif (isset($_POST['return_id']) && $_POST['return_id'] != "") {
     $return_id = $_POST['return_id'];
 }
-    header("Location: index.php?action=$return_action&module=$return_module&record=$return_id");
+	header("Location: index.php?action=$return_action&module=$return_module&record=$return_id");
+

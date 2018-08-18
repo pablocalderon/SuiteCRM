@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -76,10 +75,10 @@ class SugarLogger implements LoggerTemplate
     public static $filename_suffix = array(
         //bug#50265: Added none option for previous version users
         "" => "None",
-        "%m_%Y"    => "Month_Year",
+	    "%m_%Y"    => "Month_Year",
         "%d_%m"    => "Day_Month",
-        "%m_%d_%y" => "Month_Day_Year",
-        );
+	    "%m_%d_%y" => "Month_Day_Year",
+	    );
 
     /**
      * Let's us know if we've initialized the logger file
@@ -127,11 +126,11 @@ class SugarLogger implements LoggerTemplate
         $this->logSize = $config->get('logger.file.maxSize', $this->logSize);
         $this->maxLogs = $config->get('logger.file.maxLogs', $this->maxLogs);
         $this->filesuffix = $config->get('logger.file.suffix', $this->filesuffix);
-        $log_dir = $config->get('log_dir', $this->log_dir);
+        $log_dir = $config->get('log_dir' , $this->log_dir);
         $this->log_dir = $log_dir . (empty($log_dir)?'':'/');
         unset($config);
         $this->_doInitialization();
-        LoggerManager::setLogger('default', 'SugarLogger');
+        LoggerManager::setLogger('default','SugarLogger');
     }
 
     /**
@@ -148,8 +147,8 @@ class SugarLogger implements LoggerTemplate
     }
 
     /**
-     * Checks to see if the SugarLogger file can be created and written to
-     */
+	 * Checks to see if the SugarLogger file can be created and written to
+	 */
     protected function _fileCanBeCreatedAndWrittenTo()
     {
         $this->_attemptToCreateIfNecessary();
@@ -157,8 +156,8 @@ class SugarLogger implements LoggerTemplate
     }
 
     /**
-     * Creates the SugarLogger file if it doesn't exist
-     */
+	 * Creates the SugarLogger file if it doesn't exist
+	 */
     protected function _attemptToCreateIfNecessary()
     {
         if (file_exists($this->full_log_file)) {
@@ -195,9 +194,9 @@ class SugarLogger implements LoggerTemplate
      * see LoggerTemplate::log()
      */
     public function log(
-        $level,
-        $message
-        ) {
+	    $level,
+	    $message
+	    ) {
         global $sugar_config;
 
         if (!$this->initialized) {
@@ -208,7 +207,7 @@ class SugarLogger implements LoggerTemplate
 
         //if we haven't opened a file pointer yet let's do that
         if (! $this->fp) {
-            $this->fp = fopen($this->full_log_file, 'a');
+            $this->fp = fopen ($this->full_log_file , 'a');
         }
 
 
@@ -218,7 +217,7 @@ class SugarLogger implements LoggerTemplate
         }
         // change to a human-readable array output if it's any other array
         if (is_array($message)) {
-            $message = print_r($message, true);
+            $message = print_r($message,true);
         }
 
 
@@ -228,18 +227,17 @@ class SugarLogger implements LoggerTemplate
         }
 
         //write out to the file including the time in the dateFormat the process id , the user id , and the log level as well as the message
-        fwrite(
-            $this->fp,
-            strftime($this->dateFormat) . ' [' . getmypid() . '][' . $userID . '][' . strtoupper($level) . '] ' . $message . "\n"
-            );
+        fwrite($this->fp,
+		    strftime($this->dateFormat) . ' [' . getmypid () . '][' . $userID . '][' . strtoupper($level) . '] ' . $message . "\n"
+		    );
     }
 
     /**
      * rolls the logger file to start using a new file
      */
     protected function rollLog(
-        $force = false
-        ) {
+	    $force = false
+	    ) {
         if (!$this->initialized || empty($this->logSize)) {
             return;
         }
@@ -254,10 +252,10 @@ class SugarLogger implements LoggerTemplate
             $rollAt = ( int ) $match[1] * $units[strtolower($match[2])];
         }
         //check if our log file is greater than that or if we are forcing the log to roll if and only if roll size assigned the value correctly
-        if ($force || ($rollAt && filesize($this->full_log_file) >= $rollAt)) {
+        if ($force || ($rollAt && filesize ($this->full_log_file) >= $rollAt)) {
             //now lets move the logs starting at the oldest and going to the newest
             for ($i = $this->maxLogs - 2; $i > 0; $i --) {
-                if (file_exists($this->log_dir . $this->logfile . $this->date_suffix . '_'. $i . $this->ext)) {
+                if (file_exists ($this->log_dir . $this->logfile . $this->date_suffix . '_'. $i . $this->ext)) {
                     $to = $i + 1;
                     $old_name = $this->log_dir . $this->logfile . $this->date_suffix . '_'. $i . $this->ext;
                     $new_name = $this->log_dir . $this->logfile . $this->date_suffix . '_'. $to . $this->ext;
@@ -269,12 +267,12 @@ class SugarLogger implements LoggerTemplate
                 }
             }
             //now lets move the current .log file
-            sugar_rename($this->full_log_file, $this->log_dir . $this->logfile . $this->date_suffix . '_1' . $this->ext);
+            sugar_rename ($this->full_log_file, $this->log_dir . $this->logfile . $this->date_suffix . '_1' . $this->ext);
         }
     }
 
     /**
-     * This is needed to prevent unserialize vulnerability
+	 * This is needed to prevent unserialize vulnerability
      */
     public function __wakeup()
     {
@@ -294,7 +292,7 @@ class SugarLogger implements LoggerTemplate
     {
         if ($this->fp) {
             fclose($this->fp);
-            $this->fp = false;
+            $this->fp = FALSE;
         }
     }
 }

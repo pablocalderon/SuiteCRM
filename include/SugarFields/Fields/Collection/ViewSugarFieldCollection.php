@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,36 +33,36 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('include/SugarFields/Fields/Collection/SugarFieldCollection.php');
 
 
 class ViewSugarFieldCollection
 {
-    public $ss; // Sugar Smarty Object
-    public $bean;
-    public $bean_id;
-    public $name;
-    public $value_name;
-    public $displayParams; // DisplayParams for the collection field (defined in the metadata)
-    public $vardef; // vardef of the collection field.
-    public $related_module; // module name of the related module
-    public $module_dir; // name of the module where the collection field is.
-    public $numFields;
-    public $json;
-    public $tpl_path;
-    public $extra_var;
-    public $skipModuleQuickSearch = false;
-    public $field_to_name_array; //mapping of fields for the return of the select popup
-    public $showSelectButton = true;
-    public $hideShowHideButton = false;
-    public $action_type;
-    public $form_name;
+    var $ss; // Sugar Smarty Object
+    var $bean;
+    var $bean_id;
+    var $name;
+    var $value_name;
+    var $displayParams; // DisplayParams for the collection field (defined in the metadata)
+    var $vardef; // vardef of the collection field.
+    var $related_module; // module name of the related module
+    var $module_dir; // name of the module where the collection field is.
+    var $numFields;
+    var $json;
+    var $tpl_path;
+    var $extra_var;
+    var $skipModuleQuickSearch = false;
+    var $field_to_name_array; //mapping of fields for the return of the select popup
+    var $showSelectButton = true;
+    var $hideShowHideButton = false;
+    var $action_type;
+    var $form_name;
 
-    public function __construct($fill_data = true)
+    function __construct($fill_data = true)
     {
         $this->json = getJSONobj();
         if ($fill_data) {
@@ -85,7 +84,7 @@ class ViewSugarFieldCollection
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function ViewSugarFieldCollection($fill_data = true)
+    function ViewSugarFieldCollection($fill_data = true)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -100,7 +99,7 @@ class ViewSugarFieldCollection
      * Retrieve the related module and load the bean and the relationship
      * call retrieve values()
      */
-    public function setup()
+    function setup()
     {
         if (!class_exists('Relationship')) {
         }
@@ -145,7 +144,7 @@ class ViewSugarFieldCollection
      * Retrieve the values from the DB using the get method of the link class
      * Organize and save the value into the bean
      */
-    public function retrieve_values()
+    function retrieve_values()
     {
         if (empty($this->bean->{$this->value_name}) && isset($this->bean->{$this->name})) {
             $values = array();
@@ -205,7 +204,7 @@ class ViewSugarFieldCollection
     /*
      * redirect to the good process method.
      */
-    public function process()
+    function process()
     {
         if ($this->action_type == 'editview') {
             $this->process_editview();
@@ -213,13 +212,13 @@ class ViewSugarFieldCollection
             $this->process_detailview();
         }
     }
-    public function process_detailview()
+    function process_detailview()
     {
     }
     /*
      * Build the DisplayParams array
      */
-    public function process_editview()
+    function process_editview()
     {
         if (isset($this->bean->{$this->value_name}['secondaries'])) {
             $this->numFields=count($this->bean->{$this->value_name}['secondaries'])+1;
@@ -249,7 +248,7 @@ class ViewSugarFieldCollection
                     require_once('include/TemplateHandler/TemplateHandler.php');
                     $tph = new TemplateHandler();
                     $javascript = $tph->createQuickSearchCode(array($collection_field_vardef['name']=>$collection_field_vardef), array($v), $this->form_name);
-                    $javascript = str_replace('<script language="javascript">'."if(typeof sqs_objects == 'undefined'){var sqs_objects = new Array;}sqs_objects['{$collection_field_vardef['name']}']=", "", $javascript);
+                    $javascript = str_replace('<script language="javascript">'."if(typeof sqs_objects == 'undefined'){var sqs_objects = new Array;}sqs_objects['{$collection_field_vardef['name']}']=","",$javascript);
                     $javascript = substr($javascript, 0, -10);//remove ";</script>"
                     $javascriptPHP = $this->json->decode($javascript);
                     foreach ($javascriptPHP['populate_list'] as $kk=>$vv) {
@@ -316,7 +315,7 @@ FRA;
         }
         if (isset($this->displayParams['allow_new']) && ($this->displayParams['allow_new'] === false || $this->displayParams['allow_new'] === 'false')) {
             $this->displayParams['allow_new']='false';
-            $this->displayParams['class']=str_replace('sqsNoAutofill', '', $this->displayParams['class']);
+            $this->displayParams['class']=str_replace('sqsNoAutofill','',$this->displayParams['class']);
         } else {
             $this->displayParams['allow_new']='true';
             $this->displayParams['class'].=' sqsNoAutofill';
@@ -331,31 +330,31 @@ FRA;
     /*
      * Init the template with the variables
      */
-    public function init_tpl()
+    function init_tpl()
     {
         foreach ($this->extra_var as $k=>$v) {
-            $this->ss->assign($k, $v);
+            $this->ss->assign($k,$v);
         }
         if ($this->action_type == 'editview') {
-            $this->ss->assign('quickSearchCode', $this->createQuickSearchCode());
+            $this->ss->assign('quickSearchCode',$this->createQuickSearchCode());
             $this->createPopupCode();// this code populate $this->displayParams with popupdata.
             $this->tpl_path = $this->edit_tpl_path;
         } elseif ($this->action_type == 'detailview') {
             $this->tpl_path = $this->detail_tpl_path;
         }
 
-        $this->ss->assign('displayParams', $this->displayParams);
-        $this->ss->assign('vardef', $this->vardef);
-        $this->ss->assign('module', $this->related_module);
-        $this->ss->assign('values', $this->bean->{$this->value_name});
-        $this->ss->assign('showSelectButton', $this->showSelectButton);
-        $this->ss->assign('hideShowHideButton', $this->hideShowHideButton);
-        $this->ss->assign('APP', $GLOBALS['app_strings']);
+        $this->ss->assign('displayParams',$this->displayParams);
+        $this->ss->assign('vardef',$this->vardef);
+        $this->ss->assign('module',$this->related_module);
+        $this->ss->assign('values',$this->bean->{$this->value_name});
+        $this->ss->assign('showSelectButton',$this->showSelectButton);
+        $this->ss->assign('hideShowHideButton',$this->hideShowHideButton);
+        $this->ss->assign('APP',$GLOBALS['app_strings']);
     }
     /*
      * Display the collection field after retrieving the cached row.
      */
-    public function display()
+    function display()
     {
         $cacheRowFile = sugar_cached('modules/') . $this->module_dir .  '/collections/'. $this->name . '.tpl';
         if (!$this->checkTemplate($cacheRowFile)) {
@@ -373,7 +372,7 @@ FRA;
      * Check if the template is cached
      * return a bool
      */
-    public function checkTemplate($cacheRowFile)
+    function checkTemplate($cacheRowFile)
     {
         if (inDeveloperMode() || !empty($_SESSION['developerMode'])) {
             return false;
@@ -386,7 +385,7 @@ FRA;
      * Create the quickSearch code for the collection field.
      * return the javascript code which define sqs_objects.
      */
-    public function createQuickSearchCode($returnAsJavascript = true)
+    function createQuickSearchCode($returnAsJavascript = true)
     {
         $sqs_objects = array();
         require_once('include/QuickSearchDefaults.php');
@@ -485,15 +484,16 @@ FRA;
                 }
 
                 return $quicksearch_js .= '</script>';
+            } else {
+                return $sqs_objects;
             }
-            return $sqs_objects;
         }
         return '';
     }
     /*
      * Always call createQuickSearchCode() before createPopupCode() to define field_to_name_array
      */
-    public function createPopupCode()
+    function createPopupCode()
     {
         // TODO the 'select' button is not fully working. We should use the sqs_objects in open_popup instead of the parameter.
         if (isset($this->field_to_name_array) && !empty($this->field_to_name_array)) {
@@ -524,7 +524,7 @@ FRA;
 
 
 
-    public function findTemplate($view)
+    function findTemplate($view)
     {
         static $tplCache = array();
 
@@ -533,9 +533,9 @@ FRA;
         }
 
         $lastClass = get_class($this);
-        $classList = array($this->type,str_replace('ViewSugarField', '', $lastClass));
+        $classList = array($this->type,str_replace('ViewSugarField','',$lastClass));
         while ($lastClass = get_parent_class($lastClass)) {
-            $classList[] = str_replace('ViewSugarField', '', $lastClass);
+            $classList[] = str_replace('ViewSugarField','',$lastClass);
         }
 
         $tplName = '';

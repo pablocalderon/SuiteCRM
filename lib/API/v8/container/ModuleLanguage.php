@@ -10,3 +10,4 @@ $container['ModuleLanguage'] = function ($container) {
     $moduleLanguage = new ModuleLanguage();
     return $moduleLanguage;
 };
+

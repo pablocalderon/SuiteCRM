@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,21 +33,21 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
  require_once('ModuleInstall/PackageManager/PackageManagerDisplay.php');
  require_once('ModuleInstall/PackageManager/PackageManager.php');
  class PackageController
  {
-     public $_pm;
+     var $_pm;
 
      /**
       * Constructor: this class is called from the the ajax call and handles invoking the correct
       * functionality on the server.
       */
-     public function __construct()
+     function __construct()
      {
          $this->_pm = new PackageManager();
      }
@@ -56,7 +55,7 @@
      /**
       * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
       */
-     public function PackageController()
+     function PackageController()
      {
          $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
          if (isset($GLOBALS['log'])) {
@@ -68,7 +67,7 @@
      }
 
 
-     public function performBasicSearch()
+     function performBasicSearch()
      {
          $json = getJSONobj();
          $search_term = '';
@@ -91,7 +90,7 @@
       * @return packages     xml string consisting of the packages and releases which belong to
       *                      the category
       */
-     public function getPackages()
+     function getPackages()
      {
          $json = getJSONobj();
          $category_id = '';
@@ -107,7 +106,7 @@
       * Obtain a list of releases from the server.  This function is currently used for generating the patches/langpacks for upgrade wizard
       * as well as during installation
       */
-     public function getReleases()
+     function getReleases()
      {
          $json = getJSONobj();
          $category_id = '';
@@ -153,7 +152,7 @@
      /**
       * Obtain a promotion from the depot
       */
-     public function getPromotion()
+     function getPromotion()
      {
          $json = getJSONobj();
 
@@ -170,7 +169,7 @@
       * @param release_id   this is passed via POST and is the release id of the release we wish to download
       * @return bool         true is successful in downloading, false otherwise
       */
-     public function download()
+     function download()
      {
          global $sugar_config;
          $json = getJSONobj();
@@ -190,7 +189,7 @@
          $GLOBALS['log']->debug("CATEGORY ID: ".$category_id);
          $GLOBALS['log']->debug("RELEASE ID: ".$release_id);
          $result = $this->_pm->download($category_id, $package_id, $release_id);
-         $GLOBALS['log']->debug("RESULT: ".print_r($result, true));
+         $GLOBALS['log']->debug("RESULT: ".print_r($result,true));
          $success = 'false';
          if ($result != null) {
              $GLOBALS['log']->debug("Performing Setup");
@@ -207,7 +206,7 @@
      * @param id - the id of the parent_category, -1 if this is the root
      * @return array - a list of categories/nodes which are underneath this node
      */
-     public function getCategories()
+     function getCategories()
      {
          $json = getJSONobj();
          $node_id = '';
@@ -219,7 +218,7 @@
          echo 'result = ' . $json->encode(array('nodes' => $nodes));
      }
 
-     public function getNodes()
+     function getNodes()
      {
          $json = getJSONobj();
          $category_id = '';
@@ -237,7 +236,7 @@
       * @param type      the type to check for
       * @return array    return an array of releases for each given installed object if an update is found
       */
-     public function checkForUpdates()
+     function checkForUpdates()
      {
          $json = getJSONobj();
          $type = '';
@@ -269,7 +268,7 @@
          echo 'result = ' . $json->encode(array('updates' => $nodes));
      }
 
-     public function getLicenseText()
+     function getLicenseText()
      {
          $json = getJSONobj();
          $file = '';
@@ -283,7 +282,7 @@
      /**
       *  build the list of modules that are currently in the staging area waiting to be installed
       */
-     public function getPackagesInStaging()
+     function getPackagesInStaging()
      {
          $packages = $this->_pm->getPackagesInStaging('module');
          $json = getJSONobj();
@@ -294,7 +293,7 @@
      /**
       *  build the list of modules that are currently in the staging area waiting to be installed
       */
-     public function performInstall()
+     function performInstall()
      {
          $file = '';
          if (isset($_REQUEST['file'])) {
@@ -308,7 +307,7 @@
          echo 'result = ' . $json->encode(array('result' => 'success'));
      }
 
-     public function authenticate()
+     function authenticate()
      {
          $json = getJSONobj();
          $username = '';
@@ -346,7 +345,7 @@
          echo 'result = ' . $json->encode(array('status' => $status));
      }
 
-     public function getDocumentation()
+     function getDocumentation()
      {
          $json = getJSONobj();
          $package_id = '';
@@ -364,7 +363,7 @@
          echo 'result = ' . $json->encode(array('documents' => $documents));
      }
 
-     public function downloadedDocumentation()
+     function downloadedDocumentation()
      {
          $json = getJSONobj();
          $document_id = '';
@@ -391,7 +390,7 @@
          }
      }
 
-     public function remove()
+     function remove()
      {
          $json = getJSONobj();
          $file = '';

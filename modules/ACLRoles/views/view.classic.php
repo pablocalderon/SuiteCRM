@@ -7,7 +7,7 @@ require_once('include/MVC/View/views/view.detail.php');
 
 class ACLRolesViewClassic extends ViewDetail
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
 
@@ -18,7 +18,7 @@ class ACLRolesViewClassic extends ViewDetail
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function ACLRolesViewClassic()
+    function ACLRolesViewClassic()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -30,7 +30,7 @@ class ACLRolesViewClassic extends ViewDetail
     }
 
 
-    public function display()
+    function display()
     {
         $this->dv->process();
 
@@ -38,7 +38,7 @@ class ACLRolesViewClassic extends ViewDetail
         $this->includeClassicFile('modules/'. $this->module . '/'. $file . '.php');
     }
 
-    public function preDisplay()
+    function preDisplay()
     {
         parent::preDisplay();
 

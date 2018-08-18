@@ -624,19 +624,20 @@ class SugarBean
                 return false;
             }
             return $timedate->asUser($dateValue);
-        }
-        $now = $timedate->getNow(true);
-        try {
-            $results = $now->modify($value);
-        } catch (Exception $e) {
-            $GLOBALS['log']->fatal('DateTime error: ' . $e->getMessage());
-        }
-        if (is_bool($results)) {
-            $GLOBALS['log']->fatal('Type Error: Argument 1 passed to TimeDate::asUser() ' .
+        } else {
+            $now = $timedate->getNow(true);
+            try {
+                $results = $now->modify($value);
+            } catch (Exception $e) {
+                $GLOBALS['log']->fatal('DateTime error: ' . $e->getMessage());
+            }
+            if (is_bool($results)) {
+                $GLOBALS['log']->fatal('Type Error: Argument 1 passed to TimeDate::asUser() ' .
                     'must be an instance of DateTime, boolean given');
-            return false;
+                return false;
+            }
+            return $timedate->asUserDate($results);
         }
-        return $timedate->asUserDate($results);
     }
 
     /**
@@ -1015,9 +1016,10 @@ class SugarBean
                 $final_query_rows,
                 $secondary_queries
             );
+        } else {
+            $GLOBALS['log']->fatal('Parent bean should be a SugarBean');
+            return null;
         }
-        $GLOBALS['log']->fatal('Parent bean should be a SugarBean');
-        return null;
     }
 
     /**
@@ -1649,8 +1651,7 @@ class SugarBean
                 foreach ($this->field_defs as $field => $properties) {
                     if (
                     (
-                        !empty($properties['Audited']) || !empty($properties['audited'])
-                    )
+                        !empty($properties['Audited']) || !empty($properties['audited']))
                     ) {
                         $this->audit_enabled_fields[$field] = $properties;
                     }
@@ -1683,12 +1684,12 @@ class SugarBean
                 return true;
             }
             return false;
+        } else {
+            //other wise if there is a created_by that is the owner
+            if (isset($this->created_by) && $this->created_by == $user_id) {
+                return true;
+            }
         }
-        //other wise if there is a created_by that is the owner
-        if (isset($this->created_by) && $this->created_by == $user_id) {
-            return true;
-        }
-        
         return false;
     }
 
@@ -2059,19 +2060,22 @@ class SugarBean
                     $deleted,
                     $optional_where
                 ));
-            }
-            // Link2 style
-            if ($end_index != -1 || !empty($deleted) || !empty($optional_where) || !empty($order_by)) {
-                return array_values($this->$field_name->getBeans(array(
+            } else {
+                // Link2 style
+                if ($end_index != -1 || !empty($deleted) || !empty($optional_where) || !empty($order_by)) {
+                    return array_values($this->$field_name->getBeans(array(
                         'where' => $optional_where,
                         'deleted' => $deleted,
                         'limit' => ($end_index - $begin_index),
                         'order_by' => $order_by
                     )));
+                } else {
+                    return array_values($this->$field_name->getBeans());
+                }
             }
-            return array_values($this->$field_name->getBeans());
+        } else {
+            return array();
         }
-        return array();
     }
 
     /**
@@ -2204,8 +2208,9 @@ class SugarBean
         global $dictionary;
         if (isset($dictionary[$this->getObjectName()]['audited'])) {
             return $dictionary[$this->getObjectName()]['audited'];
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -2389,8 +2394,7 @@ class SugarBean
                     '',
                     '',
                     '',
-                    $this->in_workflow
-                );
+                    $this->in_workflow);
             }
         }
 
@@ -2627,10 +2631,11 @@ class SugarBean
                     $_SESSION['o_lock_save'] = $saveform;
                     header('Location: index.php?module=OptimisticLock&action=LockResolve');
                     die();
+                } else {
+                    unset($_SESSION['o_lock_object']);
+                    unset($_SESSION['o_lock_id']);
+                    unset($_SESSION['o_lock_dm']);
                 }
-                unset($_SESSION['o_lock_object']);
-                unset($_SESSION['o_lock_id']);
-                unset($_SESSION['o_lock_dm']);
             }
         } else {
             if (isset($_SESSION['o_lock_object'])) {
@@ -2940,13 +2945,11 @@ class SugarBean
                     //Determine if the parent field has changed.
                     if (
                         //First check if the fetched row parent existed and now we no longer have one
-                        (
-                            !empty($this->fetched_row[$typeField]) && !empty($this->fetched_row[$idField])
+                        (!empty($this->fetched_row[$typeField]) && !empty($this->fetched_row[$idField])
                             && (empty($this->$typeField) || empty($this->$idField))
                         ) ||
                         //Next check if we have one now that doesn't match the fetch row
-                        (
-                            !empty($this->$typeField) && !empty($this->$idField) &&
+                        (!empty($this->$typeField) && !empty($this->$idField) &&
                             (empty($this->fetched_row[$typeField]) || empty($this->fetched_row[$idField])
                                 || $this->fetched_row[$idField] != $this->$idField)
                         ) ||
@@ -3020,31 +3023,33 @@ class SugarBean
         if (!empty($new_rel_id)) {
             if ($this->load_relationship($new_rel_link)) {
                 return $this->$new_rel_link->add($new_rel_id);
-            }
-            $lower_link = strtolower($new_rel_link);
-            if ($this->load_relationship($lower_link)) {
-                return $this->$lower_link->add($new_rel_id);
-            }
-            require_once('data/Link2.php');
-            $rel = Relationship::retrieve_by_modules(
+            } else {
+                $lower_link = strtolower($new_rel_link);
+                if ($this->load_relationship($lower_link)) {
+                    return $this->$lower_link->add($new_rel_id);
+                } else {
+                    require_once('data/Link2.php');
+                    $rel = Relationship::retrieve_by_modules(
                         $new_rel_link,
                         $this->module_dir,
                         $this->db,
                         'many-to-many'
                     );
 
-            if (!empty($rel)) {
-                foreach ($this->field_defs as $field => $def) {
-                    if ($def['type'] == 'link' && !empty($def['relationship'])
+                    if (!empty($rel)) {
+                        foreach ($this->field_defs as $field => $def) {
+                            if ($def['type'] == 'link' && !empty($def['relationship'])
                                 && $def['relationship'] == $rel) {
-                        $this->load_relationship($field);
-                        return $this->$field->add($new_rel_id);
+                                $this->load_relationship($field);
+                                return $this->$field->add($new_rel_id);
+                            }
+                        }
+                        //ok so we didn't find it in the field defs let's save it anyway if we have the relationship
+
+                        $this->$rel = new Link2($rel, $this, array());
+                        return $this->$rel->add($new_rel_id);
                     }
                 }
-                //ok so we didn't find it in the field defs let's save it anyway if we have the relationship
-
-                $this->$rel = new Link2($rel, $this, array());
-                return $this->$rel->add($new_rel_id);
             }
         }
 
@@ -3312,7 +3317,7 @@ class SugarBean
         if (in_array('set_notification_body', get_class_methods($this))) {
             $xtpl = $this->set_notification_body($xtpl, $this);
         } else {
-            $xtpl->assign("OBJECT", translate('LBL_MODULE_NAME', $this->module_name));
+            $xtpl->assign("OBJECT", translate('LBL_MODULE_NAME',$this->module_name));
             $template_name = "Default";
         }
         if (!empty($_SESSION["special_notification"]) && $_SESSION["special_notification"]) {
@@ -3669,9 +3674,9 @@ class SugarBean
                     }
                 }
                 continue;
+            } else {
+                $data = $this->field_defs[$field];
             }
-            $data = $this->field_defs[$field];
-            
 
             //ignore fields that are a part of the collection and a field has been removed as a result of
             //layout customization.. this happens in subpanel customizations, use case, from the contacts subpanel
@@ -4848,15 +4853,12 @@ class SugarBean
     {
         if (!empty($this->parent_id) && !empty($this->last_parent_id) && $this->last_parent_id == $this->parent_id) {
             return false;
+        } else {
+            $this->parent_name = '';
         }
-        $this->parent_name = '';
-        
         if (!empty($this->parent_type)) {
             $this->last_parent_id = $this->parent_id;
-            $this->getRelatedFields(
-                $this->parent_type,
-                $this->parent_id,
-                array(
+            $this->getRelatedFields($this->parent_type, $this->parent_id, array(
                 'name' => 'parent_name',
                 'document_name' => 'parent_document_name',
                 'first_name' => 'parent_first_name',
@@ -5181,8 +5183,9 @@ class SugarBean
         }
         if (isset($list)) {
             return $list;
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
@@ -5792,10 +5795,12 @@ class SugarBean
         if (!empty($where_clause)) {
             if ($deleted) {
                 return "WHERE $where_clause AND deleted=0";
+            } else {
+                return "WHERE $where_clause";
             }
-            return "WHERE $where_clause";
+        } else {
+            return "";
         }
-        return "";
     }
 
     /**

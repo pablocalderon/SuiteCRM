@@ -6,9 +6,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 require_once('modules/DynamicFields/templates/Fields/TemplateText.php');
 class TemplateCronSchedule extends TemplateText
 {
-    public $type='CronSchedule';
+    var $type='CronSchedule';
 
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -16,7 +16,7 @@ class TemplateCronSchedule extends TemplateText
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function TemplateCronSchedule()
+    function TemplateCronSchedule()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -28,7 +28,7 @@ class TemplateCronSchedule extends TemplateText
     }
 
 
-    public function get_field_def()
+    function get_field_def()
     {
         $def = parent::get_field_def();
         $def['dbType'] = 'varchar';

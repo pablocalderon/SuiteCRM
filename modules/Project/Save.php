@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 
@@ -61,7 +60,7 @@ if (isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true") 
 }
 if (isset($_REQUEST['save_type']) || isset($_REQUEST['duplicateSave']) && $_REQUEST['duplicateSave'] === "true") {
     $query = "SELECT id FROM project_task WHERE project_id = '" . $base_project_id . "' AND deleted = 0";
-    $result = $sugarbean->db->query($query, true, "Error retrieving project tasks");
+    $result = $sugarbean->db->query($query,true,"Error retrieving project tasks");
     $row = $sugarbean->db->fetchByAssoc($result);
 
     while ($row != null) {
@@ -105,7 +104,7 @@ if (!$sugarbean->ACLAccess('Save')) {
 if (isset($GLOBALS['check_notify'])) {
     $check_notify = $GLOBALS['check_notify'];
 } else {
-    $check_notify = false;
+    $check_notify = FALSE;
 }
 $sugarbean->save($check_notify);
 $return_id = $sugarbean->id;
@@ -132,5 +131,5 @@ if ($sugarbean->is_template) {
 } else {
     //customize default retrun view to make it to redirect to GanttChart view
     $_REQUEST['return_url'] = "index.php?module=Project&action=view_GanttChart&record=" . $return_id;
-    handleRedirect($return_id, 'Project');
+    handleRedirect($return_id,'Project');
 }

@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -51,11 +50,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class ProspectFormBase
 {
-    public function checkForDuplicates($prefix)
+    function checkForDuplicates($prefix)
     {
         global $local_log;
         require_once('include/formbase.php');
-    
+	
         $focus = new Prospect();
         if (!checkRequired($prefix, array_keys($focus->required_fields))) {
             return null;
@@ -84,7 +83,7 @@ class ProspectFormBase
 
         if (!empty($query)) {
             $rows = array();
-        
+		
             $db = DBManagerFactory::getInstance();
             $result = $db->query($query.');');
             while ($row = $db->fetchByAssoc($result)) {
@@ -98,7 +97,7 @@ class ProspectFormBase
     }
 
 
-    public function buildTableForm($rows, $mod='')
+    function buildTableForm($rows, $mod='')
     {
         global $action;
         if (!empty($mod)) {
@@ -115,7 +114,7 @@ class ProspectFormBase
         } else {
             $form = '<table width="100%"><tr><td>'.$mod_strings['MSG_SHOW_DUPLICATES']. '</td></tr><tr><td height="20"></td></tr></table>';
         }
-        $form .= get_form_header($mod_strings['LBL_DUPLICATE'], "", '');
+        $form .= get_form_header($mod_strings['LBL_DUPLICATE'],"", '');
         $form .= "<table width='100%' cellpadding='0' cellspacing='0'>	<tr >	";
         if ($action != 'ShowDuplicates') {
             $form .= "<td > &nbsp;</td>";
@@ -138,7 +137,7 @@ class ProspectFormBase
             if ($action != 'ShowDuplicates') {
                 $form .= "<td width='1%' nowrap='nowrap' ><a href='#' onClick=\"document.dupProspects.selectedProspect.value='${row['id']}';document.dupProspects.submit() \">[${app_strings['LBL_SELECT_BUTTON_LABEL']}]</a>&nbsp;&nbsp;</td>\n";
             }
-        
+		
             $wasSet = false;
 
             foreach ($row as $key=>$value) {
@@ -167,12 +166,12 @@ class ProspectFormBase
         }
         return $form;
     }
-    public function getWideFormBody($prefix, $mod='', $formname='', $prospect = '')
+    function getWideFormBody($prefix, $mod='',$formname='',  $prospect = '')
     {
         if (!ACLController::checkAccess('Prospects', 'edit', true)) {
             return '';
         }
-    
+	
         if (empty($prospect)) {
             $prospect = new Prospect();
         }
@@ -291,15 +290,15 @@ EOQ;
         $javascript = new javascript();
         $javascript->setFormName($formname);
         $javascript->setSugarBean(new Prospect());
-        $javascript->addField('email1', 'false', $prefix);
-        $javascript->addField('email2', 'false', $prefix);
+        $javascript->addField('email1','false',$prefix);
+        $javascript->addField('email2','false',$prefix);
         $javascript->addRequiredFields($prefix);
         $form .=$javascript->getScript();
         $mod_strings = $temp_strings;
         return $form;
     }
 
-    public function getFormBody($prefix, $mod='', $formname='')
+    function getFormBody($prefix, $mod='', $formname='')
     {
         if (!ACLController::checkAccess('Prospects', 'edit', true)) {
             return '';
@@ -353,14 +352,14 @@ EOQ;
         $javascript = new javascript();
         $javascript->setFormName($formname);
         $javascript->setSugarBean(new Prospect());
-        $javascript->addField('email1', 'false', $prefix);
+        $javascript->addField('email1','false',$prefix);
         $javascript->addRequiredFields($prefix);
 
         $form .=$javascript->getScript();
         $mod_strings = $temp_strings;
         return $form;
     }
-    public function getForm($prefix, $mod='')
+    function getForm($prefix, $mod='')
     {
         if (!ACLController::checkAccess('Prospects', 'edit', true)) {
             return '';
@@ -385,7 +384,7 @@ EOQ;
 			<input type="hidden" name="${prefix}module" value="Prospects">
 			<input type="hidden" name="${prefix}action" value="Save">
 EOQ;
-        $the_form .= $this->getFormBody($prefix, 'Prospects', "${prefix}ProspectSave");
+        $the_form .= $this->getFormBody($prefix,'Prospects', "${prefix}ProspectSave");
         $the_form .= <<<EOQ
 		<input title="$lbl_save_button_title" accessKey="$lbl_save_button_key" class="button" type="submit" name="${prefix}button" value="  $lbl_save_button_label  " >
 		</form>
@@ -398,18 +397,18 @@ EOQ;
     }
 
 
-    public function handleSave($prefix, $redirect=true, $useRequired=false)
+    function handleSave($prefix,$redirect=true, $useRequired=false)
     {
         global $theme;
-    
-    
-    
-    
+	
+	
+	
+	
         require_once('include/formbase.php');
-    
+	
         global $timedate;
-    
-    
+	
+	
         $focus = new Prospect();
         if ($useRequired &&  !checkRequired($prefix, array_keys($focus->required_fields))) {
             return null;
@@ -421,36 +420,36 @@ EOQ;
         if (!isset($GLOBALS['check_notify'])) {
             $GLOBALS['check_notify']=false;
         }
-    
+	
         if (!isset($_POST[$prefix.'email_opt_out'])) {
             $focus->email_opt_out = 0;
         }
         if (!isset($_POST[$prefix.'do_not_call'])) {
             $focus->do_not_call = 0;
         }
-    
+	
         if (empty($_POST['record']) && empty($_POST['dup_checked'])) {
             /*
             // we don't check dupes on Prospects - this is the dirtiest data in the system
             //$duplicateProspects = $this->checkForDuplicates($prefix);
             if(isset($duplicateProspects)){
             	$get='module=Prospects&action=ShowDuplicates';
-
+            	
             	//add all of the post fields to redirect get string
-            	foreach ($focus->column_fields as $field)
+            	foreach ($focus->column_fields as $field) 
             	{
             		if (!empty($focus->$field))
             		{
             			$get .= "&Prospects$field=".urlencode($focus->$field);
-            		}
+            		}	
             	}
-
-            	foreach ($focus->additional_column_fields as $field)
+            	
+            	foreach ($focus->additional_column_fields as $field) 
             	{
             		if (!empty($focus->$field))
             		{
             			$get .= "&Prospects$field=".urlencode($focus->$field);
-            		}
+            		}	
             	}
 
             	//create list of suspected duplicate prospect id's in redirect get string

@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,16 +33,16 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('include/SugarFields/Fields/Base/SugarFieldBase.php');
 class SugarFieldCollection extends SugarFieldBase
 {
-    public $tpl_path;
-    
-    public function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    var $tpl_path;
+	
+    function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
         $nolink = array('Users');
         if (in_array($vardef['module'], $nolink)) {
@@ -63,7 +62,7 @@ class SugarFieldCollection extends SugarFieldBase
         return $this->fetch($this->tpl_path);
     }
 
-    public function getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex, $searchView = false)
+    function getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex, $searchView = false)
     {
         if ($searchView) {
             $form_name = 'search_form';
@@ -77,7 +76,7 @@ class SugarFieldCollection extends SugarFieldBase
         $this->ss->assign('displayParamsJSON', '{literal}'.$displayParamsJSON.'{/literal}');
         $this->ss->assign('vardefJSON', '{literal}'.$vardefJSON.'{/literal}');
 
-        $keys = $this->getAccessKey($vardef, 'COLLECTION', $vardef['module']);
+        $keys = $this->getAccessKey($vardef,'COLLECTION',$vardef['module']);
         $displayParams['accessKeySelect'] = $keys['accessKeySelect'];
         $displayParams['accessKeySelectLabel'] = $keys['accessKeySelectLabel'];
         $displayParams['accessKeySelectTitle'] = $keys['accessKeySelectTitle'];
@@ -94,7 +93,7 @@ class SugarFieldCollection extends SugarFieldBase
         }
     }
 
-    public function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
         $this->getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex, true);
     }
@@ -136,7 +135,7 @@ class SugarFieldCollection extends SugarFieldBase
             require('include/modules.php');
             require_once('data/Link.php');
             $class = load_link_class($bean->field_defs[$field]);
-            
+    		
             $link_obj = new $class($bean->field_defs[$field]['relationship'], $bean, $bean->field_defs[$field]);
             $module = $link_obj->getRelatedModuleName();
             $beanName = $beanList[$module];
@@ -183,7 +182,7 @@ class SugarFieldCollection extends SugarFieldBase
                         if (!isset($_POST[$field . "_allow_update"]) || ($_POST[$field . "_allow_update"] !== 'false' && $_POST[$field . "_allow_update"] !== false)) {
                             //allow to update the extra_field in the record
                             if (isset($v['extra_field'][$kk]) && $vv == true) {
-                                $extra_field_name = str_replace("_".$field."_collection_extra_".$k, "", $kk);
+                                $extra_field_name = str_replace("_".$field."_collection_extra_".$k,"",$kk);
                                 if ($obj->$extra_field_name != $v['extra_field'][$kk]) {
                                     $save = true;
                                     $obj->$extra_field_name=$v['extra_field'][$kk];

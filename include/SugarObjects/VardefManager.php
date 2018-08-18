@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2016 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /**
@@ -45,14 +44,14 @@
  */
 class VardefManager
 {
-    public static $custom_disabled_modules = array();
-    public static $linkFields;
+    static $custom_disabled_modules = array();
+    static $linkFields;
 
     /**
      * this method is called within a vardefs.php file which extends from a SugarObject.
      * It is meant to load the vardefs from the SugarObject.
      */
-    public static function createVardef($module, $object, $templates = array('default'), $object_name = false)
+    static function createVardef($module, $object, $templates = array('default'), $object_name = false)
     {
         global $dictionary;
 
@@ -95,7 +94,7 @@ class VardefManager
         }
     }
 
-    public static function addTemplate($module, $object, $template, $object_name=false)
+    static function addTemplate($module, $object, $template, $object_name=false)
     {
         if ($template == 'default') {
             $template = 'basic';
@@ -155,7 +154,7 @@ class VardefManager
      * @param array $fieldDefs
      * @return  array
      */
-    public static function cleanVardefs($fieldDefs)
+    static function cleanVardefs($fieldDefs)
     {
         if (isset($fieldDefs['fields'])) {
             foreach ($fieldDefs['fields'] as $field => $defs) {
@@ -173,7 +172,7 @@ class VardefManager
      * @param string $module the name of the module
      * @param string $object the name of the object
      */
-    public static function saveCache($module, $object, $additonal_objects= array())
+    static function saveCache($module,$object, $additonal_objects= array())
     {
         if (empty($GLOBALS['dictionary'][$object])) {
             $object = BeanFactory::getObjectName($module);
@@ -192,7 +191,7 @@ class VardefManager
 
         // put the item in the sugar cache.
         $key = "VardefManager.$module.$object";
-        sugar_cache_put($key, $data);
+        sugar_cache_put($key,$data);
     }
 
     /**
@@ -202,7 +201,7 @@ class VardefManager
      *                      clear vardef cache for all modules.
      * @param string object_name the name of the object we are clearing this is for sugar_cache
      */
-    public static function clearVardef($module_dir = '', $object_name = '')
+    static function clearVardef($module_dir = '', $object_name = '')
     {
         //if we have a module name specified then just remove that vardef file
         //otherwise go through each module and remove the vardefs.php
@@ -221,7 +220,7 @@ class VardefManager
      * @param string module_dir the module_dir to clear
      * @param string object_name the name of the object we are clearing this is for sugar_cache
      */
-    public static function _clearCache($module_dir = '', $object_name = '')
+    static function _clearCache($module_dir = '', $object_name = '')
     {
         if (!empty($module_dir) && !empty($object_name)) {
 
@@ -249,7 +248,7 @@ class VardefManager
      * @param string $object the given object we wish to load the vardefs for
      * @param array $additional_search_paths an array which allows a consumer to pass in additional vardef locations to search
      */
-    public static function refreshVardefs($module, $object, $additional_search_paths = null, $cacheCustom = true, $params = array())
+    static function refreshVardefs($module, $object, $additional_search_paths = null, $cacheCustom = true, $params = array())
     {
         // Some of the vardefs do not correctly define dictionary as global.  Declare it first.
         global $dictionary, $beanList;
@@ -291,7 +290,7 @@ class VardefManager
         //load custom fields into the vardef cache
         if ($cacheCustom) {
             require_once("modules/DynamicFields/DynamicField.php");
-            $df = new DynamicField($module) ;
+            $df = new DynamicField ($module) ;
             $df->buildCache($module, false);
         }
 
@@ -391,7 +390,7 @@ class VardefManager
      * @param Array $vardef The vardefs of the module to apply the account_name field requirement to
      * @return Array $vardef The vardefs of the module with the updated required setting based on the system configuration
      */
-    public static function applyGlobalAccountRequirements($vardef)
+    static function applyGlobalAccountRequirements($vardef)
     {
         if (isset($GLOBALS['sugar_config']['require_accounts'])) {
             if (isset($vardef['fields'])
@@ -412,7 +411,7 @@ class VardefManager
      * @param string $object the given object we wish to load the vardefs for
      * @param bool   $refresh whether or not we wish to refresh the cache file.
      */
-    public static function loadVardef($module, $object, $refresh=false, $params = array())
+    static function loadVardef($module, $object, $refresh=false, $params = array())
     {
         //here check if the cache file exists, if it does then load it, if it doesn't
         //then call refreshVardef
@@ -453,7 +452,7 @@ class VardefManager
                 // now that we hae loaded the data from disk, put it in the cache.
                 if (!empty($GLOBALS['dictionary'][$object])) {
                     $GLOBALS['dictionary'][$object] = self::applyGlobalAccountRequirements($GLOBALS['dictionary'][$object]);
-                    sugar_cache_put($key, $GLOBALS['dictionary'][$object]);
+                    sugar_cache_put($key,$GLOBALS['dictionary'][$object]);
                 }
             }
         }

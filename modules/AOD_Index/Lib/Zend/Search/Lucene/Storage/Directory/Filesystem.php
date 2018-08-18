@@ -118,10 +118,11 @@ class Zend_Search_Lucene_Storage_Directory_Filesystem extends Zend_Search_Lucene
             if (file_exists($path)) {
                 require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Path exists, but it\'s not a directory');
-            }
-            if (!self::mkdirs($path)) {
-                require_once 'Zend/Search/Lucene/Exception.php';
-                throw new Zend_Search_Lucene_Exception("Can't create directory '$path'.");
+            } else {
+                if (!self::mkdirs($path)) {
+                    require_once 'Zend/Search/Lucene/Exception.php';
+                    throw new Zend_Search_Lucene_Exception("Can't create directory '$path'.");
+                }
             }
         }
         $this->_dirPath = $path;
@@ -361,3 +362,4 @@ class Zend_Search_Lucene_Storage_Directory_Filesystem extends Zend_Search_Lucene
         return $this->_fileHandlers[$filename];
     }
 }
+

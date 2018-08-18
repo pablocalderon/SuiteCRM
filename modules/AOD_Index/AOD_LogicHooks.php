@@ -20,11 +20,11 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author SalesAgility Ltd <support@salesagility.com>
+ * @author Salesagility Ltd <support@salesagility.com>
  */
 class AOD_LogicHooks
 {
-    public function saveModuleChanges(SugarBean $bean, $event, $arguments)
+    function saveModuleChanges(SugarBean $bean, $event, $arguments)
     {
         if ($bean->module_name == 'AOD_Index') {
             return;
@@ -34,13 +34,13 @@ class AOD_LogicHooks
         }
         try {
             $index = BeanFactory::getBean("AOD_Index")->getIndex();
-            $index->index($bean->module_name, $bean->id);
+            $index->index($bean->module_name,$bean->id);
         } catch (Exception $ex) {
             $GLOBALS['log']->error($ex->getMessage());
         }
     }
 
-    public function saveModuleDelete(SugarBean $bean, $event, $arguments)
+    function saveModuleDelete(SugarBean $bean, $event, $arguments)
     {
         if ($bean->module_name == 'AOD_Index') {
             return;
@@ -50,13 +50,13 @@ class AOD_LogicHooks
         }
         try {
             $index = BeanFactory::getBean("AOD_Index")->getIndex();
-            $index->remove($bean->module_name, $bean->id);
+            $index->remove($bean->module_name,$bean->id);
         } catch (Exception $ex) {
             $GLOBALS['log']->error($ex->getMessage());
         }
     }
 
-    public function saveModuleRestore(SugarBean $bean, $event, $arguments)
+    function saveModuleRestore(SugarBean $bean, $event, $arguments)
     {
         if ($bean->module_name == 'AOD_Index') {
             return;
@@ -66,7 +66,7 @@ class AOD_LogicHooks
         }
         try {
             $index = BeanFactory::getBean("AOD_Index")->getIndex();
-            $index->index($bean->module_name, $bean->id);
+            $index->index($bean->module_name,$bean->id);
         } catch (Exception $ex) {
             $GLOBALS['log']->error($ex->getMessage());
         }

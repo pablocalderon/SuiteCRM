@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,16 +36,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once("include/utils/db_utils.php");
 
 class jsAlerts
 {
-    public $script;
+    var $script;
 
     public function __construct()
     {
@@ -60,12 +59,12 @@ EOQ;
         $this->addActivities();
         Reminder::addNotifications($this);
         if (!empty($GLOBALS['sugar_config']['enable_timeout_alerts'])) {
-            $this->addAlert($app_strings['ERROR_JS_ALERT_SYSTEM_CLASS'], $app_strings['ERROR_JS_ALERT_TIMEOUT_TITLE'], '', $app_strings['ERROR_JS_ALERT_TIMEOUT_MSG_1'], (session_cache_expire() - 2) * 60);
-            $this->addAlert($app_strings['ERROR_JS_ALERT_SYSTEM_CLASS'], $app_strings['ERROR_JS_ALERT_TIMEOUT_TITLE'], '', $app_strings['ERROR_JS_ALERT_TIMEOUT_MSG_2'], (session_cache_expire()) * 60, 'index.php');
+            $this->addAlert($app_strings['ERROR_JS_ALERT_SYSTEM_CLASS'], $app_strings['ERROR_JS_ALERT_TIMEOUT_TITLE'],'', $app_strings['ERROR_JS_ALERT_TIMEOUT_MSG_1'], (session_cache_expire() - 2) * 60);
+            $this->addAlert($app_strings['ERROR_JS_ALERT_SYSTEM_CLASS'], $app_strings['ERROR_JS_ALERT_TIMEOUT_TITLE'],'', $app_strings['ERROR_JS_ALERT_TIMEOUT_MSG_2'], (session_cache_expire()) * 60 , 'index.php');
         }
     }
 
-    public function addAlert($type, $name, $subtitle, $description, $countdown, $redirect = '', $reminder_id = '')
+    function addAlert($type, $name, $subtitle, $description, $countdown, $redirect = '', $reminder_id = '')
     {
         if ($countdown < 0) {
             $countdown = 0;
@@ -76,7 +75,7 @@ EOQ;
         $this->script .= $script;
     }
 
-    public function getScript()
+    function getScript()
     {
         return "<script>secondsSinceLoad = 0; alertList = [];" . $this->script . "</script>";
     }
@@ -86,7 +85,7 @@ EOQ;
      * @param $parentType string parent type
      * @param $parentId string parent id
      */
-    public function getRelatedName($parentType, $parentId)
+    function getRelatedName($parentType, $parentId)
     {
         if (!empty($parentType) && !empty($parentId)) {
             $parentBean = BeanFactory::getBean($parentType, $parentId);
@@ -97,7 +96,7 @@ EOQ;
         return '';
     }
 
-    public function addActivities()
+    function addActivities()
     {
         global $app_list_strings, $timedate, $current_user, $app_strings;
         global $sugar_config;
@@ -174,16 +173,14 @@ EOQ;
 
 
             // standard functionality
-            $this->addAlert(
-                $app_strings['MSG_JS_ALERT_MTG_REMINDER_MEETING'],
-                $meetingName,
-                $app_strings['MSG_JS_ALERT_MTG_REMINDER_TIME'].$timedate->to_display_date_time($db->fromConvert($row['date_start'], 'datetime')),
-                $app_strings['MSG_JS_ALERT_MTG_REMINDER_LOC'].$location.
-                $description.
-                $instructions,
-                $timeStart - strtotime($alertDateTimeNow),
-                $url
-            );
+            $this->addAlert($app_strings['MSG_JS_ALERT_MTG_REMINDER_MEETING'], $meetingName,
+				$app_strings['MSG_JS_ALERT_MTG_REMINDER_TIME'].$timedate->to_display_date_time($db->fromConvert($row['date_start'], 'datetime')),
+				$app_strings['MSG_JS_ALERT_MTG_REMINDER_LOC'].$location.
+				$description.
+				$instructions,
+				$timeStart - strtotime($alertDateTimeNow),
+				$url
+			);
         }
 
         // Prep Calls Query
@@ -212,7 +209,7 @@ EOQ;
             $callDescription = $row['description'] ."\n" .$app_strings['MSG_JS_ALERT_MTG_REMINDER_STATUS'] . $row['status'] ."\n". $app_strings['MSG_JS_ALERT_MTG_REMINDER_RELATED_TO']. $relatedToCall;
 
 
-            $this->addAlert($app_strings['MSG_JS_ALERT_MTG_REMINDER_CALL'], $row['name'], $app_strings['MSG_JS_ALERT_MTG_REMINDER_TIME'].$timedate->to_display_date_time($db->fromConvert($row['date_start'], 'datetime')), $app_strings['MSG_JS_ALERT_MTG_REMINDER_DESC'].$callDescription, $timeStart - strtotime($alertDateTimeNow), 'index.php?action=DetailView&module=Calls&record=' . $row['id']);
+            $this->addAlert($app_strings['MSG_JS_ALERT_MTG_REMINDER_CALL'], $row['name'], $app_strings['MSG_JS_ALERT_MTG_REMINDER_TIME'].$timedate->to_display_date_time($db->fromConvert($row['date_start'], 'datetime')) , $app_strings['MSG_JS_ALERT_MTG_REMINDER_DESC'].$callDescription , $timeStart - strtotime($alertDateTimeNow), 'index.php?action=DetailView&module=Calls&record=' . $row['id']);
         }
     }
 }

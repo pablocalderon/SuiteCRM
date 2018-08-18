@@ -24,7 +24,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author SalesAgility Ltd <support@salesagility.com>
+ * @author Salesagility Ltd <support@salesagility.com>
  */
 
 /*********************************************************************************
@@ -40,7 +40,7 @@ require_once('modules/AOS_Quotes/AOS_Quotes.php');
 
 class AOS_QuotesDashlet extends DashletGeneric
 {
-    public function __construct($id, $def = null)
+    function __construct($id, $def = null)
     {
         global $current_user, $app_strings;
         require('modules/AOS_Quotes/metadata/dashletviewdefs.php');
@@ -60,7 +60,7 @@ class AOS_QuotesDashlet extends DashletGeneric
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function AOS_QuotesDashlet($id, $def = null)
+    function AOS_QuotesDashlet($id, $def = null)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {

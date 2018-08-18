@@ -3,13 +3,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -38,16 +37,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
-/**
+/*********************************************************************************
 
  * Description: Controller for the Import module
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- */
+ ********************************************************************************/
 
 require_once("modules/Import/Forms.php");
 require_once("include/MVC/Controller/SugarController.php");
@@ -95,12 +94,12 @@ class ImportController extends SugarController
         }
     }
     
-    public function action_index()
+    function action_index()
     {
         $this->action_Step1();
     }
 
-    public function action_mapping()
+    function action_mapping()
     {
         global $mod_strings, $current_user;
         $results = array('message' => '');
@@ -116,13 +115,13 @@ class ImportController extends SugarController
             $import_map = $import_map->retrieve($_REQUEST['import_map_id'], false);
 
             if ($_REQUEST['publish'] == 'yes') {
-                $result = $import_map->mark_published($current_user->id, true);
+                $result = $import_map->mark_published($current_user->id,true);
                 if (!$result) {
                     $results['message'] = $mod_strings['LBL_ERROR_UNABLE_TO_PUBLISH'];
                 }
             } elseif ($_REQUEST['publish'] == 'no') {
                 // if you don't own this importmap, you do now, unless you have a map by the same name
-                $result = $import_map->mark_published($current_user->id, false);
+                $result = $import_map->mark_published($current_user->id,false);
                 if (!$result) {
                     $results['message'] = $mod_strings['LBL_ERROR_UNABLE_TO_UNPUBLISH'];
                 }
@@ -130,9 +129,9 @@ class ImportController extends SugarController
         }
         
         echo json_encode($results);
-        sugar_cleanup(true);
+        sugar_cleanup(TRUE);
     }
-    public function action_RefreshMapping()
+    function action_RefreshMapping()
     {
         global $mod_strings;
         require_once('modules/Import/sources/ImportFile.php');
@@ -145,43 +144,43 @@ class ImportController extends SugarController
         }
         $enclosure = $_REQUEST['qualif'];
         $enclosure = html_entity_decode($enclosure, ENT_QUOTES);
-        $hasHeader = isset($_REQUEST['header']) && !empty($_REQUEST['header']) ? true : false;
+        $hasHeader = isset($_REQUEST['header']) && !empty($_REQUEST['header']) ? TRUE : FALSE;
 
-        $importFile = new ImportFile($fileName, $delim, $enclosure, false);
+        $importFile = new ImportFile($fileName, $delim, $enclosure, FALSE);
         $importFile->setHeaderRow($hasHeader);
         $rows = $v->getSampleSet($importFile);
 
         $ss = new Sugar_Smarty();
-        $ss->assign("SAMPLE_ROWS", $rows);
-        $ss->assign("HAS_HEADER", $hasHeader);
-        $ss->assign("column_count", $v->getMaxColumnsInSampleSet($rows));
-        $ss->assign("MOD", $mod_strings);
+        $ss->assign("SAMPLE_ROWS",$rows);
+        $ss->assign("HAS_HEADER",$hasHeader);
+        $ss->assign("column_count",$v->getMaxColumnsInSampleSet($rows));
+        $ss->assign("MOD",$mod_strings);
         $ss->display('modules/Import/tpls/confirm_table.tpl');
-        sugar_cleanup(true);
+        sugar_cleanup(TRUE);
     }
 
-    public function action_RefreshTable()
+    function action_RefreshTable()
     {
         $offset = isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0;
         $tableID = isset($_REQUEST['tableID']) ? $_REQUEST['tableID'] : 'errors';
-        $has_header = $_REQUEST['has_header'] == 'on' ? true : false;
+        $has_header = $_REQUEST['has_header'] == 'on' ? TRUE : FALSE;
         if ($tableID == 'dup') {
             $tableFilename = ImportCacheFiles::getDuplicateFileName();
         } else {
             $tableFilename = ImportCacheFiles::getErrorRecordsFileName();
         }
 
-        $if = new ImportFile($tableFilename, ",", '"', false, false);
+        $if = new ImportFile($tableFilename, ",", '"', FALSE, FALSE);
         $if->setHeaderRow($has_header);
-        $lv = new ImportListView($if, array('offset'=> $offset), $tableID);
-        $lv->display(false);
+        $lv = new ImportListView($if,array('offset'=> $offset), $tableID);
+        $lv->display(FALSE);
         
-        sugar_cleanup(true);
+        sugar_cleanup(TRUE);
     }
     
-    public function action_Step1()
+    function action_Step1()
     {
-        $fromAdminView = isset($_REQUEST['from_admin_wizard']) ? $_REQUEST['from_admin_wizard'] : false;
+        $fromAdminView = isset($_REQUEST['from_admin_wizard']) ? $_REQUEST['from_admin_wizard'] : FALSE;
         if ($this->importModule == 'Administration' || $fromAdminView
         ) {
             $this->view = 'step1';
@@ -190,64 +189,64 @@ class ImportController extends SugarController
         }
     }
     
-    public function action_Step2()
+    function action_Step2()
     {
         $this->view = 'step2';
     }
 
-    public function action_Confirm()
+    function action_Confirm()
     {
         $this->view = 'confirm';
     }
 
-    public function action_Step3()
+    function action_Step3()
     {
         $this->view = 'step3';
     }
 
-    public function action_DupCheck()
+    function action_DupCheck()
     {
         $this->view = 'dupcheck';
     }
 
-    public function action_Step4()
+    function action_Step4()
     {
         $this->view = 'step4';
     }
     
-    public function action_Last()
+    function action_Last()
     {
         $this->view = 'last';
     }
     
-    public function action_Undo()
+    function action_Undo()
     {
         $this->view = 'undo';
     }
     
-    public function action_Error()
+    function action_Error()
     {
         $this->view = 'error';
     }
 
-    public function action_ExtStep1()
+    function action_ExtStep1()
     {
         $this->view = 'extStep1';
     }
 
-    public function action_Extdupcheck()
+    function action_Extdupcheck()
     {
         $this->view = 'extdupcheck';
     }
 
-    public function action_Extimport()
+    function action_Extimport()
     {
         $this->view = 'extimport';
     }
     
-    public function action_GetControl()
+    function action_GetControl()
     {
-        echo getControl($_REQUEST['import_module'], $_REQUEST['field_name']);
+        echo getControl($_REQUEST['import_module'],$_REQUEST['field_name']);
         exit;
     }
 

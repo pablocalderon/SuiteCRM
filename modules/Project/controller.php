@@ -26,12 +26,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class ProjectController extends SugarController
 {
     //Loads the gantt view
-    public function action_view_GanttChart()
+    function action_view_GanttChart()
     {
         $this->view = 'GanttChart';
     }
 
-    public function action_generate_chart()
+    function action_generate_chart()
     {
         $db = DBManagerFactory::getInstance();
 
@@ -51,7 +51,7 @@ class ProjectController extends SugarController
         
         $query = "SELECT max(date_finish) FROM project_task WHERE project_id = '{$project->id}'";
         $end_date = $db->getOne($query);
-        
+		
         $duration = $this->count_days($start_date, $end_date);
         if ($duration < 30) {
             $query = "SELECT max(date_finish) + INTERVAL " . (30 - $duration) . " DAY FROM project_task WHERE project_id = '{$project->id}'";
@@ -87,7 +87,7 @@ class ProjectController extends SugarController
     }
 
     //Create new project task
-    public function action_update_GanttChart()
+    function action_update_GanttChart()
     {
         global $current_user, $db;
 
@@ -123,20 +123,20 @@ class ProjectController extends SugarController
             $duration = 0;
         }
 
-            
+			
         //------ build business hours array
         $days = array("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
         $businessHours = BeanFactory::getBean("AOBH_BusinessHours");
         $bhours = array();
         foreach ($days as $day) {
             $bh = $businessHours->getBusinessHoursForDay($day);
-            
+			
             if ($bh) {
                 $bh = $bh[0];
                 if ($bh->open) {
                     $open_h = $bh ? $bh->opening_hours : 9;
-                    $close_h = $bh ? $bh->closing_hours : 17;
-                    
+                    $close_h = $bh ? $bh->closing_hours : 17;							
+					
                     $start_time = DateTime::createFromFormat($dateformat, $_POST['start']);
                     $start_time = $start_time->modify('+'.$open_h.' Hours');
 
@@ -156,31 +156,31 @@ class ProjectController extends SugarController
             }
         }
         //-----------------------------------
-        
+		
 
         //default business hours array
         if ($override_business_hours != 1 || empty($bhours)) {
-            $bhours = array('Monday' => 8,'Tuesday' => 8,'Wednesday' => 8, 'Thursday' => 8, 'Friday' => 8, 'Saturday' => 0, 'Sunday' => 0);
+            $bhours = array ('Monday' => 8,'Tuesday' => 8,'Wednesday' => 8, 'Thursday' => 8, 'Friday' => 8, 'Saturday' => 0, 'Sunday' => 0);
         }
         //---------------------------
-        
-        
+		
+		
         //
         //code block to calculate end date based on user's business hours
         //
-    
+	
         $enddate = $startdate;
 
-        $h = 0;
+        $h = 0;		
         $d = 0;
         if ($duration_unit == 'Hours') {
             while ($duration > $h) {
                 $day = $enddate->format('l');
 
-                $h += $bhours[$day];
+                $h += $bhours[$day];	
                 $enddate = $enddate->modify('+1 Days');
-            }
-            
+            } 
+			
             $enddate = $enddate->format('Y-m-d');
         } else {
             while ($duration >= $d) {
@@ -190,7 +190,7 @@ class ProjectController extends SugarController
                     $d += 1;
                 }
                 $enddate = $enddate->modify('+1 Days');
-            }
+            } 
             $enddate = $enddate->modify('-1 Days');//readjust it back to remove 1 additional day added
             $enddate = $enddate->format('Y-m-d');
         }
@@ -209,14 +209,14 @@ class ProjectController extends SugarController
         $tid = $count+1;
 
         if ($this->IsNullOrEmptyString($task_id)) {
-            $this->create_task($task_name, $start, $enddate, $project_id, $milestone_flag, $status, $tid, $predecessor, $rel_type, $duration, $duration_unit, $resource, $percent, $note, $actual_duration, $tid);
+            $this->create_task($task_name,$start,$enddate,$project_id, $milestone_flag,$status, $tid, $predecessor, $rel_type, $duration,$duration_unit,$resource,$percent,$note,$actual_duration,$tid);
         } else {
-            $this->update_task($task_id, $task_name, $start, $enddate, $project_id, $milestone_flag, $status, $predecessor, $rel_type, $duration, $duration_unit, $resource, $percent, $note, $actual_duration);
+            $this->update_task($task_id,$task_name,$start,$enddate,$project_id, $milestone_flag,$status, $predecessor, $rel_type, $duration,$duration_unit,$resource,$percent,$note,$actual_duration);
         }
     }
 
     //mark project task as deleted
-    public function action_delete_task()
+    function action_delete_task()
     {
         $id = $_POST['task_id'];
         $task = new ProjectTask();
@@ -226,7 +226,7 @@ class ProjectController extends SugarController
     }
 
     //Returns new task start date including any lag via ajax call
-    public function action_get_end_date()
+    function action_get_end_date()
     {
         global $db,  $timeDate;
 
@@ -248,7 +248,7 @@ class ProjectController extends SugarController
 
 
     //updates the order of the tasks
-    public function action_update_order()
+    function action_update_order()
     {
 
        //convert quotes in json string back to normal
@@ -265,7 +265,7 @@ class ProjectController extends SugarController
         }
     }
     //returns tasks for predecessor in the add task pop-up form
-    public function action_get_predecessors()
+    function action_get_predecessors()
     {
         global $mod_strings;
         $project = new Project();
@@ -281,7 +281,7 @@ class ProjectController extends SugarController
     }
 
 
-    public function create_task($name, $start, $end, $project_id, $milestone_flag, $status, $project_task_id, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description, $actual_duration, $order_number)
+    function create_task($name, $start, $end, $project_id, $milestone_flag, $status, $project_task_id, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description,$actual_duration,$order_number)
     {
         $task = new ProjectTask();
         $task->name = $name;
@@ -303,7 +303,7 @@ class ProjectController extends SugarController
         $task->save();
     }
 
-    public function update_task($id, $name, $start, $end, $project_id, $milestone_flag, $status, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description, $actual_duration)
+    function update_task($id, $name, $start, $end, $project_id, $milestone_flag, $status, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description,$actual_duration)
     {
         $task = new ProjectTask();
         $task->retrieve($id);
@@ -329,13 +329,13 @@ class ProjectController extends SugarController
     /*********************************** Resource chart functions **************************************/
 
     //Loads the resource chart view
-    public function action_ResourceList()
+    function action_ResourceList()
     {
         $this->view = 'ResourceList';
     }
 
     //Updates the resource chart based on specified dates and users
-    public function action_update_chart()
+    function action_update_chart()
     {
         $db = DBManagerFactory::getInstance();
         include('modules/Project/chart.php');
@@ -369,14 +369,14 @@ class ProjectController extends SugarController
         $start = $start->format('Y-m-d');
 
         $end = $first_day->add(new DateInterval('P66D'));
-        
+		
         if ($chart_type == "monthly") {
             $end = $first_day->add(new DateInterval('P365D'));
         } elseif ($chart_type == "quarterly") {
             $end = $first_day->add(new DateInterval('P1460D'));
         }
 
-            
+			
         $end->modify('this week');
         $end->add(new DateInterval('P1D'));
         $end = $end->format('Y-m-d');
@@ -399,7 +399,7 @@ class ProjectController extends SugarController
         if (count($contacts) > 1 || $contacts[0] != '') {
             $contacts_where = " AND project_contacts_1contacts_idb IN( '" . implode("','", $contacts) . "' )";
         }
-    
+	
         //Get the users data from the database
 
         $users_resource_query = "SELECT distinct project_users_1users_idb as id, first_name, last_name, 'project_users_1_c' AS type
@@ -447,16 +447,16 @@ class ProjectController extends SugarController
                         $taskarr[$t]['status'] = $task->status;
                         $taskarr[$t]['% cpl'] = $task->percent_complete;
                         $taskarr[$t]['start_day'] = $this->count_days($start, $task->date_start);//Works out how many days into the chart the task starts
-                        $taskarr[$t]['duration'] = $task->duration;//how many days long is the task
-                        $taskarr[$t]['end_day'] = $this->count_days($start, $task->date_finish);//Works out how many days from start of the chart the task end day is.
-                        $taskarr[$t]['start_date'] = $task->date_start;
+						$taskarr[$t]['duration'] = $task->duration;//how many days long is the task
+						$taskarr[$t]['end_day'] = $this->count_days($start, $task->date_finish);//Works out how many days from start of the chart the task end day is.
+						$taskarr[$t]['start_date'] = $task->date_start;
                         $taskarr[$t]['end_date'] = $task->date_finish;
                         $taskarr[$t]['project_id'] = $task->project_id;//parent projects id
                         //get the project name (don't think this is really necessary)
                         $project = new Project();
                         $project->retrieve($task->project_id);
                         $taskarr[$t]['project_name'] = $project->name;//parent projects id
-                        
+						
                         $t ++;
                     }
                 }
@@ -478,19 +478,19 @@ class ProjectController extends SugarController
 
 
     //Get tasks for resource chart tooltips
-    public function action_Tooltips()
+    function action_Tooltips()
     {
         global $mod_strings;
 
         $start_date = $_REQUEST['start_date'];
-        $end_date = $_REQUEST['end_date'];
+        $end_date = $_REQUEST['end_date']; 
         $resource_id = $_REQUEST['resource_id'];
 
         $projects = explode(",", $_REQUEST['projects']);
         $project_where = "";
         if (count($projects) > 1 || $projects[0] != '') {
             $project_where = " AND project_id IN( '" . implode("','", $projects) . "' )";
-        }
+        }	    
 
         $Task = BeanFactory::getBean('ProjectTask');
         
@@ -512,7 +512,7 @@ class ProjectController extends SugarController
 
 
     //Returns the total number of days between two dates
-    public function count_days($start_date, $end_date)
+    function count_days($start_date, $end_date)
     {
         $d1 = new DateTime($start_date);
         $d2 = new DateTime($end_date);
@@ -530,3 +530,4 @@ class ProjectController extends SugarController
         return (!isset($question) || trim($question)==='');
     }
 }
+

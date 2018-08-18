@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2016 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 $dictionary['FP_events'] = array(
     'table' => 'fp_events',
@@ -189,7 +188,6 @@ $dictionary['FP_events'] = array(
                 'options' => 'email_templet_list',
                 'studio' => 'visible',
                 'dependency' => false,
-                'inline_edit' => false,
             ),
         'accept_redirect' =>
             array(
@@ -222,7 +220,7 @@ $dictionary['FP_events'] = array(
                 'vname' => 'LBL_DECLINE_REDIRECT',
                 'type' => 'url',
                 'massupdate' => '0',
-                'default' => null,
+                'default' => NULL,
                 'no_default' => false,
                 'comments' => 'Insert a URL to a web page here.',
                 'help' => 'Insert the URL for the page that you want the event delegates to see when they have declined the invitation from the email.',
@@ -236,7 +234,7 @@ $dictionary['FP_events'] = array(
                 'len' => '255',
                 'size' => '20',
                 'dbType' => 'varchar',
-                'gen' => null,
+                'gen' => NULL,
                 'link_target' => '_blank',
                 'id' => 'FP_eventsdecline_redirect',
             ),

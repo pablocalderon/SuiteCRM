@@ -30,7 +30,7 @@ function display_condition_lines($focus, $field, $value, $view)
     $html = '';
 
     if (!is_file('cache/jsLanguage/AOR_Conditions/' . $GLOBALS['current_language'] . '.js')) {
-        require_once('include/language/jsLanguage.php');
+        require_once ('include/language/jsLanguage.php');
         jsLanguage::createModuleStringsCache('AOR_Conditions', $GLOBALS['current_language']);
     }
     $html .= '<script src="cache/jsLanguage/AOR_Conditions/'. $GLOBALS['current_language'] . '.js"></script>';
@@ -57,7 +57,7 @@ function display_condition_lines($focus, $field, $value, $view)
                     $condition_name = new AOR_Condition();
                     $condition_name->retrieve($row['id']);
                     $condition_name->module_path = unserialize(base64_decode($condition_name->module_path));
-                    $html .= "report_fields = \"".trim(preg_replace('/\s+/', ' ', getModuleFields(getRelatedModule($focus->report_module, $condition_name->module_path[0]))))."\";";
+                    $html .= "report_fields = \"".trim(preg_replace('/\s+/', ' ', getModuleFields(getRelatedModule($focus->report_module,$condition_name->module_path[0]))))."\";";
                     if ($condition_name->value_type == 'Date') {
                         $condition_name->value = unserialize(base64_decode($condition_name->value));
                     }

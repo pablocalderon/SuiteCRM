@@ -3,13 +3,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -38,24 +37,24 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once("include/templates/Template.php");
 
 class TemplateDragDropChooser extends Template
 {
-    public $args;
-    public function __construct()
+    var $args;
+    function __construct()
     {
     }
 
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function TemplateDragDropChooser()
+    function TemplateDragDropChooser()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -73,7 +72,7 @@ class TemplateDragDropChooser extends Template
      * followed by the displayDefinitionScript();
      * and lastly call the display function
      */
-    public function display()
+    function display()
     {
 
   /*   valid entries for expected arguments array are as follow:
@@ -185,8 +184,9 @@ class TemplateDragDropChooser extends Template
 
         if (isset($this->args['return_array']) && $this->args['return_array']) {
             return $html_str_arr;
+        } else {
+            return $str;
         }
-        return $str;
     }
 
     /*
@@ -195,7 +195,7 @@ class TemplateDragDropChooser extends Template
      * dynamically so that multiple template dragdrop objects can be defined on the same page if needed
      * without having the variables mix up as you drag rows around.
      */
-    public function displayDefinitionScript()
+    function displayDefinitionScript()
     {
         //create some defaults in case arguments are missing
 
@@ -312,7 +312,7 @@ class TemplateDragDropChooser extends Template
      * for the template chooser to work
      */
 
-    public function displayScriptTags()
+    function displayScriptTags()
     {
         global $sugar_version, $sugar_config;
         $j_str =   "

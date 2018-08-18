@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -57,31 +56,31 @@ require_once('include/upload_file.php');
 // User is used to store Forecast information.
 class DocumentRevision extends SugarBean
 {
-    public $id;
-    public $document_id;
-    public $doc_id;
-    public $doc_type;
-    public $doc_url;
-    public $date_entered;
-    public $created_by;
-    public $filename;
-    public $file_mime_type;
-    public $revision;
-    public $change_log;
-    public $document_name;
-    public $latest_revision;
-    public $file_url;
-    public $file_ext;
-    public $created_by_name;
+    var $id;
+    var $document_id;
+    var $doc_id;
+    var $doc_type;
+    var $doc_url;
+    var $date_entered;
+    var $created_by;
+    var $filename;
+    var $file_mime_type;
+    var $revision;
+    var $change_log;
+    var $document_name;
+    var $latest_revision;
+    var $file_url;
+    var $file_ext;
+    var $created_by_name;
 
-    public $img_name;
-    public $img_name_bare;
+    var $img_name;
+    var $img_name_bare;
 
-    public $table_name = "document_revisions";
-    public $object_name = "DocumentRevision";
-    public $module_dir = 'DocumentRevisions';
-    public $new_schema = true;
-    public $latest_revision_id;
+    var $table_name = "document_revisions";
+    var $object_name = "DocumentRevision";
+    var $module_dir = 'DocumentRevisions';
+    var $new_schema = true;
+    var $latest_revision_id;
 
     /*var $column_fields = Array("id"
     	,"document_id"
@@ -94,26 +93,26 @@ class DocumentRevision extends SugarBean
     	,"file_ext"
     	);
 */
-    public $encodeFields = array();
+    var $encodeFields = Array();
 
     // This is used to retrieve related fields from form posts.
-    public $additional_column_fields = array('');
+    var $additional_column_fields = Array('');
 
     // This is the list of fields that are in the lists.
-    public $list_fields = array("id"
-        ,"document_id"
-        ,"date_entered"
-        ,"created_by"
-        ,"filename"
-        ,"file_mime_type"
-        ,"revision"
-        ,"file_url"
-        ,"change_log"
-        ,"file_ext"
-        ,"created_by_name"
-        );
+    var $list_fields = Array("id"
+		,"document_id"
+		,"date_entered"
+		,"created_by"
+		,"filename"
+		,"file_mime_type"
+		,"revision"
+		,"file_url"
+		,"change_log"
+		,"file_ext"
+		,"created_by_name"
+		);
 
-    public $required_fields = array("revision");
+    var $required_fields = Array("revision");
 
     public $authenticated = null;
 
@@ -122,7 +121,7 @@ class DocumentRevision extends SugarBean
     {
         parent::__construct();
         $this->setupCustomFields('DocumentRevisions');  //parameter is module name
-        $this->disable_row_level_security =true; //no direct access to this module.
+		$this->disable_row_level_security =true; //no direct access to this module.
     }
 
     /**
@@ -140,7 +139,7 @@ class DocumentRevision extends SugarBean
     }
 
 
-    public function save($check_notify = false)
+    function save($check_notify = false)
     {
         $saveRet = parent::save($check_notify);
 
@@ -148,38 +147,38 @@ class DocumentRevision extends SugarBean
         // If we don't have a document_id, find it.
         if (empty($this->document_id)) {
             $query = "SELECT document_id FROM document_revisions WHERE id = '".$this->db->quote($this->id)."'";
-            $ret = $this->db->query($query, true);
+            $ret = $this->db->query($query,true);
             $row = $this->db->fetchByAssoc($ret);
             $this->document_id = $row['document_id'];
         }
         $query = "UPDATE documents set document_revision_id='".$this->db->quote($this->id)."', doc_type='".$this->db->quote($this->doc_type)."', doc_url='".$this->db->quote($this->doc_url)."', doc_id='".$this->db->quote($this->doc_id)."' where id = '".$this->db->quote($this->document_id)."'";
-        $this->db->query($query, true);
+        $this->db->query($query,true);
 
         return $saveRet;
     }
-    public function get_summary_text()
+    function get_summary_text()
     {
         return "$this->filename";
     }
 
-    public function retrieve($id = -1, $encode=false, $deleted=true)
+    function retrieve($id = -1, $encode=false, $deleted=true)
     {
-        $ret = parent::retrieve($id, $encode, $deleted);
+        $ret = parent::retrieve($id, $encode,$deleted);
 
         return $ret;
     }
 
-    public function is_authenticated()
+    function is_authenticated()
     {
         return $this->authenticated;
     }
 
-    public function fill_in_additional_list_fields()
+    function fill_in_additional_list_fields()
     {
         $this->fill_in_additional_detail_fields();
     }
 
-    public function fill_in_additional_detail_fields()
+    function fill_in_additional_detail_fields()
     {
         global $theme;
         global $current_language;
@@ -192,7 +191,7 @@ class DocumentRevision extends SugarBean
 
         //find the document name and current version.
         $query = "SELECT document_name, revision, document_revision_id FROM documents, document_revisions where documents.id = '".$this->db->quote($this->document_id)."' AND document_revisions.id = documents.document_revision_id";
-        $result = $this->db->query($query, true, "Error fetching document details...:");
+        $result = $this->db->query($query,true,"Error fetching document details...:");
         $row = $this->db->fetchByAssoc($result);
         if ($row != null) {
             $this->document_name = $row['document_name'];
@@ -212,7 +211,7 @@ class DocumentRevision extends SugarBean
      * @param string revId Revision ID if not latest
      * @return string formatted name
      */
-    public function getDocumentRevisionNameForDisplay($revId='')
+    function getDocumentRevisionNameForDisplay($revId='')
     {
         global $sugar_config;
         global $current_language;
@@ -270,13 +269,13 @@ class DocumentRevision extends SugarBean
         return $return;
     }
 
-    public function fill_document_name_revision($doc_id)
+    function fill_document_name_revision($doc_id)
     {
 
-        //find the document name and current version.
+		//find the document name and current version.
         $query = "SELECT documents.document_name, revision FROM documents, document_revisions where documents.id = '$doc_id'";
         $query .= " AND document_revisions.id = documents.document_revision_id";
-        $result = $this->db->query($query, true, "Error fetching document details...:");
+        $result = $this->db->query($query,true,"Error fetching document details...:");
         $row = $this->db->fetchByAssoc($result);
         if ($row != null) {
             $this->name = $row['document_name'];
@@ -284,12 +283,12 @@ class DocumentRevision extends SugarBean
         }
     }
 
-    public function list_view_parse_additional_sections(&$list_form/*, $xTemplateSection*/)
+    function list_view_parse_additional_sections(&$list_form/*, $xTemplateSection*/)
     {
         return $list_form;
     }
 
-    public function get_list_view_data()
+    function get_list_view_data()
     {
         $revision_fields = $this->get_list_view_array();
 
@@ -298,7 +297,7 @@ class DocumentRevision extends SugarBean
     }
 
     //static function..
-    public function get_document_revision_name($doc_revision_id)
+    function get_document_revision_name($doc_revision_id)
     {
         if (empty($doc_revision_id)) {
             return null;
@@ -317,9 +316,9 @@ class DocumentRevision extends SugarBean
     }
 
     //static function.
-    public function get_document_revisions($doc_id)
+    function get_document_revisions($doc_id)
     {
-        $return_array= array();
+        $return_array= Array();
         if (empty($doc_id)) {
             return $return_array;
         }
