@@ -51,6 +51,7 @@ require_once 'Zend/Gdata/Gapps/Extension/Property.php';
  */
 class Zend_Gdata_Gapps_GroupEntry extends Zend_Gdata_Entry
 {
+
     protected $_entryClassName = 'Zend_Gdata_Gapps_GroupEntry';
 
     /**
@@ -152,4 +153,6 @@ class Zend_Gdata_Gapps_GroupEntry extends Zend_Gdata_Entry
         $this->_property = $value;
         return $this;
     }
+
 }
+

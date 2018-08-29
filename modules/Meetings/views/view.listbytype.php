@@ -3,13 +3,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -38,18 +37,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/MVC/View/views/view.list.php');
 require_once('modules/EAPM/EAPM.php');
 class MeetingsViewListbytype extends ViewList
 {
-    public $options = array('show_header' => false, 'show_title' => false, 'show_subpanels' => false, 'show_search' => true, 'show_footer' => false, 'show_javascript' => false, 'view_print' => false,);
+    var $options = array('show_header' => false, 'show_title' => false, 'show_subpanels' => false, 'show_search' => true, 'show_footer' => false, 'show_javascript' => false, 'view_print' => false,);
 
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -57,7 +56,7 @@ class MeetingsViewListbytype extends ViewList
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function MeetingsViewListbytype()
+    function MeetingsViewListbytype()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -69,7 +68,7 @@ class MeetingsViewListbytype extends ViewList
     }
 
 
-    public function listViewProcess()
+    function listViewProcess()
     {
         if (!$eapmBean = EAPM::getLoginInfo('IBMSmartCloud', true)) {
             $smarty = new Sugar_Smarty();
@@ -78,12 +77,12 @@ class MeetingsViewListbytype extends ViewList
         }
 
         $apiName = 'IBMSmartCloud';
-        $api = ExternalAPIFactory::loadAPI($apiName, true);
+        $api = ExternalAPIFactory::loadAPI($apiName,true);
         $api->loadEAPM($eapmBean);
 
         $quickCheck = $api->quickCheckLogin();
         if (! $quickCheck['success']) {
-            $errorMessage = string_format(translate('LBL_ERR_FAILED_QUICKCHECK', 'EAPM'), array('IBM SmartCloud'));
+            $errorMessage = string_format(translate('LBL_ERR_FAILED_QUICKCHECK','EAPM'), array('IBM SmartCloud'));
             $errorMessage .= '<form method="POST" target="_EAPM_CHECK" action="index.php">';
             $errorMessage .= '<input type="hidden" name="module" value="EAPM">';
             $errorMessage .= '<input type="hidden" name="action" value="Save">';
@@ -113,25 +112,25 @@ class MeetingsViewListbytype extends ViewList
         }
 
         if (empty($_REQUEST['search_form_only']) || $_REQUEST['search_form_only'] == false) {
-            $this->lv->ss->assign("SEARCH", false);
+            $this->lv->ss->assign("SEARCH",false);
             if (!isset($_REQUEST['name_basic'])) {
                 $_REQUEST['name_basic'] = '';
             }
-            $this->lv->ss->assign('DCSEARCH', $_REQUEST['name_basic']);
+            $this->lv->ss->assign('DCSEARCH',$_REQUEST['name_basic']);
             $this->lv->setup($this->seed, 'include/ListView/ListViewDCMenu.tpl', $this->where, $this->params);
             $savedSearchName = empty($_REQUEST['saved_search_select_name']) ? '' : (' - ' . $_REQUEST['saved_search_select_name']);
             echo $this->lv->display();
         }
     }
 
-    public function listViewPrepare()
+    function listViewPrepare()
     {
         $oldRequest = $_REQUEST;
         parent::listViewPrepare();
         $_REQUEST = $oldRequest;
     }
 
-    public function processSearchForm()
+    function processSearchForm()
     {
         // $type = 'LotusLiveDirect';
         $type = 'IBMSmartCloud';

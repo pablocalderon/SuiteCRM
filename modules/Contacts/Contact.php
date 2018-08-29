@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,8 +33,8 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 /*********************************************************************************
@@ -143,7 +142,7 @@ class Contact extends Person implements EmailInterface
     public $importable = true;
 
     // This is used to retrieve related fields from form posts.
-    public $additional_column_fields = array(
+    public $additional_column_fields = Array(
         'bug_id',
         'assigned_user_name',
         'account_name',
@@ -157,7 +156,7 @@ class Contact extends Person implements EmailInterface
         'email_id'
     );
 
-    public $relationship_fields = array(
+    public $relationship_fields = Array(
         'account_id' => 'accounts',
         'bug_id' => 'bugs',
         'call_id' => 'calls',
@@ -190,7 +189,7 @@ class Contact extends Person implements EmailInterface
     }
 
 
-    public function add_list_count_joins(&$query, $where)
+    function add_list_count_joins(&$query, $where)
     {
         // accounts.name
         if (stristr($where, "accounts.name")) {
@@ -206,17 +205,14 @@ class Contact extends Person implements EmailInterface
         $query .= $custom_join['join'];
     }
 
-    public function listviewACLHelper()
+    function listviewACLHelper()
     {
         $array_assign = parent::listviewACLHelper();
         $is_owner = false;
         //MFH BUG 18281; JChi #15255
         $is_owner = !empty($this->assigned_user_id) && $this->assigned_user_id == $GLOBALS['current_user']->id;
-        if (!ACLController::moduleSupportsACL('Accounts') || ACLController::checkAccess(
-            'Accounts',
-            'view',
-                $is_owner
-        )
+        if (!ACLController::moduleSupportsACL('Accounts') || ACLController::checkAccess('Accounts', 'view',
+                $is_owner)
         ) {
             $array_assign['ACCOUNT'] = 'a';
         } else {
@@ -226,7 +222,7 @@ class Contact extends Person implements EmailInterface
         return $array_assign;
     }
 
-    public function create_new_list_query(
+    function create_new_list_query(
         $order_by,
         $where,
         $filter = array(),
@@ -240,42 +236,23 @@ class Contact extends Person implements EmailInterface
     ) {
         //if this is from "contact address popup" action, then process popup list query
         if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'ContactAddressPopup') {
-            return $this->address_popup_create_new_list_query(
-                $order_by,
-                $where,
-                $filter,
-                $params,
-                $show_deleted,
-                $join_type,
-                $return_array,
-                $parentbean,
-                $singleSelect,
-                $ifListForExport
-            );
-        }
-        //any other action goes to parent function in sugarbean
-        if (strpos($order_by, 'sync_contact') !== false) {
-            //we have found that the user is ordering by the sync_contact field, it would be troublesome to sort by this field
-            //and perhaps a performance issue, so just remove it
-            $order_by = '';
-        }
+            return $this->address_popup_create_new_list_query($order_by, $where, $filter, $params, $show_deleted,
+                $join_type, $return_array, $parentbean, $singleSelect, $ifListForExport);
+        } else {
+            //any other action goes to parent function in sugarbean
+            if (strpos($order_by, 'sync_contact') !== false) {
+                //we have found that the user is ordering by the sync_contact field, it would be troublesome to sort by this field
+                //and perhaps a performance issue, so just remove it
+                $order_by = '';
+            }
 
-        return parent::create_new_list_query(
-                $order_by,
-                $where,
-                $filter,
-                $params,
-                $show_deleted,
-                $join_type,
-                $return_array,
-                $parentbean,
-                $singleSelect,
-                $ifListForExport
-            );
+            return parent::create_new_list_query($order_by, $where, $filter, $params, $show_deleted, $join_type,
+                $return_array, $parentbean, $singleSelect, $ifListForExport);
+        }
     }
 
 
-    public function address_popup_create_new_list_query(
+    function address_popup_create_new_list_query(
         $order_by,
         $where,
         $filter = array(),
@@ -288,17 +265,8 @@ class Contact extends Person implements EmailInterface
     ) {
         //if this is any action that is not the contact address popup, then go to parent function in sugarbean
         if (isset($_REQUEST['action']) && $_REQUEST['action'] !== 'ContactAddressPopup') {
-            return parent::create_new_list_query(
-                $order_by,
-                $where,
-                $filter,
-                $params,
-                $show_deleted,
-                $join_type,
-                $return_array,
-                $parentbean,
-                $singleSelect
-            );
+            return parent::create_new_list_query($order_by, $where, $filter, $params, $show_deleted, $join_type,
+                $return_array, $parentbean, $singleSelect);
         }
 
         $custom_join = $this->getCustomJoin();
@@ -362,7 +330,7 @@ class Contact extends Person implements EmailInterface
     }
 
 
-    public function create_export_query($order_by, $where, $relate_link_join = '')
+    function create_export_query($order_by, $where, $relate_link_join = '')
     {
         $custom_join = $this->getCustomJoin(true, true, $where);
         $custom_join['join'] .= $relate_link_join;
@@ -404,7 +372,7 @@ class Contact extends Person implements EmailInterface
         return $query;
     }
 
-    public function fill_in_additional_list_fields()
+    function fill_in_additional_list_fields()
     {
         parent::fill_in_additional_list_fields();
         $this->_create_proper_name_field();
@@ -417,7 +385,7 @@ class Contact extends Person implements EmailInterface
         }
     }
 
-    public function fill_in_additional_detail_fields()
+    function fill_in_additional_detail_fields()
     {
         parent::fill_in_additional_detail_fields();
         if (empty($this->id)) {
@@ -455,15 +423,8 @@ class Contact extends Person implements EmailInterface
             if (null === $locale || !is_object($locale) || !method_exists($locale, 'getLocaleFormattedName')) {
                 $GLOBALS['log']->fatal('Call to a member function getLocaleFormattedName() on ' . gettype($locale));
             } else {
-                $this->report_to_name = $locale->getLocaleFormattedName(
-                    $row['first_name'],
-                    $row['last_name'],
-                    '',
-                    '',
-                    '',
-                    null,
-                    true
-                );
+                $this->report_to_name = $locale->getLocaleFormattedName($row['first_name'], $row['last_name'], '', '',
+                    '', null, true);
             }
         } else {
             $this->account_name = '';
@@ -499,7 +460,7 @@ class Contact extends Person implements EmailInterface
      * where a user can select if they would like to sync a particular
      * contact to Outlook
      */
-    public function load_contacts_users_relationship()
+    function load_contacts_users_relationship()
     {
         global $current_user;
 
@@ -523,7 +484,7 @@ class Contact extends Person implements EmailInterface
         }
     }
 
-    public function get_list_view_data($filter_fields = array())
+    function get_list_view_data($filter_fields = array())
     {
         $temp_array = parent::get_list_view_data();
 
@@ -541,9 +502,9 @@ class Contact extends Person implements EmailInterface
      * builds a generic search based on the query string using or
      * do not include any $this-> because this is called on without having the class instantiated
      */
-    public function build_generic_where_clause($the_query_string)
+    function build_generic_where_clause($the_query_string)
     {
-        $where_clauses = array();
+        $where_clauses = Array();
         $the_query_string = $this->db->quote($the_query_string);
 
         array_push($where_clauses, "contacts.last_name like '$the_query_string%'");
@@ -573,7 +534,7 @@ class Contact extends Person implements EmailInterface
         return $the_where;
     }
 
-    public function set_notification_body($xtpl, $contact)
+    function set_notification_body($xtpl, $contact)
     {
         global $locale;
 
@@ -583,7 +544,7 @@ class Contact extends Person implements EmailInterface
         return $xtpl;
     }
 
-    public function get_contact_id_by_email($email)
+    function get_contact_id_by_email($email)
     {
         $email = trim($email);
         if (empty($email)) {
@@ -600,7 +561,7 @@ class Contact extends Person implements EmailInterface
         return empty($result) ? null : $result;
     }
 
-    public function save_relationship_changes($is_update, $exclude = array())
+    function save_relationship_changes($is_update, $exclude = array())
     {
 
         //if account_id was replaced unlink the previous account_id.
@@ -615,7 +576,7 @@ class Contact extends Person implements EmailInterface
         parent::save_relationship_changes($is_update);
     }
 
-    public function bean_implements($interface)
+    function bean_implements($interface)
     {
         switch ($interface) {
             case 'ACL':
@@ -625,7 +586,7 @@ class Contact extends Person implements EmailInterface
         return false;
     }
 
-    public function get_unlinked_email_query($type = array())
+    function get_unlinked_email_query($type = array())
     {
         return get_unlinked_email_query($type, $this);
     }
@@ -639,7 +600,7 @@ class Contact extends Person implements EmailInterface
      *
      * @param string $list_of_user
      */
-    public function process_sync_to_outlook($list_of_users)
+    function process_sync_to_outlook($list_of_users)
     {
         static $focus_user;
 

@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('modules/DynamicFields/templates/Fields/TemplateEnum.php');
 
@@ -47,10 +46,10 @@ require_once('modules/DynamicFields/templates/Fields/TemplateId.php');
 require_once('modules/DynamicFields/templates/Fields/TemplateParentType.php');
 class TemplateParent extends TemplateEnum
 {
-    public $max_size = 25;
-    public $type='parent';
+    var $max_size = 25;
+    var $type='parent';
     
-    public function get_field_def()
+    function get_field_def()
     {
         $def = parent::get_field_def();
         $def['type_name'] = 'parent_type';
@@ -61,20 +60,20 @@ class TemplateParent extends TemplateEnum
         return $def;
     }
     
-    public function delete($df)
+    function delete($df)
     {
         parent::delete($df);
         //currency id
         $parent_type = new TemplateText();
         $parent_type->name = 'parent_type';
-        $parent_type->delete($df);
+        $parent_type->delete($df);  
         
         $parent_id = new TemplateId();
         $parent_id->name = 'parent_id';
         $parent_id->delete($df);
     }
     
-    public function save($df)
+    function save($df)
     {
         $this->ext1 = 'parent_type_display';
         $this->name = 'parent_name';
@@ -100,14 +99,14 @@ class TemplateParent extends TemplateEnum
         $parent_id->save($df);
     }
     
-    public function get_db_add_alter_table($table)
+    function get_db_add_alter_table($table)
     {
         return '';
     }
     /**
      * mysql requires the datatype caluse in the alter statment.it will be no-op anyway.
-     */
-    public function get_db_modify_alter_table($table)
+     */ 
+    function get_db_modify_alter_table($table)
     {
         return '';
     }

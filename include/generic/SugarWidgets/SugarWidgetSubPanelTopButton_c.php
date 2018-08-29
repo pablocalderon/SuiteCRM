@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2016 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 //custom to get rid of create button on events
@@ -48,18 +47,18 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class SugarWidgetSubPanelTopButton_c extends SugarWidget
 {
-    public $module;
-    public $title;
-    public $access_key;
-    public $form_value;
-    public $additional_form_fields;
-    public $acl;
+    var $module;
+    var $title;
+    var $access_key;
+    var $form_value;
+    var $additional_form_fields;
+    var $acl;
 
     //TODO rename defines to layout defs and make it a member variable instead of passing it multiple layers with extra copying.
 
     /** Take the keys for the strings and look them up.  Module is literal, the rest are label keys
     */
-    public function __construct($module='', $title='', $access_key='', $form_value='')
+    function __construct($module='', $title='', $access_key='', $form_value='')
     {
         global $app_strings;
 
@@ -111,7 +110,7 @@ class SugarWidgetSubPanelTopButton_c extends SugarWidget
         return $widgetID;
     }
 
-    public function &_get_form($defines, $additionalFormFields = null, $asUrl = false)
+    function &_get_form($defines, $additionalFormFields = null, $asUrl = false)
     {
         global $app_strings;
         global $currentModule;
@@ -236,30 +235,31 @@ class SugarWidgetSubPanelTopButton_c extends SugarWidget
             foreach ($additionalFormFields as $key => $value) {
                 $returnLink .= $key.'='.$value.'&';
             }
-            $returnLink = rtrim($returnLink, '&');
+            $returnLink = rtrim($returnLink,'&');
 
             return $returnLink;
-        }
-        $form = 'form' . $relationship_name;
-        $button = '<form action="index.php" method="post" name="form" id="' . $form . "\">\n";
-        foreach ($formValues as $key => $value) {
-            if (empty($value->defs)) {
-                $button .= "<input type='hidden' name='" . $key . "' value='" . $value . "' />\n";
+        } else {
+            $form = 'form' . $relationship_name;
+            $button = '<form action="index.php" method="post" name="form" id="' . $form . "\">\n";
+            foreach ($formValues as $key => $value) {
+                if (empty($value->defs)) {
+                    $button .= "<input type='hidden' name='" . $key . "' value='" . $value . "' />\n";
+                }
             }
-        }
-        // fill in additional form fields for all but action
-        foreach ($additionalFormFields as $key => $value) {
-            if ($key != 'action') {
-                $button .= "<input type='hidden' name='" . $key . "' value='" . $value . "' />\n";
+            // fill in additional form fields for all but action
+            foreach ($additionalFormFields as $key => $value) {
+                if ($key != 'action') {
+                    $button .= "<input type='hidden' name='" . $key . "' value='" . $value . "' />\n";
+                }
             }
-        }
 
 
-        return $button;
+            return $button;
+        }
     }
 
     /** This default function is used to create the HTML for a simple button */
-    public function display($defines, $additionalFormFields = null, $nonbutton = false)
+    function display($defines, $additionalFormFields = null, $nonbutton = false)
     {
         $temp='';
         $inputID = $this->getWidgetId();
@@ -272,7 +272,7 @@ class SugarWidgetSubPanelTopButton_c extends SugarWidget
 
         if (isset($_REQUEST['layout_def_key']) && $_REQUEST['layout_def_key'] == 'UserEAPM') {
             // Subpanels generally don't go on the editview, so we have to handle this special
-            $megaLink = $this->_get_form($defines, $additionalFormFields, true);
+            $megaLink = $this->_get_form($defines, $additionalFormFields,true);
         //$button = "<input title='$this->title' accesskey='$this->access_key' class='button' type='submit' name='$inputID' id='$inputID' value='$this->form_value' onclick='javascript:document.location=\"index.php?".$megaLink."\"; return false;'/>";
         } else {
             $button = $this->_get_form($defines, $additionalFormFields);
@@ -290,7 +290,7 @@ class SugarWidgetSubPanelTopButton_c extends SugarWidget
      * Returns a string that is the JSON encoded version of the popup request.
      * Perhaps this function should be moved to a more globally accessible location?
      */
-    public function _create_json_encoded_popup_request($popup_request_data)
+    function _create_json_encoded_popup_request($popup_request_data)
     {
         return json_encode($popup_request_data);
     }
@@ -300,7 +300,7 @@ class SugarWidgetSubPanelTopButton_c extends SugarWidget
      * Get the relationship name based on the subapnel definition
      * @param mixed $defines The subpanel definition
      */
-    public function get_subpanel_relationship_name($defines)
+    function get_subpanel_relationship_name($defines)
     {
         $relationship_name = '';
         if (!empty($defines)) {
@@ -310,7 +310,7 @@ class SugarWidgetSubPanelTopButton_c extends SugarWidget
                 $relationship_name = $dataSource;
                 //Try to set the relationship name to the real relationship, not the link.
                 if (!empty($defines['subpanel_definition']->parent_bean->field_defs[$dataSource])
-                 && !empty($defines['subpanel_definition']->parent_bean->field_defs[$dataSource]['relationship'])) {
+				 && !empty($defines['subpanel_definition']->parent_bean->field_defs[$dataSource]['relationship'])) {
                     $relationship_name = $defines['subpanel_definition']->parent_bean->field_defs[$dataSource]['relationship'];
                 }
             }

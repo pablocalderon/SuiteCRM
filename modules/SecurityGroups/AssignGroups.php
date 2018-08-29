@@ -6,14 +6,14 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class AssignGroups
 {
-    public function popup_select(&$bean, $event, $arguments)
+    function popup_select(&$bean, $event, $arguments)
     {
         global $sugar_config;
 
         //only process if action is Save (meaning a user has triggered this event and not the portal or automated process)
-        if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'Save'
-        && isset($sugar_config['securitysuite_popup_select']) && $sugar_config['securitysuite_popup_select'] == true
-        && empty($bean->fetched_row['id']) && $bean->module_dir != "Users" && $bean->module_dir != "SugarFeed") {
+        if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'Save' 
+		&& isset($sugar_config['securitysuite_popup_select']) && $sugar_config['securitysuite_popup_select'] == true
+		&& empty($bean->fetched_row['id']) && $bean->module_dir != "Users" && $bean->module_dir != "SugarFeed") {
             //Upload an attachment to an Email Template and save. If user with multi groups - popup select option
             //it will redirect to notes instead of EmailTemplate and relationship will fail...check below to avoid
             if (!empty($_REQUEST['module']) && $_REQUEST['module'] != $bean->module_dir) {
@@ -25,9 +25,9 @@ class AssignGroups
                 $groupFocus = new SecurityGroup();
                 $security_modules = $groupFocus->getSecurityModules();
                 //sanity check
-                if (in_array($bean->module_dir, array_keys($security_modules))) {
+                if (in_array($bean->module_dir,array_keys($security_modules))) {
                     //add each group in securitygroup_list to new record
-                    $rel_name = $groupFocus->getLinkName($bean->module_dir, "SecurityGroups");
+                    $rel_name = $groupFocus->getLinkName($bean->module_dir,"SecurityGroups");
 
                     $bean->load_relationship($rel_name);
                     foreach ($_REQUEST['securitygroup_list'] as $group_id) {
@@ -38,32 +38,32 @@ class AssignGroups
                 //well...ShowDuplicates doesn't pass through request vars unless they are defined in the module vardefs
                 //so we are screwed here...
                 global $current_language;
-                $ss_mod_strings = return_module_language($current_language, 'SecurityGroups');
+                $ss_mod_strings = return_module_language($current_language, 'SecurityGroups');	
                 unset($_SESSION['securitysuite_error']); //to be safe
                 $_SESSION['securitysuite_error'] = $ss_mod_strings['LBL_ERROR_DUPLICATE'];
             }
         } elseif (isset($sugar_config['securitysuite_user_popup']) && $sugar_config['securitysuite_user_popup'] == true
-        && empty($bean->fetched_row['id']) && $bean->module_dir == "Users"
-        && isset($_REQUEST['action']) && $_REQUEST['action'] != 'SaveSignature') { //Bug: 589
+		&& empty($bean->fetched_row['id']) && $bean->module_dir == "Users"
+		&& isset($_REQUEST['action']) && $_REQUEST['action'] != 'SaveSignature') { //Bug: 589
 
             //$_REQUEST['return_module'] = $bean->module_dir;
             //$_REQUEST['return_action'] = "DetailView";
             //$_REQUEST['return_id'] = $bean->id;
-        
+		
             //$_SESSION['securitygroups_popup_'.$bean->module_dir] = $bean->id;
-        
+		
             if (!isset($_SESSION['securitygroups_popup'])) {
                 $_SESSION['securitygroups_popup'] = array();
             }
             $_SESSION['securitygroups_popup'][] = array(
-            'module' => $bean->module_dir,
-            'id' => $bean->id
-        );
+			'module' => $bean->module_dir,
+			'id' => $bean->id
+		);
         }
-    }
+    } 
 
 
-    public function popup_onload($event, $arguments)
+    function popup_onload($event, $arguments)
     {
         if (!empty($_REQUEST['to_pdf']) || !empty($_REQUEST['sugar_body_only'])) {
             return;
@@ -80,28 +80,28 @@ class AssignGroups
 
         if (isset($action) && ($action == "Save" || $action == "SetTimezone")) {
             return;
-        }
+        }  
 
         if ((
-            //(isset($sugar_config['securitysuite_popup_select']) && $sugar_config['securitysuite_popup_select'] == true)
-            //||
-            ($module == "Users" && isset($sugar_config['securitysuite_user_popup']) && $sugar_config['securitysuite_user_popup'] == true)
-        )
-    
-        //&& isset($_SESSION['securitygroups_popup_'.$module]) && !empty($_SESSION['securitygroups_popup_'.$module])
-        && !empty($_SESSION['securitygroups_popup'])
-    ) {
+			//(isset($sugar_config['securitysuite_popup_select']) && $sugar_config['securitysuite_popup_select'] == true)
+			//|| 
+			($module == "Users" && isset($sugar_config['securitysuite_user_popup']) && $sugar_config['securitysuite_user_popup'] == true)
+		)
+	
+		//&& isset($_SESSION['securitygroups_popup_'.$module]) && !empty($_SESSION['securitygroups_popup_'.$module])
+		&& !empty($_SESSION['securitygroups_popup'])
+	) {
             foreach ($_SESSION['securitygroups_popup'] as $popup_index => $popup) {
                 $record_id = $popup['id'];
                 $module = $popup['module'];
                 unset($_SESSION['securitygroups_popup'][$popup_index]);
-            
+			
                 require_once('modules/SecurityGroups/SecurityGroup.php');
                 $groupFocus = new SecurityGroup();
                 if ($module == 'Users') {
                     $rel_name = "SecurityGroups";
                 } else {
-                    $rel_name = $groupFocus->getLinkName($module, "SecurityGroups");
+                    $rel_name = $groupFocus->getLinkName($module,"SecurityGroups");
                 }
 
                 //this only works if on the detail view of the record actually saved...
@@ -118,7 +118,7 @@ EOQ;
         }
     }
 
-    public function mass_assign($event, $arguments)
+    function mass_assign($event, $arguments)
     {
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
         $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : null;
@@ -126,17 +126,17 @@ EOQ;
         $no_mass_assign_list = array("Emails"=>"Emails","ACLRoles"=>"ACLRoles"); //,"Users"=>"Users");
         //check if security suite enabled
         $action = strtolower($action);
-        if (isset($module) && ($action == "list" || $action == "index" || $action == "listview")
-        && (!isset($_REQUEST['search_form_only']) || $_REQUEST['search_form_only'] != true)
-        && !array_key_exists($module, $no_mass_assign_list)
-        ) {
+        if (isset($module) && ($action == "list" || $action == "index" || $action == "listview") 
+    	&& (!isset($_REQUEST['search_form_only']) || $_REQUEST['search_form_only'] != true)
+    	&& !array_key_exists($module,$no_mass_assign_list)
+    	) {
             global $current_user;
-            if (is_admin($current_user) || ACLAction::getUserAccessLevel($current_user->id, "SecurityGroups", 'access') == ACL_ALLOW_ENABLED) {
+            if (is_admin($current_user) || ACLAction::getUserAccessLevel($current_user->id,"SecurityGroups", 'access') == ACL_ALLOW_ENABLED) {
                 require_once('modules/SecurityGroups/SecurityGroup.php');
                 $groupFocus = new SecurityGroup();
                 $security_modules = $groupFocus->getSecurityModules();
                 //if(in_array($module,$security_modules)) {
-                if (in_array($module, array_keys($security_modules))) {
+                if (in_array($module,array_keys($security_modules))) {
                     global $app_strings;
 
                     global $current_language;
@@ -144,7 +144,7 @@ EOQ;
 
                     $form_header = get_form_header($current_module_strings['LBL_MASS_ASSIGN'], '', false);
 
-                    $groups = $groupFocus->get_list("name", "", 0, -99, -99);
+                    $groups = $groupFocus->get_list("name","",0,-99,-99);
                     $options = array(""=>"");
                     foreach ($groups['list'] as $group) {
                         $options[$group->id] = $group->name;

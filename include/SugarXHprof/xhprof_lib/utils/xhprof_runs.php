@@ -154,7 +154,7 @@ class XHProfRuns_Default implements iXHProfRuns
         return $run_id;
     }
 
-    public function list_runs()
+    function list_runs()
     {
         if (is_dir($this->dir)) {
             echo "<hr/>Existing runs:\n<ul>\n";
@@ -165,7 +165,7 @@ class XHProfRuns_Default implements iXHProfRuns
 
             usort($files, $function);
             foreach ($files as $file) {
-                list($run, $source) = explode('.', basename($file));
+                list($run,$source) = explode('.', basename($file));
                 echo '<li><a href="' . htmlentities($_SERVER['SCRIPT_NAME'])
                 . '?run=' . htmlentities($run) . '&source='
                 . htmlentities($source) . '">'

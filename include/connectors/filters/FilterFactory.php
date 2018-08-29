@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /**
@@ -48,7 +47,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class FilterFactory
 {
-    public static $filter_map = array();
+    static $filter_map = array();
 
     public static function getInstance($source_name, $filter_name='')
     {
@@ -60,14 +59,14 @@ class FilterFactory
             }
 
             //split the wrapper name to find the path to the file.
-            $dir = str_replace('_', '/', $filter_name);
+            $dir = str_replace('_','/',$filter_name);
             $parts = explode("/", $dir);
             $file = $parts[count($parts)-1];
 
             //check if this override wrapper file exists.
             require_once('include/connectors/ConnectorFactory.php');
             if (file_exists("modules/Connectors/connectors/filters/{$dir}/{$file}.php") ||
-               file_exists("custom/modules/Connectors/connectors/filters/{$dir}/{$file}.php")) {
+			   file_exists("custom/modules/Connectors/connectors/filters/{$dir}/{$file}.php")) {
                 ConnectorFactory::load($filter_name, 'filters');
                 try {
                     $filter_name .= '_filter';

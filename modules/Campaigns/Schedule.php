@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,13 +36,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
- * Description:
+ * Description: 
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
@@ -101,7 +100,7 @@ if ($campaign_id && isset($campaign) && $campaign->status == 'Inactive') {
 } else {
     $focus = new EmailMarketing();
     if ($campaign_id) {
-        $where_clauses = array();
+        $where_clauses = Array();
 
         if (!empty($campaign_id)) {
             array_push($where_clauses, "campaign_id = '".DBManagerFactory::getInstance()->quote($campaign_id)."'");
@@ -119,12 +118,12 @@ if ($campaign_id && isset($campaign) && $campaign->status == 'Inactive') {
     }
 
     $ListView = new ListView();
-    $ListView->initNewXTemplate('modules/Campaigns/Schedule.html', $current_module_strings);
+    $ListView->initNewXTemplate('modules/Campaigns/Schedule.html',$current_module_strings);
 
     if ($test) {
-        $ListView->xTemplateAssign("SCHEDULE_MESSAGE_HEADER", $current_module_strings['LBL_SCHEDULE_MESSAGE_TEST']);
+        $ListView->xTemplateAssign("SCHEDULE_MESSAGE_HEADER",$current_module_strings['LBL_SCHEDULE_MESSAGE_TEST']);
     } else {
-        $ListView->xTemplateAssign("SCHEDULE_MESSAGE_HEADER", $current_module_strings['LBL_SCHEDULE_MESSAGE_EMAILS']);
+        $ListView->xTemplateAssign("SCHEDULE_MESSAGE_HEADER",$current_module_strings['LBL_SCHEDULE_MESSAGE_EMAILS']);
     }
 
     //force multi-select popup
@@ -136,14 +135,14 @@ if ($campaign_id && isset($campaign) && $campaign->status == 'Inactive') {
     $ListView->show_select_menu = false;
     $ListView->show_delete_button = false;
     $ListView->setDisplayHeaderAndFooter(false);
-    $ListView->xTemplateAssign("RETURN_MODULE", $_POST['return_module']);
-    $ListView->xTemplateAssign("RETURN_ACTION", $_POST['return_action']);
-    $ListView->xTemplateAssign("RETURN_ID", $_POST['record']);
+    $ListView->xTemplateAssign("RETURN_MODULE",$_POST['return_module']);
+    $ListView->xTemplateAssign("RETURN_ACTION",$_POST['return_action']);
+    $ListView->xTemplateAssign("RETURN_ID",$_POST['record']);
     $ListView->setHeaderTitle($current_module_strings['LBL_LIST_FORM_TITLE']);
     $ListView->setQuery($where, "", "date_modified desc", "EMAILMARKETING", false);
 
     if ($test) {
-        $ListView->xTemplateAssign("MODE", $_POST['mode']);
+        $ListView->xTemplateAssign("MODE",$_POST['mode']);
         //finds all marketing messages that have an association with prospect list of the test.
         //this query can be siplified using sub-selects.
         $query="select distinct email_marketing.id email_marketing_id from email_marketing ";
@@ -165,7 +164,7 @@ if ($campaign_id && isset($campaign) && $campaign->status == 'Inactive') {
         while (($row=$focus->db->fetchByAssoc($result)) != null) {
             $bean = new EmailMarketing();
             $bean->retrieve($row['email_marketing_id']);
-            $bean->mode='test';
+            $bean->mode='test';	
             $seed[]=$bean;
         }
         $query=" select email_marketing.id email_marketing_id from email_marketing ";
@@ -177,7 +176,7 @@ if ($campaign_id && isset($campaign) && $campaign->status == 'Inactive') {
         while (($row=$focus->db->fetchByAssoc($result)) != null) {
             $bean = new EmailMarketing();
             $bean->retrieve($row['email_marketing_id']);
-            $bean->mode='test';
+            $bean->mode='test';	
             $seed[]=$bean;
         }
 

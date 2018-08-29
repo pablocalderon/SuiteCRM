@@ -9,9 +9,9 @@ require_once('include/SearchForm/SearchForm2.php');
 
 class SubPanelSearchForm extends SearchForm
 {
-    public $subPanel; // the instantiated bean of the subPanel
+    var $subPanel; // the instantiated bean of the subPanel
 
-    public function __construct($seed, $module, $subPanel, $options = array())
+    function __construct($seed, $module, $subPanel, $options = array())
     {
         $this->subPanel = $subPanel;
         parent::__construct($seed, $module, 'DetailView', $options);
@@ -20,7 +20,7 @@ class SubPanelSearchForm extends SearchForm
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function SubPanelSearchForm($seed, $module, $subPanel, $options = array())
+    function SubPanelSearchForm($seed, $module, $subPanel, $options = array())
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -32,7 +32,7 @@ class SubPanelSearchForm extends SearchForm
     }
 
 
-    public function display($header = false)
+    function display($header = false)
     {
         /*//global $app_list_strings;
         if($this->subPanel->subpanel_defs->isCollection() && isset($this->subPanel->subpanel_defs->base_collection_list)){
@@ -48,7 +48,7 @@ class SubPanelSearchForm extends SearchForm
         return parent::display($header);
     }
 
-    public function getCollectionList($collection = array())
+    function getCollectionList($collection = array())
     {
         global $app_list_strings;
 
@@ -65,7 +65,7 @@ class SubPanelSearchForm extends SearchForm
         return $select;
     }
 
-    public function displaySavedSearchSelect()
+    function displaySavedSearchSelect()
     {
         return null;
     }

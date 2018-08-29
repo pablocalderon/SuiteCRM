@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,25 +36,25 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('modules/DynamicFields/templates/Fields/TemplateRange.php');
 
 class TemplateDate extends TemplateRange
 {
-    public $type = 'date';
-    public $len = '';
-    public $dateStrings;
+    var $type = 'date';
+    var $len = '';
+    var $dateStrings;
 
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
         global $app_strings;
         $this->dateStrings = array(
-            $app_strings['LBL_NONE']=>'',
+			$app_strings['LBL_NONE']=>'',
             $app_strings['LBL_YESTERDAY']=> '-1 day',
             $app_strings['LBL_TODAY']=>'now',
             $app_strings['LBL_TOMORROW']=>'+1 day',
@@ -72,13 +71,13 @@ class TemplateDate extends TemplateRange
     }
 
 
-    public function get_db_default($modify=false)
+    function get_db_default($modify=false)
     {
         return '';
     }
 
     //BEGIN BACKWARDS COMPATABILITY
-    public function get_xtpl_edit()
+    function get_xtpl_edit()
     {
         global $timedate;
         $name = $this->name;
@@ -98,7 +97,7 @@ class TemplateDate extends TemplateRange
         return $returnXTPL;
     }
 
-    public function get_field_def()
+    function get_field_def()
     {
         $def = parent::get_field_def();
         if (!empty($def['default'])) {
@@ -108,3 +107,4 @@ class TemplateDate extends TemplateRange
         return $def;
     }
 }
+

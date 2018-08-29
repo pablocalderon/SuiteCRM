@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -52,11 +51,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class EmailTemplateFormBase
 {
-    public function __construct()
+    function __construct()
     {
     }
 
-    public function getFormBody($prefix, $mod='', $formname='', $size='30')
+    function getFormBody($prefix, $mod='',$formname='', $size='30')
     {
         global $mod_strings;
 
@@ -103,7 +102,7 @@ EOF;
         return $form;
     }
 
-    public function getForm($prefix, $mod='')
+    function getForm($prefix, $mod='')
     {
         if (!empty($mod)) {
             global $current_language;
@@ -141,7 +140,7 @@ EOQ;
     }
 
 
-    public function handleSave($prefix, $redirect=true, $useRequired=false, $useSiteURL = false, $entryPoint = 'download', $useUploadFolder = false)
+    function handleSave($prefix,$redirect=true, $useRequired=false, $useSiteURL = false, $entryPoint = 'download', $useUploadFolder = false)
     {
         require_once('include/formbase.php');
         require_once('include/upload_file.php');
@@ -227,11 +226,11 @@ EOQ;
                 } // if
             } // foreach
         } // if
-        if (isset($GLOBALS['check_notify'])) {
-            $check_notify = $GLOBALS['check_notify'];
-        } else {
-            $check_notify = false;
-        }
+		if (isset($GLOBALS['check_notify'])) {
+		    $check_notify = $GLOBALS['check_notify'];
+		} else {
+		    $check_notify = FALSE;
+		}
         if ($preProcessedImages) {
             $focus->body_html = $emailTemplateBodyHtml;
         }
@@ -280,14 +279,14 @@ EOQ;
             if (isset($preProcessedImages[$file['name']])) {
                 $oldId = $preProcessedImages[$file['name']];
                 $note->id = $oldId;
-                $note->new_with_id = true;
+                $note->new_with_id = TRUE;
                 $GLOBALS['log']->debug("Image {$file['name']} has already been processed.");
             }
 
-            $i=preg_replace("/email_attachment(.+)/", '$1', $key);
+            $i=preg_replace("/email_attachment(.+)/",'$1',$key);
             $upload_file = new UploadFile($key);
 
-            if (isset($_FILES[$key]) && $upload_file->confirm_upload() && preg_match("/^email_attachment/", $key)) {
+            if (isset($_FILES[$key]) && $upload_file->confirm_upload() && preg_match("/^email_attachment/",$key)) {
                 $note->filename = $upload_file->get_stored_file_name();
                 $note->file = $upload_file;
                 $note->name = $mod_strings['LBL_EMAIL_ATTACHMENT'].': '.$note->file->original_file_name;
@@ -304,7 +303,7 @@ EOQ;
 
         $focus->saved_attachments = array();
         foreach ($focus->attachments as $note) {
-            if (!empty($note->id) && $note->new_with_id === false) {
+            if (!empty($note->id) && $note->new_with_id === FALSE) {
                 if (empty($_REQUEST['old_id'])) {
                     array_push($focus->saved_attachments, $note);
                 } // to support duplication of email templates
@@ -341,7 +340,7 @@ EOQ;
             array_push($focus->saved_attachments, $note);
             $note->id = $note_id;
 
-            if ($note->new_with_id === false) {
+            if ($note->new_with_id === FALSE) {
                 $note->file->final_move($note->id);
             } else {
                 $GLOBALS['log']->debug("Not performing final move for note id {$note->id} as it has already been processed");
@@ -413,3 +412,4 @@ EOQ;
         }
     }
 }
+

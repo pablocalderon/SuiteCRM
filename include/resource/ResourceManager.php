@@ -67,7 +67,7 @@ class ResourceManager
      * Singleton method to return static instance of ResourceManager
      * @return ResourceManager The static singleton
      */
-    public static function getInstance()
+    static public function getInstance()
     {
         if (!isset(self::$instance)) {
             self::$instance = new ResourceManager();
@@ -166,7 +166,7 @@ class ResourceManager
      * Returns the observer instances that have been setup for the ResourceManager instance
      * @return array ResourceObserver(s)
      */
-    public function getObservers()
+    function getObservers()
     {
         return $this->_observers;
     }

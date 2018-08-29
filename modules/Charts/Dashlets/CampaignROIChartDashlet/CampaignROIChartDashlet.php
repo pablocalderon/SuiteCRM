@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 
@@ -62,7 +61,7 @@ class CampaignROIChartDashlet extends DashletGenericChart
     {
         $this->getSeedBean()->disable_row_level_security = false;
 
-        $campaigns = $this->getSeedBean()->get_full_list("", "");
+        $campaigns = $this->getSeedBean()->get_full_list("","");
         if ($campaigns != null) {
             foreach ($campaigns as $c) {
                 $this->_searchFields['campaign_id']['options'][$c->id] = $c->name;
@@ -82,13 +81,7 @@ class CampaignROIChartDashlet extends DashletGenericChart
         $rawData = $this->constructQuery(
             $GLOBALS['app_list_strings']['roi_type_dom'],
             $GLOBALS['app_list_strings']['roi_type_dom'],
-            $this->campaign_id[0],
-            null,
-            true,
-            true,
-            true,
-            $this->id
-        );
+            $this->campaign_id[0],null,true,true,true,$this->id);
 
         $currency_symbol = $GLOBALS['sugar_config']['default_currency_symbol'];
         if ($GLOBALS['current_user']->getPreference('currency')) {
@@ -103,7 +96,7 @@ class CampaignROIChartDashlet extends DashletGenericChart
         $chartHeight    = 500;
         $autoRefresh = $this->processAutoRefresh();
 
-        $chartReadyData = $this->prepareChartData($rawData, $currency_symbol, $thousands_symbol);
+        $chartReadyData = $this->prepareChartData($rawData,$currency_symbol,$thousands_symbol);
 
         //$chartReadyData['data'] = [[1.1,2.2],[3.3,4.4]];
         $jsonData = json_encode($chartReadyData['data']);
@@ -225,7 +218,7 @@ EOD;
         //   return $this->getTitle('<div align="center"></div>') . '<div align="center">' . $returnStr . '</div>'. $this->processAutoRefresh();
     }
 
-    protected function constructQuery($datay= array(), $targets=array(), $campaign_id = null, $cache_file_name='a_file', $refresh=false, $marketing_id='', $is_dashlet=false, $dashlet_id='')
+    protected function constructQuery($datay= array(),$targets=array(),$campaign_id = null, $cache_file_name='a_file', $refresh=false,$marketing_id='',$is_dashlet=false,$dashlet_id='')
     {
         //global $app_strings,$mod_strings, $current_module_strings, $charset, $lang, $app_list_strings, $current_language,$sugar_config;
         global $mod_strings;
@@ -242,7 +235,7 @@ EOD;
         $focus = new Campaign();
         $focus->retrieve($campaign_id);
         $opp_count=0;
-        $opp_query  = "select count(*) opp_count,sum(" . db_convert("amount_usdollar", "IFNULL", array(0)).")  total_value";
+        $opp_query  = "select count(*) opp_count,sum(" . db_convert("amount_usdollar","IFNULL",array(0)).")  total_value";
         $opp_query .= " from opportunities";
         $opp_query .= " where campaign_id='$campaign_id'";
         $opp_query .= " and sales_stage='Prospecting'";
@@ -327,7 +320,7 @@ EOD;
         return $chartData;
     }
 
-    protected function prepareChartData($data, $currency_symbol, $thousands_symbol)
+    protected function prepareChartData($data,$currency_symbol, $thousands_symbol)
     {
         //Use the  lead_source to categorise the data for the charts
         $chart['labels'] = array();

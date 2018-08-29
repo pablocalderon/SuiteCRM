@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,24 +36,24 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 class ACLRole extends SugarBean
 {
-    public $module_dir = 'ACLRoles';
-    public $object_name = 'ACLRole';
-    public $table_name = 'acl_roles';
-    public $new_schema = true;
-    public $disable_row_level_security = true;
-    public $disable_custom_fields = true;
-    public $relationship_fields = array(
+    var $module_dir = 'ACLRoles';
+    var $object_name = 'ACLRole';
+    var $table_name = 'acl_roles';
+    var $new_schema = true;
+    var $disable_row_level_security = true;
+    var $disable_custom_fields = true;
+    var $relationship_fields = array(
                                     'user_id'=>'users'
                                 );
 
-    public $created_by;
+    var $created_by;
 
     public function __construct()
     {
@@ -77,7 +76,7 @@ class ACLRole extends SugarBean
 
 
     // bug 16790 - missing get_summary_text method led Tracker to display SugarBean's "base implementation"
-    public function get_summary_text()
+    function get_summary_text()
     {
         return "$this->name";
     }
@@ -92,11 +91,11 @@ class ACLRole extends SugarBean
      * @param GUID $action_id - the ACL Action id
      * @param int $access - the access level ACL_ALLOW_ALL ACL_ALLOW_NONE ACL_ALLOW_OWNER...
      */
-    public function setAction($role_id, $action_id, $access)
+    function setAction($role_id, $action_id, $access)
     {
         $relationship_data = array('role_id'=>$role_id, 'action_id'=>$action_id,);
         $additional_data = array('access_override'=>$access);
-        $this->set_relationship('acl_roles_actions', $relationship_data, true, true, $additional_data);
+        $this->set_relationship('acl_roles_actions',$relationship_data,true, true,$additional_data);
     }
 
 
@@ -107,7 +106,7 @@ class ACLRole extends SugarBean
      * @param GUID $user_id
      * @return a list of ACLRole objects
      */
-    public function getUserRoles($user_id, $getAsNameArray = true)
+    function getUserRoles($user_id, $getAsNameArray = true)
     {
 
         //if we don't have it loaded then lets check against the db
@@ -141,7 +140,7 @@ class ACLRole extends SugarBean
      * @param GUID $user_id
      * @return a list of ACLRole Names
      */
-    public function getUserRoleNames($user_id)
+    function getUserRoleNames($user_id)
     {
         $user_roles = sugar_cache_retrieve("RoleMembershipNames_".$user_id);
 
@@ -174,7 +173,7 @@ class ACLRole extends SugarBean
      * @param boolean $returnAsArray - should it return the results as an array of arrays or as an array of ACLRoles
      * @return either an array of array representations of acl roles or an array of ACLRoles
      */
-    public function getAllRoles($returnAsArray = false)
+    function getAllRoles($returnAsArray = false)
     {
         $db = DBManagerFactory::getInstance();
         $query = "SELECT acl_roles.* FROM acl_roles
@@ -203,7 +202,7 @@ class ACLRole extends SugarBean
      * @param GUID $role_id
      * @return array of actions
      */
-    public function getRoleActions($role_id, $type='module')
+    function getRoleActions($role_id, $type='module')
     {
         global $beanList;
         //if we don't have it loaded then lets check against the db
@@ -267,7 +266,7 @@ class ACLRole extends SugarBean
      *
      * @param ACLRole GUID $id
      */
-    public function mark_relationships_deleted($id)
+    function mark_relationships_deleted($id)
     {
         //we need to delete the actions relationship by hand (special case)
         $date_modified = db_convert("'".TimeDate::getInstance()->nowDb()."'", 'datetime');
@@ -282,7 +281,7 @@ class ACLRole extends SugarBean
         *
         * @return array of fields with id, name, description
         */
-    public function toArray($dbOnly = false, $stringOnly = false, $upperKeys=false)
+    function toArray($dbOnly = false, $stringOnly = false, $upperKeys=false)
     {
         $array_fields = array('id', 'name', 'description');
         $arr = array();
@@ -302,7 +301,7 @@ class ACLRole extends SugarBean
     *
     * @param Array $arr
     */
-    public function fromArray($arr)
+    function fromArray($arr)
     {
         foreach ($arr as $name=>$value) {
             $this->$name = $value;

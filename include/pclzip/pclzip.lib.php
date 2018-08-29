@@ -205,19 +205,19 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
    class PclZip
    {
        // ----- Filename of the zip file
-       public $zipname = '';
+       var $zipname = '';
 
        // ----- File descriptor of the zip file
-       public $zip_fd = 0;
+       var $zip_fd = 0;
 
        // ----- Internal error handling
-       public $error_code = 1;
-       public $error_string = '';
+       var $error_code = 1;
+       var $error_string = '';
 
        // ----- Current status of the magic_quotes_runtime
        // This value store the php configuration for magic_quotes
        // The class can then disable the magic_quotes and reset it after
-       public $magic_quotes_status;
+       var $magic_quotes_status;
 
        // --------------------------------------------------------------------------------
        // Function : PclZip()
@@ -227,7 +227,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   Note that no real action is taken, if the archive does not exist it is not
        //   created. Use create() for that.
        // --------------------------------------------------------------------------------
-       public function __construct($p_zipname)
+       function __construct($p_zipname)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::PclZip', "zipname=$p_zipname");
 
@@ -286,7 +286,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   (see PclZip::listContent() for list entry format)
        // --------------------------------------------------------------------------------
        //  function create($p_filelist, $p_add_dir="", $p_remove_dir="")
-       public function create($p_filelist /*, options */)
+       function create($p_filelist /*, options */)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::create', "filelist='$p_filelist', ...");
            $v_result=1;
@@ -299,7 +299,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            $v_add_path = "";
            $v_remove_path = "";
            $v_remove_all_path = false;
-           $v_options[PCLZIP_OPT_NO_COMPRESSION] = false;
+           $v_options[PCLZIP_OPT_NO_COMPRESSION] = FALSE;
 
            // ----- Look for variable options arguments
            $v_size = func_num_args();
@@ -319,11 +319,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Variable list of options detected");
 
                    // ----- Parse the options
-                   $v_result = $this->privParseOptions(
-                       $v_arg_list,
-                       $v_size,
-                       $v_options,
-                                            array(PCLZIP_OPT_REMOVE_PATH => 'optional',
+                   $v_result = $this->privParseOptions($v_arg_list, $v_size, $v_options,
+                                            array (PCLZIP_OPT_REMOVE_PATH => 'optional',
                                                    PCLZIP_OPT_REMOVE_ALL_PATH => 'optional',
                                                    PCLZIP_OPT_ADD_PATH => 'optional',
                                                    PCLZIP_CB_PRE_ADD => 'optional',
@@ -331,8 +328,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                                                    PCLZIP_OPT_NO_COMPRESSION => 'optional',
                                                    PCLZIP_OPT_COMMENT => 'optional'
                                                    //, PCLZIP_OPT_CRYPT => 'optional'
-                                                   )
-                   );
+												   ));
                    if ($v_result != 1) {
                        //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, 0);
                        return 0;
@@ -364,10 +360,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                        $v_remove_path = $v_arg_list[1];
                    } elseif ($v_size > 2) {
                        // ----- Error log
-                       PclZip::privErrorLog(
-                           PCLZIP_ERR_INVALID_PARAMETER,
-                               "Invalid number / type of arguments"
-                       );
+                       PclZip::privErrorLog(PCLZIP_ERR_INVALID_PARAMETER,
+		                       "Invalid number / type of arguments");
 
                        // ----- Return
                        //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
@@ -450,7 +444,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   (see PclZip::listContent() for list entry format)
        // --------------------------------------------------------------------------------
        //  function add($p_filelist, $p_add_dir="", $p_remove_dir="")
-       public function add($p_filelist /* options */)
+       function add($p_filelist /* options */)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::add', "filelist='$p_filelist', ...");
            $v_result=1;
@@ -463,7 +457,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            $v_add_path = "";
            $v_remove_path = "";
            $v_remove_all_path = false;
-           $v_options[PCLZIP_OPT_NO_COMPRESSION] = false;
+           $v_options[PCLZIP_OPT_NO_COMPRESSION] = FALSE;
 
            // ----- Look for variable options arguments
            $v_size = func_num_args();
@@ -483,11 +477,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Variable list of options detected");
 
                    // ----- Parse the options
-                   $v_result = $this->privParseOptions(
-                       $v_arg_list,
-                       $v_size,
-                       $v_options,
-                                            array(PCLZIP_OPT_REMOVE_PATH => 'optional',
+                   $v_result = $this->privParseOptions($v_arg_list, $v_size, $v_options,
+                                            array (PCLZIP_OPT_REMOVE_PATH => 'optional',
                                                    PCLZIP_OPT_REMOVE_ALL_PATH => 'optional',
                                                    PCLZIP_OPT_ADD_PATH => 'optional',
                                                    PCLZIP_CB_PRE_ADD => 'optional',
@@ -497,8 +488,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                                                    PCLZIP_OPT_ADD_COMMENT => 'optional',
                                                    PCLZIP_OPT_PREPEND_COMMENT => 'optional'
                                                    //, PCLZIP_OPT_CRYPT => 'optional'
-                                                   )
-                   );
+												   ));
                    if ($v_result != 1) {
                        //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, 0);
                        return 0;
@@ -618,7 +608,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   0 on an unrecoverable failure,
        //   The list of the files in the archive.
        // --------------------------------------------------------------------------------
-       public function listContent()
+       function listContent()
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::listContent', "");
            $v_result=1;
@@ -679,7 +669,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   (see PclZip::listContent() for list entry format)
        // --------------------------------------------------------------------------------
        //function extract($p_path="./", $p_remove_path="")
-       public function extract(/* options */)
+       function extract(/* options */)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::extract", "");
            $v_result=1;
@@ -705,7 +695,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 4, "$v_size arguments passed to the method");
 
            // ----- Default values for option
-           $v_options[PCLZIP_OPT_EXTRACT_AS_STRING] = false;
+           $v_options[PCLZIP_OPT_EXTRACT_AS_STRING] = FALSE;
 
            // ----- Look for arguments
            if ($v_size > 0) {
@@ -717,11 +707,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Variable list of options");
 
                    // ----- Parse the options
-                   $v_result = $this->privParseOptions(
-                       $v_arg_list,
-                       $v_size,
-                       $v_options,
-                                            array(PCLZIP_OPT_PATH => 'optional',
+                   $v_result = $this->privParseOptions($v_arg_list, $v_size, $v_options,
+                                            array (PCLZIP_OPT_PATH => 'optional',
                                                    PCLZIP_OPT_REMOVE_PATH => 'optional',
                                                    PCLZIP_OPT_REMOVE_ALL_PATH => 'optional',
                                                    PCLZIP_OPT_ADD_PATH => 'optional',
@@ -736,8 +723,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                                                    PCLZIP_OPT_EXTRACT_IN_OUTPUT => 'optional',
                                                    PCLZIP_OPT_REPLACE_NEWER => 'optional'
                                                    ,PCLZIP_OPT_STOP_ON_ERROR => 'optional'
-                                                    )
-                   );
+												    ));
                    if ($v_result != 1) {
                        //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, 0);
                        return 0;
@@ -790,13 +776,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
 
            // ----- Call the extracting fct
            $p_list = array();
-           $v_result = $this->privExtractByRule(
-               $p_list,
-               $v_path,
-               $v_remove_path,
-                                         $v_remove_all_path,
-               $v_options
-           );
+           $v_result = $this->privExtractByRule($p_list, $v_path, $v_remove_path,
+	                                     $v_remove_all_path, $v_options);
            if ($v_result < 1) {
                unset($p_list);
                //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, 0, PclZip::errorInfo());
@@ -846,7 +827,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   The list of the extracted files, with a status of the action.
        //   (see PclZip::listContent() for list entry format)
        // --------------------------------------------------------------------------------
-       public function extractByIndex($p_index /* $options */)
+       function extractByIndex($p_index /* $options */)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::extractByIndex", "index='$p_index', ...");
            $v_result=1;
@@ -872,7 +853,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 4, "$v_size arguments passed to the method");
 
            // ----- Default values for option
-           $v_options[PCLZIP_OPT_EXTRACT_AS_STRING] = false;
+           $v_options[PCLZIP_OPT_EXTRACT_AS_STRING] = FALSE;
 
            // ----- Look for arguments
            if ($v_size > 1) {
@@ -888,11 +869,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Variable list of options");
 
                    // ----- Parse the options
-                   $v_result = $this->privParseOptions(
-                       $v_arg_list,
-                       $v_size,
-                       $v_options,
-                                            array(PCLZIP_OPT_PATH => 'optional',
+                   $v_result = $this->privParseOptions($v_arg_list, $v_size, $v_options,
+                                            array (PCLZIP_OPT_PATH => 'optional',
                                                    PCLZIP_OPT_REMOVE_PATH => 'optional',
                                                    PCLZIP_OPT_REMOVE_ALL_PATH => 'optional',
                                                    PCLZIP_OPT_EXTRACT_AS_STRING => 'optional',
@@ -902,8 +880,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                                                    PCLZIP_OPT_SET_CHMOD => 'optional',
                                                    PCLZIP_OPT_REPLACE_NEWER => 'optional'
                                                    ,PCLZIP_OPT_STOP_ON_ERROR => 'optional'
-                                                   )
-                   );
+												   ));
                    if ($v_result != 1) {
                        //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, 0);
                        return 0;
@@ -927,10 +904,11 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                        $v_path .= $v_options[PCLZIP_OPT_ADD_PATH];
                    }
                    if (!isset($v_options[PCLZIP_OPT_EXTRACT_AS_STRING])) {
-                       $v_options[PCLZIP_OPT_EXTRACT_AS_STRING] = false;
-                       //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 4, "Option PCLZIP_OPT_EXTRACT_AS_STRING not set.");
+                       $v_options[PCLZIP_OPT_EXTRACT_AS_STRING] = FALSE;
+                   //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 4, "Option PCLZIP_OPT_EXTRACT_AS_STRING not set.");
+                   } else {
+                       //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 4, "Option PCLZIP_OPT_EXTRACT_AS_STRING set.");
                    }
-                   //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 4, "Option PCLZIP_OPT_EXTRACT_AS_STRING set.");
                }
 
                // ----- Look for 2 args
@@ -962,14 +940,10 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            // ----- Trick
            // Here I want to reuse extractByRule(), so I need to parse the $p_index
            // with privParseOptions()
-           $v_arg_trick = array(PCLZIP_OPT_BY_INDEX, $p_index);
+           $v_arg_trick = array (PCLZIP_OPT_BY_INDEX, $p_index);
            $v_options_trick = array();
-           $v_result = $this->privParseOptions(
-               $v_arg_trick,
-               sizeof($v_arg_trick),
-               $v_options_trick,
-                                        array(PCLZIP_OPT_BY_INDEX => 'optional' )
-           );
+           $v_result = $this->privParseOptions($v_arg_trick, sizeof($v_arg_trick), $v_options_trick,
+                                        array (PCLZIP_OPT_BY_INDEX => 'optional' ));
            if ($v_result != 1) {
                //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, 0);
                return 0;
@@ -1006,7 +980,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   The list of the files which are still present in the archive.
        //   (see PclZip::listContent() for list entry format)
        // --------------------------------------------------------------------------------
-       public function delete(/* options */)
+       function delete(/* options */)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::delete", "");
            $v_result=1;
@@ -1033,15 +1007,11 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                $v_arg_list = func_get_args();
 
                // ----- Parse the options
-               $v_result = $this->privParseOptions(
-                   $v_arg_list,
-                   $v_size,
-                   $v_options,
-                                        array(PCLZIP_OPT_BY_NAME => 'optional',
+               $v_result = $this->privParseOptions($v_arg_list, $v_size, $v_options,
+                                        array (PCLZIP_OPT_BY_NAME => 'optional',
                                                PCLZIP_OPT_BY_EREG => 'optional',
                                                PCLZIP_OPT_BY_PREG => 'optional',
-                                               PCLZIP_OPT_BY_INDEX => 'optional' )
-               );
+                                               PCLZIP_OPT_BY_INDEX => 'optional' ));
                if ($v_result != 1) {
                    //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, 0);
                    return 0;
@@ -1075,7 +1045,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   ***** Deprecated *****
        //   delete(PCLZIP_OPT_BY_INDEX, $p_index) should be prefered.
        // --------------------------------------------------------------------------------
-       public function deleteByIndex($p_index)
+       function deleteByIndex($p_index)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::deleteByIndex", "index='$p_index'");
 
@@ -1101,7 +1071,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   0 on failure,
        //   An array with the archive properties.
        // --------------------------------------------------------------------------------
-       public function properties()
+       function properties()
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::properties", "");
 
@@ -1177,7 +1147,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   1 on success.
        //   0 or a negative value on error (error code).
        // --------------------------------------------------------------------------------
-       public function duplicate($p_archive)
+       function duplicate($p_archive)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::duplicate", "");
            $v_result = 1;
@@ -1236,7 +1206,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   1 on success,
        //   0 or negative values on error (see below).
        // --------------------------------------------------------------------------------
-       public function merge($p_archive_to_add)
+       function merge($p_archive_to_add)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::merge", "");
            $v_result = 1;
@@ -1289,12 +1259,13 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Description :
        // Parameters :
        // --------------------------------------------------------------------------------
-       public function errorCode()
+       function errorCode()
        {
            if (PCLZIP_ERROR_EXTERNAL == 1) {
                return(PclErrorCode());
+           } else {
+               return($this->error_code);
            }
-           return($this->error_code);
        }
        // --------------------------------------------------------------------------------
 
@@ -1303,9 +1274,9 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Description :
        // Parameters :
        // --------------------------------------------------------------------------------
-       public function errorName($p_with_code=false)
+       function errorName($p_with_code=false)
        {
-           $v_name = array( PCLZIP_ERR_NO_ERROR => 'PCLZIP_ERR_NO_ERROR',
+           $v_name = array ( PCLZIP_ERR_NO_ERROR => 'PCLZIP_ERR_NO_ERROR',
                       PCLZIP_ERR_WRITE_OPEN_FAIL => 'PCLZIP_ERR_WRITE_OPEN_FAIL',
                       PCLZIP_ERR_READ_OPEN_FAIL => 'PCLZIP_ERR_READ_OPEN_FAIL',
                       PCLZIP_ERR_INVALID_PARAMETER => 'PCLZIP_ERR_INVALID_PARAMETER',
@@ -1333,8 +1304,9 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
 
            if ($p_with_code) {
                return($v_value.' ('.$this->error_code.')');
+           } else {
+               return($v_value);
            }
-           return($v_value);
        }
        // --------------------------------------------------------------------------------
 
@@ -1343,15 +1315,17 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Description :
        // Parameters :
        // --------------------------------------------------------------------------------
-       public function errorInfo($p_full=false)
+       function errorInfo($p_full=false)
        {
            if (PCLZIP_ERROR_EXTERNAL == 1) {
                return(PclErrorString());
+           } else {
+               if ($p_full) {
+                   return($this->errorName(true)." : ".$this->error_string);
+               } else {
+                   return($this->error_string." [code ".$this->error_code."]");
+               }
            }
-           if ($p_full) {
-               return($this->errorName(true)." : ".$this->error_string);
-           }
-           return($this->error_string." [code ".$this->error_code."]");
        }
        // --------------------------------------------------------------------------------
 
@@ -1378,7 +1352,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   true on success,
        //   false on error, the error code is set.
        // --------------------------------------------------------------------------------
-       public function privCheckFormat($p_level=0)
+       function privCheckFormat($p_level=0)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privCheckFormat", "");
            $v_result = true;
@@ -1435,7 +1409,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   1 on success.
        //   0 on failure.
        // --------------------------------------------------------------------------------
-       public function privParseOptions(&$p_options_list, $p_size, &$v_result_list, $v_requested_options=false)
+       function privParseOptions(&$p_options_list, $p_size, &$v_result_list, $v_requested_options=false)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privParseOptions", "");
            $v_result=1;
@@ -1542,12 +1516,10 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
           // ----- Check the number of parameters
           if (($i+1) >= $p_size) {
               // ----- Error log
-              PclZip::privErrorLog(
-                  PCLZIP_ERR_MISSING_OPTION_VALUE,
-                                 "Missing parameter value for option '"
-                                 .PclZipUtilOptionText($p_options_list[$i])
-                                 ."'"
-              );
+              PclZip::privErrorLog(PCLZIP_ERR_MISSING_OPTION_VALUE,
+			                     "Missing parameter value for option '"
+								 .PclZipUtilOptionText($p_options_list[$i])
+								 ."'");
 
               // ----- Return
               //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
@@ -1559,12 +1531,10 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
               $v_result_list[$p_options_list[$i]] = $p_options_list[$i+1];
           } else {
               // ----- Error log
-              PclZip::privErrorLog(
-                  PCLZIP_ERR_INVALID_OPTION_VALUE,
-                                 "Wrong parameter value for option '"
-                                 .PclZipUtilOptionText($p_options_list[$i])
-                                 ."'"
-              );
+              PclZip::privErrorLog(PCLZIP_ERR_INVALID_OPTION_VALUE,
+			                     "Wrong parameter value for option '"
+								 .PclZipUtilOptionText($p_options_list[$i])
+								 ."'");
 
               // ----- Return
               //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
@@ -1742,11 +1712,9 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
 
         default:
           // ----- Error log
-          PclZip::privErrorLog(
-              PCLZIP_ERR_INVALID_PARAMETER,
-                               "Unknown parameter '"
-                               .$p_options_list[$i]."'"
-          );
+          PclZip::privErrorLog(PCLZIP_ERR_INVALID_PARAMETER,
+		                       "Unknown parameter '"
+							   .$p_options_list[$i]."'");
 
           // ----- Return
           //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
@@ -1788,7 +1756,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privCreate($p_list, &$p_result_list, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
+       function privCreate($p_list, &$p_result_list, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privCreate", "list, result_list, add_dir='$p_add_dir', remove_dir='$p_remove_dir'");
            $v_result=1;
@@ -1825,7 +1793,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privAdd($p_list, &$p_result_list, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
+       function privAdd($p_list, &$p_result_list, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privAdd", "list, result_list, add_dir='$p_add_dir', remove_dir='$p_remove_dir'");
            $v_result=1;
@@ -2012,7 +1980,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Description :
        // Parameters :
        // --------------------------------------------------------------------------------
-       public function privOpenFd($p_mode)
+       function privOpenFd($p_mode)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privOpenFd", 'mode='.$p_mode);
            $v_result=1;
@@ -2049,7 +2017,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Description :
        // Parameters :
        // --------------------------------------------------------------------------------
-       public function privCloseFd()
+       function privCloseFd()
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privCloseFd", "");
            $v_result=1;
@@ -2078,7 +2046,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   $p_remove_dir : Path to remove in the filename path archived
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privAddList($p_list, &$p_result_list, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
+       function privAddList($p_list, &$p_result_list, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privAddList", "list, add_dir='$p_add_dir', remove_dir='$p_remove_dir'");
            $v_result=1;
@@ -2148,7 +2116,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   $p_remove_dir : Path to remove in the filename path archived
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privAddFileList($p_list, &$p_result_list, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
+       function privAddFileList($p_list, &$p_result_list, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privAddFileList", "list, add_dir='$p_add_dir', remove_dir='$p_remove_dir'");
            $v_result=1;
@@ -2239,22 +2207,18 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
 
                                // ----- Need an array as parameter
                                $p_temp_list[0] = $v_path.$p_hitem;
-                               $v_result = $this->privAddFileList(
-                                   $p_temp_list,
-                                   $p_result_list,
-                                                 $p_add_dir,
-                                   $p_remove_dir,
-                                                 $p_remove_all_dir,
-                                   $p_options
-                               );
+                               $v_result = $this->privAddFileList($p_temp_list, $p_result_list,
+			                                     $p_add_dir, $p_remove_dir,
+												 $p_remove_all_dir, $p_options);
 
                                // ----- Update the number of elements of the list
                                $v_nb = sizeof($p_result_list);
                            }
 
                            // ----- Unsupported file types
-                            
+                           else {
                                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 4, "Unsupported file type");
+                           }
                        }
                        @closedir($p_hdir);
                    }
@@ -2279,7 +2243,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privAddFile($p_filename, &$p_header, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
+       function privAddFile($p_filename, &$p_header, $p_add_dir, $p_remove_dir, $p_remove_all_dir, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privAddFile", "filename='$p_filename', add_dir='$p_add_dir', remove_dir='$p_remove_dir'");
            $v_result=1;
@@ -2448,16 +2412,16 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    // ----- Look for encryption
                    /*
                    if ((isset($p_options[PCLZIP_OPT_CRYPT]))
-            && ($p_options[PCLZIP_OPT_CRYPT] != "")) {
+		    && ($p_options[PCLZIP_OPT_CRYPT] != "")) {
                      //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "File need to be crypted ....");
 
                      // Should be a random header
                      $v_header = 'xxxxxxxxxxxx';
-          $v_content_compressed = PclZipUtilZipEncrypt($v_content_compressed,
-                                                   $p_header['compressed_size'],
-                                                   $v_header,
-                                                   $p_header['crc'],
-                                                   "test");
+	      $v_content_compressed = PclZipUtilZipEncrypt($v_content_compressed,
+		                                           $p_header['compressed_size'],
+	                                               $v_header,
+												   $p_header['crc'],
+												   "test");
 
                      $p_header['compressed_size'] += 12;
                      $p_header['flag'] = 1;
@@ -2478,14 +2442,11 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    // ----- Write the compressed (or not) content
                    /* Try to speed up the code
                    $v_binary_data = pack('a'.$p_header['compressed_size'],
-                              $v_content_compressed);
+		                      $v_content_compressed);
                    @fwrite($this->zip_fd, $v_binary_data, $p_header['compressed_size']);
                    */
-                   @fwrite(
-                       $this->zip_fd,
-                $v_content_compressed,
-                       $p_header['compressed_size']
-                   );
+                   @fwrite($this->zip_fd,
+		        $v_content_compressed, $p_header['compressed_size']);
 
                    // ----- Close the file
                    @fclose($v_file);
@@ -2545,7 +2506,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privWriteFileHeader(&$p_header)
+       function privWriteFileHeader(&$p_header)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privWriteFileHeader", 'file="'.$p_header['filename'].'", stored as "'.$p_header['stored_filename'].'"');
            $v_result=1;
@@ -2566,20 +2527,13 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            $v_mdate = (($v_date['year']-1980)<<9) + ($v_date['mon']<<5) + $v_date['mday'];
 
            // ----- Packed data
-           $v_binary_data = pack(
-               "VvvvvvVVVvv",
-               0x04034b50,
-                          $p_header['version_extracted'],
-               $p_header['flag'],
-                          $p_header['compression'],
-               $v_mtime,
-               $v_mdate,
-                          $p_header['crc'],
-               $p_header['compressed_size'],
-                          $p_header['size'],
+           $v_binary_data = pack("VvvvvvVVVvv", 0x04034b50,
+	                      $p_header['version_extracted'], $p_header['flag'],
+                          $p_header['compression'], $v_mtime, $v_mdate,
+                          $p_header['crc'], $p_header['compressed_size'],
+						  $p_header['size'],
                           strlen($p_header['stored_filename']),
-                          $p_header['extra_len']
-           );
+						  $p_header['extra_len']);
 
            // ----- Write the first 148 bytes of the header in the archive
            fputs($this->zip_fd, $v_binary_data, 30);
@@ -2604,7 +2558,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privWriteCentralFileHeader(&$p_header)
+       function privWriteCentralFileHeader(&$p_header)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privWriteCentralFileHeader", 'file="'.$p_header['filename'].'", stored as "'.$p_header['stored_filename'].'"');
            $v_result=1;
@@ -2621,26 +2575,15 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            $v_mdate = (($v_date['year']-1980)<<9) + ($v_date['mon']<<5) + $v_date['mday'];
 
            // ----- Packed data
-           $v_binary_data = pack(
-               "VvvvvvvVVVvvvvvVV",
-               0x02014b50,
-                          $p_header['version'],
-               $p_header['version_extracted'],
-                          $p_header['flag'],
-               $p_header['compression'],
-                          $v_mtime,
-               $v_mdate,
-               $p_header['crc'],
-                          $p_header['compressed_size'],
-               $p_header['size'],
+           $v_binary_data = pack("VvvvvvvVVVvvvvvVV", 0x02014b50,
+	                      $p_header['version'], $p_header['version_extracted'],
+                          $p_header['flag'], $p_header['compression'],
+						  $v_mtime, $v_mdate, $p_header['crc'],
+                          $p_header['compressed_size'], $p_header['size'],
                           strlen($p_header['stored_filename']),
-                          $p_header['extra_len'],
-               $p_header['comment_len'],
-                          $p_header['disk'],
-               $p_header['internal'],
-                          $p_header['external'],
-               $p_header['offset']
-           );
+						  $p_header['extra_len'], $p_header['comment_len'],
+                          $p_header['disk'], $p_header['internal'],
+						  $p_header['external'], $p_header['offset']);
 
            // ----- Write the 42 bytes of the header in the zip file
            fputs($this->zip_fd, $v_binary_data, 46);
@@ -2668,23 +2611,15 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privWriteCentralHeader($p_nb_entries, $p_size, $p_offset, $p_comment)
+       function privWriteCentralHeader($p_nb_entries, $p_size, $p_offset, $p_comment)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privWriteCentralHeader", 'nb_entries='.$p_nb_entries.', size='.$p_size.', offset='.$p_offset.', comment="'.$p_comment.'"');
            $v_result=1;
 
            // ----- Packed data
-           $v_binary_data = pack(
-               "VvvvvVVv",
-               0x06054b50,
-               0,
-               0,
-               $p_nb_entries,
-                          $p_nb_entries,
-               $p_size,
-                          $p_offset,
-               strlen($p_comment)
-           );
+           $v_binary_data = pack("VvvvvVVv", 0x06054b50, 0, 0, $p_nb_entries,
+	                      $p_nb_entries, $p_size,
+						  $p_offset, strlen($p_comment));
 
            // ----- Write the 22 bytes of the header in the zip file
            fputs($this->zip_fd, $v_binary_data, 22);
@@ -2706,7 +2641,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privList(&$p_list)
+       function privList(&$p_list)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privList", "list");
            $v_result=1;
@@ -2798,7 +2733,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privConvertHeader2FileInfo($p_header, &$p_info)
+       function privConvertHeader2FileInfo($p_header, &$p_info)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privConvertHeader2FileInfo", "Filename='".$p_header['filename']."'");
            $v_result=1;
@@ -2836,7 +2771,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Return Values :
        //   1 on success,0 or less on error (see error code list)
        // --------------------------------------------------------------------------------
-       public function privExtractByRule(&$p_file_list, $p_path, $p_remove_path, $p_remove_all_path, &$p_options)
+       function privExtractByRule(&$p_file_list, $p_path, $p_remove_path, $p_remove_all_path, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privExtractByRule", "path='$p_path', remove_path='$p_remove_path', remove_all_path='".($p_remove_all_path?'true':'false')."'");
            $v_result=1;
@@ -2846,9 +2781,9 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
 
            // ----- Check the path
            if (($p_path == "")
-        || ((substr($p_path, 0, 1) != "/")
-            && (substr($p_path, 0, 3) != "../")
-            && (substr($p_path, 1, 2)!=":/"))) {
+	    || ((substr($p_path, 0, 1) != "/")
+		    && (substr($p_path, 0, 3) != "../")
+			&& (substr($p_path,1,2)!=":/"))) {
                $p_path = "./".$p_path;
            }
 
@@ -3016,24 +2951,22 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
 
                // ----- Check compression method
                if (($v_extract)
-          && (($v_header['compression'] != 8)
-              && ($v_header['compression'] != 0))) {
+	      && (($v_header['compression'] != 8)
+		      && ($v_header['compression'] != 0))) {
                    //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Unsupported compression method (".$v_header['compression'].")");
                    $v_header['status'] = 'unsupported_compression';
 
                    // ----- Look for PCLZIP_OPT_STOP_ON_ERROR
                    if ((isset($p_options[PCLZIP_OPT_STOP_ON_ERROR]))
-              && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
+		      && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
                        //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "PCLZIP_OPT_STOP_ON_ERROR is selected, extraction will be stopped");
 
                        $this->privSwapBackMagicQuotes();
 
-                       PclZip::privErrorLog(
-                           PCLZIP_ERR_UNSUPPORTED_COMPRESSION,
-                                   "Filename '".$v_header['stored_filename']."' is "
-                                   ."compressed by an unsupported compression "
-                                   ."method (".$v_header['compression'].") "
-                       );
+                       PclZip::privErrorLog(PCLZIP_ERR_UNSUPPORTED_COMPRESSION,
+			                       "Filename '".$v_header['stored_filename']."' is "
+				  	    	  	   ."compressed by an unsupported compression "
+				  	    	  	   ."method (".$v_header['compression'].") ");
 
                        //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
                        return PclZip::errorCode();
@@ -3047,17 +2980,15 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
 
                    // ----- Look for PCLZIP_OPT_STOP_ON_ERROR
                    if ((isset($p_options[PCLZIP_OPT_STOP_ON_ERROR]))
-              && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
+		      && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
                        //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "PCLZIP_OPT_STOP_ON_ERROR is selected, extraction will be stopped");
 
                        $this->privSwapBackMagicQuotes();
 
-                       PclZip::privErrorLog(
-                           PCLZIP_ERR_UNSUPPORTED_ENCRYPTION,
-                                   "Unsupported encryption for "
-                                   ." filename '".$v_header['stored_filename']
-                                   ."'"
-                       );
+                       PclZip::privErrorLog(PCLZIP_ERR_UNSUPPORTED_ENCRYPTION,
+			                       "Unsupported encryption for "
+				  	    	  	   ." filename '".$v_header['stored_filename']
+								   ."'");
 
                        //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
                        return PclZip::errorCode();
@@ -3067,10 +2998,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                // ----- Look for real extraction
                if (($v_extract) && ($v_header['status'] != 'ok')) {
                    //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "No need for extract");
-                   $v_result = $this->privConvertHeader2FileInfo(
-                       $v_header,
-                                                $p_file_list[$v_nb_extracted++]
-                   );
+                   $v_result = $this->privConvertHeader2FileInfo($v_header,
+		                                        $p_file_list[$v_nb_extracted++]);
                    if ($v_result != 1) {
                        $this->privCloseFd();
                        $this->privSwapBackMagicQuotes();
@@ -3139,7 +3068,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    }
                    // ----- Look for extraction in standard output
                    elseif ((isset($p_options[PCLZIP_OPT_EXTRACT_IN_OUTPUT]))
-                && ($p_options[PCLZIP_OPT_EXTRACT_IN_OUTPUT])) {
+		        && ($p_options[PCLZIP_OPT_EXTRACT_IN_OUTPUT])) {
                        // ----- Extracting the file in standard output
                        $v_result1 = $this->privExtractFileInOutput($v_header, $p_options);
                        if ($v_result1 < 1) {
@@ -3165,13 +3094,10 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    // ----- Look for normal extraction
                    else {
                        // ----- Extracting the file
-                       $v_result1 = $this->privExtractFile(
-                           $v_header,
-                                              $p_path,
-                           $p_remove_path,
-                                              $p_remove_all_path,
-                                              $p_options
-                       );
+                       $v_result1 = $this->privExtractFile($v_header,
+		                                      $p_path, $p_remove_path,
+											  $p_remove_all_path,
+											  $p_options);
                        if ($v_result1 < 1) {
                            $this->privCloseFd();
                            $this->privSwapBackMagicQuotes();
@@ -3216,7 +3142,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // 1 : ... ?
        // PCLZIP_ERR_USER_ABORTED(2) : User ask for extraction stop in callback
        // --------------------------------------------------------------------------------
-       public function privExtractFile(&$p_entry, $p_path, $p_remove_path, $p_remove_all_path, &$p_options)
+       function privExtractFile(&$p_entry, $p_path, $p_remove_path, $p_remove_all_path, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::privExtractFile', "path='$p_path', remove_path='$p_remove_path', remove_all_path='".($p_remove_all_path?'true':'false')."'");
            $v_result=1;
@@ -3334,14 +3260,12 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                        // For historical reason first PclZip implementation does not stop
                        // when this kind of error occurs.
                        if ((isset($p_options[PCLZIP_OPT_STOP_ON_ERROR]))
-            && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
+		    && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
                            //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "PCLZIP_OPT_STOP_ON_ERROR is selected, extraction will be stopped");
 
-                           PclZip::privErrorLog(
-                               PCLZIP_ERR_ALREADY_A_DIRECTORY,
-                                 "Filename '".$p_entry['filename']."' is "
-                                 ."already used by an existing directory"
-                           );
+                           PclZip::privErrorLog(PCLZIP_ERR_ALREADY_A_DIRECTORY,
+			                     "Filename '".$p_entry['filename']."' is "
+								 ."already used by an existing directory");
 
                            //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
                            return PclZip::errorCode();
@@ -3358,14 +3282,12 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                        // For historical reason first PclZip implementation does not stop
                        // when this kind of error occurs.
                        if ((isset($p_options[PCLZIP_OPT_STOP_ON_ERROR]))
-            && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
+		    && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
                            //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "PCLZIP_OPT_STOP_ON_ERROR is selected, extraction will be stopped");
 
-                           PclZip::privErrorLog(
-                               PCLZIP_ERR_WRITE_OPEN_FAIL,
-                                 "Filename '".$p_entry['filename']."' exists "
-                                 ."and is write protected"
-                           );
+                           PclZip::privErrorLog(PCLZIP_ERR_WRITE_OPEN_FAIL,
+			                     "Filename '".$p_entry['filename']."' exists "
+								 ."and is write protected");
 
                            //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
                            return PclZip::errorCode();
@@ -3377,7 +3299,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                        //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Existing file '".$p_entry['filename']."' is newer (".date("l dS of F Y h:i:s A", filemtime($p_entry['filename'])).") than the extracted file (".date("l dS of F Y h:i:s A", $p_entry['mtime']).")");
                        // ----- Change the file status
                        if ((isset($p_options[PCLZIP_OPT_REPLACE_NEWER]))
-            && ($p_options[PCLZIP_OPT_REPLACE_NEWER]===true)) {
+		    && ($p_options[PCLZIP_OPT_REPLACE_NEWER]===true)) {
                            //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "PCLZIP_OPT_REPLACE_NEWER is selected, file will be replaced");
                        } else {
                            //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "File will not be replaced");
@@ -3387,21 +3309,20 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                            // For historical reason first PclZip implementation does not stop
                            // when this kind of error occurs.
                            if ((isset($p_options[PCLZIP_OPT_STOP_ON_ERROR]))
-                && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
+		        && ($p_options[PCLZIP_OPT_STOP_ON_ERROR]===true)) {
                                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "PCLZIP_OPT_STOP_ON_ERROR is selected, extraction will be stopped");
 
-                               PclZip::privErrorLog(
-                                   PCLZIP_ERR_WRITE_OPEN_FAIL,
-                         "Newer version of '".$p_entry['filename']."' exists "
-                        ."and option PCLZIP_OPT_REPLACE_NEWER is not selected"
-                               );
+                               PclZip::privErrorLog(PCLZIP_ERR_WRITE_OPEN_FAIL,
+			             "Newer version of '".$p_entry['filename']."' exists "
+					    ."and option PCLZIP_OPT_REPLACE_NEWER is not selected");
 
                                //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
                                return PclZip::errorCode();
                            }
                        }
+                   } else {
+                       //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Existing file '".$p_entry['filename']."' is older than the extrated one - will be replaced by the extracted one (".date("l dS of F Y h:i:s A", filemtime($p_entry['filename'])).") than the extracted file (".date("l dS of F Y h:i:s A", $p_entry['mtime']).")");
                    }
-                   //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Existing file '".$p_entry['filename']."' is older than the extrated one - will be replaced by the extracted one (".date("l dS of F Y h:i:s A", filemtime($p_entry['filename'])).") than the extracted file (".date("l dS of F Y h:i:s A", $p_entry['mtime']).")");
                }
 
                // ----- Check the directory availability and create it if necessary
@@ -3487,7 +3408,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
 
               // ----- Decrypt the buffer
               $this->privDecrypt($v_encryption_header, $v_buffer,
-                                 $p_entry['compressed_size']-12, $p_entry['crc']);
+			                     $p_entry['compressed_size']-12, $p_entry['crc']);
               //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 5, "Buffer is '".$v_buffer."'");
               */
                        } else {
@@ -3499,7 +3420,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                        // ----- Decompress the file
                        $v_file_content = @gzinflate($v_buffer);
                        unset($v_buffer);
-                       if ($v_file_content === false) {
+                       if ($v_file_content === FALSE) {
                            //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Unable to inflate compressed file");
 
                            // ----- Change the file status
@@ -3581,7 +3502,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privExtractFileInOutput(&$p_entry, &$p_options)
+       function privExtractFileInOutput(&$p_entry, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::privExtractFileInOutput', "");
            $v_result=1;
@@ -3705,7 +3626,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privExtractFileAsString(&$p_entry, &$p_string)
+       function privExtractFileAsString(&$p_entry, &$p_string)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::privExtractFileAsString', "p_entry['filename']='".$p_entry['filename']."'");
            $v_result=1;
@@ -3744,16 +3665,16 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    $v_data = @fread($this->zip_fd, $p_entry['compressed_size']);
 
                    // ----- Decompress the file
-                   if (($p_string = @gzinflate($v_data)) === false) {
+                   if (($p_string = @gzinflate($v_data)) === FALSE) {
                        // TBC
                    }
                }
 
                // ----- Trace
       //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Extraction done");
+           } else {
+               // TBC : error : can not extract a folder in a string
            }
-           // TBC : error : can not extract a folder in a string
-           
 
            // ----- Return
            //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, $v_result);
@@ -3767,7 +3688,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privReadFileHeader(&$p_header)
+       function privReadFileHeader(&$p_header)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privReadFileHeader", "");
            $v_result=1;
@@ -3794,13 +3715,13 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            $v_binary_data = fread($this->zip_fd, 26);
 
            // ----- Look for invalid block size
-           if (mb_strlen($v_binary_data, 'iso-8859-1') != 26) {
+           if (mb_strlen($v_binary_data,'iso-8859-1') != 26) {
                $p_header['filename'] = "";
                $p_header['status'] = "invalid_header";
                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Invalid block size : ".strlen($v_binary_data));
 
                // ----- Error log
-               PclZip::privErrorLog(PCLZIP_ERR_BAD_FORMAT, "Invalid block size : ".mb_strlen($v_binary_data, 'iso-8859-1'));
+               PclZip::privErrorLog(PCLZIP_ERR_BAD_FORMAT, "Invalid block size : ".mb_strlen($v_binary_data,'iso-8859-1'));
 
                // ----- Return
                //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
@@ -3888,7 +3809,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privReadCentralFileHeader(&$p_header)
+       function privReadCentralFileHeader(&$p_header)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privReadCentralFileHeader", "");
            $v_result=1;
@@ -3915,13 +3836,13 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            $v_binary_data = fread($this->zip_fd, 42);
 
            // ----- Look for invalid block size
-           if (mb_strlen($v_binary_data, 'iso-8859-1') != 42) {
+           if (mb_strlen($v_binary_data,'iso-8859-1') != 42) {
                $p_header['filename'] = "";
                $p_header['status'] = "invalid_header";
                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Invalid block size : ".strlen($v_binary_data));
 
                // ----- Error log
-               PclZip::privErrorLog(PCLZIP_ERR_BAD_FORMAT, "Invalid block size : ".mb_strlen($v_binary_data, 'iso-8859-1'));
+               PclZip::privErrorLog(PCLZIP_ERR_BAD_FORMAT, "Invalid block size : ".mb_strlen($v_binary_data,'iso-8859-1'));
 
                // ----- Return
                //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
@@ -4021,7 +3942,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //   1 on success,
        //   0 on error;
        // --------------------------------------------------------------------------------
-       public function privCheckFileHeaders(&$p_local_header, &$p_central_header)
+       function privCheckFileHeaders(&$p_local_header, &$p_central_header)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privCheckFileHeaders", "");
            $v_result=1;
@@ -4071,7 +3992,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privReadEndCentralDir(&$p_central_dir)
+       function privReadEndCentralDir(&$p_central_dir)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privReadEndCentralDir", "");
            $v_result=1;
@@ -4176,11 +4097,11 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            $v_binary_data = fread($this->zip_fd, 18);
 
            // ----- Look for invalid block size
-           if (mb_strlen($v_binary_data, 'iso-8859-1') != 18) {
+           if (mb_strlen($v_binary_data,'iso-8859-1') != 18) {
                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "Invalid End of Central Dir Record size : ".strlen($v_binary_data));
 
                // ----- Error log
-               PclZip::privErrorLog(PCLZIP_ERR_BAD_FORMAT, "Invalid End of Central Dir Record size : ".mb_strlen($v_binary_data, 'iso-8859-1'));
+               PclZip::privErrorLog(PCLZIP_ERR_BAD_FORMAT, "Invalid End of Central Dir Record size : ".mb_strlen($v_binary_data,'iso-8859-1'));
 
                // ----- Return
                //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
@@ -4203,11 +4124,9 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                // While decrypted, zip has training 0 bytes
                if (0) {
                    // ----- Error log
-                   PclZip::privErrorLog(
-                       PCLZIP_ERR_BAD_FORMAT,
-                           'The central dir is not at the end of the archive.'
-                           .' Some trailing bytes exists after the archive.'
-                   );
+                   PclZip::privErrorLog(PCLZIP_ERR_BAD_FORMAT,
+	                       'The central dir is not at the end of the archive.'
+						   .' Some trailing bytes exists after the archive.');
 
                    // ----- Return
                    //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
@@ -4253,7 +4172,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privDeleteByRule(&$p_result_list, &$p_options)
+       function privDeleteByRule(&$p_result_list, &$p_options)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privDeleteByRule", "");
            $v_result=1;
@@ -4443,7 +4362,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 5, "Position before rewind : ".ftell($this->zip_fd)."'");
                    @rewind($this->zip_fd);
                    //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 5, "Position after rewind : ".ftell($this->zip_fd)."'");
-                   if (@fseek($this->zip_fd, $v_header_list[$i]['offset'])) {
+                   if (@fseek($this->zip_fd,  $v_header_list[$i]['offset'])) {
                        // ----- Close the zip file
                        $this->privCloseFd();
                        $v_temp_zip->privCloseFd();
@@ -4472,10 +4391,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                    }
 
                    // ----- Check that local file header is same as central file header
-                   if ($this->privCheckFileHeaders(
-                       $v_local_header,
-                                            $v_header_list[$i]
-                   ) != 1) {
+                   if ($this->privCheckFileHeaders($v_local_header,
+			                                $v_header_list[$i]) != 1) {
                        // TBC
                    }
                    unset($v_local_header);
@@ -4604,7 +4521,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        //    1 : OK
        //   -1 : Unable to create directory
        // --------------------------------------------------------------------------------
-       public function privDirCheck($p_dir, $p_is_dir=false)
+       function privDirCheck($p_dir, $p_is_dir=false)
        {
            $v_result = 1;
 
@@ -4661,7 +4578,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privMerge(&$p_archive_to_add)
+       function privMerge(&$p_archive_to_add)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privMerge", "archive='".$p_archive_to_add->zipname."'");
            $v_result=1;
@@ -4858,7 +4775,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privDuplicate($p_archive_filename)
+       function privDuplicate($p_archive_filename)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::privDuplicate", "archive_filename='$p_archive_filename'");
            $v_result=1;
@@ -4923,7 +4840,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Description :
        // Parameters :
        // --------------------------------------------------------------------------------
-       public function privErrorLog($p_error_code=0, $p_error_string='')
+       function privErrorLog($p_error_code=0, $p_error_string='')
        {
            if (PCLZIP_ERROR_EXTERNAL == 1) {
                PclError($p_error_code, $p_error_string);
@@ -4939,7 +4856,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Description :
        // Parameters :
        // --------------------------------------------------------------------------------
-       public function privErrorReset()
+       function privErrorReset()
        {
            if (PCLZIP_ERROR_EXTERNAL == 1) {
                PclErrorReset();
@@ -4956,7 +4873,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privDecrypt($p_encryption_header, &$p_buffer, $p_size, $p_crc)
+       function privDecrypt($p_encryption_header, &$p_buffer, $p_size, $p_crc)
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::privDecrypt', "size=".$p_size."");
            $v_result=1;
@@ -4964,13 +4881,8 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            // ----- To Be Modified ;-)
            $v_pwd = "test";
 
-           $p_buffer = PclZipUtilZipDecrypt(
-               $p_buffer,
-               $p_size,
-               $p_encryption_header,
-                                     $p_crc,
-               $v_pwd
-           );
+           $p_buffer = PclZipUtilZipDecrypt($p_buffer, $p_size, $p_encryption_header,
+	                                 $p_crc, $v_pwd);
 
            // ----- Return
            //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, $v_result);
@@ -4984,14 +4896,14 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privDisableMagicQuotes()
+       function privDisableMagicQuotes()
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::privDisableMagicQuotes', "");
            $v_result=1;
 
            // ----- Look if function exists
            if ((!function_exists("get_magic_quotes_runtime"))
-        || (!function_exists("set_magic_quotes_runtime"))) {
+	    || (!function_exists("set_magic_quotes_runtime"))) {
                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Functions *et_magic_quotes_runtime are not supported");
                //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, $v_result);
                return $v_result;
@@ -5011,7 +4923,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            // ----- Disable magic_quotes
            if ($this->magic_quotes_status == 1) {
                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Disable magic_quotes");
-      //@set_magic_quotes_runtime(0);
+	  //@set_magic_quotes_runtime(0);
            }
 
            // ----- Return
@@ -5026,14 +4938,14 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
        // Parameters :
        // Return Values :
        // --------------------------------------------------------------------------------
-       public function privSwapBackMagicQuotes()
+       function privSwapBackMagicQuotes()
        {
            //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, 'PclZip::privSwapBackMagicQuotes', "");
            $v_result=1;
 
            // ----- Look if function exists
            if ((!function_exists("get_magic_quotes_runtime"))
-        || (!function_exists("set_magic_quotes_runtime"))) {
+	    || (!function_exists("set_magic_quotes_runtime"))) {
                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Functions *et_magic_quotes_runtime are not supported");
                //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, $v_result);
                return $v_result;
@@ -5049,7 +4961,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
            // ----- Swap back magic_quotes
            if ($this->magic_quotes_status == 1) {
                //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Enable back magic_quotes");
-      //@set_magic_quotes_runtime($this->magic_quotes_status);
+  	  //@set_magic_quotes_runtime($this->magic_quotes_status);
            }
 
            // ----- Return
@@ -5103,9 +5015,10 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
                       $v_result = $v_list[$i];
                   }
                   // ----- Double '/' inside the path
-                   
+                  else {
                       // ----- Ignore only the double '//' in path,
             // but not the first and last '/'
+                  }
               } else {
                   // ----- Look for item to skip
                   if ($v_skip > 0) {
@@ -5325,7 +5238,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
       for (reset($v_list); $v_key = key($v_list); next($v_list)) {
           $v_prefix = substr($v_key, 0, 10);
           if ((($v_prefix == 'PCLZIP_OPT') || ($v_prefix == 'PCLZIP_CB_'))
-          && ($v_list[$v_key] == $p_option)) {
+	      && ($v_list[$v_key] == $p_option)) {
               //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, $v_key);
               return $v_key;
           }
@@ -5357,7 +5270,7 @@ r5573 - 2005-06-03 16:32:18 -0700 (Fri, 03 Jun 2005) - bob - checking in chosen 
               $p_path = substr($p_path, $v_position+1);
           }
           // ----- Change potential windows directory separator
-          if ((strpos($p_path, '\\') > 0) || (substr($p_path, 0, 1) == '\\')) {
+          if ((strpos($p_path, '\\') > 0) || (substr($p_path, 0,1) == '\\')) {
               $p_path = strtr($p_path, '\\', '/');
           }
       }

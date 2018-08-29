@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*
  * Created on Jul 18, 2007
@@ -48,10 +47,10 @@
  {
      $multi = false;
      $radio = false;
-     if (isset($vardef['type']) && $vardef['type'] == 'multienum') {
+     if (isset ($vardef['type']) && $vardef['type'] == 'multienum') {
          $multi = true;
      }
-        
+ 		
      $selected_options = "";
      if ($multi && !empty($vardef['default'])) {
          $selected_options = unencodeMultienum($vardef['default']);
@@ -78,7 +77,7 @@
              $package_strings = $module->mblanguage->appListStrings[$lang.'.lang.php'];
          }
      }
-    
+	
      global $app_list_strings;
      $my_list_strings = $app_list_strings;
      $my_list_strings = array_merge($my_list_strings, $package_strings);
@@ -114,7 +113,7 @@
      $ss->assign('selected_options', $selected_options);
      $ss->assign('multi', isset($multi) ? $multi: false);
      $ss->assign('radio', isset($radio) ? $radio: false);
-     $ss->assign('dropdown_name', (!empty($vardef['options']) ? $vardef['options'] : ''));
+     $ss->assign('dropdown_name',(!empty($vardef['options']) ? $vardef['options'] : ''));
 
      require_once('include/JSON.php');
      $json = new JSON();

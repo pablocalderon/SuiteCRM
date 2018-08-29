@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -66,60 +65,60 @@ if (!defined('sugarEntry') || !sugarEntry) {
 // Bug is used to store customer information.
 class Bug extends SugarBean
 {
-    public $field_name_map = array();
+    var $field_name_map = array();
     // Stored fields
-    public $id;
-    public $date_entered;
-    public $date_modified;
-    public $modified_user_id;
-    public $assigned_user_id;
-    public $bug_number;
-    public $description;
-    public $name;
-    public $status;
-    public $priority;
+    var $id;
+    var $date_entered;
+    var $date_modified;
+    var $modified_user_id;
+    var $assigned_user_id;
+    var $bug_number;
+    var $description;
+    var $name;
+    var $status;
+    var $priority;
 
     // These are related
-    public $resolution;
-    public $found_in_release;
-    public $release_name;
-    public $fixed_in_release_name;
-    public $created_by;
-    public $created_by_name;
-    public $modified_by_name;
-    public $account_id;
-    public $contact_id;
-    public $case_id;
-    public $task_id;
-    public $note_id;
-    public $meeting_id;
-    public $call_id;
-    public $email_id;
-    public $assigned_user_name;
-    public $type;
+    var $resolution;
+    var $found_in_release;
+    var $release_name;
+    var $fixed_in_release_name;
+    var $created_by;
+    var $created_by_name;
+    var $modified_by_name;
+    var $account_id;
+    var $contact_id;
+    var $case_id;
+    var $task_id;
+    var $note_id;
+    var $meeting_id;
+    var $call_id;
+    var $email_id;
+    var $assigned_user_name;
+    var $type;
 
     //BEGIN Additional fields being added to Bugs
 
-    public $fixed_in_release;
-    public $work_log;
-    public $source;
-    public $product_category;
+    var $fixed_in_release;
+    var $work_log;
+    var $source;
+    var $product_category;
     //END Additional fields being added to Bugs
 
-    public $module_dir = 'Bugs';
-    public $table_name = "bugs";
-    public $rel_account_table = "accounts_bugs";
-    public $rel_contact_table = "contacts_bugs";
-    public $rel_case_table = "cases_bugs";
-    public $importable = true;
-    public $object_name = "Bug";
+    var $module_dir = 'Bugs';
+    var $table_name = "bugs";
+    var $rel_account_table = "accounts_bugs";
+    var $rel_contact_table = "contacts_bugs";
+    var $rel_case_table = "cases_bugs";
+    var $importable = true;
+    var $object_name = "Bug";
 
     // This is used to retrieve related fields from form posts.
-    public $additional_column_fields = array('assigned_user_name', 'assigned_user_id', 'case_id', 'account_id', 'contact_id', 'task_id', 'note_id', 'meeting_id', 'call_id', 'email_id');
+    var $additional_column_fields = Array('assigned_user_name', 'assigned_user_id', 'case_id', 'account_id', 'contact_id', 'task_id', 'note_id', 'meeting_id', 'call_id', 'email_id');
 
-    public $relationship_fields = array('case_id'=>'cases', 'account_id' => 'accounts', 'contact_id'=>'contacts',
-                                    'task_id'=>'tasks', 'note_id'=>'notes', 'meeting_id'=>'meetings',
-                                    'call_id'=>'calls', 'email_id'=>'emails');
+    var $relationship_fields = Array('case_id'=>'cases', 'account_id' => 'accounts', 'contact_id'=>'contacts',
+									'task_id'=>'tasks', 'note_id'=>'notes', 'meeting_id'=>'meetings',
+									'call_id'=>'calls', 'email_id'=>'emails');
 
     public function __construct()
     {
@@ -147,18 +146,18 @@ class Bug extends SugarBean
         self::__construct();
     }
 
-    public $new_schema = true;
+    var $new_schema = true;
 
 
 
 
 
-    public function get_summary_text()
+    function get_summary_text()
     {
         return "$this->name";
     }
 
-    public function create_list_query($order_by, $where, $show_deleted = 0)
+    function create_list_query($order_by, $where, $show_deleted = 0)
     {
         // Fill in the assigned_user_name
         //		$this->assigned_user_name = get_assigned_user_name($this->assigned_user_id);
@@ -203,7 +202,7 @@ class Bug extends SugarBean
         return $query;
     }
 
-    public function create_export_query($order_by, $where, $relate_link_join='')
+    function create_export_query($order_by, $where, $relate_link_join='')
     {
         $custom_join = $this->getCustomJoin(true, true, $where);
         $custom_join['join'] .= $relate_link_join;
@@ -237,21 +236,21 @@ class Bug extends SugarBean
 
         return $query;
     }
-    public function fill_in_additional_list_fields()
+    function fill_in_additional_list_fields()
     {
         parent::fill_in_additional_list_fields();
         // Fill in the assigned_user_name
-        //$this->assigned_user_name = get_assigned_user_name($this->assigned_user_id);
+		//$this->assigned_user_name = get_assigned_user_name($this->assigned_user_id);
 
 //	   $this->set_fixed_in_release();
     }
 
-    public function fill_in_additional_detail_fields()
+    function fill_in_additional_detail_fields()
     {
 
-        /*
-        // Fill in the assigned_user_name
-        $this->assigned_user_name = get_assigned_user_name($this->assigned_user_id);
+	    /*
+		// Fill in the assigned_user_name
+		$this->assigned_user_name = get_assigned_user_name($this->assigned_user_id);
         */
         parent::fill_in_additional_detail_fields();
         //$this->created_by_name = get_assigned_user_name($this->created_by);
@@ -274,7 +273,7 @@ class Bug extends SugarBean
         }
 
         $query = "SELECT r1.name from releases r1, $this->table_name i1 where r1.id = i1.found_in_release and i1.id = '$this->id' and i1.deleted=0 and r1.deleted=0";
-        $result = $this->db->query($query, true, " Error filling in additional detail fields: ");
+        $result = $this->db->query($query,true," Error filling in additional detail fields: ");
 
         // Get the id and the name.
         $row = $this->db->fetchByAssoc($result);
@@ -302,7 +301,7 @@ class Bug extends SugarBean
         }
 
         $query = "SELECT r1.name from releases r1, $this->table_name i1 where r1.id = i1.fixed_in_release and i1.id = '$this->id' and i1.deleted=0 and r1.deleted=0";
-        $result = $this->db->query($query, true, " Error filling in additional detail fields: ");
+        $result = $this->db->query($query,true," Error filling in additional detail fields: ");
 
         // Get the id and the name.
         $row = $this->db->fetchByAssoc($result);
@@ -319,7 +318,7 @@ class Bug extends SugarBean
     }
 
 
-    public function get_list_view_data()
+    function get_list_view_data()
     {
         global $current_language;
         $the_array = parent::get_list_view_data();
@@ -346,9 +345,9 @@ class Bug extends SugarBean
     	builds a generic search based on the query string using or
     	do not include any $this-> because this is called on without having the class instantiated
     */
-    public function build_generic_where_clause($the_query_string)
+    function build_generic_where_clause($the_query_string)
     {
-        $where_clauses = array();
+        $where_clauses = Array();
         $the_query_string = $this->db->quote($the_query_string);
         array_push($where_clauses, "bugs.name like '$the_query_string%'");
         if (is_numeric($the_query_string)) {
@@ -366,7 +365,7 @@ class Bug extends SugarBean
         return $the_where;
     }
 
-    public function set_notification_body($xtpl, $bug)
+    function set_notification_body($xtpl, $bug)
     {
         global $mod_strings, $app_list_strings;
 
@@ -384,15 +383,15 @@ class Bug extends SugarBean
         return $xtpl;
     }
 
-    public function bean_implements($interface)
+    function bean_implements($interface)
     {
         switch ($interface) {
-            case 'ACL':return true;
-        }
+			case 'ACL':return true;
+		}
         return false;
     }
 
-    public function save($check_notify = false)
+    function save($check_notify = FALSE)
     {
         return parent::save($check_notify);
     }
@@ -403,7 +402,7 @@ function getReleaseDropDown()
     static $releases = null;
     if (!$releases) {
         $seedRelease = new Release();
-        $releases = $seedRelease->get_releases(true, "Active");
+        $releases = $seedRelease->get_releases(TRUE, "Active");
     }
     return $releases;
 }

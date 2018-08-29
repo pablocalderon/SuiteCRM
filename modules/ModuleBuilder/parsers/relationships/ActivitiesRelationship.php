@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once 'modules/ModuleBuilder/parsers/relationships/OneToManyRelationship.php' ;
@@ -82,9 +81,9 @@ class ActivitiesRelationship extends OneToManyRelationship
      * @param array $definition Parameters passed in as array defined in parent::$definitionKeys
      * The lhs_module value is for the One side; the rhs_module value is for the Many
      */
-    public function __construct($definition)
+    function __construct($definition)
     {
-        parent::__construct($definition) ;
+        parent::__construct ($definition) ;
     }
 
     /*
@@ -95,13 +94,13 @@ class ActivitiesRelationship extends OneToManyRelationship
      * Define the labels to be added to the module for the new relationships
      * @return array    An array of system value => display value
      */
-    public function buildLabels()
+    function buildLabels()
     {
-        $labelDefinitions = array( ) ;
+        $labelDefinitions = array ( ) ;
         if (!$this->relationship_only) {
             if (!isset(ActivitiesRelationship::$labelsAdded[$this->lhs_module])) {
                 foreach (getTypeDisplayList() as $typeDisplay) {
-                    $labelDefinitions [] = array(
+                    $labelDefinitions [] = array (
                         'module' => 'application',
                         'system_label' => $typeDisplay,
                         'display_label' => array(
@@ -123,7 +122,7 @@ class ActivitiesRelationship extends OneToManyRelationship
             }
             $lhs_display_label .= translate($this->lhs_module);
 
-            $labelDefinitions[] = array(
+            $labelDefinitions[] = array (
                 'module' => $this->lhs_module ,
                 'system_label' => 'LBL_' . strtoupper($this->relationship_name . '_FROM_' . $this->getRightModuleSystemLabel()) . '_TITLE',
                 'display_label' => $rhs_display_label
@@ -143,20 +142,20 @@ class ActivitiesRelationship extends OneToManyRelationship
     /*
      * @return array    An array of field definitions, ready for the vardefs, keyed by module
      */
-    public function buildVardefs()
+    function buildVardefs()
     {
-        $vardefs = array( ) ;
+        $vardefs = array ( ) ;
 
-        $vardefs [ $this->rhs_module ] [] = $this->getLinkFieldDefinition($this->lhs_module, $this->relationship_name) ;
-        $vardefs [ $this->lhs_module ] [] = $this->getLinkFieldDefinition($this->rhs_module, $this->relationship_name) ;
+        $vardefs [ $this->rhs_module ] [] = $this->getLinkFieldDefinition ($this->lhs_module, $this->relationship_name) ;
+        $vardefs [ $this->lhs_module ] [] = $this->getLinkFieldDefinition ($this->rhs_module, $this->relationship_name) ;
 
 
         return $vardefs ;
     }
 
-    protected function getLinkFieldDefinition($sourceModule, $relationshipName)
+    protected function getLinkFieldDefinition($sourceModule , $relationshipName)
     {
-        $vardef = array( ) ;
+        $vardef = array ( ) ;
         $vardef [ 'name' ] = $relationshipName;
         $vardef [ 'type' ] = 'link' ;
         $vardef [ 'relationship' ] = $relationshipName ;
@@ -171,36 +170,36 @@ class ActivitiesRelationship extends OneToManyRelationship
      * Define what fields to add to which modules layouts
      * @return array    An array of module => fieldname
      */
-    public function buildFieldsToLayouts()
+    function buildFieldsToLayouts()
     {
         if ($this->relationship_only) {
-            return array() ;
+            return array () ;
         }
 
         return array( $this->rhs_module => $this->relationship_name . "_name" ) ; // this must match the name of the relate field from buildVardefs
     }
 
-    public function buildSubpanelDefinitions()
+    function buildSubpanelDefinitions()
     {
         if ($this->relationship_only || isset(ActivitiesRelationship::$subpanelsAdded[$this->lhs_module])) {
-            return array() ;
+            return array () ;
         }
 
         ActivitiesRelationship::$subpanelsAdded[$this->lhs_module] = true;
         $relationshipName = substr($this->relationship_name, 0, strrpos($this->relationship_name, '_'));
-        return array( $this->lhs_module => array(
-                      'activities' => $this->buildActivitiesSubpanelDefinition($relationshipName),
-                      'history' => $this->buildHistorySubpanelDefinition($relationshipName) ,
-                    ));
+        return array( $this->lhs_module => array (
+        			  'activities' => $this->buildActivitiesSubpanelDefinition ($relationshipName),
+        			  'history' => $this->buildHistorySubpanelDefinition ($relationshipName) ,
+        			));
     }
 
     /*
      * @return array    An array of relationship metadata definitions
      */
-    public function buildRelationshipMetaData()
+    function buildRelationshipMetaData()
     {
         $relationshipName = $this->definition [ 'relationship_name' ];
-        $relMetadata = array( ) ;
+        $relMetadata = array ( ) ;
         $relMetadata [ 'lhs_module' ] = $this->definition [ 'lhs_module' ] ;
         $relMetadata [ 'lhs_table' ] = $this->getTablename($this->definition [ 'lhs_module' ]) ;
         $relMetadata [ 'lhs_key' ] = 'id' ;
@@ -212,9 +211,9 @@ class ActivitiesRelationship extends OneToManyRelationship
         $relMetadata ['relationship_role_column_value'] = $this->definition [ 'lhs_module' ] ;
 
         return array( $this->lhs_module => array(
-            'relationships' => array($relationshipName => $relMetadata),
-            'fields' => '', 'indices' => '', 'table' => '')
-        ) ;
+    		'relationships' => array ($relationshipName => $relMetadata),
+    		'fields' => '', 'indices' => '', 'table' => '')
+    	) ;
     }
 
     /*
@@ -223,7 +222,7 @@ class ActivitiesRelationship extends OneToManyRelationship
          */
     protected function buildActivitiesSubpanelDefinition($relationshipName)
     {
-        return array(
+        return array (
             'order' => 10 ,
             'sort_order' => 'desc' ,
             'sort_by' => 'date_start' ,
@@ -231,21 +230,21 @@ class ActivitiesRelationship extends OneToManyRelationship
             'type' => 'collection' ,
             'subpanel_name' => 'activities' , //this value is not associated with a physical file
             'module' => 'Activities' ,
-            'top_buttons' => array(
-                array( 'widget_class' => 'SubPanelTopCreateTaskButton' ) ,
-                array( 'widget_class' => 'SubPanelTopScheduleMeetingButton' ) ,
-                array( 'widget_class' => 'SubPanelTopScheduleCallButton' ) ,
-                array( 'widget_class' => 'SubPanelTopComposeEmailButton' ) ) ,
-                'collection_list' => array(
-                    'meetings' => array(
+            'top_buttons' => array (
+                array ( 'widget_class' => 'SubPanelTopCreateTaskButton' ) ,
+                array ( 'widget_class' => 'SubPanelTopScheduleMeetingButton' ) ,
+                array ( 'widget_class' => 'SubPanelTopScheduleCallButton' ) ,
+                array ( 'widget_class' => 'SubPanelTopComposeEmailButton' ) ) ,
+                'collection_list' => array (
+                    'meetings' => array (
                         'module' => 'Meetings' ,
                         'subpanel_name' => 'ForActivities' ,
                         'get_subpanel_data' => $relationshipName. '_meetings' ) ,
-                    'tasks' => array(
+                    'tasks' => array (
                         'module' => 'Tasks' ,
                         'subpanel_name' => 'ForActivities' ,
                         'get_subpanel_data' => $relationshipName. '_tasks' ) ,
-                    'calls' => array(
+                    'calls' => array (
                         'module' => 'Calls' ,
                         'subpanel_name' => 'ForActivities' ,
                         'get_subpanel_data' => $relationshipName. '_calls' ) ) ) ;
@@ -257,7 +256,7 @@ class ActivitiesRelationship extends OneToManyRelationship
      */
     protected function buildHistorySubpanelDefinition($relationshipName)
     {
-        return array(
+        return array (
             'order' => 20 ,
             'sort_order' => 'desc' ,
             'sort_by' => 'date_modified' ,
@@ -265,28 +264,28 @@ class ActivitiesRelationship extends OneToManyRelationship
             'type' => 'collection' ,
             'subpanel_name' => 'history' , //this values is not associated with a physical file.
             'module' => 'History' ,
-            'top_buttons' => array(
-                array( 'widget_class' => 'SubPanelTopCreateNoteButton' ) ,
-                array( 'widget_class' => 'SubPanelTopArchiveEmailButton'),
-                array( 'widget_class' => 'SubPanelTopSummaryButton' ) ) ,
-                'collection_list' => array(
-                    'meetings' => array(
+            'top_buttons' => array (
+                array ( 'widget_class' => 'SubPanelTopCreateNoteButton' ) ,
+				array ( 'widget_class' => 'SubPanelTopArchiveEmailButton'),
+                array ( 'widget_class' => 'SubPanelTopSummaryButton' ) ) ,
+                'collection_list' => array (
+                    'meetings' => array (
                         'module' => 'Meetings' ,
                         'subpanel_name' => 'ForHistory' ,
                         'get_subpanel_data' => $relationshipName. '_meetings' ) ,
-                    'tasks' => array(
+                    'tasks' => array (
                         'module' => 'Tasks' ,
                         'subpanel_name' => 'ForHistory' ,
                         'get_subpanel_data' => $relationshipName. '_tasks' ) ,
-                    'calls' => array(
+                    'calls' => array (
                         'module' => 'Calls' ,
                         'subpanel_name' => 'ForHistory' ,
                         'get_subpanel_data' => $relationshipName. '_calls' ) ,
-                    'notes' => array(
+                    'notes' => array (
                         'module' => 'Notes' ,
                         'subpanel_name' => 'ForHistory' ,
                         'get_subpanel_data' => $relationshipName. '_notes' ) ,
-                    'emails' => array(
+                    'emails' => array (
                         'module' => 'Emails' ,
                         'subpanel_name' => 'ForHistory' ,
                         'get_subpanel_data' => $relationshipName. '_emails' ) ) )  ;

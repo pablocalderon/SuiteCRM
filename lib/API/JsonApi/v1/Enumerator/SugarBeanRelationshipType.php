@@ -39,6 +39,7 @@
  */
 namespace SuiteCRM\API\JsonApi\v1\Enumerator;
 
+
 /**
  * Class SugarBeanRelationshipType
  * @package SuiteCRM\API\JsonApi\v1

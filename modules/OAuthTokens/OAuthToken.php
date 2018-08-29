@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 
@@ -73,7 +72,7 @@ class OAuthToken extends SugarBean
     const ACCESS = 2;
     const INVALID = 3;
 
-    public function __construct($token='', $secret='')
+    function __construct($token='', $secret='')
     {
         parent::__construct();
         $this->token = $token;
@@ -116,9 +115,9 @@ class OAuthToken extends SugarBean
     }
 
     /**
-     * Generate random token
-     * @return string
-     */
+	 * Generate random token
+	 * @return string
+	 */
     protected static function randomValue()
     {
         return bin2hex(Zend_Oauth_Provider::generateToken(6));
@@ -128,7 +127,7 @@ class OAuthToken extends SugarBean
      * Generate random token/secret pair and create token
      * @return OAuthToken
      */
-    public static function generate()
+    static function generate()
     {
         $t = self::randomValue();
         $s = self::randomValue();
@@ -148,9 +147,9 @@ class OAuthToken extends SugarBean
     /**
      * Load token by ID
      * @param string $token
-     * @return OAuthToken
+	 * @return OAuthToken
      */
-    public static function load($token)
+    static function load($token)
     {
         $ltoken = new self();
         $ltoken->retrieve($token);
@@ -236,7 +235,7 @@ class OAuthToken extends SugarBean
     /**
      * Clean up stale tokens
      */
-    public static function cleanup()
+    static public function cleanup()
     {
         $db = DBManagerFactory::getInstance();
         // delete invalidated tokens older than 1 day

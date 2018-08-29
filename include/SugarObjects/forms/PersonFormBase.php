@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /**
@@ -58,18 +57,18 @@ require_once('include/SugarObjects/forms/FormBase.php');
 
 abstract class PersonFormBase extends FormBase
 {
-    public $moduleName;
-    public $objectName;
+    var $moduleName;
+    var $objectName;
     
     /**
      * buildTableForm
-     *
+     * 
      * This function creates a table with form data.  It is used by the form base code when checking for duplicates
      *
      * @param $rows Array of duplicate row data
      * @return $form The HTML form data
      */
-    public function buildTableForm($rows)
+    function buildTableForm($rows)
     {
         global $action;
         global $mod_strings;
@@ -115,14 +114,14 @@ abstract class PersonFormBase extends FormBase
 
         if (isset($_POST['return_action']) && $_POST['return_action'] == 'SubPanelViewer') {
             $_POST['return_action'] = 'DetailView';
-        }
-    
+        } 
+	
         if (isset($_POST['return_action']) && $_POST['return_action'] == 'DetailView' && empty($_REQUEST['return_id'])) {
             unset($_POST['return_action']);
         }
-        
+		
         $form .= getPostToForm();
-    
+	
         if (isset($rows[0])) {
             foreach ($rows[0] as $key=>$value) {
                 if ($key != 'id') {
@@ -188,7 +187,7 @@ abstract class PersonFormBase extends FormBase
      * @param $prefix String value of any prefix to the form input names
      * @return $rows Array of matching Leads entries found; null if none found
      */
-    public function checkForDuplicates($prefix='')
+    function checkForDuplicates($prefix='')
     {
         require_once('include/formbase.php');
         require_once('include/MVC/SugarModule.php');
@@ -223,9 +222,9 @@ abstract class PersonFormBase extends FormBase
         if (!empty($emailStr)) {
             $emailStr = substr($emailStr, 1);
             $query = 'SELECT DISTINCT er.bean_id AS id FROM email_addr_bean_rel er, ' .
-                 'email_addresses ea WHERE ea.id = er.email_address_id ' .
-                 'AND ea.deleted = 0 AND er.deleted = 0 AND er.bean_module = \'' . $this->moduleName . '\' ' .
-                 'AND email_address_caps IN (' . $emailStr . ')';
+		         'email_addresses ea WHERE ea.id = er.email_address_id ' .
+		         'AND ea.deleted = 0 AND er.deleted = 0 AND er.bean_module = \'' . $this->moduleName . '\' ' .
+	             'AND email_address_caps IN (' . $emailStr . ')';
 
             $result = $db->query($query);
             while (($row = $db->fetchByAssoc($result)) != null) {

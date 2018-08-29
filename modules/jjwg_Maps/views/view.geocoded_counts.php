@@ -6,7 +6,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class Jjwg_MapsViewGeocoded_Counts extends SugarView
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -14,7 +14,7 @@ class Jjwg_MapsViewGeocoded_Counts extends SugarView
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function Jjwg_MapsViewGeocoded_Counts()
+    function Jjwg_MapsViewGeocoded_Counts()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -26,7 +26,7 @@ class Jjwg_MapsViewGeocoded_Counts extends SugarView
     }
 
 
-    public function display()
+    function display()
     {
         echo '<div class="moduleTitle"><h2>'.$GLOBALS['mod_strings']['LBL_GEOCODED_COUNTS'].'</h2><div class="clear"></div></div>';
         echo '<div class="clear"></div>';
@@ -105,3 +105,4 @@ class Jjwg_MapsViewGeocoded_Counts extends SugarView
         echo '<a href="'.htmlspecialchars($delete_url).'">'.$GLOBALS['app_strings']['LBL_DELETE'].' - '.$GLOBALS['mod_strings']['LBL_ADDRESS_CACHE'].'</a>';
     }
 }
+

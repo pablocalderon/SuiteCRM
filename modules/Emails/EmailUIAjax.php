@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -138,11 +138,8 @@ if (isset($_REQUEST['emailUIAction'])) {
                 $ie->email->from_name = $ie->email->from_addr;
                 $email = $ie->email->et->handleReplyType($ie->email, $_REQUEST['composeType']);
                 $ret = $ie->email->et->displayComposeEmail($email);
-                $ret['description'] = empty($email->description_html) ? str_replace(
-                    "\n",
-                    "\n<BR/>",
-                    $email->description
-                ) : $email->description_html;
+                $ret['description'] = empty($email->description_html) ? str_replace("\n", "\n<BR/>",
+                    $email->description) : $email->description_html;
                 //get the forward header and add to description
                 $forward_header = $email->getForwardHeader();
 
@@ -302,7 +299,7 @@ if (isset($_REQUEST['emailUIAction'])) {
         } else {
             die();
         }
-        break;
+    	break;
     case 'getTemplateAttachments':
         $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: getTemplateAttachments");
         if (isset($_REQUEST['parent_id']) && !empty($_REQUEST['parent_id'])) {
@@ -325,8 +322,8 @@ if (isset($_REQUEST['emailUIAction'])) {
                     foreach ($all_fields as $field) {
                         if (isset($note->$field)) {
                             $note->$field = from_html($note->$field);
-                            $note->$field = preg_replace('/\r\n/', '<BR>', $note->$field);
-                            $note->$field = preg_replace('/\n/', '<BR>', $note->$field);
+                            $note->$field = preg_replace('/\r\n/','<BR>',$note->$field);
+                            $note->$field = preg_replace('/\n/','<BR>',$note->$field);
                             $js_fields_arr[$i][$field] = addslashes($note->$field);
                         }
                     }
@@ -544,13 +541,8 @@ if (isset($_REQUEST['emailUIAction'])) {
             echo $out;
             break;
         case "doAssignmentAssign":
-            $out = $email->et->doAssignment(
-                $_REQUEST['distribute_method'],
-                $_REQUEST['ieId'],
-                $_REQUEST['folder'],
-                $_REQUEST['uids'],
-                $_REQUEST['users']
-            );
+            $out = $email->et->doAssignment($_REQUEST['distribute_method'], $_REQUEST['ieId'], $_REQUEST['folder'],
+                $_REQUEST['uids'], $_REQUEST['users']);
             echo $out;
             break;
         case "doAssignmentDelete":
@@ -560,8 +552,8 @@ if (isset($_REQUEST['emailUIAction'])) {
                 isset($_REQUEST['folder']) && !empty($_REQUEST['folder'])
             ) {
                 $email->et->markEmails("deleted", $_REQUEST['ieId'], $_REQUEST['folder'], $_REQUEST['uids']);
+            } else {
             }
-            
             break;
         case "markEmail":
             global $app_strings;
@@ -569,10 +561,8 @@ if (isset($_REQUEST['emailUIAction'])) {
             if (isset($_REQUEST['uids']) && !empty($_REQUEST['uids']) &&
                 isset($_REQUEST['type']) && !empty($_REQUEST['type']) &&
                 isset($_REQUEST['folder']) && !empty($_REQUEST['folder']) &&
-                isset($_REQUEST['ieId']) && (!empty($_REQUEST['ieId']) || (empty($_REQUEST['ieId']) && strpos(
-                    $_REQUEST['folder'],
-                            'sugar::'
-                ) !== false))
+                isset($_REQUEST['ieId']) && (!empty($_REQUEST['ieId']) || (empty($_REQUEST['ieId']) && strpos($_REQUEST['folder'],
+                            'sugar::') !== false))
             ) {
                 $uid = $json->decode(from_html($_REQUEST['uids']));
                 $uids = array();
@@ -589,13 +579,9 @@ if (isset($_REQUEST['emailUIAction'])) {
                 $GLOBALS['log']->debug("********** EMAIL 2.0 - Marking emails $uids as {$_REQUEST['type']}");
 
                 $ret = array();
-                if (strpos(
-                    $_REQUEST['folder'],
-                        'sugar::'
-                ) !== false && ($_REQUEST['type'] == 'deleted') && !ACLController::checkAccess(
-                            'Emails',
-                        'delete'
-                        )
+                if (strpos($_REQUEST['folder'],
+                        'sugar::') !== false && ($_REQUEST['type'] == 'deleted') && !ACLController::checkAccess('Emails',
+                        'delete')
                 ) {
                     $ret['status'] = false;
                     $ret['message'] = $app_strings['LBL_EMAIL_DELETE_ERROR_DESC'];
@@ -605,8 +591,8 @@ if (isset($_REQUEST['emailUIAction'])) {
                 }
                 $out = trim($json->encode($ret, false));
                 echo $out;
+            } else {
             }
-            
             break;
 
         case "checkEmail2":
@@ -825,11 +811,8 @@ if (isset($_REQUEST['emailUIAction'])) {
                 } else {
                     $out = $ie->displayOneEmail($_REQUEST['uid'], $_REQUEST['mbox']);
                     $out['meta']['email']['description'] =
-                        empty($email->description_html) ? str_replace(
-                            "\n",
-                            "\n<BR/>",
-                            $email->description
-                        ) : $email->description_html;
+                        empty($email->description_html) ? str_replace("\n", "\n<BR/>",
+                            $email->description) : $email->description_html;
                     $out['meta']['email']['date_start'] = $email->date_start;
                     $out['meta']['email']['time_start'] = $email->time_start;
                     $out['meta']['ieId'] = $_REQUEST['ieId'];
@@ -862,30 +845,18 @@ eoq;
 
                 $out = array();
                 foreach ($exUids as $k => $uid) {
-                    if ($email->et->validCacheFileExists(
-                        $_REQUEST['ieId'],
-                        'messages',
-                        $_REQUEST['mbox'] . $uid . ".php"
-                    )
+                    if ($email->et->validCacheFileExists($_REQUEST['ieId'], 'messages',
+                        $_REQUEST['mbox'] . $uid . ".php")
                     ) {
-                        $msg = $email->et->getCacheValue(
-                            $_REQUEST['ieId'],
-                            'messages',
-                            $_REQUEST['mbox'] . $uid . ".php",
-                            'out'
-                        );
+                        $msg = $email->et->getCacheValue($_REQUEST['ieId'], 'messages',
+                            $_REQUEST['mbox'] . $uid . ".php", 'out');
                     } else {
                         $ie->retrieve($_REQUEST['ieId']);
                         $ie->mailbox = $_REQUEST['mbox'];
                         $ie->setEmailForDisplay($uid, false, true);
                         $msg = $ie->displayOneEmail($uid, $_REQUEST['mbox']);
-                        $email->et->writeCacheFile(
-                            'out',
-                            $msg,
-                            $_REQUEST['ieId'],
-                            'messages',
-                            "{$_REQUEST['mbox']}{$uid}.php"
-                        );
+                        $email->et->writeCacheFile('out', $msg, $_REQUEST['ieId'], 'messages',
+                            "{$_REQUEST['mbox']}{$uid}.php");
                     }
 
                     $out[] = $msg;
@@ -981,21 +952,15 @@ eoq;
                 $sortSerial = $current_user->getPreference('folderSortOrder', 'Emails');
                 if (!empty($sortSerial) && !empty($_REQUEST['ieId']) && !empty($_REQUEST['mbox'])) {
                     $sortArray = sugar_unserialize($sortSerial);
-                    $GLOBALS['log']->debug("********** EMAIL 2.0********** ary=" . print_r(
-                        $sortArray,
-                            true
-                    ) . ' id=' . $_REQUEST['ieId'] . '; box=' . $_REQUEST['mbox']);
+                    $GLOBALS['log']->debug("********** EMAIL 2.0********** ary=" . print_r($sortArray,
+                            true) . ' id=' . $_REQUEST['ieId'] . '; box=' . $_REQUEST['mbox']);
                     $sort = $sortArray[$_REQUEST['ieId']][$_REQUEST['mbox']]['current']['sort'];
                     $direction = $sortArray[$_REQUEST['ieId']][$_REQUEST['mbox']]['current']['direction'];
                 }
                 //set sort and direction to user predference
                 if (!empty($_REQUEST['sort']) && !empty($_REQUEST['dir'])) {
-                    $email->et->saveListViewSortOrder(
-                        $_REQUEST['ieId'],
-                        $_REQUEST['mbox'],
-                        $_REQUEST['sort'],
-                        $_REQUEST['dir']
-                    );
+                    $email->et->saveListViewSortOrder($_REQUEST['ieId'], $_REQUEST['mbox'], $_REQUEST['sort'],
+                        $_REQUEST['dir']);
                     $sort = $_REQUEST['sort'];
                     $direction = $_REQUEST['dir'];
                 } else {
@@ -1004,13 +969,8 @@ eoq;
                 }
                 //end
 
-                $metalist = $email->et->folder->getListItemsForEmailXML(
-                    $_REQUEST['ieId'],
-                    $page,
-                    $emailSettings['showNumInList'],
-                    $sort,
-                    $direction
-                );
+                $metalist = $email->et->folder->getListItemsForEmailXML($_REQUEST['ieId'], $page,
+                    $emailSettings['showNumInList'], $sort, $direction);
                 $count = $email->et->folder->getCountItems($_REQUEST['ieId']);
 
                 if (!empty($_REQUEST['getUnread'])) {
@@ -1070,12 +1030,8 @@ eoq;
                 $rootNode = new ExtNode('', '');
                 $folderOpenState = $current_user->getPreference('folderOpenState', 'Emails');
                 $folderOpenState = (empty($folderOpenState)) ? "" : $folderOpenState;
-                $ret = $email->et->folder->getUserFolders(
-                    $rootNode,
-                    sugar_unserialize($folderOpenState),
-                    $current_user,
-                    true
-                );
+                $ret = $email->et->folder->getUserFolders($rootNode, sugar_unserialize($folderOpenState), $current_user,
+                    true);
                 $out = $json->encode($ret);
                 echo $out;
             } catch (SugarFolderEmptyException $e) {
@@ -1097,13 +1053,8 @@ eoq;
 
         case "moveEmails":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: moveEmails");
-            $ie->moveEmails(
-                $_REQUEST['sourceIeId'],
-                $_REQUEST['sourceFolder'],
-                $_REQUEST['destinationIeId'],
-                $_REQUEST['destinationFolder'],
-                $_REQUEST['emailUids']
-            );
+            $ie->moveEmails($_REQUEST['sourceIeId'], $_REQUEST['sourceFolder'], $_REQUEST['destinationIeId'],
+                $_REQUEST['destinationFolder'], $_REQUEST['emailUids']);
             break;
 
         case "saveNewFolder":
@@ -1129,10 +1080,10 @@ eoq;
 
         case "setFolderViewSelection":
             
-            $user =
+            $user = 
                 isset($_REQUEST['user']) && $_REQUEST['user'] && isValidId($_REQUEST['user']) ?
-                    BeanFactory::getBean('Users', $_REQUEST['user']) :
-                    $current_user;
+                    BeanFactory::getBean('Users', $_REQUEST['user']) : 
+                    $current_user;  
             
             $out = handleSubs($_REQUEST['ieIdShow'], $email, $json, $user);
             
@@ -1241,12 +1192,8 @@ eoq;
 
         case "saveListViewSortOrder":
             $GLOBALS['log']->debug("********** EMAIL 2.0 - Asynchronous - at: saveListViewSortOrder");
-            $email->et->saveListViewSortOrder(
-                $_REQUEST['ieId'],
-                $_REQUEST['focusFolder'],
-                $_REQUEST['sortBy'],
-                $_REQUEST['reverse']
-            );
+            $email->et->saveListViewSortOrder($_REQUEST['ieId'], $_REQUEST['focusFolder'], $_REQUEST['sortBy'],
+                $_REQUEST['reverse']);
             break;
         ////    END FOLDER ACTIONS
         ///////////////////////////////////////////////////////////////////////////
@@ -1314,9 +1261,9 @@ eoq;
                 echo $out;
                 ob_end_flush();
                 die();
-            }
+            } else {
                 echo "NOOP";
-            
+            }
             break;
 
         case "saveOutbound":
@@ -1366,16 +1313,10 @@ eoq;
                     $pass = $oe->mail_smtppass;
                 }
             }
-            $out = $email->sendEmailTest(
-                $_REQUEST['mail_smtpserver'],
-                $_REQUEST['mail_smtpport'],
+            $out = $email->sendEmailTest($_REQUEST['mail_smtpserver'], $_REQUEST['mail_smtpport'],
                 $_REQUEST['mail_smtpssl'],
-                (isset($_REQUEST['mail_smtpauth_req']) ? 1 : 0),
-                $_REQUEST['mail_smtpuser'],
-                $pass,
-                $_REQUEST['outboundtest_from_address'],
-                $_REQUEST['outboundtest_from_address']
-            );
+                (isset($_REQUEST['mail_smtpauth_req']) ? 1 : 0), $_REQUEST['mail_smtpuser'],
+                $pass, $_REQUEST['outboundtest_from_address'], $_REQUEST['outboundtest_from_address']);
 
             $out = $json->encode($out);
             echo $out;
@@ -1576,9 +1517,9 @@ eoq;
                 echo $out;
                 ob_end_flush();
                 die();
-            }
+            } else {
                 echo "NOOP: no search criteria found";
-            
+            }
             break;
 
         case "searchAdvanced":
@@ -1787,10 +1728,8 @@ eoq;
                 $sort = ($sort == 'bean_id') ? 'id' : $sort;
                 $sort = ($sort == 'email') ? 'email_address' : $sort;
                 $sort = ($sort == 'name') ? 'last_name' : $sort;
-                $direction = !empty($_REQUEST['dir']) && in_array(
-                    strtolower($_REQUEST['dir']),
-                    array("asc", "desc")
-                ) ? $_REQUEST['dir'] : "asc";
+                $direction = !empty($_REQUEST['dir']) && in_array(strtolower($_REQUEST['dir']),
+                    array("asc", "desc")) ? $_REQUEST['dir'] : "asc";
                 $order = (!empty($sort) && !empty($direction)) ? " ORDER BY {$sort} {$direction}" : "";
 
                 $r = $ie->db->limitQuery($qArray['query'] . " $order ", $start, 25, true);

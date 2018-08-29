@@ -375,10 +375,8 @@ class Zend_Search_Lucene_Index_Writer
 
         /** Zend_Search_Lucene_Index_SegmentMerger */
         require_once 'Zend/Search/Lucene/Index/SegmentMerger.php';
-        $merger = new Zend_Search_Lucene_Index_SegmentMerger(
-            $this->_directory,
-                                                             $newName
-        );
+        $merger = new Zend_Search_Lucene_Index_SegmentMerger($this->_directory,
+                                                             $newName);
         foreach ($segments as $segmentInfo) {
             $merger->addSource($segmentInfo);
             $this->_segmentsToDelete[$segmentInfo->getName()] = $segmentInfo->getName();
@@ -522,15 +520,13 @@ class Zend_Search_Lucene_Index_Writer
                         /** Zend_Search_Lucene_Index_SegmentInfo */
                         require_once 'Zend/Search/Lucene/Index/SegmentInfo.php';
                         $this->_segmentInfos[$segName] =
-                                    new Zend_Search_Lucene_Index_SegmentInfo(
-                                        $this->_directory,
+                                    new Zend_Search_Lucene_Index_SegmentInfo($this->_directory,
                                                                              $segName,
                                                                              $segSize,
                                                                              $delGen,
                                                                              $docStoreOptions,
                                                                              $hasSingleNormFile,
-                                                                             $isCompound
-                                    );
+                                                                             $isCompound);
                     } else {
                         // Retrieve actual deletions file generation number
                         $delGen = $this->_segmentInfos[$segName]->getDelGen();
@@ -708,17 +704,9 @@ class Zend_Search_Lucene_Index_Writer
             }
 
             // Reorder files for deleting
-            array_multisort(
-                $filesTypes,
-                SORT_ASC,
-                SORT_NUMERIC,
-                            $filesNumbers,
-                SORT_ASC,
-                SORT_NUMERIC,
-                            $filesToDelete,
-                SORT_ASC,
-                SORT_STRING
-            );
+            array_multisort($filesTypes,    SORT_ASC, SORT_NUMERIC,
+                            $filesNumbers,  SORT_ASC, SORT_NUMERIC,
+                            $filesToDelete, SORT_ASC, SORT_STRING);
 
             foreach ($filesToDelete as $file) {
                 try {

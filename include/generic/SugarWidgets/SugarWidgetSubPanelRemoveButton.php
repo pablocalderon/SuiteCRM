@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -44,12 +44,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 class SugarWidgetSubPanelRemoveButton extends SugarWidgetField
 {
-    public function displayHeaderCell($layout_def)
+    function displayHeaderCell($layout_def)
     {
         return '&nbsp;';
     }
 
-    public function displayList(&$layout_def)
+    function displayList(&$layout_def)
     {
         global $app_strings;
         global $subpanel_item_count;
@@ -62,7 +62,7 @@ class SugarWidgetSubPanelRemoveButton extends SugarWidgetField
         $action = 'DeleteRelationship';
         $record = $layout_def['fields']['ID'];
         $current_module=$layout_def['module'];
-        //in document revisions subpanel ,users are now allowed to
+        //in document revisions subpanel ,users are now allowed to 
         //delete the latest revsion of a document. this will be tested here
         //and if the condition is met delete button will be removed.
         $hideremove=false;
@@ -88,7 +88,7 @@ class SugarWidgetSubPanelRemoveButton extends SugarWidgetField
         } elseif ($current_module === 'ACLRoles' && (!ACLController::checkAccess($current_module, 'edit', true))) {
             $hideremove = true;
         }
-        
+		
         $return_module = $_REQUEST['module'];
         $return_action = 'SubPanelViewer';
         $subpanel = $layout_def['subpanel_id'];

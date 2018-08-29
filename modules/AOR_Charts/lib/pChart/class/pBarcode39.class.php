@@ -16,15 +16,15 @@
  /* pData class definition */
  class pBarcode39
  {
-     public $Codes;
-     public $Reverse;
-     public $Result;
-     public $pChartObject;
-     public $CRC;
-     public $MOD43;
+     var $Codes;
+     var $Reverse;
+     var $Result;
+     var $pChartObject;
+     var $CRC;
+     var $MOD43;
 
      /* Class creator */
-     public function pBarcode39($BasePath="", $EnableMOD43=false)
+     function pBarcode39($BasePath="",$EnableMOD43=FALSE)
      {
          $this->MOD43  = $EnableMOD43;
          $this->Codes   = "";
@@ -37,10 +37,10 @@
          }
 
          while (!feof($FileHandle)) {
-             $Buffer = fgets($FileHandle, 4096);
-             $Buffer = str_replace(chr(10), "", $Buffer);
-             $Buffer = str_replace(chr(13), "", $Buffer);
-             $Values = preg_split("/;/", $Buffer);
+             $Buffer = fgets($FileHandle,4096);
+             $Buffer = str_replace(chr(10),"",$Buffer);
+             $Buffer = str_replace(chr(13),"",$Buffer);
+             $Values = preg_split("/;/",$Buffer);
 
              $this->Codes[$Values[0]] = $Values[1];
          }
@@ -48,12 +48,12 @@
      }
 
      /* Return the projected size of a barcode */
-     public function getSize($TextString, $Format="")
+     function getSize($TextString,$Format="")
      {
          $Angle		= isset($Format["Angle"]) ? $Format["Angle"] : 0;
-         $ShowLegend	= isset($Format["ShowLegend"]) ? $Format["ShowLegend"] : false;
+         $ShowLegend	= isset($Format["ShowLegend"]) ? $Format["ShowLegend"] : FALSE;
          $LegendOffset	= isset($Format["LegendOffset"]) ? $Format["LegendOffset"] : 5;
-         $DrawArea		= isset($Format["DrawArea"]) ? $Format["DrawArea"] : false;
+         $DrawArea		= isset($Format["DrawArea"]) ? $Format["DrawArea"] : FALSE;
          $FontSize		= isset($Format["FontSize"]) ? $Format["FontSize"] : 12;
          $Height		= isset($Format["Height"]) ? $Format["Height"] : 30;
 
@@ -78,19 +78,19 @@
          $Y2 = $Y1 + sin(($Angle+90) * PI / 180) * ($HOffset+$Height);
 
 
-         $AreaWidth  = max(abs($X1), abs($X2));
-         $AreaHeight = max(abs($Y1), abs($Y2));
+         $AreaWidth  = max(abs($X1),abs($X2));
+         $AreaHeight = max(abs($Y1),abs($Y2));
 
          return(array("Width"=>$AreaWidth,"Height"=>$AreaHeight));
      }
 
      /* Create the encoded string */
-     public function encode39($Value)
+     function encode39($Value)
      {
          $this->Result = "100101101101"."0";
          $TextString   = "";
          for ($i=1;$i<=strlen($Value);$i++) {
-             $CharCode = ord($this->mid($Value, $i, 1));
+             $CharCode = ord($this->mid($Value,$i,1));
              if ($CharCode >= 97 && $CharCode <= 122) {
                  $CharCode = $CharCode - 32;
              }
@@ -113,7 +113,7 @@
      }
 
      /* Create the encoded string */
-     public function draw($Object, $Value, $X, $Y, $Format="")
+     function draw($Object,$Value,$X,$Y,$Format="")
      {
          $this->pChartObject = $Object;
 
@@ -123,9 +123,9 @@
          $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
          $Height		= isset($Format["Height"]) ? $Format["Height"] : 30;
          $Angle		= isset($Format["Angle"]) ? $Format["Angle"] : 0;
-         $ShowLegend	= isset($Format["ShowLegend"]) ? $Format["ShowLegend"] : false;
+         $ShowLegend	= isset($Format["ShowLegend"]) ? $Format["ShowLegend"] : FALSE;
          $LegendOffset	= isset($Format["LegendOffset"]) ? $Format["LegendOffset"] : 5;
-         $DrawArea		= isset($Format["DrawArea"]) ? $Format["DrawArea"] : false;
+         $DrawArea		= isset($Format["DrawArea"]) ? $Format["DrawArea"] : FALSE;
          $AreaR		= isset($Format["AreaR"]) ? $Format["AreaR"] : 255;
          $AreaG		= isset($Format["AreaG"]) ? $Format["AreaG"] : 255;
          $AreaB		= isset($Format["AreaB"]) ? $Format["AreaB"] : 255;
@@ -155,18 +155,18 @@
 
              $Polygon  = array($X1,$Y1,$X2,$Y2,$X3,$Y3,$X4,$Y4);
              $Settings = array("R"=>$AreaR,"G"=>$AreaG,"B"=>$AreaB,"BorderR"=>$AreaBorderR,"BorderG"=>$AreaBorderG,"BorderB"=>$AreaBorderB);
-             $this->pChartObject->drawPolygon($Polygon, $Settings);
+             $this->pChartObject->drawPolygon($Polygon,$Settings);
          }
 
          for ($i=1;$i<=strlen($this->Result);$i++) {
-             if ($this->mid($this->Result, $i, 1) == 1) {
+             if ($this->mid($this->Result,$i,1) == 1) {
                  $X1 = $X + cos($Angle * PI / 180) * $i;
                  $Y1 = $Y + sin($Angle * PI / 180) * $i;
                  $X2 = $X1 + cos(($Angle+90) * PI / 180) * $Height;
                  $Y2 = $Y1 + sin(($Angle+90) * PI / 180) * $Height;
 
                  $Settings = array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha);
-                 $this->pChartObject->drawLine($X1, $Y1, $X2, $Y2, $Settings);
+                 $this->pChartObject->drawLine($X1,$Y1,$X2,$Y2,$Settings);
              }
          }
 
@@ -178,11 +178,11 @@
              $LegendY = $Y1 + sin(($Angle+90) * PI / 180) * ($Height+$LegendOffset);
 
              $Settings = array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Angle"=>-$Angle,"Align"=>TEXT_ALIGN_TOPMIDDLE);
-             $this->pChartObject->drawText($LegendX, $LegendY, $TextString, $Settings);
+             $this->pChartObject->drawText($LegendX,$LegendY,$TextString,$Settings);
          }
      }
 
-     public function checksum($string)
+     function checksum($string)
      {
          $checksum = 0;
          $length   = strlen($string);
@@ -195,16 +195,16 @@
          return substr($charset, ($checksum % 43), 1);
      }
 
-     public function left($value, $NbChar)
+     function left($value,$NbChar)
      {
-         return substr($value, 0, $NbChar);
-     }
-     public function right($value, $NbChar)
+         return substr($value,0,$NbChar);
+     }  
+     function right($value,$NbChar)
      {
-         return substr($value, strlen($value)-$NbChar, $NbChar);
-     }
-     public function mid($value, $Depart, $NbChar)
+         return substr($value,strlen($value)-$NbChar,$NbChar);
+     }  
+     function mid($value,$Depart,$NbChar)
      {
-         return substr($value, $Depart-1, $NbChar);
+         return substr($value,$Depart-1,$NbChar);
      }
  }

@@ -27,13 +27,13 @@ class AM_ProjectTemplatesController extends SugarController
 {
 
     //Loads the gantt view
-    public function action_view_GanttChart()
+    function action_view_GanttChart()
     {
         $this->view = 'GanttChart';
     }
 
 
-    public function action_create_project()
+    function action_create_project()
     {
         global $current_user, $db, $mod_strings;
 
@@ -43,8 +43,8 @@ class AM_ProjectTemplatesController extends SugarController
         $copy_all = isset($_POST['copy_all_tasks']) ? 1 : 0;
         $copy_tasks = isset($_POST['tasks']) ? $_POST['tasks'] : array() ;
 
-            
-        
+			
+		
         //Get project start date
         if ($project_start!='') {
             $dateformat = $current_user->getPreference('datef');
@@ -71,13 +71,13 @@ class AM_ProjectTemplatesController extends SugarController
         $bhours = array();
         foreach ($days as $day) {
             $bh = $businessHours->getBusinessHoursForDay($day);
-            
+			
             if ($bh) {
                 $bh = $bh[0];
                 if ($bh->open) {
                     $open_h = $bh ? $bh->opening_hours : 9;
-                    $close_h = $bh ? $bh->closing_hours : 17;
-                    
+                    $close_h = $bh ? $bh->closing_hours : 17;							
+					
                     $start_time = DateTime::createFromFormat('Y-m-d', $start);
 
                     $start_time = $start_time->modify('+'.$open_h.' Hours');
@@ -97,14 +97,14 @@ class AM_ProjectTemplatesController extends SugarController
             }
         }
         //-----------------------------------
-        
+		
 
         //default business hours array
         if ($override_business_hours != 1 || empty($bhours)) {
-            $bhours = array('Monday' => 8,'Tuesday' => 8,'Wednesday' => 8, 'Thursday' => 8, 'Friday' => 8, 'Saturday' => 0, 'Sunday' => 0);
+            $bhours = array ('Monday' => 8,'Tuesday' => 8,'Wednesday' => 8, 'Thursday' => 8, 'Friday' => 8, 'Saturday' => 0, 'Sunday' => 0);
         }
         //---------------------------
-        
+		
 
 
 
@@ -121,16 +121,16 @@ class AM_ProjectTemplatesController extends SugarController
 
         //copy all resources from template to project
         $template->load_relationship('am_projecttemplates_users_1');
-        $template_users = $template->get_linked_beans('am_projecttemplates_users_1', 'User');
+        $template_users = $template->get_linked_beans('am_projecttemplates_users_1','User');
 
         $template->load_relationship('am_projecttemplates_contacts_1');
-        $template_contacts = $template->get_linked_beans('am_projecttemplates_contacts_1', 'Contact');
-        
+        $template_contacts = $template->get_linked_beans('am_projecttemplates_contacts_1','Contact');
+		
         $project->load_relationship('project_users_1');
         foreach ($template_users as $user) {
             $project->project_users_1->add($user->id);
         }
-        
+		
         $project->load_relationship('project_contacts_1');
         foreach ($template_contacts as $contact) {
             $project->project_contacts_1->add($contact->id);
@@ -168,8 +168,8 @@ class AM_ProjectTemplatesController extends SugarController
             $project_task->estimated_effort = $row['estimated_effort'];
             $project_task->utilization = $row['utilization'];
             
-            if ($copy_all == 0 && !in_array($row['id'], $copy_tasks)) {
-                $project_task->assigned_user_id = null;
+            if ($copy_all == 0 && !in_array($row['id'],$copy_tasks)) {
+                $project_task->assigned_user_id = NULL;
             } else {
                 $project_task->assigned_user_id = $row['assigned_user_id'];
             }
@@ -199,7 +199,7 @@ class AM_ProjectTemplatesController extends SugarController
                     $d += 1;
                 }
                 $enddate = $enddate->modify('+1 Days');
-            }
+            } 
             $enddate = $enddate->modify('-1 Days');//readjust it back to remove 1 additional day added
 
             //----------------------------------
@@ -210,7 +210,7 @@ class AM_ProjectTemplatesController extends SugarController
                 $project_task->date_start = $start;
                 $end = $enddate->format('Y-m-d');
                 $project_task->date_finish = $end;
-        
+		
                 //add one day to let the next task start on next day of it's finish.
                 $enddate_array[$count] = $enddate->modify('+1 Days')->format('Y-m-d');
             } else {
@@ -223,7 +223,7 @@ class AM_ProjectTemplatesController extends SugarController
 
                 $startdate = $enddate;
                 //add one day to let the next task start on next day of it's finish.
-        $enddate_array[$count] = $enddate->modify('+1 Days')->format('Y-m-d'); //$end;
+		$enddate_array[$count] = $enddate->modify('+1 Days')->format('Y-m-d'); //$end;		    
                 $enddate = $end;
             }
             $project_task->save();
@@ -252,7 +252,7 @@ class AM_ProjectTemplatesController extends SugarController
     }
 
 
-    public function action_generate_chart()
+    function action_generate_chart()
     {
         $db = DBManagerFactory::getInstance();
 
@@ -265,23 +265,23 @@ class AM_ProjectTemplatesController extends SugarController
         
         //Get project tasks
         $project_template->load_relationship('am_tasktemplates_am_projecttemplates');
-        $tasks = $project_template->get_linked_beans('am_tasktemplates_am_projecttemplates', 'AM_TaskTemplates');
+        $tasks = $project_template->get_linked_beans('am_tasktemplates_am_projecttemplates','AM_TaskTemplates');
 
         //--- get the gantt chart start and end
 
         $start_date =  Date('Y-m-d');
-        
+		
         $query = "select max(duration) +1 from am_tasktemplates inner join am_tasktemplates_am_projecttemplates_c on am_tasktemplates_am_projecttemplatesam_tasktemplates_idb = am_tasktemplates.id and am_tasktemplates_am_projecttemplatesam_projecttemplates_ida = '{$pid}'";
         
         $duration = $db->getOne($query);
-        
+		
         if ($duration < 31) {
             $end_date = Date('Y-m-d', strtotime("+30 days"));
         } else {
             $end_date = Date('Y-m-d', strtotime("+ " . $duration . " days"));
         }
 
-        //-------------------------------------------?>
+        //------------------------------------------- ?>
 
         <script type="text/javascript">
             //Get the height if the #gantt div and add 18px
@@ -312,7 +312,7 @@ class AM_ProjectTemplatesController extends SugarController
     }
 
     //Create new project task
-    public function action_update_GanttChart()
+    function action_update_GanttChart()
     {
         global $current_user, $db;
 
@@ -358,7 +358,7 @@ class AM_ProjectTemplatesController extends SugarController
         $enddate = $startdate->modify('+'.$duration.' '.$duration_unit);
         $enddate = $enddate->modify('-1 Days');//readjust it back to remove 1 additional day added
         $enddate = $enddate->format('Y-m-d');
-        
+		
         //---------------
 
         if ($percent > 0) {
@@ -370,20 +370,20 @@ class AM_ProjectTemplatesController extends SugarController
 
         //count tasks
         $project_template->load_relationship('am_tasktemplates_am_projecttemplates');
-        $tasks = $project_template->get_linked_beans('am_tasktemplates_am_projecttemplates', 'AM_TaskTemplates');
-        
+        $tasks = $project_template->get_linked_beans('am_tasktemplates_am_projecttemplates','AM_TaskTemplates');		
+		
         $tid = count($tasks) + 1 ;
 
         if ($this->IsNullOrEmptyString($task_id)) {
-            $this->create_task($task_name, $start, $enddate, $project_id, $milestone_flag, $status, $tid, $predecessor, $rel_type, $duration, $duration_unit, $resource, $percent, $note, $actual_duration, $tid);
+            $this->create_task($task_name,$start,$enddate,$project_id, $milestone_flag,$status, $tid, $predecessor, $rel_type, $duration,$duration_unit,$resource,$percent,$note,$actual_duration,$tid);
         } else {
-            $this->update_task($task_id, $task_name, $start, $enddate, $project_id, $milestone_flag, $status, $predecessor, $rel_type, $duration, $duration_unit, $resource, $percent, $note, $actual_duration);
+            $this->update_task($task_id,$task_name,$start,$enddate,$project_id, $milestone_flag,$status, $predecessor, $rel_type, $duration,$duration_unit,$resource,$percent,$note,$actual_duration);
         }
     }
 
 
     //mark project task as deleted
-    public function action_delete_task()
+    function action_delete_task()
     {
         $id = $_POST['task_id'];
         $task = new AM_TaskTemplates();
@@ -393,7 +393,7 @@ class AM_ProjectTemplatesController extends SugarController
     }
 
     //Returns new task start date including any lag via ajax call
-    public function action_get_end_date()
+    function action_get_end_date()
     {
         global $db,  $timeDate;
 
@@ -415,7 +415,7 @@ class AM_ProjectTemplatesController extends SugarController
 
 
     //updates the order of the tasks
-    public function action_update_order()
+    function action_update_order()
     {
 
        //convert quotes in json string back to normal
@@ -432,7 +432,7 @@ class AM_ProjectTemplatesController extends SugarController
         }
     }
     //returns tasks for predecessor in the add task pop-up form
-    public function action_get_predecessors()
+    function action_get_predecessors()
     {
         global $mod_strings;
         $project_template = new AM_ProjectTemplates();
@@ -440,7 +440,7 @@ class AM_ProjectTemplatesController extends SugarController
 
         //Get tasks
         $project_template->load_relationship('am_tasktemplates_am_projecttemplates');
-        $tasks = $project_template->get_linked_beans('am_tasktemplates_am_projecttemplates', 'AM_TaskTemplates');
+        $tasks = $project_template->get_linked_beans('am_tasktemplates_am_projecttemplates','AM_TaskTemplates');
         echo '<option rel="0" value="0">'.$mod_strings["LBL_NONE"].'</option>';
         foreach ($tasks as $task) {
             echo '<option rel="'.$task->task_number.'" value="'.$task->task_number.'">'.$task->name.'</opion>';
@@ -449,7 +449,7 @@ class AM_ProjectTemplatesController extends SugarController
     }
 
 
-    public function create_task($name, $start, $end, $project_id, $milestone_flag, $status, $project_task_id, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description, $actual_duration, $order_number)
+    function create_task($name, $start, $end, $project_id, $milestone_flag, $status, $project_task_id, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description,$actual_duration,$order_number)
     {
         $task = new AM_TaskTemplates();
         $task->name = $name;
@@ -473,14 +473,14 @@ class AM_ProjectTemplatesController extends SugarController
         $project_template = new AM_ProjectTemplates();
         $project_template->retrieve($project_id);
         $project_template->load_relationship('am_tasktemplates_am_projecttemplates');
-        $project_template->get_linked_beans('am_tasktemplates_am_projecttemplates', 'AM_TaskTemplates');
+        $project_template->get_linked_beans('am_tasktemplates_am_projecttemplates','AM_TaskTemplates');
         $project_template->am_tasktemplates_am_projecttemplates->add($task_id);
     }
 
-    public function update_task($id, $name, $start, $end, $project_id, $milestone_flag, $status, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description, $actual_duration)
+    function update_task($id, $name, $start, $end, $project_id, $milestone_flag, $status, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description,$actual_duration)
     {
         $task = new AM_TaskTemplates();
-        
+		
         $task->retrieve($id);
         $task->name = $name;
         //$task->date_start = $start;
@@ -508,3 +508,4 @@ class AM_ProjectTemplatesController extends SugarController
         return (!isset($question) || trim($question)==='');
     }
 }
+

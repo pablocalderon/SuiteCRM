@@ -52,7 +52,7 @@ class ImportViewLast extends ImportView
 {
     protected $pageTitleKey = 'LBL_STEP_5_TITLE';
 
-    public $lvf;
+    var $lvf;
 
     /**
      * @see SugarView::display()
@@ -70,7 +70,7 @@ class ImportViewLast extends ImportView
         // lookup this module's $mod_strings to get the correct module name
         $module_mod_strings =
             return_module_language($current_language, $_REQUEST['import_module']);
-        $this->ss->assign("MODULENAME", $module_mod_strings['LBL_MODULE_NAME']);
+        $this->ss->assign("MODULENAME",$module_mod_strings['LBL_MODULE_NAME']);
 
         // read status file to get totals for records imported, errors, and duplicates
         $count        = 0;
@@ -80,7 +80,7 @@ class ImportViewLast extends ImportView
         $updatedCount = 0;
         $fp = sugar_fopen(ImportCacheFiles::getStatusFileName(), 'r');
         
-        // Read the data if we successfully opened file
+        // Read the data if we successfully opened file 
         if ($fp !== false) {
             // Read rows 1 by 1 and add the info
             while ($row = fgetcsv($fp, 8192)) {
@@ -93,9 +93,9 @@ class ImportViewLast extends ImportView
             fclose($fp);
         }
         
-        $this->ss->assign("showUndoButton", false);
+        $this->ss->assign("showUndoButton",FALSE);
         if ($createdCount > 0) {
-            $this->ss->assign("showUndoButton", true);
+            $this->ss->assign("showUndoButton",TRUE);
         }
 
         if ($errorCount > 0 &&  ($createdCount <= 0 && $updatedCount <= 0)) {
@@ -119,7 +119,7 @@ class ImportViewLast extends ImportView
         if ($this->bean->object_name == "Prospect") {
             $this->ss->assign("PROSPECTLISTBUTTON", $this->_addToProspectListButton());
         } else {
-            $this->ss->assign("PROSPECTLISTBUTTON", "");
+            $this->ss->assign("PROSPECTLISTBUTTON","");
         }
 
         $resultsTable = "";
@@ -138,7 +138,7 @@ class ImportViewLast extends ImportView
         $this->ss->assign("ERROR_TABLE", $this->getListViewTableFromFile(ImportCacheFiles::getErrorRecordsFileName(), 'errors'));
         $this->ss->assign("DUP_TABLE", $this->getListViewTableFromFile(ImportCacheFiles::getDuplicateFileDisplayName(), 'dup'));
         $content = $this->ss->fetch('modules/Import/tpls/last.tpl');
-        $this->ss->assign("CONTENT", $content);
+        $this->ss->assign("CONTENT",$content);
         $this->ss->display('modules/Import/tpls/wizardWrapper.tpl');
     }
 
@@ -174,16 +174,16 @@ class ImportViewLast extends ImportView
         $module_mod_strings = return_module_language($current_language, $this->bean->module_dir);
         $lvf->setup('', '', $params, $module_mod_strings, 0, -1, '', strtoupper($beanname), array(), 'id');
         global $app_list_strings;
-        return $lvf->display($app_list_strings['moduleList'][$this->bean->module_dir], 'main', true);
+        return $lvf->display($app_list_strings['moduleList'][$this->bean->module_dir], 'main', TRUE);
     }
 
     protected function getListViewTableFromFile($fileName, $tableName)
     {
-        $has_header = $_REQUEST['has_header'] == 'on' ? true : false;
-        $if = new ImportFile($fileName, ",", '"', false, false);
+        $has_header = $_REQUEST['has_header'] == 'on' ? TRUE : FALSE;
+        $if = new ImportFile($fileName, ",", '"', FALSE, FALSE);
         $if->setHeaderRow($has_header);
-        $lv = new ImportListView($if, array('offset'=> 0), $tableName);
-        return $lv->display(true);
+        $lv = new ImportListView($if,array('offset'=> 0), $tableName);
+        return $lv->display(TRUE);
     }
 
     /**

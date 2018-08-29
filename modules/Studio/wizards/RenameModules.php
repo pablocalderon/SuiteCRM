@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('modules/Studio/DropDowns/DropDownHelper.php');
@@ -341,9 +340,9 @@ class RenameModules
         $smarty->assign('dropdown_lang', $selected_lang);
 
         $editImage = SugarThemeRegistry::current()->getImage('edit_inline', '');
-        $smarty->assign('editImage', $editImage);
+        $smarty->assign('editImage',$editImage);
         $deleteImage = SugarThemeRegistry::current()->getImage('delete_inline', '');
-        $smarty->assign('deleteImage', $deleteImage);
+        $smarty->assign('deleteImage',$deleteImage);
         $smarty->display("modules/Studio/wizards/RenameModules.tpl");
     }
 
@@ -352,7 +351,7 @@ class RenameModules
      *
      * @return void
      */
-    public function save($redirect = true)
+    public function save($redirect = TRUE)
     {
         $this->selectedLanguage = (!empty($_REQUEST['dropdown_lang'])? $_REQUEST['dropdown_lang']:$_SESSION['authenticated_user_language']);
 
@@ -446,7 +445,7 @@ class RenameModules
 
         //Now we can write out the replaced language strings for each module
         if (count($replacementStrings) > 0) {
-            $GLOBALS['log']->debug("Writing out labels for subpanel changes for module $moduleName, labels: " . var_export($replacementStrings, true));
+            $GLOBALS['log']->debug("Writing out labels for subpanel changes for module $moduleName, labels: " . var_export($replacementStrings,true));
             ParserLabel::addLabels($this->selectedLanguage, $replacementStrings, $moduleName);
             $this->renamedModules[$moduleName] = true;
         }
@@ -561,7 +560,7 @@ class RenameModules
 
         //Now we can write out the replaced language strings for each module
         if (count($replacementStrings) > 0) {
-            $GLOBALS['log']->debug("Writing out labels for link changes for module $moduleName, labels: " . var_export($replacementStrings, true));
+            $GLOBALS['log']->debug("Writing out labels for link changes for module $moduleName, labels: " . var_export($replacementStrings,true));
             ParserLabel::addLabels($this->selectedLanguage, $replacementStrings, $moduleName);
             $this->renamedModules[$moduleName] = true;
         }
@@ -618,8 +617,8 @@ class RenameModules
                 require($dashletData['meta']);
                 $dashletTitle = $dashletMeta[$dashletName]['title'];
                 $currentModuleStrings = return_module_language($this->selectedLanguage, $moduleName);
-                $modStringKey = array_search($dashletTitle, $currentModuleStrings);
-                if ($modStringKey !== false) {
+                $modStringKey = array_search($dashletTitle,$currentModuleStrings);
+                if ($modStringKey !== FALSE) {
                     $replacedString = str_replace(html_entity_decode_utf8($replacementLabels['prev_plural'], ENT_QUOTES), $replacementLabels['plural'], $dashletTitle);
                     if ($replacedString == $dashletTitle) {
                         $replacedString = str_replace(html_entity_decode_utf8($replacementLabels['prev_singular'], ENT_QUOTES), $replacementLabels['singular'], $replacedString);
@@ -631,7 +630,7 @@ class RenameModules
 
         //Now we can write out the replaced language strings for each module
         if (count($replacementStrings) > 0) {
-            $GLOBALS['log']->debug("Writing out labels for dashlet changes for module $moduleName, labels: " . var_export($replacementStrings, true));
+            $GLOBALS['log']->debug("Writing out labels for dashlet changes for module $moduleName, labels: " . var_export($replacementStrings,true));
             ParserLabel::addLabels($this->selectedLanguage, $replacementStrings, $moduleName);
         }
     }
@@ -889,7 +888,7 @@ class RenameModules
             if (isset($current_app_list_string['moduleList'][$key])) {
                 $allModuleEntries[$key] = array('s' => $svalue, 'p' => $value);
             } else {
-                $_REQUEST['delete_' . $count] = true;
+                $_REQUEST['delete_' . $count] = TRUE;
             }
 
 
@@ -932,8 +931,9 @@ class RenameModules
         $tmp = new $className();
         if (property_exists($tmp, 'object_name')) {
             return $tmp->object_name;
+        } else {
+            return $moduleName;
         }
-        return $moduleName;
     }
 
     /**
@@ -946,3 +946,6 @@ class RenameModules
         return $this->renamedModules;
     }
 }
+
+
+

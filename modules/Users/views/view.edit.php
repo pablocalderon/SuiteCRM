@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('modules/Users/UserViewHelper.php');
@@ -47,8 +46,8 @@ require_once('modules/Users/UserViewHelper.php');
 
 class UsersViewEdit extends ViewEdit
 {
-    public $useForSubpanel = true;
-    public function __construct()
+    var $useForSubpanel = true;
+    function __construct()
     {
         parent::__construct();
     }
@@ -56,7 +55,7 @@ class UsersViewEdit extends ViewEdit
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function UsersViewEdit()
+    function UsersViewEdit()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -68,7 +67,7 @@ class UsersViewEdit extends ViewEdit
     }
 
 
-    public function preDisplay()
+    function preDisplay()
     {
         $this->fieldHelper = new UserViewHelper($this->ss, $this->bean, 'EditView');
         $this->fieldHelper->setupAdditionalFields();
@@ -95,14 +94,14 @@ class UsersViewEdit extends ViewEdit
         return $metadataFile;
     }
 
-    public function display()
+    function display()
     {
         global $current_user, $app_list_strings, $mod_strings;
 
 
         //lets set the return values
         if (isset($_REQUEST['return_module'])) {
-            $this->ss->assign('RETURN_MODULE', $_REQUEST['return_module']);
+            $this->ss->assign('RETURN_MODULE',$_REQUEST['return_module']);
         }
 
         $this->ss->assign('IS_ADMIN', $current_user->is_admin ? true : false);
@@ -119,7 +118,7 @@ class UsersViewEdit extends ViewEdit
             $this->ss->assign('RETURN_ID', $_REQUEST['record']);
             $this->bean->id = "";
             $this->bean->user_name = "";
-            $this->ss->assign('ID', '');
+            $this->ss->assign('ID','');
         } else {
             if (isset($_REQUEST['return_module'])) {
                 $this->ss->assign('RETURN_MODULE', $_REQUEST['return_module']);
@@ -147,11 +146,11 @@ class UsersViewEdit extends ViewEdit
         ///////////////////////////////////////////////////////////////////////////////
         ////	NEW USER CREATION ONLY
         if (empty($this->bean->id)) {
-            $this->ss->assign('SHOW_ADMIN_CHECKBOX', 'height="30"');
-            $this->ss->assign('NEW_USER', '1');
+            $this->ss->assign('SHOW_ADMIN_CHECKBOX','height="30"');
+            $this->ss->assign('NEW_USER','1');
         } else {
-            $this->ss->assign('NEW_USER', '0');
-            $this->ss->assign('NEW_USER_TYPE', 'DISABLED');
+            $this->ss->assign('NEW_USER','0');
+            $this->ss->assign('NEW_USER_TYPE','DISABLED');
         }
 
         ////	END NEW USER CREATION ONLY
@@ -177,7 +176,7 @@ class UsersViewEdit extends ViewEdit
         // Build viewable versions of a few fields for non-admins
         if (!empty($this->bean->id)) {
             if (!empty($this->bean->status)) {
-                $this->ss->assign('STATUS_READONLY', $app_list_strings['user_status_dom'][$this->bean->status]);
+                $this->ss->assign('STATUS_READONLY',$app_list_strings['user_status_dom'][$this->bean->status]);
             }
             if (!empty($this->bean->employee_status)) {
                 $this->ss->assign('EMPLOYEE_STATUS_READONLY', $app_list_strings['employee_status_dom'][$this->bean->employee_status]);
@@ -198,8 +197,7 @@ class UsersViewEdit extends ViewEdit
 
         $processSpecial = false;
         $processFormName = '';
-        if (isset($this->fieldHelper->usertype) && (
-            $this->fieldHelper->usertype == 'GROUP'
+        if (isset($this->fieldHelper->usertype) && ($this->fieldHelper->usertype == 'GROUP'
             )) {
             $this->ev->formName = 'EditViewGroup';
 
@@ -270,7 +268,7 @@ EOD
         echo $out;
         echo "<script>var composePackage = null;</script>";
 
-        $this->ev->process($processSpecial, $processFormName);
+        $this->ev->process($processSpecial,$processFormName);
 
         echo $this->ev->display($this->showTitle);
     }

@@ -7,7 +7,7 @@ require_once('include/MVC/View/views/view.edit.php');
 
 class AOS_ProductsViewEdit extends ViewEdit
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -15,7 +15,7 @@ class AOS_ProductsViewEdit extends ViewEdit
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function AOS_ProductsViewEdit()
+    function AOS_ProductsViewEdit()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -27,14 +27,14 @@ class AOS_ProductsViewEdit extends ViewEdit
     }
 
 
-    public function display()
+    function display()
     {
         global $app_strings,$sugar_config;
 
         isset($this->bean->product_image) ? $image = $this->bean->product_image : $image = '';
 
 
-        $temp = str_replace($sugar_config['site_url'].'/'.$sugar_config['upload_dir'], "", $image);
+        $temp = str_replace($sugar_config['site_url'].'/'.$sugar_config['upload_dir'],"", $image);
         $html = '<span id=\'new_attachment\' style=\'display:';
         if (!empty($this->bean->product_image)) {
             $html .= 'none';
@@ -50,7 +50,7 @@ class AOS_ProductsViewEdit extends ViewEdit
 		<input type=\'button\' class=\'button\' value=\''.$app_strings['LBL_REMOVE'].'\' onclick=\'deleteProductImage();\' >
 		</span>';
 
-        $this->ss->assign('PRODUCT_IMAGE', $html);
+        $this->ss->assign('PRODUCT_IMAGE',$html);
         parent::display();
     }
 }

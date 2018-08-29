@@ -8,7 +8,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2016 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,8 +37,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 
@@ -48,7 +48,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class MySugar
 {
-    public $type;
+    var $type;
 
     public function __construct($type)
     {
@@ -70,15 +70,15 @@ class MySugar
     }
 
 
-    public function checkDashletDisplay()
+    function checkDashletDisplay()
     {
         if ((!in_array($this->type, $GLOBALS['moduleList'])
-                && !in_array($this->type, $GLOBALS['modInvisList']))
-                && (!in_array('Activities', $GLOBALS['moduleList']))) {
+				&& !in_array($this->type, $GLOBALS['modInvisList']))
+				&& (!in_array('Activities', $GLOBALS['moduleList']))) {
             $displayDashlet = false;
         } elseif (ACLController::moduleSupportsACL($this->type)) {
             $bean = SugarModule::get($this->type)->loadBean();
-            if (!ACLController::checkAccess($this->type, 'list', true, $bean->acltype)) {
+            if (!ACLController::checkAccess($this->type,'list',true,$bean->acltype)) {
                 $displayDashlet = false;
             }
             $displayDashlet = true;
@@ -89,7 +89,7 @@ class MySugar
         return $displayDashlet;
     }
 
-    public function addDashlet()
+    function addDashlet()
     {
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             return;
@@ -127,12 +127,12 @@ class MySugar
             }
 
             $dashlets[$guid] = array('className' => $dashletsFiles[$_REQUEST['id']]['class'],
-                                         'module' => $dashlet_module,
-                                         'options' => $options,
-                                         'fileLocation' => $dashletsFiles[$_REQUEST['id']]['file']);
+										 'module' => $dashlet_module,
+										 'options' => $options,
+			                             'fileLocation' => $dashletsFiles[$_REQUEST['id']]['file']);
 
 
-            if (!array_key_exists('current_tab', $_SESSION)) {
+            if (!array_key_exists('current_tab',$_SESSION)) {
                 $_SESSION["current_tab"] = '0';
             }
 
@@ -147,7 +147,7 @@ class MySugar
         }
     }
 
-    public function displayDashlet()
+    function displayDashlet()
     {
         global $current_user, $mod_strings, $app_strings;
 
@@ -195,7 +195,7 @@ class MySugar
         }
     }
 
-    public function getPredefinedChartScript()
+    function getPredefinedChartScript()
     {
         global $current_user, $mod_strings;
 
@@ -214,7 +214,7 @@ class MySugar
 
 
 
-    public function deleteDashlet()
+    function deleteDashlet()
     {
         global $current_user;
 
@@ -247,7 +247,7 @@ class MySugar
         }
     }
 
-    public function dashletsDialog()
+    function dashletsDialog()
     {
         require_once('include/MySugar/DashletsDialog/DashletsDialog.php');
 
@@ -292,7 +292,7 @@ EOJS;
     }
 
 
-    public function searchModuleToolsDashlets($searchStr, $category)
+    function searchModuleToolsDashlets($searchStr, $category)
     {
         require_once('include/MySugar/DashletsDialog/DashletsDialog.php');
 
@@ -301,19 +301,19 @@ EOJS;
         $DashletsDialog = new DashletsDialog();
 
         switch ($category) {
-            case 'module':
-                $DashletsDialog->getDashlets('module');
-                $dashletIndex = 'Module Views';
-                $searchCategoryString = $app_strings['LBL_SEARCH_MODULES'];
-                break;
-            case 'tools':
-                $DashletsDialog->getDashlets('tools');
-                $dashletIndex = 'Tools';
-                $searchCategoryString = $app_strings['LBL_SEARCH_TOOLS'];
-                // no break
-            default:
-                break;
-        }
+			case 'module':
+				$DashletsDialog->getDashlets('module');
+				$dashletIndex = 'Module Views';
+				$searchCategoryString = $app_strings['LBL_SEARCH_MODULES'];
+				break;
+			case 'tools':
+				$DashletsDialog->getDashlets('tools');
+				$dashletIndex = 'Tools';
+				$searchCategoryString = $app_strings['LBL_SEARCH_TOOLS'];
+				// no break
+			default:
+				break;
+		}
         $allDashlets = $DashletsDialog->dashlets;
 
         $searchResult = array();
@@ -338,7 +338,7 @@ EOJS;
         return $sugar_smarty->fetch('include/MySugar/tpls/dashletsSearchResults.tpl');
     }
 
-    public function searchChartsDashlets($searchStr)
+    function searchChartsDashlets($searchStr)
     {
         require_once('include/MySugar/DashletsDialog/DashletsDialog.php');
 
@@ -355,7 +355,7 @@ EOJS;
             $searchResult[$category] = array();
             foreach ($dashlets as $dashlet) {
                 if (stripos($dashlet['title'], $searchStr) !== false) {
-                    array_push($searchResult[$category], $dashlet);
+                    array_push($searchResult[$category],$dashlet);
                 }
             }
         }
@@ -369,7 +369,7 @@ EOJS;
         return $sugar_smarty->fetch('include/MySugar/tpls/chartDashletsSearchResults.tpl');
     }
 
-    public function searchDashlets()
+    function searchDashlets()
     {
         $searchStr = $_REQUEST['search'];
         $category = $_REQUEST['category'];
@@ -384,7 +384,7 @@ EOJS;
         echo 'response = ' . $json->encode(array('html' => $html, 'script' => ''));
     }
 
-    public function configureDashlet()
+    function configureDashlet()
     {
         global $current_user, $app_strings, $mod_strings;
 
@@ -402,14 +402,14 @@ EOJS;
             } else { // display options
                 $json = getJSONobj();
                 return 'result = ' . $json->encode((array('header' => $dashlet->title . ' : ' . $app_strings['LBL_OPTIONS'],
-                                                         'body'  => $dashlet->displayOptions())));
+		                                                 'body'  => $dashlet->displayOptions())));
             }
         } else {
             return '0';
         }
     }
 
-    public function saveLayout()
+    function saveLayout()
     {
         global $current_user;
 
@@ -433,7 +433,8 @@ EOJS;
             $current_user->setPreference('pages', $pages, 0, $this->type);
 
             return '1';
+        } else {
+            return '0';
         }
-        return '0';
     }
 }

@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,14 +33,14 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 class ViewMain extends SugarView
 {
-    public function __construct()
+    function __construct()
     {
         $this->options['show_footer'] = true;
         parent::__construct();
@@ -50,7 +49,7 @@ class ViewMain extends SugarView
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function ViewMain()
+    function ViewMain()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -63,19 +62,19 @@ class ViewMain extends SugarView
 
 
     /**
-     * @see SugarView::_getModuleTitleParams()
-     */
+	 * @see SugarView::_getModuleTitleParams()
+	 */
     protected function _getModuleTitleParams($browserTitle = false)
     {
         global $mod_strings;
 
         return array(
-           translate('LBL_MODULE_NAME', 'Administration'),
-           ModuleBuilderController::getModuleTitle(),
-           );
+    	   translate('LBL_MODULE_NAME','Administration'),
+    	   ModuleBuilderController::getModuleTitle(),
+    	   );
     }
 
-    public function display()
+    function display()
     {
         global $app_strings, $current_user, $mod_strings, $theme;
 
@@ -89,38 +88,38 @@ class ViewMain extends SugarView
         $smarty->assign('mod', $mod_strings);
         //Replaced by javascript function "setMode"
         switch ($type) {
-            case 'studio':
-                //$smarty->assign('ONLOAD','ModuleBuilder.getContent("module=ModuleBuilder&action=wizard")');
-                require_once('modules/ModuleBuilder/Module/StudioTree.php');
-                $mbt = new StudioTree();
-                break;
-            case 'mb':
-                //$smarty->assign('ONLOAD','ModuleBuilder.getContent("module=ModuleBuilder&action=package&package=")');
-                require_once('modules/ModuleBuilder/MB/MBPackageTree.php');
-                $mbt = new MBPackageTree();
-                break;
-            case 'dropdowns':
-               // $admin = is_admin($current_user);
-                require_once('modules/ModuleBuilder/Module/DropDownTree.php');
-                $mbt = new DropDownTree();
-                break;
-            default:
-                //$smarty->assign('ONLOAD','ModuleBuilder.getContent("module=ModuleBuilder&action=home")');
-                require_once('modules/ModuleBuilder/Module/MainTree.php');
-                $mbt = new MainTree();
-        }
+ 			case 'studio':
+ 				//$smarty->assign('ONLOAD','ModuleBuilder.getContent("module=ModuleBuilder&action=wizard")');
+ 				require_once('modules/ModuleBuilder/Module/StudioTree.php');
+				$mbt = new StudioTree();
+				break;
+ 			case 'mb':
+ 				//$smarty->assign('ONLOAD','ModuleBuilder.getContent("module=ModuleBuilder&action=package&package=")');
+ 				require_once('modules/ModuleBuilder/MB/MBPackageTree.php');
+				$mbt = new MBPackageTree();
+				break;
+ 			case 'dropdowns':
+ 			   // $admin = is_admin($current_user);
+ 			    require_once('modules/ModuleBuilder/Module/DropDownTree.php');
+ 			    $mbt = new DropDownTree();
+ 			    break;
+ 			default:
+ 				//$smarty->assign('ONLOAD','ModuleBuilder.getContent("module=ModuleBuilder&action=home")');
+				require_once('modules/ModuleBuilder/Module/MainTree.php');
+				$mbt = new MainTree();
+ 		}
         $smarty->assign('TEST_STUDIO', displayStudioForCurrentUser());
         $smarty->assign('ADMIN', is_admin($current_user));
         $smarty->display('modules/ModuleBuilder/tpls/includes.tpl');
         if ($mbt) {
-            $smarty->assign('TREE', $mbt->fetch());
+            $smarty->assign('TREE',$mbt->fetch());
             $smarty->assign('TREElabel', $mbt->getName());
         }
         $userPref = $current_user->getPreference('mb_assist', 'Assistant');
         if (!$userPref) {
             $userPref="na";
         }
-        $smarty->assign('userPref', $userPref);
+        $smarty->assign('userPref',$userPref);
 
         ///////////////////////////////////
         require_once('include/SugarTinyMCE.php');

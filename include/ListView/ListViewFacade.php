@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /*
@@ -56,23 +55,23 @@ if (!defined('sugarEntry') || !sugarEntry) {
   */
  class ListViewFacade
  {
-     public $focus = null;
-     public $module = '';
-     public $type = 0;
+     var $focus = null;
+     var $module = '';
+     var $type = 0;
 
-     public $lv;
+     var $lv;
 
      //ListView fields
-     public $template;
-     public $title;
-     public $where = '';
-     public $params = array();
-     public $offset = 0;
-     public $limit = -1;
-     public $filter_fields = array();
-     public $id_field = 'id';
-     public $prefix = '';
-     public $mod_strings = array();
+     var $template;
+     var $title;
+     var $where = '';
+     var $params = array();
+     var $offset = 0;
+     var $limit = -1;
+     var $filter_fields = array();
+     var $id_field = 'id';
+     var $prefix = '';
+     var $mod_strings = array();
 
      /**
       * Constructor
@@ -80,7 +79,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
       * @param $module - the module name
       * @param - 0 = decide for me, 1 = ListView.html, 2 = ListViewSmarty
       */
-     public function __construct($focus, $module, $type = 0)
+     function __construct($focus, $module, $type = 0)
      {
          $this->focus = $focus;
          $this->module = $module;
@@ -91,7 +90,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
      /**
       * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
       */
-     public function ListViewFacade($focus, $module, $type = 0)
+     function ListViewFacade($focus, $module, $type = 0)
      {
          $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
          if (isset($GLOBALS['log'])) {
@@ -103,7 +102,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
      }
 
 
-     public function build()
+     function build()
      {
          //we will assume that if the ListView.html file exists we will want to use that one
          if (file_exists('modules/'.$this->module.'/ListView.html')) {
@@ -161,7 +160,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
          }
      }
 
-     public function setup($template = '', $where = '', $params = array(), $mod_strings = array(), $offset = 0, $limit = -1, $orderBy = '', $prefix = '', $filter_fields = array(), $id_field = 'id')
+     function setup($template = '', $where = '', $params = array(), $mod_strings = array(), $offset = 0, $limit = -1, $orderBy = '', $prefix = '', $filter_fields = array(), $id_field = 'id')
      {
          if (!empty($template)) {
              $this->template = $template;
@@ -170,7 +169,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
          $this->mod_strings = $mod_strings;
 
          if ($this->type == 1) {
-             $this->lv->initNewXTemplate($this->template, $this->mod_strings);
+             $this->lv->initNewXTemplate($this->template,$this->mod_strings);
              $this->prefix = $prefix;
              $this->lv->setQuery($where, $limit, $orderBy, $prefix);
              $this->lv->show_select_menu = false;
@@ -184,11 +183,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
              $this->lv->select = false;
              $this->lv->mailMerge = false;
              $this->lv->multiSelect = false;
-             $this->lv->setup($this->focus, $this->template, $where, $params, $offset, $limit, $filter_fields, $id_field);
+             $this->lv->setup($this->focus, $this->template, $where, $params, $offset, $limit,  $filter_fields, $id_field);
          }
      }
 
-     public function display($title = '', $section = 'main', $return = false)
+     function display($title = '', $section = 'main', $return = FALSE)
      {
          if ($this->type == 1) {
              ob_start();
@@ -201,11 +200,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
          }
          if ($return) {
              return $output;
+         } else {
+             echo $output;
          }
-         echo $output;
      }
 
-     public function setTitle($title = '')
+     function setTitle($title = '')
      {
          $this->title = $title;
      }

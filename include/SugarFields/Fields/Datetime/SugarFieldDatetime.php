@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,15 +33,15 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('include/SugarFields/Fields/Base/SugarFieldBase.php');
 
 class SugarFieldDatetime extends SugarFieldBase
 {
-    public function getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    function getEditViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
 
         // Create Smarty variables for the Calendar picker widget
@@ -76,7 +75,7 @@ class SugarFieldDatetime extends SugarFieldBase
         // ~ jpereira@dri - #Bug49552 - Datetime field unable to follow parent class methods
     }
 
-    public function getImportViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    function getImportViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
         $displayParams['showMinutesDropdown'] = false;
         $displayParams['showHoursDropdown'] = false;
@@ -89,7 +88,7 @@ class SugarFieldDatetime extends SugarFieldBase
     }
 
 
-    public function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    function getSearchViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
         if ($this->isRangeSearchView($vardef)) {
             $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
@@ -115,18 +114,19 @@ class SugarFieldDatetime extends SugarFieldBase
             $user = $context['notify_user'];
         } else {
             $user = $GLOBALS['current_user'];
-        }
+        }       
         if ($vardef['type'] == 'date') {
             if (!$timedate->check_matching_format($inputField, TimeDate::DB_DATE_FORMAT)) {
                 return $inputField;
-            }
+            }            
             // convert without TZ
-            return $timedate->to_display($inputField, $timedate->get_db_date_format(), $timedate->get_date_format($user));
+            return $timedate->to_display($inputField, $timedate->get_db_date_format(),  $timedate->get_date_format($user));
+        } else {
+            if (!$timedate->check_matching_format($inputField, TimeDate::DB_DATETIME_FORMAT)) {
+                return $inputField;
+            }            
+            return $timedate->to_display_date_time($inputField, true, true, $user);
         }
-        if (!$timedate->check_matching_format($inputField, TimeDate::DB_DATETIME_FORMAT)) {
-            return $inputField;
-        }
-        return $timedate->to_display_date_time($inputField, true, true, $user);
     }
 
     public function save(&$bean, $inputData, $field, $def, $prefix = '')
@@ -195,20 +195,20 @@ class SugarFieldDatetime extends SugarFieldBase
     }
 
 
-    public function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
+    function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex)
     {
         global $timedate,$current_user;
 
         //check to see if the date is in the proper format
         $user_dateFormat = $timedate->get_date_format();
-        if (!empty($vardef['value']) && !$timedate->check_matching_format($vardef['value'], $user_dateFormat)) {
+        if (!empty($vardef['value']) && !$timedate->check_matching_format($vardef['value'],$user_dateFormat)) {
 
             //date is not in proper user format, so get the SugarDateTiemObject and inject the vardef with a new element
-            $sdt = $timedate->fromString($vardef['value'], $current_user);
+            $sdt = $timedate->fromString($vardef['value'],$current_user);
 
             if (!empty($sdt)) {
                 //the new 'date_formatted_value' array element will be used in include/SugarFields/Fields/Datetime/DetailView.tpl if it exists
-                $vardef['date_formatted_value'] = $timedate->asUserDate($sdt, $current_user);
+                $vardef['date_formatted_value'] = $timedate->asUserDate($sdt,$current_user);
             }
         }
 

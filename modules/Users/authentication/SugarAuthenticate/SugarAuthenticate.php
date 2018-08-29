@@ -50,8 +50,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 class SugarAuthenticate
 {
-    public $userAuthenticateClass = 'SugarAuthenticateUser';
-    public $authenticationDir = 'SugarAuthenticate';
+    var $userAuthenticateClass = 'SugarAuthenticateUser';
+    var $authenticationDir = 'SugarAuthenticate';
 
 
     /**
@@ -101,7 +101,7 @@ class SugarAuthenticate
      * @param string $password
      * @return boolean
      */
-    public function loginAuthenticate($username, $password, $fallback=false, $PARAMS = array())
+    function loginAuthenticate($username, $password, $fallback=false, $PARAMS = array ())
     {
         global $mod_strings;
         unset($_SESSION['login_error']);
@@ -118,21 +118,21 @@ class SugarAuthenticate
             }
             // now that user is authenticated, reset loginfailed
             if ($usr->getPreference('loginfailed') != '' && $usr->getPreference('loginfailed') != 0) {
-                $usr->setPreference('loginfailed', '0');
+                $usr->setPreference('loginfailed','0');
                 $usr->savePreferencesToDB();
             }
             return $this->postLoginAuthenticate();
-        }
-        //if(!empty($usr_id) && $res['lockoutexpiration'] > 0){
-        if (!empty($usr_id)) {
-            if (($logout=$usr->getPreference('loginfailed'))=='') {
-                $usr->setPreference('loginfailed', '1');
-            } else {
-                $usr->setPreference('loginfailed', $logout+1);
+        } else {
+            //if(!empty($usr_id) && $res['lockoutexpiration'] > 0){
+            if (!empty($usr_id)) {
+                if (($logout=$usr->getPreference('loginfailed'))=='') {
+                    $usr->setPreference('loginfailed','1');
+                } else {
+                    $usr->setPreference('loginfailed',$logout+1);
+                }
+                $usr->savePreferencesToDB();
             }
-            $usr->savePreferencesToDB();
         }
-        
         if (strtolower(get_class($this)) != 'sugarauthenticate') {
             $sa = new SugarAuthenticate();
             $error = (!empty($_SESSION['login_error']))?$_SESSION['login_error']:'';
@@ -156,10 +156,10 @@ class SugarAuthenticate
      * Once a user is authenticated on login this function will be called. Populate the session with what is needed and log anything that needs to be logged
      *
      */
-    public function postLoginAuthenticate()
+    function postLoginAuthenticate()
     {
         global $reset_language_on_default_user, $sugar_config;
-        
+		
         //just do a little house cleaning here
         unset($_SESSION['login_password']);
         unset($_SESSION['login_error']);
@@ -167,15 +167,15 @@ class SugarAuthenticate
         unset($_SESSION['ACL']);
 
         //set the server unique key
-        if (isset($sugar_config['unique_key'])) {
+        if (isset ($sugar_config['unique_key'])) {
             $_SESSION['unique_key'] = $sugar_config['unique_key'];
         }
 
         //set user language
-        if (isset($reset_language_on_default_user) && $reset_language_on_default_user && $GLOBALS['current_user']->user_name == $sugar_config['default_user_name']) {
+        if (isset ($reset_language_on_default_user) && $reset_language_on_default_user && $GLOBALS['current_user']->user_name == $sugar_config['default_user_name']) {
             $authenticated_user_language = $sugar_config['default_language'];
         } else {
-            $authenticated_user_language = isset($_REQUEST['login_language']) ? $_REQUEST['login_language'] : (isset($_REQUEST['ck_login_language_20']) ? $_REQUEST['ck_login_language_20'] : $sugar_config['default_language']);
+            $authenticated_user_language = isset($_REQUEST['login_language']) ? $_REQUEST['login_language'] : (isset ($_REQUEST['ck_login_language_20']) ? $_REQUEST['ck_login_language_20'] : $sugar_config['default_language']);
         }
 
         $_SESSION['authenticated_user_language'] = $authenticated_user_language;
@@ -197,16 +197,16 @@ class SugarAuthenticate
      * On every page hit this will be called to ensure a user is authenticated
      * @return boolean
      */
-    public function sessionAuthenticate()
+    function sessionAuthenticate()
     {
         global $module, $action, $allowed_actions;
         $authenticated = false;
-        $allowed_actions = array("Authenticate", "Login"); // these are actions where the user/server keys aren't compared
-        if (isset($_SESSION['authenticated_user_id'])) {
+        $allowed_actions = array ("Authenticate", "Login"); // these are actions where the user/server keys aren't compared
+        if (isset ($_SESSION['authenticated_user_id'])) {
             $GLOBALS['log']->debug("We have an authenticated user id: ".$_SESSION["authenticated_user_id"]);
 
             $authenticated = $this->postSessionAuthenticate();
-        } elseif (isset($action) && isset($module) && $action == "Authenticate" && $module == "Users") {
+        } elseif (isset ($action) && isset ($module) && $action == "Authenticate" && $module == "Users") {
             $GLOBALS['log']->debug("We are authenticating user now");
         } else {
             $GLOBALS['log']->debug("The current user does not have a session.  Going to the login page");
@@ -215,7 +215,7 @@ class SugarAuthenticate
             $_REQUEST['action'] = $action;
             $_REQUEST['module'] = $module;
         }
-        if (empty($GLOBALS['current_user']->id) && !in_array($action, $allowed_actions)) {
+        if (empty ($GLOBALS['current_user']->id) && !in_array($action, $allowed_actions)) {
             $GLOBALS['log']->debug("The current user is not logged in going to login page");
             $action = "Login";
             $module = "Users";
@@ -237,7 +237,7 @@ class SugarAuthenticate
      * and it will load the  current user
      * @return boolean
      */
-    public function postSessionAuthenticate()
+    function postSessionAuthenticate()
     {
         global $action, $allowed_actions, $sugar_config, $app_strings;
         $_SESSION['userTime']['last'] = time();
@@ -371,17 +371,17 @@ class SugarAuthenticate
      * Make sure a user isn't stealing sessions so check the ip to ensure that the ip address hasn't dramatically changed
      *
      */
-    public function validateIP()
+    function validateIP()
     {
         global $sugar_config;
         // grab client ip address
         $clientIP = query_client_ip();
         $classCheck = 0;
         // check to see if config entry is present, if not, verify client ip
-        if (!isset($sugar_config['verify_client_ip']) || $sugar_config['verify_client_ip'] == true) {
+        if (!isset ($sugar_config['verify_client_ip']) || $sugar_config['verify_client_ip'] == true) {
             // check to see if we've got a current ip address in $_SESSION
             // and check to see if the session has been hijacked by a foreign ip
-            if (isset($_SESSION["ipaddress"])) {
+            if (isset ($_SESSION["ipaddress"])) {
                 $session_parts = explode(".", $_SESSION["ipaddress"]);
                 $client_parts = explode(".", $clientIP);
                 if (count($session_parts) < 4) {
@@ -392,13 +392,14 @@ class SugarAuthenticate
                         if ($session_parts[$i] == $client_parts[$i]) {
                             $classCheck = 1;
                             continue;
+                        } else {
+                            $classCheck = 0;
+                            break;
                         }
-                        $classCheck = 0;
-                        break;
                     }
                 }
                 // we have a different IP address
-                if ($_SESSION["ipaddress"] != $clientIP && empty($classCheck)) {
+                if ($_SESSION["ipaddress"] != $clientIP && empty ($classCheck)) {
                     $GLOBALS['log']->fatal("IP Address mismatch: SESSION IP: {$_SESSION['ipaddress']} CLIENT IP: {$clientIP}");
                     session_destroy();
                     die($mod_strings['ERR_IP_CHANGE'] . "<a href=\"{$sugar_config['site_url']}\">" + $mod_strings['ERR_RETURN'] + "</a>");
@@ -416,7 +417,7 @@ class SugarAuthenticate
      * Called when a user requests to logout
      *
      */
-    public function logout()
+    function logout()
     {
         session_start();
         session_destroy();
@@ -432,7 +433,7 @@ class SugarAuthenticate
      * @param STRING $password
      * @return STRING $encoded_password
      */
-    public static function encodePassword($password)
+    static function encodePassword($password)
     {
         return strtolower(md5($password));
     }
@@ -441,7 +442,7 @@ class SugarAuthenticate
      * If a user may change there password through the Sugar UI
      *
      */
-    public function canChangePassword()
+    function canChangePassword()
     {
         return true;
     }
@@ -449,7 +450,7 @@ class SugarAuthenticate
      * If a user may change there user name through the Sugar UI
      *
      */
-    public function canChangeUserName()
+    function canChangeUserName()
     {
         return true;
     }
@@ -460,7 +461,7 @@ class SugarAuthenticate
      *
      * This function allows the SugarAuthenticate subclasses to perform some pre login initialization as needed
      */
-    public function pre_login()
+    function pre_login()
     {
         if (isset($_SESSION['authenticated_user_id'])) {
             ob_clean();

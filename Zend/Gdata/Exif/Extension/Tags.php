@@ -92,6 +92,7 @@ require_once 'Zend/Gdata/Exif/Extension/Time.php';
  */
 class Zend_Gdata_Exif_Extension_Tags extends Zend_Gdata_Extension
 {
+
     protected $_rootNamespace = 'exif';
     protected $_rootElement = 'tags';
 
@@ -189,18 +190,11 @@ class Zend_Gdata_Exif_Extension_Tags extends Zend_Gdata_Extension
      * @param Zend_Gdata_Exif_Extension_Time $time (optional) The exif:time
      *          value to be set in the constructed object.
      */
-    public function __construct(
-        $distance = null,
-        $exposure = null,
-            $flash = null,
-        $focalLength = null,
-        $fStop = null,
-            $imageUniqueId = null,
-        $iso = null,
-        $make = null,
-            $model = null,
-        $time = null
-    ) {
+    public function __construct($distance = null, $exposure = null,
+            $flash = null, $focalLength = null, $fStop = null,
+            $imageUniqueId = null, $iso = null, $make = null,
+            $model = null, $time = null)
+    {
         $this->registerAllNamespaces(Zend_Gdata_Exif::$namespaces);
         parent::__construct();
         $this->setDistance($distance);
@@ -551,4 +545,5 @@ class Zend_Gdata_Exif_Extension_Tags extends Zend_Gdata_Extension
         $this->_time = $value;
         return $this;
     }
+
 }

@@ -48,6 +48,7 @@ require_once 'Zend/Gdata/Geo/Extension/GmlPoint.php';
  */
 class Zend_Gdata_Geo_Extension_GeoRssWhere extends Zend_Gdata_Extension
 {
+
     protected $_rootNamespace = 'georss';
     protected $_rootElement = 'where';
 
@@ -130,4 +131,5 @@ class Zend_Gdata_Geo_Extension_GeoRssWhere extends Zend_Gdata_Extension
         $this->_point = $value;
         return $this;
     }
+
 }

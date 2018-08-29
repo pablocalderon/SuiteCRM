@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,7 +46,7 @@ function getEditFieldHTML($module, $fieldname, $aow_field, $view = 'EditView', $
 {
     global $current_language, $app_strings, $app_list_strings, $current_user, $beanFiles, $beanList;
 
-    $bean = BeanFactory::getBean($module, $id);
+    $bean = BeanFactory::getBean($module,$id);
 
     if (!checkAccess($bean)) {
         return false;
@@ -140,7 +140,7 @@ function getEditFieldHTML($module, $fieldname, $aow_field, $view = 'EditView', $
         // Remove all the copyright comments
         $contents = preg_replace('/\{\*[^\}]*?\*\}/', '', $contents);
         // remove extra wrong javascript which breaks auto complete on flexi relationship parent fields
-        $contents = preg_replace("/<script language=\"javascript\">if\(typeof sqs_objects == \'undefined\'\){var sqs_objects = new Array;}sqs_objects\[\'EditView_parent_name\'\].*?<\/script>/", "", $contents);
+        $contents = preg_replace("/<script language=\"javascript\">if\(typeof sqs_objects == \'undefined\'\){var sqs_objects = new Array;}sqs_objects\[\'EditView_parent_name\'\].*?<\/script>/","",$contents);
 
 
         if ($view == 'EditView' && ($vardef['type'] == 'relate' || $vardef['type'] == 'parent')) {
@@ -255,7 +255,7 @@ function getEditFieldHTML($module, $fieldname, $aow_field, $view = 'EditView', $
         $fieldlist[$fieldname]['value'] = $value;
         $fieldlist[$fieldname]['id_name'] = $aow_field;
         $fieldlist[$fieldname]['name'] = $aow_field . '_display';
-    } elseif (isset($fieldlist[$fieldname]['type']) && ($fieldlist[$fieldname]['type'] == 'datetimecombo' || $fieldlist[$fieldname]['type'] == 'datetime' || $fieldlist[$fieldname]['type'] == 'date')) {
+    } elseif (isset($fieldlist[$fieldname]['type']) && ($fieldlist[$fieldname]['type'] == 'datetimecombo' || $fieldlist[$fieldname]['type'] == 'datetime')) {
         $value = $focus->convertField($value, $fieldlist[$fieldname]);
         if (!$value) {
             $value = date($timedate->get_date_time_format());
@@ -341,12 +341,12 @@ function saveField($field, $id, $module, $value)
             $bean->$field = $value;
         }
 
-        $check_notify = false;
+        $check_notify = FALSE;
 
         if (isset($bean->fetched_row['assigned_user_id']) && $field == "assigned_user_name") {
             $old_assigned_user_id = $bean->fetched_row['assigned_user_id'];
             if (!empty($value) && ($old_assigned_user_id != $value) && ($value != $current_user->id)) {
-                $check_notify = true;
+                $check_notify = TRUE;
             }
         }
 
@@ -366,8 +366,9 @@ function saveField($field, $id, $module, $value)
         }
         $bean->retrieve();
         return getDisplayValue($bean, $field);
+    } else {
+        return false;
     }
-    return false;
 }
 
 function getDisplayValue($bean, $field, $method = "save")
@@ -417,24 +418,18 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
         $value = "<b>" . $SugarWidgetSubPanelDetailViewLink->displayList($vardef) . "</b>";
     }
 
-    //If field is of type date time, datetimecombo or date
-    if ($vardef['type'] == "datetimecombo" || $vardef['type'] == "datetime" || $vardef['type'] == "date") {
-        if ($method != "close") {
-            if ($method != "save") {
-                $value = convertDateUserToDB($value);
-            }
-            $datetime_format = $timedate->get_date_time_format();
-
-            if ($vardef['type'] == "date") {
-                $value = $value . ' 00:00:00';
-            }
-            // create utc date (as it's utc in db)
-            $datetime = DateTime::createFromFormat("Y-m-d H:i:s", $value, new DateTimeZone('UTC'));
-            // convert it to timezone the user uses
-            $datetime = $timedate->tzUser($datetime);
-
-            $value = $datetime->format($datetime_format);
+    //If field is of type date time or datetimecombo
+    if ($vardef['type'] == "datetimecombo" || $vardef['type'] == "datetime") {
+        if ($method != "save") {
+            $value = convertDateUserToDB($value);
         }
+        $datetime_format = $timedate->get_date_time_format();
+        // create utc date (as it's utc in db)
+        $datetime = DateTime::createFromFormat("Y-m-d H:i:s", $value,new DateTimeZone('UTC'));
+        // convert it to timezone the user uses
+        $datetime = $timedate->tzUser($datetime);
+
+        $value = $datetime->format($datetime_format);
     }
 
     //If field is of type bool, checkbox.
@@ -494,9 +489,9 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
         }
 
         if ($vardef['ext2']) {
-            $value .= getFieldValueFromModule($fieldName, $vardef['ext2'], $record);
+            $value .= getFieldValueFromModule($fieldName,$vardef['ext2'],$record);
         } elseif (!empty($vardef['rname']) || $vardef['name'] == "related_doc_name") {
-            $value .= getFieldValueFromModule($fieldName, $vardef['module'], $record);
+            $value .= getFieldValueFromModule($fieldName,$vardef['module'],$record);
         } else {
             $value .= $name;
         }
@@ -510,7 +505,7 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
             $value : 'http://' . $value);
         $value = '<a href=' . $link . ' target="_blank">' . $value . '</a>';
     }
-
+	
     if ($vardef['type'] == "currency") {
         if ($_REQUEST['view'] != "DetailView") {
             $value = currency_format_number($value);
@@ -518,9 +513,7 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
             $value = format_number($value);
         }
     }
-    if ($vardef['type'] == "date" && $method == "save") {
-        $value = substr($value, 0, strlen($value) - 6);
-    }
+	
     return $value;
 }
 
@@ -552,6 +545,8 @@ function checkAccess($bean)
 {
     if ($bean->ACLAccess('EditView')) {
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
+

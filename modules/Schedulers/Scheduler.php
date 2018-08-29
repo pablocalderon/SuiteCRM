@@ -47,45 +47,45 @@ require_once 'modules/SchedulersJobs/SchedulersJob.php';
 class Scheduler extends SugarBean
 {
     // table columns
-    public $id;
-    public $deleted;
-    public $date_entered;
-    public $date_modified;
-    public $modified_user_id;
-    public $created_by;
-    public $created_by_name;
-    public $modified_by_name;
-    public $name;
-    public $job;
-    public $date_time_start;
-    public $date_time_end;
-    public $job_interval;
-    public $time_from;
-    public $time_to;
-    public $last_run;
-    public $status;
-    public $catch_up;
+    var $id;
+    var $deleted;
+    var $date_entered;
+    var $date_modified;
+    var $modified_user_id;
+    var $created_by;
+    var $created_by_name;
+    var $modified_by_name;
+    var $name;
+    var $job;
+    var $date_time_start;
+    var $date_time_end;
+    var $job_interval;
+    var $time_from;
+    var $time_to;
+    var $last_run;
+    var $status;
+    var $catch_up;
     // object attributes
-    public $user;
-    public $intervalParsed;
-    public $intervalHumanReadable;
-    public $metricsVar;
-    public $metricsVal;
-    public $dayInt;
-    public $dayLabel;
-    public $monthsInt;
-    public $monthsLabel;
-    public $suffixArray;
-    public $datesArray;
-    public $scheduledJobs;
-    public $timeOutMins = 60;
+    var $user;
+    var $intervalParsed;
+    var $intervalHumanReadable;
+    var $metricsVar;
+    var $metricsVal;
+    var $dayInt;
+    var $dayLabel;
+    var $monthsInt;
+    var $monthsLabel;
+    var $suffixArray;
+    var $datesArray;
+    var $scheduledJobs;
+    var $timeOutMins = 60;
     // standard SugarBean attrs
-    public $table_name				= "schedulers";
-    public $object_name			= "Scheduler";
-    public $module_dir				= "Schedulers";
-    public $new_schema				= true;
-    public $process_save_dates 	= true;
-    public $order_by;
+    var $table_name				= "schedulers";
+    var $object_name			= "Scheduler";
+    var $module_dir				= "Schedulers";
+    var $new_schema				= true;
+    var $process_save_dates 	= true;
+    var $order_by;
 
     public static $job_strings;
 
@@ -159,9 +159,10 @@ class Scheduler extends SugarBean
         if (is_array($validTimes) && in_array($now, $validTimes)) {
             $GLOBALS['log']->debug('----->Scheduler found valid job ('.$this->name.') for time GMT('.$now.')');
             return true;
+        } else {
+            $GLOBALS['log']->debug('----->Scheduler did NOT find valid job ('.$this->name.') for time GMT('.$now.')');
+            return false;
         }
-        $GLOBALS['log']->debug('----->Scheduler did NOT find valid job ('.$this->name.') for time GMT('.$now.')');
-        return false;
     }
 
     /**
@@ -174,16 +175,17 @@ class Scheduler extends SugarBean
         $job->scheduler_id = $this->id;
         $job->name = $this->name;
         $job->execute_time = $GLOBALS['timedate']->nowDb();
-        
+
         $user = $this->getUser();
-        
+
         if (!is_object($user)) {
+
             LoggerManager::getLogger()->warn('Scheduler / create job: User object not found.');
             $job->assigned_user_id = null;
         } else {
             $job->assigned_user_id = $user->id;
         }
-        
+
         $job->target = $this->job;
         return $job;
     }
@@ -221,13 +223,13 @@ class Scheduler extends SugarBean
      * 						the	 job_interval attribute
      * @return	false		If we the Scheduler is not in scope, return false.
      */
-    public function deriveDBDateTimes($focus)
+    function deriveDBDateTimes($focus)
     {
         global $timedate;
         $GLOBALS['log']->debug('----->Schedulers->deriveDBDateTimes() got an object of type: '.$focus->object_name);
         /* [min][hr][dates][mon][days] */
         $dateTimes = array();
-        $ints	= explode('::', str_replace(' ', '', $focus->job_interval));
+        $ints	= explode('::', str_replace(' ','',$focus->job_interval));
         $days	= $ints[4];
         $mons	= $ints[3];
         $dates	= $ints[2];
@@ -242,13 +244,13 @@ class Scheduler extends SugarBean
         } elseif (strstr($days, '*/')) {
             // the "*/x" format is nonsensical for this field
             // do basically nothing.
-            $theDay = str_replace('*/', '', $days);
+            $theDay = str_replace('*/','',$days);
             $dayName[] = $theDay;
         } elseif ($days != '*') { // got particular day(s)
             if (strstr($days, ',')) {
-                $exDays = explode(',', $days);
+                $exDays = explode(',',$days);
                 foreach ($exDays as $k1 => $dayGroup) {
-                    if (strstr($dayGroup, '-')) {
+                    if (strstr($dayGroup,'-')) {
                         $exDayGroup = explode('-', $dayGroup); // build up range and iterate through
                         for ($i=$exDayGroup[0];$i<=$exDayGroup[1];$i++) {
                             $dayName[] = $i;
@@ -279,7 +281,7 @@ class Scheduler extends SugarBean
         if ($mons == '*') {
             $GLOBALS['log']->debug('----->got * months');
         } elseif (strstr($mons, '*/')) {
-            $mult = str_replace('*/', '', $mons);
+            $mult = str_replace('*/','',$mons);
             $startMon = $timedate->fromDb($focus->date_time_start)->month;
             $startFrom = ($startMon % $mult);
 
@@ -289,16 +291,16 @@ class Scheduler extends SugarBean
                 $i += $mult;
             }
             // this month is not in one of the multiplier months
-            if (!in_array($today['mon'], $compMons)) {
+            if (!in_array($today['mon'],$compMons)) {
                 return false;
             }
         } elseif ($mons != '*') {
             $monName = array();
-            if (strstr($mons, ',')) { // we have particular (groups) of months
-                $exMons = explode(',', $mons);
+            if (strstr($mons,',')) { // we have particular (groups) of months
+                $exMons = explode(',',$mons);
                 foreach ($exMons as $k1 => $monGroup) {
                     if (strstr($monGroup, '-')) { // we have a range of months
-                        $exMonGroup = explode('-', $monGroup);
+                        $exMonGroup = explode('-',$monGroup);
                         for ($i=$exMonGroup[0];$i<=$exMonGroup[1];$i++) {
                             $monName[] = $i;
                         }
@@ -326,12 +328,12 @@ class Scheduler extends SugarBean
         if ($dates == '*') {
             $GLOBALS['log']->debug('----->got * dates');
         } elseif (strstr($dates, '*/')) {
-            $mult = str_replace('*/', '', $dates);
+            $mult = str_replace('*/','',$dates);
             $startDate = $timedate->fromDb($focus->date_time_start)->day;
             $startFrom = ($startDate % $mult);
 
             for ($i=$startFrom; $i<=31; $i+$mult) {
-                $dateName[] = str_pad(($i+$mult), 2, '0', STR_PAD_LEFT);
+                $dateName[] = str_pad(($i+$mult),2,'0',STR_PAD_LEFT);
                 $i += $mult;
             }
 
@@ -376,14 +378,14 @@ class Scheduler extends SugarBean
                 $hrName[]=$i;
             }
         } elseif (strstr($hrs, '*/')) {
-            $mult = str_replace('*/', '', $hrs);
+            $mult = str_replace('*/','',$hrs);
             for ($i=0; $i<24; $i) { // weird, i know
                 $hrName[]=$i;
                 $i += $mult;
             }
         } elseif ($hrs != '*') {
             if (strstr($hrs, ',')) {
-                $exHrs = explode(',', $hrs);
+                $exHrs = explode(',',$hrs);
                 foreach ($exHrs as $k1 => $hrGroup) {
                     if (strstr($hrGroup, '-')) {
                         $exHrGroup = explode('-', $hrGroup);
@@ -417,14 +419,14 @@ class Scheduler extends SugarBean
                     $minName[] = ($i+$currentMin);
                 }
             }
-        } elseif (strstr($mins, '*/')) {
-            $mult = str_replace('*/', '', $mins);
+        } elseif (strstr($mins,'*/')) {
+            $mult = str_replace('*/','',$mins);
             for ($i = 0; $i < 60; $i += $mult) {
                 $minName[] = $i;
             }
         } elseif ($mins != '*') {
             if (strstr($mins, ',')) {
-                $exMins = explode(',', $mins);
+                $exMins = explode(',',$mins);
                 foreach ($exMins as $k1 => $minGroup) {
                     if (strstr($minGroup, '-')) {
                         $exMinGroup = explode('-', $minGroup);
@@ -481,13 +483,9 @@ class Scheduler extends SugarBean
         /*_pp('hours:'); _pp($hrName);_pp('mins:'); _pp($minName);*/
         $dateobj = $timedate->getNow();
         $nowTs = $dateobj->ts;
-        $GLOBALS['log']->debug(sprintf(
-            "Constraints: start: %s from: %s end: %s to: %s now: %s",
-            gmdate('Y-m-d H:i:s', $timeStartTs),
-            gmdate('Y-m-d H:i:s', $timeFromTs),
-            gmdate('Y-m-d H:i:s', $timeEndTs),
-            gmdate('Y-m-d H:i:s', $timeToTs),
-            $timedate->nowDb()
+        $GLOBALS['log']->debug(sprintf("Constraints: start: %s from: %s end: %s to: %s now: %s",
+            gmdate('Y-m-d H:i:s', $timeStartTs), gmdate('Y-m-d H:i:s', $timeFromTs), gmdate('Y-m-d H:i:s', $timeEndTs),
+            gmdate('Y-m-d H:i:s', $timeToTs), $timedate->nowDb()
             ));
         //		_pp('currentHour: '. $currentHour);
         //		_pp('timeStartTs: '.date('r',$timeStartTs));
@@ -508,20 +506,24 @@ class Scheduler extends SugarBean
                 $tsGmt = $dateobj->ts;
 
                 if ($tsGmt >= $timeStartTs) { // start is greater than the date specified by admin
-                    if ($tsGmt >= $timeFromTs) { // start is greater than the time_to spec'd by admin
+					if ($tsGmt >= $timeFromTs) { // start is greater than the time_to spec'd by admin
                         if ($tsGmt > $lastRunTs) { // start from last run, last run should not be included
                             if ($tsGmt <= $timeEndTs) { // this is taken care of by the initial query - start is less than the date spec'd by admin
                                 if ($tsGmt <= $timeToTs) { // start is less than the time_to
                                     $validJobTime[] = $dateobj->asDb();
+                                } else {
+                                    //_pp('Job Time is NOT smaller that TimeTO: '.$tsGmt .'<='. $timeToTs);
                                 }
-                                //_pp('Job Time is NOT smaller that TimeTO: '.$tsGmt .'<='. $timeToTs);
+                            } else {
+                                //_pp('Job Time is NOT smaller that DateTimeEnd: '.date('Y-m-d H:i:s',$tsGmt) .'<='. $dateTimeEnd); //_pp( $tsGmt .'<='. $timeEndTs );
                             }
-                            //_pp('Job Time is NOT smaller that DateTimeEnd: '.date('Y-m-d H:i:s',$tsGmt) .'<='. $dateTimeEnd); //_pp( $tsGmt .'<='. $timeEndTs );
                         }
-                    }
-                    //_pp('Job Time is NOT bigger that TimeFrom: '.$tsGmt .'>='. $timeFromTs);
+					} else {
+					    //_pp('Job Time is NOT bigger that TimeFrom: '.$tsGmt .'>='. $timeFromTs);
+					}
+                } else {
+                    //_pp('Job Time is NOT Bigger than DateTimeStart: '.date('Y-m-d H:i',$tsGmt) .'>='. $dateTimeStart);
                 }
-                //_pp('Job Time is NOT Bigger than DateTimeStart: '.date('Y-m-d H:i',$tsGmt) .'>='. $dateTimeStart);
             }
         }
         //_ppd($validJobTime);
@@ -556,69 +558,64 @@ class Scheduler extends SugarBean
         return $validJobTime;
     }
 
-    public function handleIntervalType($type, $value, $mins, $hours)
+    function handleIntervalType($type, $value, $mins, $hours)
     {
         global $mod_strings;
         /* [0]:min [1]:hour [2]:day of month [3]:month [4]:day of week */
-        $days = array(
-            1 => $mod_strings['LBL_MON'],
-            2 => $mod_strings['LBL_TUE'],
-            3 => $mod_strings['LBL_WED'],
-            4 => $mod_strings['LBL_THU'],
-            5 => $mod_strings['LBL_FRI'],
-            6 => $mod_strings['LBL_SAT'],
-            0 => $mod_strings['LBL_SUN'],
-            '*' => $mod_strings['LBL_ALL']
-        );
+        $days = array (	1 => $mod_strings['LBL_MON'],
+						2 => $mod_strings['LBL_TUE'],
+						3 => $mod_strings['LBL_WED'],
+						4 => $mod_strings['LBL_THU'],
+						5 => $mod_strings['LBL_FRI'],
+						6 => $mod_strings['LBL_SAT'],
+						0 => $mod_strings['LBL_SUN'],
+						'*' => $mod_strings['LBL_ALL']);
         switch ($type) {
-            case 0: // minutes
-                if ($value == '0') {
-                    //return;
-                    return trim($mod_strings['LBL_ON_THE']) . $mod_strings['LBL_HOUR_SING'];
-                } elseif (!preg_match('/[^0-9]/', $hours) && !preg_match('/[^0-9]/', $value)) {
-                    return;
-                } elseif (preg_match('/\*\//', $value)) {
-                    $value = str_replace('*/', '', $value);
+			case 0: // minutes
+				if ($value == '0') {
+				    //return;
+				    return trim($mod_strings['LBL_ON_THE']).$mod_strings['LBL_HOUR_SING'];
+				} elseif (!preg_match('/[^0-9]/', $hours) && !preg_match('/[^0-9]/', $value)) {
+				    return;
+				} elseif (preg_match('/\*\//', $value)) {
+				    $value = str_replace('*/','',$value);
+				    return $value.$mod_strings['LBL_MINUTES'];
+				} elseif (!preg_match('[^0-9]', $value)) {
+				    return $mod_strings['LBL_ON_THE'].$value.$mod_strings['LBL_MIN_MARK'];
+				} else {
+				    return $value;
+				}
+				// no break
+			case 1: // hours
+				global $current_user;
+				if (preg_match('/\*\//', $value)) { // every [SOME INTERVAL] hours
+				    $value = str_replace('*/','',$value);
+				    return $value.$mod_strings['LBL_HOUR'];
+				} elseif (preg_match('/[^0-9]/', $mins)) { // got a range, or multiple of mins, so we return an 'Hours' label
+				    return $value;
+				} else {	// got a "minutes" setting, so it will be at some o'clock.
+				    $datef = $current_user->getUserDateTimePreferences();
+				    return date($datef['time'], strtotime($value.':'.str_pad($mins, 2, '0', STR_PAD_LEFT)));
+				}
+				// no break
+			case 2: // day of month
+				if (preg_match('/\*/', $value)) {
+				    return $value;
+				} else {
+				    return date('jS', strtotime('December '.$value));
+				}
 
-                    return $value . $mod_strings['LBL_MINUTES'];
-                } elseif (!preg_match('[^0-9]', $value)) {
-                    return $mod_strings['LBL_ON_THE'] . $value . $mod_strings['LBL_MIN_MARK'];
-                }
-
-                return $value;
-
-            case 1: // hours
-                global $current_user;
-                if (preg_match('/\*\//', $value)) { // every [SOME INTERVAL] hours
-                    $value = str_replace('*/', '', $value);
-
-                    return $value . $mod_strings['LBL_HOUR'];
-                } elseif (preg_match('/[^0-9]/',
-                    $mins)) { // got a range, or multiple of mins, so we return an 'Hours' label
-                    return $value;
-                }    // got a "minutes" setting, so it will be at some o'clock.
-                $datef = $current_user->getUserDateTimePreferences();
-
-                return date($datef['time'], strtotime($value . ':' . str_pad($mins, 2, '0', STR_PAD_LEFT)));
-
-            case 2: // day of month
-                if (preg_match('/\*/', $value)) {
-                    return $value;
-                }
-
-                return date('jS', strtotime('December ' . $value));
-
-
-            case 3: // months
-                return date('F', strtotime('2005-' . $value . '-01'));
-            case 4: // days of week
-                return $days[$value];
-            default:
-                return 'bad'; // no condition to touch this branch
-        }
+				// no break
+			case 3: // months
+				return date('F', strtotime('2005-'.$value.'-01'));
+			case 4: // days of week
+				return $days[$value];
+			default:
+				return 'bad'; // no condition to touch this branch
+		}
     }
 
-    public function setIntervalHumanReadable()
+    function setIntervalHumanReadable()
     {
         global $current_user;
         global $mod_strings;
@@ -689,7 +686,7 @@ class Scheduler extends SugarBean
 
 
     /* take an integer and return its suffix */
-    public function setStandardArraysAttributes()
+    function setStandardArraysAttributes()
     {
         global $mod_strings;
         global $app_list_strings; // using from month _dom list
@@ -698,8 +695,8 @@ class Scheduler extends SugarBean
         for ($i=1; $i<32; $i++) {
             if ($i > 3 && $i < 21) {
                 $this->suffixArray[$i] = $i."th";
-            } elseif (substr($i, -1, 1) < 4 && substr($i, -1, 1) > 0) {
-                $this->suffixArray[$i] = $i.$suffArr[substr($i, -1, 1)];
+            } elseif (substr($i,-1,1) < 4 && substr($i,-1,1) > 0) {
+                $this->suffixArray[$i] = $i.$suffArr[substr($i,-1,1)];
             } else {
                 $this->suffixArray[$i] = $i."th";
             }
@@ -717,7 +714,7 @@ class Scheduler extends SugarBean
     /**
      *  takes the serialized interval string and renders it into an array
      */
-    public function parseInterval()
+    function parseInterval()
     {
         global $metricsVar;
         $ws = array(' ', '\r','\t');
@@ -725,15 +722,15 @@ class Scheduler extends SugarBean
 
         $intv = $this->job_interval;
         $rawValues = explode('::', $intv);
-        $rawProcessed = str_replace($ws, $blanks, $rawValues); // strip all whitespace
+        $rawProcessed = str_replace($ws,$blanks,$rawValues); // strip all whitespace
 
         $hours = $rawValues[1].':::'.$rawValues[0];
         $months = $rawValues[3].':::'.$rawValues[2];
 
-        $intA = array(	'raw' => $rawProcessed,
-                        'hours' => $hours,
-                        'months' => $months,
-                        );
+        $intA = array (	'raw' => $rawProcessed,
+						'hours' => $hours,
+						'months' => $months,
+						);
 
         $this->intervalParsed = $intA;
     }
@@ -741,7 +738,7 @@ class Scheduler extends SugarBean
     /**
      * checks for cURL libraries
      */
-    public function checkCurl()
+    function checkCurl()
     {
         global $mod_strings;
 
@@ -765,7 +762,7 @@ class Scheduler extends SugarBean
         }
     }
 
-    public function displayCronInstructions()
+    function displayCronInstructions()
     {
         global $mod_strings;
         global $sugar_config;
@@ -837,7 +834,7 @@ class Scheduler extends SugarBean
      * Archives schedulers of the same functionality, then instantiates new
      * ones.
      */
-    public function rebuildDefaultSchedulers()
+    function rebuildDefaultSchedulers()
     {
         $mod_strings = return_module_language($GLOBALS['current_language'], 'Schedulers');
         // truncate scheduler-related tables
@@ -846,7 +843,7 @@ class Scheduler extends SugarBean
         $sched1 = new Scheduler();
         $sched1->name               = $mod_strings['LBL_OOTB_WORKFLOW'];
         $sched1->job                = 'function::processAOW_Workflow';
-        $sched1->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched1->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched1->date_time_end      = null;
         $sched1->job_interval       = '*::*::*::*::*';
         $sched1->status             = 'Active';
@@ -858,7 +855,7 @@ class Scheduler extends SugarBean
         $sched2 = new Scheduler();
         $sched2->name               = $mod_strings['LBL_OOTB_REPORTS'];
         $sched2->job                = 'function::aorRunScheduledReports';
-        $sched2->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched2->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched2->date_time_end      = null;
         $sched2->job_interval       = '*::*::*::*::*';
         $sched2->status             = 'Active';
@@ -870,7 +867,7 @@ class Scheduler extends SugarBean
         $sched3 = new Scheduler();
         $sched3->name               = $mod_strings['LBL_OOTB_TRACKER'];
         $sched3->job                = 'function::trimTracker';
-        $sched3->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched3->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched3->date_time_end      = null;
         $sched3->job_interval       = '0::2::1::*::*';
         $sched3->status             = 'Active';
@@ -882,7 +879,7 @@ class Scheduler extends SugarBean
         $sched4 = new Scheduler();
         $sched4->name				= $mod_strings['LBL_OOTB_IE'];
         $sched4->job				= 'function::pollMonitoredInboxesAOP';
-        $sched4->date_time_start	= create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched4->date_time_start	= create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched4->date_time_end		= null;
         $sched4->job_interval		= '*::*::*::*::*';
         $sched4->status				= 'Active';
@@ -894,7 +891,7 @@ class Scheduler extends SugarBean
         $sched5 = new Scheduler();
         $sched5->name				= $mod_strings['LBL_OOTB_BOUNCE'];
         $sched5->job				= 'function::pollMonitoredInboxesForBouncedCampaignEmails';
-        $sched5->date_time_start	= create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched5->date_time_start	= create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched5->date_time_end		= null;
         $sched5->job_interval		= '0::2-6::*::*::*';
         $sched5->status				= 'Active';
@@ -906,7 +903,7 @@ class Scheduler extends SugarBean
         $sched6 = new Scheduler();
         $sched6->name				= $mod_strings['LBL_OOTB_CAMPAIGN'];
         $sched6->job				= 'function::runMassEmailCampaign';
-        $sched6->date_time_start	= create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched6->date_time_start	= create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched6->date_time_end		= null;
         $sched6->job_interval		= '0::2-6::*::*::*';
         $sched6->status				= 'Active';
@@ -918,7 +915,7 @@ class Scheduler extends SugarBean
         $sched7 = new Scheduler();
         $sched7->name               = $mod_strings['LBL_OOTB_PRUNE'];
         $sched7->job                = 'function::pruneDatabase';
-        $sched7->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched7->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched7->date_time_end      = null;
         $sched7->job_interval       = '0::4::1::*::*';
         $sched7->status             = 'Inactive';
@@ -930,7 +927,7 @@ class Scheduler extends SugarBean
         $sched8 = new Scheduler();
         $sched8->name               = $mod_strings['LBL_OOTB_LUCENE_INDEX'];
         $sched8->job                = 'function::aodIndexUnindexed';
-        $sched8->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched8->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched8->date_time_end      = null;
         $sched8->job_interval       = "0::0::*::*::*";
         $sched8->status             = 'Active';
@@ -942,7 +939,7 @@ class Scheduler extends SugarBean
         $sched9 = new Scheduler();
         $sched9->name               = $mod_strings['LBL_OOTB_OPTIMISE_INDEX'];
         $sched9->job                = 'function::aodOptimiseIndex';
-        $sched9->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched9->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched9->date_time_end      = null;
         $sched9->job_interval       = "0::*/3::*::*::*";
         $sched9->status             = 'Active';
@@ -954,7 +951,7 @@ class Scheduler extends SugarBean
         $sched12 = new Scheduler();
         $sched12->name               = $mod_strings['LBL_OOTB_SEND_EMAIL_REMINDERS'];
         $sched12->job                = 'function::sendEmailReminders';
-        $sched12->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched12->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched12->date_time_end      = null;
         $sched12->job_interval       = '*::*::*::*::*';
         $sched12->status             = 'Active';
@@ -966,7 +963,7 @@ class Scheduler extends SugarBean
         $sched13 = new Scheduler();
         $sched13->name               = $mod_strings['LBL_OOTB_CLEANUP_QUEUE'];
         $sched13->job                = 'function::cleanJobQueue';
-        $sched13->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched13->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched13->date_time_end      = null;
         $sched13->job_interval       = '0::5::*::*::*';
         $sched13->status             = 'Active';
@@ -990,7 +987,7 @@ class Scheduler extends SugarBean
         $sched15 = new Scheduler();
         $sched15->name               = $mod_strings['LBL_OOTB_SUGARFEEDS'];
         $sched15->job                = 'function::trimSugarFeeds';
-        $sched15->date_time_start    = create_date(2015, 1, 1) . ' ' . create_time(0, 0, 1);
+        $sched15->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
         $sched15->date_time_end      = null;
         $sched15->job_interval       = '0::2::1::*::*';
         $sched15->status             = 'Active';
@@ -998,6 +995,18 @@ class Scheduler extends SugarBean
         $sched15->modified_user_id   = '1';
         $sched15->catch_up           = '1';
         $sched15->save();
+
+        $sched16 = new Scheduler();
+        $sched16->name               = $mod_strings['LBL_OOTB_GOOGLE_CAL_SYNC'];
+        $sched16->job                = 'function::syncGoogleCalendar';
+        $sched16->date_time_start    = create_date(2015,1,1) . ' ' . create_time(0,0,1);
+        $sched16->date_time_end      = null;
+        $sched16->job_interval       = '*/15::*::*::*::*';
+        $sched16->status             = 'Active';
+        $sched16->created_by         = '1';
+        $sched16->modified_user_id   = '1';
+        $sched16->catch_up           = '0';
+        $sched16->save();
     }
 
     ////	END SCHEDULER HELPER FUNCTIONS
@@ -1009,9 +1018,9 @@ class Scheduler extends SugarBean
     /**
      * function overrides the one in SugarBean.php
      */
-    public function create_export_query($order_by, $where, $show_deleted = 0)
+    function create_export_query($order_by, $where, $show_deleted = 0)
     {
-        return $this->create_new_list_query($order_by, $where, array(), array(), $show_deleted);
+        return $this->create_new_list_query($order_by, $where,array(),array(), $show_deleted);
     }
 
     /**
@@ -1021,7 +1030,7 @@ class Scheduler extends SugarBean
     /**
      * function overrides the one in SugarBean.php
      */
-    public function fill_in_additional_list_fields()
+    function fill_in_additional_list_fields()
     {
         $this->fill_in_additional_detail_fields();
     }
@@ -1029,14 +1038,14 @@ class Scheduler extends SugarBean
     /**
      * function overrides the one in SugarBean.php
      */
-    public function fill_in_additional_detail_fields()
+    function fill_in_additional_detail_fields()
     {
     }
 
     /**
      * function overrides the one in SugarBean.php
      */
-    public function get_list_view_data()
+    function get_list_view_data()
     {
         global $mod_strings;
         $temp_array = $this->get_list_view_array();
@@ -1055,13 +1064,13 @@ class Scheduler extends SugarBean
     /**
      * returns the bean name - overrides SugarBean's
      */
-    public function get_summary_text()
+    function get_summary_text()
     {
         return $this->name;
     }
     ////	END STANDARD SUGARBEAN OVERRIDES
     ///////////////////////////////////////////////////////////////////////////
-    public static function getJobsList()
+    static public function getJobsList()
     {
         if (empty(self::$job_strings)) {
             global $mod_strings;

@@ -1,12 +1,11 @@
 <?php
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -17,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -35,21 +34,21 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/DetailView/DetailView2.php');
 
 class ViewMetadata extends SugarView
 {
-    public $type ='detail';
-    public $dv;
-    
-    
-    
-    public function displayCheckBoxes($name, $values, $selected =array(), $attr='')
+    var $type ='detail';
+    var $dv;
+	
+	
+ 	
+    function displayCheckBoxes($name,$values, $selected =array(), $attr='')
     {
         echo "<div $attr style='overflow:auto;float:left;width:200px;height:200px' >";
         foreach ($values as $value) {
@@ -58,8 +57,8 @@ class ViewMetadata extends SugarView
         }
         echo "</div>";
     }
-    
-    public function displaySelect($name, $values, $selected ='', $attr='')
+ 	
+    function displaySelect($name,$values, $selected ='', $attr='')
     {
         echo "<select name='$name' $attr>";
         foreach ($values as $value) {
@@ -68,10 +67,10 @@ class ViewMetadata extends SugarView
         }
         echo "</select>";
     }
-    
-    
-    
-    public function displayTextBoxes($values, $attr='')
+ 	
+ 	
+ 	
+    function displayTextBoxes($values, $attr='')
     {
         echo "<div $attr style='overflow:auto;float:left;width:400px;height:200px' >";
         foreach ($values as $value) {
@@ -80,22 +79,22 @@ class ViewMetadata extends SugarView
         }
         echo "</div>";
     }
-    
-    
-    
-    public function printValue($value, $depth=0)
+ 	
+ 	
+ 	
+    function printValue($value, $depth=0)
     {
         echo "<pre>";
         print_r($value);
         echo "</pre>";
     }
-    
-    public function display()
+ 	
+    function display()
     {
         $do = !empty($_REQUEST['do'])?$_REQUEST['do']:'';
         echo "<form method='post'>";
         echo "<div><h2>I want to learn about ";
-        
+ 		
         $this->displaySelect('do', array('Nothing', 'Modules','Fields', 'Field Attributes', 'Relationships'), $do, 'onchange="toggleLearn(this.value)"');
         echo "<input type='submit' value='Learn' class='button'></h2></div>";
         $modules = !empty($_REQUEST['modules'])?$_REQUEST['modules']:array();
@@ -134,24 +133,24 @@ class ViewMetadata extends SugarView
 EOQ;
         echo "<div width='100%'></div><div><div style='float:left'>";
         switch ($do) {
-            case 'Modules':
-                $this->printValue(VardefBrowser::findVardefs($modules));
-                break;
-            case 'Field Attributes':
-                $this->printValue(VardefBrowser::findFieldAttributes($attributes, $modules));
-                break;
-            case 'Fields':
-                $searchFor = array();
-                foreach ($allAttributes as $at) {
-                    if (!empty($_POST[$at])) {
-                        $searchFor[$at] = $_POST[$at];
-                    }
-                }
-                
-                $this->printValue(VardefBrowser::findFieldsWithAttributes($searchFor, $modules));
-                break;
-            default:
-                echo <<<EOQ
+ 			case 'Modules':
+ 				$this->printValue(VardefBrowser::findVardefs($modules));	
+ 				break;
+ 			case 'Field Attributes':
+ 				$this->printValue(VardefBrowser::findFieldAttributes($attributes, $modules));
+ 				break;
+ 			case 'Fields':
+ 				$searchFor = array();
+ 				foreach ($allAttributes as $at) {
+ 				    if (!empty($_POST[$at])) {
+ 				        $searchFor[$at] = $_POST[$at];
+ 				    }
+ 				}
+ 				
+ 				$this->printValue(VardefBrowser::findFieldsWithAttributes($searchFor, $modules));
+ 				break;
+ 			default:
+ 				echo <<<EOQ
  				<div style='border:1px solid;width:100%;text-align:center;-moz-border-radius: 5px;border-radius: 5px;'>
  					<h2 style='text-decoration: line-through'>All you ever wanted to know about Vardefs in 30 minutes</h2>
  					<h2 style='text-decoration: line-through'>All you ever wanted to know about Vardef Fields and Relationships in 30 minutes</h1>
@@ -237,23 +236,23 @@ It's broken down into:
  				</div>
  				
 EOQ;
-                    
-            
-        }
+ 					
+ 			
+ 		}
         echo "</div><div style='float:right'>Help Text</div></div>";
-        
-        
+ 		
+ 		
         //$this->printValue(VardefBrowser::findFieldsWithAttributes(array('type'=>'id'), $modules));
     }
 }
 
 class VardefBrowser
 {
-    public function __construct()
+    function __construct()
     {
     }
-    
-    public static function getModules()
+	
+    static function getModules()
     {
         $modules = array();
         foreach ($GLOBALS['beanList'] as $module=>$object) {
@@ -267,8 +266,8 @@ class VardefBrowser
         sort($modules);
         return $modules;
     }
-    
-    public static function findFieldsWithAttributes($attributes, $modules=null)
+	
+    static function findFieldsWithAttributes($attributes, $modules=null)
     {
         $fields = array();
         if (empty($modules)) {
@@ -306,8 +305,8 @@ class VardefBrowser
         }
         return $fields;
     }
-    
-    public static function findVardefs($modules=null)
+	
+    static function findVardefs($modules=null)
     {
         $defs = array();
         if (empty($modules)) {
@@ -328,9 +327,9 @@ class VardefBrowser
         }
         return $defs;
     }
-    
-    
-    public static function findFieldAttributes($attributes=array(), $modules=null, $byModule=false, $byType=false)
+	
+	
+    static function findFieldAttributes($attributes=array(), $modules=null, $byModule=false, $byType=false)
     {
         $fields = array();
         if (empty($modules)) {

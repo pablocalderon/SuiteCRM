@@ -40,6 +40,7 @@
 
 namespace SuiteCRM\Utility;
 
+
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;

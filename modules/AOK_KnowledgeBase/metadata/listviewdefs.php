@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,30 +33,30 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 $module_name = 'AOK_KnowledgeBase';
-$listViewDefs [$module_name] =
-array(
-  'NAME' =>
-  array(
+$listViewDefs [$module_name] = 
+array (
+  'NAME' => 
+  array (
     'width' => '32%',
     'label' => 'LBL_NAME',
     'default' => true,
     'link' => true,
   ),
-  'STATUS' =>
-  array(
+  'STATUS' => 
+  array (
     'type' => 'enum',
     'default' => true,
     'studio' => 'visible',
     'label' => 'LBL_STATUS',
     'width' => '10%',
   ),
-  'AUTHOR' =>
-  array(
+  'AUTHOR' => 
+  array (
     'type' => 'relate',
     'studio' => 'visible',
     'label' => 'LBL_AUTHOR',
@@ -66,8 +65,8 @@ array(
     'width' => '10%',
     'default' => true,
   ),
-  'APPROVER' =>
-  array(
+  'APPROVER' => 
+  array (
     'type' => 'relate',
     'studio' => 'visible',
     'label' => 'LBL_APPROVER',
@@ -76,29 +75,29 @@ array(
     'width' => '10%',
     'default' => true,
   ),
-  'REVISION' =>
-  array(
+  'REVISION' => 
+  array (
     'type' => 'varchar',
     'label' => 'LBL_REVISION',
     'width' => '10%',
     'default' => true,
   ),
-  'DATE_ENTERED' =>
-  array(
+  'DATE_ENTERED' => 
+  array (
     'type' => 'datetime',
     'label' => 'LBL_DATE_ENTERED',
     'width' => '10%',
     'default' => true,
   ),
-  'DATE_MODIFIED' =>
-  array(
+  'DATE_MODIFIED' => 
+  array (
     'type' => 'datetime',
     'label' => 'LBL_DATE_MODIFIED',
     'width' => '10%',
     'default' => true,
   ),
-  'ASSIGNED_USER_NAME' =>
-  array(
+  'ASSIGNED_USER_NAME' => 
+  array (
     'width' => '9%',
     'label' => 'LBL_ASSIGNED_TO_NAME',
     'module' => 'Employees',

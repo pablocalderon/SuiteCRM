@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2016 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 global $current_user, $sugar_version, $sugar_config, $beanFiles;
@@ -102,7 +101,7 @@ if (!$hasUserPreferences) {
         $current_user->setPreference('dashlets', $old_dashlets, 0, 'home');
     } else {
         // This is here to get Sugar dashlets added above the rest
-        $dashlets[create_guid()] = array('className' => 'SugarFeedDashlet',
+        $dashlets[create_guid()] = array ('className' => 'SugarFeedDashlet',
             'module' => 'SugarFeed',
             'forceColumn' => 1,
             'fileLocation' => $dashletsFiles['SugarFeedDashlet']['file'],
@@ -115,7 +114,7 @@ if (!$hasUserPreferences) {
             $displayDashlet = $myDashlet->checkDashletDisplay();
             if (isset($dashletsFiles[$dashletName]) && $displayDashlet) {
                 $options = array();
-                $prefsforthisdashlet = array_keys($prefstomove, $dashletName);
+                $prefsforthisdashlet = array_keys($prefstomove,$dashletName);
                 foreach ($prefsforthisdashlet as $pref) {
                     $options[$pref] = $current_user->getPreference($pref);
                 }
@@ -162,11 +161,11 @@ if (!empty($pagesDashboard)) {
             $pages[0]['columns'][$dashboardColumnKey]['dashlets'][] = $dashletItem;
         }
     }
-    $pages = array_merge($pages, $pagesDashboard);
+    $pages = array_merge($pages,$pagesDashboard);
     $current_user->setPreference('pages', $pages, 0, 'Home');
 }
 if (!empty($dashletsDashboard)) {
-    $dashlets = array_merge($dashlets, $dashletsDashboard);
+    $dashlets = array_merge($dashlets,$dashletsDashboard);
     $current_user->setPreference('dashlets', $dashlets, 0, 'Home');
 }
 if (!empty($pagesDashboard) || !empty($dashletsDashboard)) {
@@ -226,7 +225,7 @@ foreach ($pages[$activePage]['columns'] as $colNum => $column) {
                 $dashlet = new $dashlets[$id]['className']($id, (isset($dashlets[$id]['options']) ? $dashlets[$id]['options'] : array()));
                 // Need to add support to dynamically display/hide dashlets
                 // If it has a method 'shouldDisplay' we will call it to see if we should display it or not
-                if (method_exists($dashlet, 'shouldDisplay')) {
+                if (method_exists($dashlet,'shouldDisplay')) {
                     if (!$dashlet->shouldDisplay()) {
                         // This dashlet doesn't want us to show it, skip it.
                         continue;
@@ -337,3 +336,4 @@ if (file_exists("custom/themes/" . $theme ."/tpls/MySugar.tpl")) {
 echo"<script>if(typeof(qe_init) != 'undefined'){qe_init();}</script>";
 echo"<script> $( '#pageNum_'+ 0 +'_anchor').addClass( 'current' );</script>";
 echo"<script> $( '#pageNum_'+ 0).addClass( 'active' );</script>";
+

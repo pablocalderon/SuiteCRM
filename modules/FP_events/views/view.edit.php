@@ -7,7 +7,7 @@ require_once('include/MVC/View/views/view.edit.php');
 
 class FP_eventsViewEdit extends ViewEdit
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -15,7 +15,7 @@ class FP_eventsViewEdit extends ViewEdit
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function FP_eventsViewEdit()
+    function FP_eventsViewEdit()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -27,9 +27,10 @@ class FP_eventsViewEdit extends ViewEdit
     }
 
 
-    public function display()
+    function display()
     {
         $this->bean->email_templates();
         parent::display();
     }
 }
+

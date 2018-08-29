@@ -31,7 +31,7 @@ class SugarMin
      * @param string $compression Compression option. {light, deep}.
      * @return string $output Output javascript code as a string.
      */
-    public static function minify($js, $compression = 'light')
+    static public function minify($js, $compression = 'light')
     {
         try {
             $me = new SugarMin($js, $compression);

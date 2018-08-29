@@ -48,7 +48,7 @@ if (!isset($_SESSION['SHOW_DUPLICATES'])) {
 
 // retrieve $_POST values out of the $_SESSION variable - placed in there by AccountFormBase to avoid the length limitations on URLs implicit with GETS
 //$GLOBALS['log']->debug('ShowDuplicates.php: _POST = '.print_r($_SESSION['SHOW_DUPLICATES'],true));
-parse_str($_SESSION['SHOW_DUPLICATES'], $_POST);
+parse_str($_SESSION['SHOW_DUPLICATES'],$_POST);
 $post = array_map("securexss", $_POST);
 foreach ($post as $k => $v) {
     $_POST[$k] = $v;
@@ -65,7 +65,7 @@ global $current_language;
 $mod_strings = return_module_language($current_language, 'Accounts');
 $moduleName = $GLOBALS['app_list_strings']['moduleList']['Accounts'];
 echo getClassicModuleTitle('Accounts', array($moduleName, $mod_strings['LBL_SAVE_ACCOUNT']), true);
-$xtpl=new XTemplate('modules/Accounts/ShowDuplicates.html');
+$xtpl=new XTemplate ('modules/Accounts/ShowDuplicates.html');
 $xtpl->assign("MOD", $mod_strings);
 $xtpl->assign("APP", $app_strings);
 $xtpl->assign("PRINT_URL", "index.php?".$GLOBALS['request_string']);
@@ -83,7 +83,7 @@ if ((isset($_REQUEST['popup']) && $_REQUEST['popup'] == 'true') ||(isset($_POST[
 $account = new Account();
 require_once('modules/Accounts/AccountFormBase.php');
 $accountForm = new AccountFormBase();
-$GLOBALS['check_notify'] = false;
+$GLOBALS['check_notify'] = FALSE;
 
 $query = 'select id, name, website, billing_address_city  from accounts where deleted=0 ';
 $duplicates = $_POST['duplicate'];
@@ -112,7 +112,7 @@ while (($row=$db->fetchByAssoc($result)) != null) {
     $duplicateAccounts[$i] = $row;
 }
 
-$xtpl->assign('FORMBODY', $accountForm->buildTableForm($duplicateAccounts, 'Accounts'));
+$xtpl->assign('FORMBODY', $accountForm->buildTableForm($duplicateAccounts,  'Accounts'));
 
 $input = '';
 foreach ($account->column_fields as $field) {
@@ -174,6 +174,6 @@ if (!empty($_POST['create'])) {
     $input .= '<input type="hidden" name="create" value="false">';
 }
 
-$xtpl->assign('INPUT_FIELDS', $input);
+$xtpl->assign('INPUT_FIELDS',$input);
 $xtpl->parse('main');
 $xtpl->out('main');

@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 
@@ -187,7 +186,7 @@ class iCal extends vCal
             $ical_array[] = array("PRIORITY", "1");
         }
         $ical_array[] = array("END", "VTODO");
-        return vCal::create_ical_string_from_array($ical_array, true);
+        return vCal::create_ical_string_from_array($ical_array,true);
     }
 
     /**
@@ -200,7 +199,7 @@ class iCal extends vCal
     * @param string $dtstamp the current timestamp
     * @return string the entries for events and todos
     */
-    protected function createSugarIcal(&$user_bean, &$start_date_time, &$end_date_time, $dtstamp)
+    protected function createSugarIcal(&$user_bean,&$start_date_time,&$end_date_time, $dtstamp)
     {
         $ical_array = array();
         global $DO_USER_TIME_OFFSET, $sugar_config, $current_user, $timedate;
@@ -233,15 +232,12 @@ class iCal extends vCal
             )
         );
 
-        $acts_arr = CalendarActivity::get_activities(
-            $activityList,
-            $user_bean->id,
+        $acts_arr = CalendarActivity::get_activities($activityList,$user_bean->id,
             !$taskAsVTODO,
             $start_date_time,
             $end_date_time,
             'month',
-            !$hide_calls
-        );
+            !$hide_calls);
 
 
         // loop thru each activity, get start/end time in UTC, and return iCal strings
@@ -347,7 +343,7 @@ class iCal extends vCal
             }
         }
 
-        $str = vCal::create_ical_string_from_array($ical_array, true);
+        $str = vCal::create_ical_string_from_array($ical_array,true);
 
         require_once('include/TimeDate.php');
         $timedate = new TimeDate();
@@ -502,7 +498,7 @@ class iCal extends vCal
 
         $ical_array[] = array("END", "VTIMEZONE");
 
-        return vCal::create_ical_string_from_array($ical_array, true);
+        return vCal::create_ical_string_from_array($ical_array,true);
     }
 
     /**
@@ -512,7 +508,7 @@ class iCal extends vCal
     * @param integer $num_months the number of months to search before and after today
     * @return string the iCal calenar string
     */
-    public function getVcalIcal(&$user_focus, $num_months)
+    function getVcalIcal(&$user_focus, $num_months)
     {
         global $current_user, $timedate;
         $current_user = $user_focus;
@@ -525,7 +521,7 @@ class iCal extends vCal
         $ical_array[] = array("METHOD", "PUBLISH");
         $ical_array[] = array("X-WR-CALNAME", "$cal_name (SugarCRM)");
         $ical_array[] = array("PRODID", "-//SugarCRM//SugarCRM Calendar//EN");
-        $ical_array = array_merge($ical_array, vCal::create_ical_array_from_string($this->getTimezoneString()));
+        $ical_array = array_merge($ical_array,vCal::create_ical_array_from_string($this->getTimezoneString()));
         $ical_array[] = array("CALSCALE", "GREGORIAN");
 
         $now_date_time = $timedate->getNow(true);
@@ -543,17 +539,17 @@ class iCal extends vCal
 
         $utc_now_time = $this->getUtcDateTime($now_date_time);
 
-        $str = vCal::create_ical_string_from_array($ical_array, true);
+        $str = vCal::create_ical_string_from_array($ical_array,true);
 
-        $str .= $this->createSugarIcal($user_focus, $start_date_time, $end_date_time, $utc_now_time);
+        $str .= $this->createSugarIcal($user_focus,$start_date_time,$end_date_time,$utc_now_time);
 
         $ical_array = array(
             array("DTSTAMP", $utc_now_time)
         );
         $ical_array[] = array("END", "VCALENDAR");
 
-        $str .= vCal::create_ical_string_from_array($ical_array, true);
+        $str .= vCal::create_ical_string_from_array($ical_array,true);
 
-        return htmlspecialchars_decode(preg_replace("/&#([0-9]+)\\\\;/", '&#$1;', utf8_decode($str)));
+        return htmlspecialchars_decode(preg_replace("/&#([0-9]+)\\\\;/",'&#$1;',utf8_decode($str)));
     }
 }

@@ -47,6 +47,7 @@ require_once 'Zend/Gdata/Spreadsheets/Extension/ColCount.php';
  */
 class Zend_Gdata_Spreadsheets_WorksheetEntry extends Zend_Gdata_Entry
 {
+
     protected $_entryClassName = 'Zend_Gdata_Spreadsheets_WorksheetEntry';
 
     protected $_rowCount = null;
@@ -182,4 +183,5 @@ class Zend_Gdata_Spreadsheets_WorksheetEntry extends Zend_Gdata_Entry
         $service = new Zend_Gdata_Spreadsheets($this->getHttpClient());
         return $service->getSpreadsheetCellFeedContents($this, $range, $empty);
     }
+
 }

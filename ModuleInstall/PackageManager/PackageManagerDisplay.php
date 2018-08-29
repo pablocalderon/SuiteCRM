@@ -57,7 +57,7 @@ class PackageManagerDisplay
      * @param String active_form - the form to display first
      * @return String - a string of html which will be used to display the forms
      */
-    public static function buildPackageDisplay($form1, $hidden_fields, $form_action, $types = array('module'), $active_form = 'form1', $install = false)
+    static function buildPackageDisplay($form1, $hidden_fields, $form_action, $types = array('module'), $active_form = 'form1', $install = false)
     {
         global $current_language;
 
@@ -96,7 +96,7 @@ class PackageManagerDisplay
         //if($isAlive){
         $tree = PackageManagerDisplay::buildTreeView('treeview', $isAlive);
         $tree->tree_style= 'include/ytree/TreeView/css/check/tree.css';
-        $ss->assign('TREEHEADER', $tree->generate_header());
+        $ss->assign('TREEHEADER',$tree->generate_header());
         //}
         //$form2 .= PackageManagerDisplay::buildLoginPanel($mod_strings);
         $form2 .= "<table  class='tabForm' cellpadding='0' cellspacing='0' width='100%' border='0'>";
@@ -106,7 +106,7 @@ class PackageManagerDisplay
         } else {
             $form2 .= "<input type='button' id='modifCredentialsBtn' class='button' onClick='PackageManager.showLoginDialog(true);' value='".$mod_strings['LBL_MODIFY_CREDENTIALS']."'style='display:none;'>";
         }
-        $form2 .= "</td><td align='left'><div id='workingStatusDiv' style='display:none;'>".SugarThemeRegistry::current()->getImage("sqsWait", "border='0' align='bottom'", null, null, '.gif', "Loading")."</div></td><td align='right'>";
+        $form2 .= "</td><td align='left'><div id='workingStatusDiv' style='display:none;'>".SugarThemeRegistry::current()->getImage("sqsWait","border='0' align='bottom'",null,null,'.gif',"Loading")."</div></td><td align='right'>";
 
         if ($isAlive) {
             $form2 .= "<span><a class=\"listViewTdToolsS1\" id='href_animate' onClick=\"PackageManager.toggleDiv('span_animate_server_div', 'catview');\"><span id='span_animate_server_div'><img src='".SugarThemeRegistry::current()->getImageURL('basic_search.gif')."' width='8' height='8' border='0'>&nbsp;Collapse</span></a></span>";
@@ -148,7 +148,7 @@ class PackageManagerDisplay
      * @param String active_form - the form to display first
      * @return String - a string of html which will be used to display the forms
      */
-    public function buildPatchDisplay($form1, $hidden_fields, $form_action, $types = array('module'), $active_form = 'form1')
+    function buildPatchDisplay($form1, $hidden_fields, $form_action, $types = array('module'), $active_form = 'form1')
     {
         global $current_language;
         $mod_strings = return_module_language($current_language, "Administration");
@@ -176,7 +176,7 @@ class PackageManagerDisplay
         if ($show_login) {
             $form2 .= "<input type='button' class='button' onClick='PackageManager.showLoginDialog(true);' value='".$mod_strings['LBL_MODIFY_CREDENTIALS']."'>";
         }
-        $form2 .= "</td><td align='right'><div id='workingStatusDiv' style='display:none;'>".SugarThemeRegistry::current()->getImage("sqsWait", "border='0' align='bottom'", null, null, '.gif', "Loading")."</div></td></tr><tr><td colspan='2'>";
+        $form2 .= "</td><td align='right'><div id='workingStatusDiv' style='display:none;'>".SugarThemeRegistry::current()->getImage("sqsWait","border='0' align='bottom'",null,null,'.gif',"Loading")."</div></td></tr><tr><td colspan='2'>";
 
         $loginViewStyle = ($isAlive ? 'none' : 'block');
         $selectViewStyle = ($isAlive ? 'block' : 'none');
@@ -221,7 +221,7 @@ class PackageManagerDisplay
         }
         $tree = PackageManagerDisplay::buildTreeView('treeview', $isAlive);
         $tree->tree_style= 'include/ytree/TreeView/css/check/tree.css';
-        $ss->assign('TREEHEADER', $tree->generate_header());
+        $ss->assign('TREEHEADER',$tree->generate_header());
         $ss->assign('module_load', 'false');
         $ss->assign('MODULE_SELECTOR', PackageManagerDisplay::buildGridOutput($tree, $mod_strings, $isAlive, $show_login));
         $ss->assign('FORM_2_PLACE_HOLDER', $form2);
@@ -230,7 +230,7 @@ class PackageManagerDisplay
         return $str;
     }
 
-    public static function buildInstalledGrid($mod_strings, $types = array('modules'))
+    static function buildInstalledGrid($mod_strings, $types = array('modules'))
     {
         $descItemsInstalled = $mod_strings['LBL_UW_DESC_MODULES_INSTALLED'];
         $output = '<table width="100%" border="0" cellspacing="0" cellpadding="0" ><tr><td align="left">'.$descItemsInstalled.'</td>';
@@ -239,7 +239,7 @@ class PackageManagerDisplay
         return $output;
     }
 
-    public function buildLoginPanel($mod_strings, $display_cancel)
+    function buildLoginPanel($mod_strings, $display_cancel)
     {
         $credentials = PackageManager::getCredentials();
         $output = "<div id='login_panel'><div class='hd'><b>".$mod_strings['HDR_LOGIN_PANEL']."</b></div>";
@@ -272,7 +272,7 @@ class PackageManagerDisplay
      *  @param Array mod_strings - the local mod strings to display
      *  @return String - a string of html
      */
-    public static function buildGridOutput($tree, $mod_strings, $display = true, $show_login = true)
+    static function buildGridOutput($tree, $mod_strings, $display = true, $show_login = true)
     {
         $output = "<div id='catview'>";
         $loginViewStyle = ($display ? 'none' : 'block');
@@ -311,7 +311,7 @@ class PackageManagerDisplay
     * @param String div_id - this div in which to display the tree
     * @return Tree - the tree that is built
     */
-    public static function buildTreeView($div_id, $isAlive = true)
+    static function buildTreeView($div_id, $isAlive = true)
     {
         $tree = new Tree($div_id);
         $nodes = array();
@@ -324,7 +324,7 @@ class PackageManagerDisplay
             $node->dynamicloadfunction = 'PackageManager.loadDataForNodeForPackage';
             $node->expanded = false;
             $node->dynamic_load = true;
-            $node->set_property('href', "javascript:PackageManager.catClick('treeview');");
+            $node->set_property('href',"javascript:PackageManager.catClick('treeview');");
             $tree->add_node($node);
             $node->set_property('description', $arr_node['description']);
         }
@@ -343,7 +343,7 @@ class PackageManagerDisplay
      * @param String modify_field - the field to update when the radio button is changed
      * @return String - a form used to display the license
      */
-    public function getLicenseDisplay($license_file, $form_action, $next_step, $zipFile, $type, $manifest, $modify_field)
+    function getLicenseDisplay($license_file, $form_action, $next_step, $zipFile, $type, $manifest, $modify_field)
     {
         global $current_language;
         $mod_strings = return_module_language($current_language, "Administration");
@@ -387,7 +387,7 @@ class PackageManagerDisplay
     *
     * @return String - the javascript required for the page
     */
-    public static function getDisplayScript($install = false, $type = 'module', $releases = null, $types = array(), $isAlive = true)
+    static function getDisplayScript($install = false, $type = 'module', $releases = null, $types = array(), $isAlive = true)
     {
         global $sugar_version, $sugar_config;
         global $current_language;
@@ -399,7 +399,7 @@ class PackageManagerDisplay
             $install = 0;
         }
         $ss->assign('INSTALLATION', $install);
-        $ss->assign('WAIT_IMAGE', SugarThemeRegistry::current()->getImage("loading", "border='0' align='bottom'", null, null, '.gif', "Loading"));
+        $ss->assign('WAIT_IMAGE', SugarThemeRegistry::current()->getImage("loading","border='0' align='bottom'",null,null,'.gif',"Loading"));
 
         $ss->assign('sugar_version', $sugar_version);
         $ss->assign('js_custom_version', $sugar_config['js_custom_version']);
@@ -422,7 +422,7 @@ class PackageManagerDisplay
             $ss->assign('module_load', 'true');
         }
         if (!empty($GLOBALS['ML_STATUS_MESSAGE'])) {
-            $ss->assign('ML_STATUS_MESSAGE', $GLOBALS['ML_STATUS_MESSAGE']);
+            $ss->assign('ML_STATUS_MESSAGE',$GLOBALS['ML_STATUS_MESSAGE']);
         }
 
         //Bug 24064. Checking and Defining labels since these might not be cached during Upgrade
@@ -437,30 +437,30 @@ class PackageManagerDisplay
         }
         //Add by jchi 6/23/2008 to fix the bug 21667
         $filegrid_column_ary = array(
-            'Name' => $mod_strings['LBL_ML_NAME'],
-            'Install' => $mod_strings['LBL_ML_INSTALL'],
-            'Delete' => $mod_strings['LBL_ML_DELETE'],
-            'Type' => $mod_strings['LBL_ML_TYPE'],
-            'Version' => $mod_strings['LBL_ML_VERSION'],
-            'Published' => $mod_strings['LBL_ML_PUBLISHED'],
-            'Uninstallable' => $mod_strings['LBL_ML_UNINSTALLABLE'],
-            'Description' => $mod_strings['LBL_ML_DESCRIPTION']
-        );
+			'Name' => $mod_strings['LBL_ML_NAME'],
+			'Install' => $mod_strings['LBL_ML_INSTALL'],
+			'Delete' => $mod_strings['LBL_ML_DELETE'],
+			'Type' => $mod_strings['LBL_ML_TYPE'],
+			'Version' => $mod_strings['LBL_ML_VERSION'],
+			'Published' => $mod_strings['LBL_ML_PUBLISHED'],
+			'Uninstallable' => $mod_strings['LBL_ML_UNINSTALLABLE'],
+			'Description' => $mod_strings['LBL_ML_DESCRIPTION']
+		);
 
         $filegridinstalled_column_ary = array(
-            'Name' => $mod_strings['LBL_ML_NAME'],
-            'Install' => $mod_strings['LBL_ML_INSTALL'],
-            'Action' => $mod_strings['LBL_ML_ACTION'],
-            'Enable_Or_Disable' => $mod_strings['LBL_ML_ENABLE_OR_DISABLE'],
-            'Type' => $mod_strings['LBL_ML_TYPE'],
-            'Version' => $mod_strings['LBL_ML_VERSION'],
-            'Date_Installed' => $mod_strings['LBL_ML_INSTALLED'],
-            'Uninstallable' => $mod_strings['LBL_ML_UNINSTALLABLE'],
-            'Description' => $mod_strings['LBL_ML_DESCRIPTION']
-        );
+			'Name' => $mod_strings['LBL_ML_NAME'],
+			'Install' => $mod_strings['LBL_ML_INSTALL'],
+			'Action' => $mod_strings['LBL_ML_ACTION'],
+			'Enable_Or_Disable' => $mod_strings['LBL_ML_ENABLE_OR_DISABLE'],
+			'Type' => $mod_strings['LBL_ML_TYPE'],
+			'Version' => $mod_strings['LBL_ML_VERSION'],
+			'Date_Installed' => $mod_strings['LBL_ML_INSTALLED'],
+			'Uninstallable' => $mod_strings['LBL_ML_UNINSTALLABLE'],
+			'Description' => $mod_strings['LBL_ML_DESCRIPTION']
+		);
 
-        $ss->assign('ML_FILEGRID_COLUMN', $filegrid_column_ary);
-        $ss->assign('ML_FILEGRIDINSTALLED_COLUMN', $filegridinstalled_column_ary);
+        $ss->assign('ML_FILEGRID_COLUMN',$filegrid_column_ary);
+        $ss->assign('ML_FILEGRIDINSTALLED_COLUMN',$filegridinstalled_column_ary);
         //end
 
         $ss->assign('SHOW_IMG', SugarThemeRegistry::current()->getImage('advanced_search', 'border="0"', 8, 8, '.gif', 'Show'));
@@ -469,7 +469,7 @@ class PackageManagerDisplay
         return $str;
     }
 
-    public function createJavascriptPackageArray($releases)
+    function createJavascriptPackageArray($releases)
     {
         $output = "var mti_data = [";
         $count = count($releases);
@@ -490,7 +490,7 @@ class PackageManagerDisplay
         return $output;
     }
 
-    public static function createJavascriptModuleArray($modules, $variable_name = 'mti_data')
+    static function createJavascriptModuleArray($modules, $variable_name = 'mti_data')
     {
         $output = "var ".$variable_name." = [";
         $count = count($modules);
@@ -519,7 +519,7 @@ class PackageManagerDisplay
      *  This method is meant to be used to display the license agreement inline on the page
      *  if the system would like to perform the installation on the same page via an Ajax call
      */
-    public function buildLicenseOutput($file)
+    function buildLicenseOutput($file)
     {
         global $current_language;
 
@@ -536,7 +536,7 @@ class PackageManagerDisplay
         return $str;
     }
 
-    public static function getHeader()
+    static function getHeader()
     {
         global $current_language;
 
@@ -564,7 +564,7 @@ class PackageManagerDisplay
         return array('text' => $header_text, 'isAlive' => $isAlive, 'show_login' => $show_login);
     }
 
-    public function buildInstallGrid($view)
+    function buildInstallGrid($view)
     {
         $uh = new UpgradeHistory();
         $installeds = $uh->getAll();
@@ -579,33 +579,33 @@ class PackageManagerDisplay
             $link = "";
 
             switch ($type) {
-                case "theme":
-                case "langpack":
-                case "module":
-                case "patch":
-                $manifest_file = extractManifest($filename);
-                require_once($manifest_file);
+				case "theme":
+				case "langpack":
+				case "module":
+				case "patch":
+				$manifest_file = extractManifest($filename);
+				require_once($manifest_file);
 
-                $name = empty($manifest['name']) ? $filename : $manifest['name'];
-                $description = empty($manifest['description']) ? $mod_strings['LBL_UW_NONE'] : $manifest['description'];
-                if (($upgrades_installed==0 || $uh->UninstallAvailable($installeds, $installed))
-                    && is_file($filename) && !empty($manifest['is_uninstallable'])) {
-                    $link = urlencode($filename);
-                } else {
-                    $link = 'false';
-                }
+				$name = empty($manifest['name']) ? $filename : $manifest['name'];
+				$description = empty($manifest['description']) ? $mod_strings['LBL_UW_NONE'] : $manifest['description'];
+				if (($upgrades_installed==0 || $uh->UninstallAvailable($installeds, $installed))
+					&& is_file($filename) && !empty($manifest['is_uninstallable'])) {
+				    $link = urlencode($filename);
+				} else {
+				    $link = 'false';
+				}
 
-                break;
-                default:
-                    break;
-            }
+				break;
+				default:
+					break;
+			}
 
             if ($view == 'default' && $type != 'patch') {
                 continue;
             }
 
             if ($view == 'module'
-                && $type != 'module' && $type != 'theme' && $type != 'langpack') {
+				&& $type != 'module' && $type != 'theme' && $type != 'langpack') {
                 continue;
             }
 
@@ -622,8 +622,8 @@ class PackageManagerDisplay
             }
             $installed_objects[] = array('icon' => $icon, 'name' => $name, 'type' => $type, 'version' => $version, 'date_entered' => $date_entered, 'description' => $description, 'file' => $link);
             //print( "<form action=\"" . $form_action . "_prepare\" method=\"post\">\n" );
-            //print( "<tr><td>$icon</td><td>$name</td><td>$type</td><td>$version</td><td>$date_entered</td><td>$description</td><td>$link</td></tr>\n" );
-            //print( "</form>\n" );
+			//print( "<tr><td>$icon</td><td>$name</td><td>$type</td><td>$version</td><td>$date_entered</td><td>$description</td><td>$link</td></tr>\n" );
+			//print( "</form>\n" );
         }
     }
 }

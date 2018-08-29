@@ -4,13 +4,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -21,7 +20,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -39,9 +38,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('soap/SoapError.php');
 
@@ -84,7 +83,7 @@ function retrieve_relationships_properties($module_1, $module_2, $relationship_n
  * show_deleted is if deleted items should be shown or not
  *
  */
-function retrieve_relationships($module_name, $related_module, $relationship_query, $show_deleted, $offset, $max_results)
+function retrieve_relationships($module_name,  $related_module, $relationship_query, $show_deleted, $offset, $max_results)
 {
     global  $beanList, $beanFiles, $dictionary, $current_user;
 
@@ -95,7 +94,7 @@ function retrieve_relationships($module_name, $related_module, $relationship_que
         return array('result'=>$result_list, 'error'=>$error->get_soap_array());
     }
 
-    $result = retrieve_relationship_query($module_name, $related_module, $relationship_query, $show_deleted, $offset, $max_results);
+    $result = retrieve_relationship_query($module_name,  $related_module, $relationship_query, $show_deleted, $offset, $max_results);
 
     if (empty($result['module_1'])) {
         $error->set_error('no_relationship_support');
@@ -232,7 +231,7 @@ function retrieve_modified_relationships($module_name, $related_module, $relatio
                         $fieldname = "m1.".$mod->db->getValidDBName($field);
                     } else {
                         // There is a dot in here somewhere.
-                        list($table_part, $field_part) = explode('.', $field);
+                        list($table_part,$field_part) = explode('.',$field);
                         $fieldname = $mod->db->getValidDBName($table_part).".".$mod->db->getValidDBName($field_part);
                     }
                     $field_select .= $fieldname;
@@ -385,12 +384,12 @@ function get_from_statement($query)
     if (sizeof($query) == 1) {
         $query = explode('from', $query[0]);
     }
-    $query = explode('ORDER BY', $query[1]);
+    $query = explode('ORDER BY',$query[1]);
 
     return ' FROM ' . $query[0];
 }
 
-function retrieve_relationship_query($module_name, $related_module, $relationship_query, $show_deleted, $offset, $max_results)
+function retrieve_relationship_query($module_name,  $related_module, $relationship_query, $show_deleted, $offset, $max_results)
 {
     global  $beanList, $beanFiles, $dictionary, $current_user;
     $error = new SoapError();
@@ -441,7 +440,7 @@ function get_module_link_field($module_1, $module_2)
 
     // check to make sure both modules exist
     if (empty($beanList[$module_1]) || empty($beanList[$module_2])) {
-        return false;
+        return FALSE;
     }
 
     $class_1 = $beanList[$module_1];
@@ -463,7 +462,7 @@ function get_module_link_field($module_1, $module_2)
         }
     }
 
-    return false;
+    return FALSE;
 }
 
 // Retrieves array of ids for records of $get_module linked to $from_module by $get_id
@@ -479,8 +478,8 @@ function get_linked_records($get_module, $from_module, $get_id)
     $from_mod->retrieve($get_id);
 
     $field = get_module_link_field($from_module, $get_module);
-    if ($field === false) {
-        return false;
+    if ($field === FALSE) {
+        return FALSE;
     }
 
     $from_mod->load_relationship($field);

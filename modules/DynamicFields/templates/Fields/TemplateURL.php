@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,44 +36,44 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 class TemplateURL extends TemplateText
 {
-    public $supports_unified_search = true;
+    var $supports_unified_search = true;
 
-    public function __construct()
+    function __construct()
     {
         $this->vardef_map['ext4'] = 'link_target';
         $this->vardef_map['link_target'] = 'ext4';
     }
-    
-    public $type='url';
-    public function get_html_edit()
+	
+    var $type='url';
+    function get_html_edit()
     {
         $this->prepare();
         return "<input type='text' name='". $this->name. "' id='".$this->name."' size='".$this->size."' title='{" . strtoupper($this->name) ."_HELP}' value='{". strtoupper($this->name). "}'>";
     }
     
-    public function get_html_detail()
+    function get_html_detail()
     {
         $xtpl_var = strtoupper($this->name);
         return "<a href='{" . $xtpl_var . "}' target='_blank'>{" . $xtpl_var . "}</a>";
     }
     
-    public function get_xtpl_detail()
+    function get_xtpl_detail()
     {
         $value = parent::get_xtpl_detail();
-        if (!empty($value) && substr_count($value, '://') == 0 && substr($value, 0, 8) != 'index.php') {
+        if (!empty($value) && substr_count($value, '://') == 0 && substr($value ,0,8) != 'index.php') {
             $value = 'http://' . $value;
         }
         return $value;
     }
 
-    public function get_field_def()
+    function get_field_def()
     {
         $def = parent::get_field_def();
         //$def['options'] = !empty($this->options) ? $this->options : $this->ext1;

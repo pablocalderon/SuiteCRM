@@ -3,13 +3,12 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -38,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/ListView/ListViewSmarty.php');
@@ -91,7 +90,7 @@ class ImportListView
      * @param  array $params
      * @param string $tableIdentifier
      */
-    public function __construct($dataSource, $params, $tableIdentifier = '')
+    function __construct($dataSource, $params, $tableIdentifier = '')
     {
         global $sugar_config;
 
@@ -103,9 +102,9 @@ class ImportListView
 
         if (!isset($params['offset'])) {
             throw new Exception("Missing required parameter offset for ImportListView");
+        } else {
+            $this->dataSource->setCurrentOffset($params['offset']);
         }
-        $this->dataSource->setCurrentOffset($params['offset']);
-        
 
         $this->recordsPerPage = isset($params['totalRecords']) ? $params['totalRecords'] : ($sugar_config['list_max_entries_per_page'] + 0);
         $this->data = $this->dataSource->loadDataSet($this->recordsPerPage)->getDataSet();
@@ -118,7 +117,7 @@ class ImportListView
      * @param bool $return True if we should return the content rather than echoing.
      * @return
      */
-    public function display($return = false)
+    public function display($return = FALSE)
     {
         global $app_strings,$mod_strings;
 
@@ -128,17 +127,18 @@ class ImportListView
         $this->ss->assign('pageData', $this->generatePaginationData());
         $this->ss->assign('tableID', $this->tableID);
         $this->ss->assign('colCount', count($this->headerColumns));
-        $this->ss->assign('APP', $app_strings);
+        $this->ss->assign('APP',$app_strings);
         $this->ss->assign('rowColor', array('oddListRow', 'evenListRow'));
-        $this->ss->assign('displayColumns', $this->headerColumns);
+        $this->ss->assign('displayColumns',$this->headerColumns);
         $this->ss->assign('data', $this->data);
         $this->ss->assign('maxColumns', $this->maxColumns);
         $this->ss->assign('MOD', $mod_strings);
         $contents = $this->ss->fetch('modules/Import/tpls/listview.tpl');
         if ($return) {
             return $contents;
+        } else {
+            echo $contents;
         }
-        echo $contents;
     }
 
     /**

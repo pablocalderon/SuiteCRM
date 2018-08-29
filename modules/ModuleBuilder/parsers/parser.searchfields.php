@@ -1,14 +1,13 @@
 <?php
-if (! defined('sugarEntry') || ! sugarEntry) {
-    die('Not A Valid Entry Point') ;
+if (! defined ('sugarEntry') || ! sugarEntry) {
+    die ('Not A Valid Entry Point') ;
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (! defined('sugarEntry') || ! sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,19 +36,19 @@ if (! defined('sugarEntry') || ! sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
-require_once('modules/ModuleBuilder/parsers/ModuleBuilderParser.php') ;
-require_once('modules/ModuleBuilder/MB/MBPackage.php');
+require_once ('modules/ModuleBuilder/parsers/ModuleBuilderParser.php') ;
+require_once ('modules/ModuleBuilder/MB/MBPackage.php');
 
 class ParserSearchFields extends ModuleBuilderParser
 {
-    public $searchFields;
-    public $packageKey;
+    var $searchFields;
+    var $packageKey;
 
-    public function __construct($moduleName, $packageName='')
+    function __construct($moduleName, $packageName='')
     {
         $this->moduleName = $moduleName;
         if (!empty($packageName)) {
@@ -64,7 +63,7 @@ class ParserSearchFields extends ModuleBuilderParser
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function ParserSearchFields($moduleName, $packageName='')
+    function ParserSearchFields($moduleName, $packageName='')
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -75,7 +74,7 @@ class ParserSearchFields extends ModuleBuilderParser
         self::__construct($moduleName, $packageName);
     }
 
-    public function addSearchField($name, $searchField)
+    function addSearchField($name, $searchField)
     {
         if (empty($name) || empty($searchField) || !is_array($searchField)) {
             return;
@@ -85,7 +84,7 @@ class ParserSearchFields extends ModuleBuilderParser
         $this->searchFields[$key][$name] = $searchField;
     }
 
-    public function removeSearchField($name)
+    function removeSearchField($name)
     {
         $key = isset($this->packageKey) ? $this->packageKey . '_' . $this->moduleName : $this->moduleName;
 
@@ -94,7 +93,7 @@ class ParserSearchFields extends ModuleBuilderParser
         }
     }
 
-    public function getSearchFields()
+    function getSearchFields()
     {
         $searchFields = array();
         if (!empty($this->packageName) && file_exists("custom/modulebuilder/packages/{$this->packageName}/modules/{$this->moduleName}/metadata/SearchFields.php")) { //we are in Module builder
@@ -108,7 +107,7 @@ class ParserSearchFields extends ModuleBuilderParser
         return $searchFields;
     }
 
-    public function saveSearchFields($searchFields)
+    function saveSearchFields($searchFields)
     {
         if (!empty($this->packageName)) { //we are in Module builder
             $header = file_get_contents('modules/ModuleBuilder/MB/header.php');

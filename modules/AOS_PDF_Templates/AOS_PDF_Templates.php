@@ -21,7 +21,7 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author SalesAgility Ltd <support@salesagility.com>
+ * @author Salesagility Ltd <support@salesagility.com>
  */
 
 /**
@@ -30,7 +30,7 @@
 require_once('modules/AOS_PDF_Templates/AOS_PDF_Templates_sugar.php');
 class AOS_PDF_Templates extends AOS_PDF_Templates_sugar
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -38,7 +38,7 @@ class AOS_PDF_Templates extends AOS_PDF_Templates_sugar
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function AOS_PDF_Templates()
+    function AOS_PDF_Templates()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {

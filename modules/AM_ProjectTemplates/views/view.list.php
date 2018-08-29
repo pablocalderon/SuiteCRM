@@ -56,15 +56,15 @@ require_once('modules/AM_ProjectTemplates/AM_ProjectTemplatesListViewSmarty.php'
 
 class AM_ProjectTemplatesViewList extends ViewList
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
-    
+ 	
     /*
      * Override listViewProcess with addition to where clause to exclude project templates
      */
-    public function listViewProcess()
+    function listViewProcess()
     {
         $this->processSearchForm();
                 
@@ -83,7 +83,7 @@ class AM_ProjectTemplatesViewList extends ViewList
         }
     }
 
-    public function preDisplay()
+    function preDisplay()
     {
         $this->lv = new AM_ProjectTemplatesListViewSmarty();
     }

@@ -3,13 +3,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/* * *******************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -20,7 +19,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -38,9 +37,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * ****************************************************************************** */
 
 
 require_once('include/SugarFields/SugarFieldHandler.php');
@@ -215,12 +214,6 @@ if (!$focus->is_group && !$focus->portal_only) {
         $focus->setPreference('subpanel_tabs', $_POST['user_subpanel_tabs'], 0, 'global');
     } else {
         $focus->setPreference('subpanel_tabs', '', 0, 'global');
-    }
-
-    if (isset($_POST['user_count_collapsed_subpanels'])) {
-        $focus->setPreference('count_collapsed_subpanels', $_POST['user_count_collapsed_subpanels'], 0, 'global');
-    } else {
-        $focus->setPreference('count_collapsed_subpanels', '', 0, 'global');
     }
 
     if (isset($_POST['user_theme'])) {
@@ -409,13 +402,18 @@ if (!$focus->is_group && !$focus->portal_only) {
     if (isset($_POST['subtheme'])) {
         $focus->setPreference('subtheme', $_POST['subtheme'], 0, 'global');
     }
+    if (isset($_POST['gsync_cal'])) {
+        $focus->setPreference('syncGCal', 1, 0, 'GoogleSync');
+    } else {
+        $focus->setPreference('syncGCal', 0, 0, 'GoogleSync');
+    }
 }
 
 if (!$focus->verify_data()) {
     SugarApplication::appendErrorMessage($focus->error_string);
     header('Location: index.php?action=Error&module=Users');
     exit;
-}
+} else {
     $GLOBALS['sugar_config']['disable_team_access_check'] = true;
     $focus->save();
     $GLOBALS['sugar_config']['disable_team_access_check'] = false;
@@ -515,7 +513,7 @@ if (!$focus->verify_data()) {
         $focus->setPreference('signature_default', isset($_REQUEST['signature_id']) ? $_REQUEST['signature_id'] : null);
         $focus->setPreference('signature_prepend', (isset($_REQUEST['signature_prepend'])) ? true : false);
     }
-
+}
 
 
 //handle navigation from user wizard
@@ -532,8 +530,9 @@ if (isset($_REQUEST['whatnext'])) {
     } elseif ($_REQUEST['whatnext'] == 'studio') {
         header("Location:index.php?module=ModuleBuilder&action=index&type=studio");
         return;
+    } else {
+        //do nothing, let the navigation continue as normal using code below
     }
-    //do nothing, let the navigation continue as normal using code below
 }
 
 if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "") {
@@ -564,3 +563,4 @@ if (array_key_exists('do_not_redirect', $_REQUEST) && $_REQUEST['do_not_redirect
 } else {
     header("Location: {$redirect}");
 }
+

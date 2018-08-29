@@ -304,9 +304,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
                 $fields = $aItem->get_list_view_data();
                 if (isset($processed_ids[$aItem->id])) {
                     continue;
+                } else {
+                    $processed_ids[$aItem->id] = 1;
                 }
-                $processed_ids[$aItem->id] = 1;
-                
 
 
                 //ADD OFFSET TO ARRAY
@@ -491,7 +491,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
                                         unset($_content);
                                     } else {
                                         $doNotProcessTheseActions = array("edit_button", "close_button","remove_button");
-                                        if (!in_array($list_field['name'], $doNotProcessTheseActions) && '' != ($_content = $layout_manager->widgetDisplay($list_field))) {
+                                        if (!in_array($list_field['name'],$doNotProcessTheseActions) && '' != ($_content = $layout_manager->widgetDisplay($list_field))) {
                                             $button_contents[$aVal][] = $_content;
                                             unset($_content);
                                         } else {
@@ -855,7 +855,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
                 $this->smartyTemplate->assign("ORDER_BY", $sort_URL_base);
 
                 return $sort_URL_base;
+            } else {
+                return '';
             }
-            return '';
         }
     }

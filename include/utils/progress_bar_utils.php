@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 
@@ -60,7 +59,7 @@ function display_flow_bar($name, $delay, $size=200, $flush=true)
     $chunk = $size/5;
     echo "<div id='{$name}_flow_bar'><table  class='list view' cellpading=0 cellspacing=0><tr><td id='{$name}_flow_bar0' width='{$chunk}px' bgcolor='#cccccc' align='center'>&nbsp;</td><td id='{$name}_flow_bar1' width='{$chunk}px' bgcolor='#ffffff' align='center'>&nbsp;</td><td id='{$name}_flow_bar2' width='{$chunk}px' bgcolor='#ffffff' align='center'>&nbsp;</td><td id='{$name}_flow_bar3' width='{$chunk}px' bgcolor='#ffffff' align='center'>&nbsp;</td><td id='{$name}_flow_bar4' width='{$chunk}px' bgcolor='#ffffff' align='center'>&nbsp;</td></tr></table></div><br>";
 
-    echo str_repeat(' ', 256);
+    echo str_repeat(' ',256);
 
     progress_bar_flush($flush);
 
@@ -84,7 +83,7 @@ function start_flow_bar($name, $delay, $flush=true)
 
 	</script>
 ";
-    echo str_repeat(' ', 256);
+    echo str_repeat(' ',256);
 
     progress_bar_flush($flush);
 }
@@ -93,12 +92,12 @@ function destroy_flow_bar($name, $flush=true)
 {
     $timer_id = $name . '_id';
     echo "<script>clearTimeout($timer_id);document.getElementById('{$name}_flow_bar').innerHTML = '';</script>";
-    echo str_repeat(' ', 256);
+    echo str_repeat(' ',256);
 
     progress_bar_flush($flush);
 }
 
-function display_progress_bar($name, $current, $total, $flush=true)
+function display_progress_bar($name,$current, $total, $flush=true)
 {
     $percent = $current/$total * 100;
     $remain = 100 - $percent;
@@ -116,12 +115,12 @@ function display_progress_bar($name, $current, $total, $flush=true)
     if ($status == 0) {
         echo "<script>document.getElementById('{$name}_complete_bar').style.backgroundColor='#ffffff';</script>";
     }
-    echo str_repeat(' ', 256);
+    echo str_repeat(' ',256);
 
     progress_bar_flush($flush);
 }
 
-function update_progress_bar($name, $current, $total, $flush=true)
+function update_progress_bar($name,$current, $total, $flush=true)
 {
     $percent = $current/$total * 100;
     $remain = 100 - $percent;

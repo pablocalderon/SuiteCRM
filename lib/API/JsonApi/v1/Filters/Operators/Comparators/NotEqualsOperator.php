@@ -76,8 +76,7 @@ class NotEqualsOperator extends Operator implements OperatorInterface
     public function isValid($operator)
     {
         if (!is_string($operator)) {
-            throw new InvalidArgumentException(
-                '[JsonApi][v1][Filters][Operators][Comparators]'.
+            throw new InvalidArgumentException('[JsonApi][v1][Filters][Operators][Comparators]'.
                 '[NotEqualsOperator][isValid][expected type to be string] $operator'
             );
         }

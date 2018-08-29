@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 
@@ -122,7 +121,7 @@ define("VARDEFS_WEIGHT", 2);
 define("RETURN_FROM_DIAG_DIR", "../../../..");
 
 global $getDumpsFrom;
-$getDumpsFrom = array();
+$getDumpsFrom = Array();
 
 global $cacheDir;
 $cacheDir = "";
@@ -311,10 +310,10 @@ function prepareDiag()
 
     // array of all tables that we need to pull rows from below
     $getDumpsFrom = array('config' => 'config',
-                          'fields_meta_data' => 'fields_meta_data',
-                          'upgrade_history' => 'upgrade_history',
-                          'versions' => 'versions',
-                          );
+	                      'fields_meta_data' => 'fields_meta_data',
+	                      'upgrade_history' => 'upgrade_history',
+	                      'versions' => 'versions',
+	                      );
 
 
     //Creates the diagnostic directory in the cache directory
@@ -355,7 +354,7 @@ function executephpinfo()
     ob_clean();
 
     $handle = sugar_fopen($cacheDir."phpinfo.html", "w");
-    if (fwrite($handle, $phpinfo) === false) {
+    if (fwrite($handle, $phpinfo) === FALSE) {
         echo "Cannot write to file ".$cacheDir."phpinfo.html<br>";
     }
     fclose($handle);
@@ -559,7 +558,7 @@ function executebeanlistbeanfiles()
     ob_clean();
 
     $handle = sugar_fopen($cacheDir."beanFiles.html", "w");
-    if (fwrite($handle, $content) === false) {
+    if (fwrite($handle, $content) === FALSE) {
         echo "Cannot write to file ".$cacheDir."beanFiles.html<br>";
     }
     fclose($handle);
@@ -729,7 +728,7 @@ function executevardefs()
     ob_clean();
 
     $handle = sugar_fopen($cacheDir."vardefschema.html", "w");
-    if (fwrite($handle, $vardefFormattedOutput) === false) {
+    if (fwrite($handle, $vardefFormattedOutput) === FALSE) {
         echo "Cannot write to file ".$cacheDir."vardefschema.html<br>";
     }
     fclose($handle);
@@ -751,8 +750,8 @@ function finishDiag()
     chdir(RETURN_FROM_DIAG_DIR);
 
     deleteDir($cacheDir);
-    
-    
+	
+	
     print "<a href=\"index.php?module=Administration&action=DiagnosticDownload&guid=$sod_guid&time=$curdatetime&to_pdf=1\">".$mod_strings['LBL_DIAGNOSTIC_DOWNLOADLINK']."</a><BR>";
 
     print "<a href=\"index.php?module=Administration&action=DiagnosticDelete&file=diagnostic".$curdatetime."&guid=".$sod_guid."\">".$mod_strings['LBL_DIAGNOSTIC_DELETELINK']."</a><br>";

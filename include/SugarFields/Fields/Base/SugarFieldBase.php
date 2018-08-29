@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -186,8 +186,10 @@ class SugarFieldBase
      */
     public function getSmartyView($parentFieldArray, $vardef, $displayParams, $tabindex, $view)
     {
+
+        // set $tabindex = -1 by default
         if (!is_numeric($tabindex)) {
-            $tabindex = 0;
+            $tabindex = -1;
         }
 
         $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
@@ -374,33 +376,32 @@ class SugarFieldBase
                     require_once($includeFile);
                 }
 
-                return $funcName(
-                    $parentFieldArray,
-                    $vardef['name'],
-                    $parentFieldArray[strtoupper($vardef['name'])],
-                    $displayType
-                );
-            }
-            $displayTypeFunc = 'get' . $displayType . 'Smarty';
+                return $funcName($parentFieldArray, $vardef['name'], $parentFieldArray[strtoupper($vardef['name'])],
+                    $displayType);
+            } else {
+                $displayTypeFunc = 'get' . $displayType . 'Smarty';
 
-            return $this->$displayTypeFunc($parentFieldArray, $vardef, $displayParams, $tabindex);
-        }
-        if (!empty($displayParams['idName'])) {
-            $fieldName = $displayParams['idName'];
+                return $this->$displayTypeFunc($parentFieldArray, $vardef, $displayParams, $tabindex);
+            }
         } else {
-            $fieldName = $vardef['name'];
-        }
-        if ($returnsHtml) {
-            $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
-            $tpl = $this->findTemplate($displayType . 'Function');
-            if ($tpl === '') {
-                // Can't find a function template, just use the base
-                $tpl = $this->findTemplate('DetailViewFunction');
+            if (!empty($displayParams['idName'])) {
+                $fieldName = $displayParams['idName'];
+            } else {
+                $fieldName = $vardef['name'];
             }
+            if ($returnsHtml) {
+                $this->setup($parentFieldArray, $vardef, $displayParams, $tabindex);
+                $tpl = $this->findTemplate($displayType . 'Function');
+                if ($tpl === '') {
+                    // Can't find a function template, just use the base
+                    $tpl = $this->findTemplate('DetailViewFunction');
+                }
 
-            return "<span id='{$vardef['name']}_span'>" . $this->fetch($tpl) . '</span>';
+                return "<span id='{$vardef['name']}_span'>" . $this->fetch($tpl) . '</span>';
+            } else {
+                return '{sugar_run_helper include="' . $includeFile . '" func="' . $funcName . '" bean=$bean field="' . $fieldName . '" value=$fields.' . $fieldName . '.value displayType="' . $displayType . '"}';
+            }
         }
-        return '{sugar_run_helper include="' . $includeFile . '" func="' . $funcName . '" bean=$bean field="' . $fieldName . '" value=$fields.' . $fieldName . '.value displayType="' . $displayType . '"}';
     }
 
     public function getEditView()
@@ -685,3 +686,4 @@ class SugarFieldBase
         return $parentFieldArray;
     }
 }
+

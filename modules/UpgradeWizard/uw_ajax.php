@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 /*********************************************************************************
 
@@ -154,7 +153,7 @@ function commitAjaxFinalTouches($persistence)
             $email->from_name = $current_user->full_name;
             $email->from_addr = $current_user->email1;
             isValidEmailAddress($email->from_addr);
-            $email->to_addrs_arr = $email->parse_addrs($current_user->email1, '', '', '');
+            $email->to_addrs_arr = $email->parse_addrs($current_user->email1,'','','');
             $email->cc_addrs_arr = array();
             $email->bcc_addrs_arr = array();
             $email->date_entered = $nowDateTime;
@@ -192,8 +191,8 @@ function commitAjaxRunSql($persistence)
     // This flag is determined by the preflight check in the installer
     if ($persistence['schema_change'] == 'sugar') {
         if (isset($persistence['sql_to_run'])
-            && count($persistence['sql_to_run']) > 0
-            && !empty($persistence['sql_to_run'])) {
+			&& count($persistence['sql_to_run']) > 0
+			&& !empty($persistence['sql_to_run'])) {
             $sql = array_shift($persistence['sql_to_run']);
             $sql = trim($sql);
 
@@ -425,7 +424,7 @@ function preflightCheckJsonDiffFiles($persistence)
         ///////////////////////////////////////////////////////////////////////
         ////	DIFFS
         // compare md5s and build up a manual merge list
-        $targetFile = clean_path(".".str_replace(getcwd(), '', $destFile));
+        $targetFile = clean_path(".".str_replace(getcwd(),'',$destFile));
         $targetMd5 = '0';
         if (is_file($destFile)) {
             if (strpos($targetFile, '.php')) {
@@ -626,7 +625,7 @@ function preflightCheckJsonPrepSchemaCheck($persistence, $preflight=true)
                 if (strpos($line, '--') === false) {
                     $completeLine .= " ".trim($line);
                     if (strpos($line, ';') !== false) {
-                        $completeLine = str_replace(';', '', $completeLine);
+                        $completeLine = str_replace(';','',$completeLine);
                         $persistence['sql_to_check'][] = $completeLine;
                         $completeLine = ''; //reset for next loop
                     }
@@ -665,7 +664,7 @@ function preflightCheckJsonSchemaCheck($persistence)
 
         // populate newTables array to prevent "getting sample data" from non-existent tables
         $newTables = array();
-        if (strtoupper(substr($completeLine, 1, 5)) == 'CREAT') {
+        if (strtoupper(substr($completeLine,1,5)) == 'CREAT') {
             $newTables[] = getTableFromQuery($completeLine);
         }
 
@@ -786,9 +785,9 @@ function systemCheckJsonGetFiles($persistence)
 
     // add directories here that should be skipped when doing file permissions checks (cache/upload is the nasty one)
     $skipDirs = array(
-        $sugar_config['upload_dir'],
-        'themes',
-    );
+		$sugar_config['upload_dir'],
+		'themes',
+	);
 
     if (!isset($persistence['dirs_checked'])) {
         $the_array = array();
@@ -878,28 +877,28 @@ function systemCheckJsonCheckFiles($persistence)
                 logThis('WINDOWS: File ['.$file.'] not readable - saving for display');
                 // don't warn yet - we're going to use this to check against replacement files
                 $filesNotWritable[$i] = $file;
-                $filesNWPerms[$i] = substr(sprintf('%o', fileperms($file)), -4);
+                $filesNWPerms[$i] = substr(sprintf('%o',fileperms($file)), -4);
                 $filesOut .= "<tr>".
-                                "<td valign='top'><span class='error'>{$file}</span></td>".
-                                "<td valign='top'>{$filesNWPerms[$i]}</td>".
-                                "<td valign='top'>".$mod_strings['ERR_UW_CANNOT_DETERMINE_USER']."</td>".
-                                "<td valign='top'>".$mod_strings['ERR_UW_CANNOT_DETERMINE_GROUP']."</td>".
-                              "</tr>";
+								"<td valign='top'><span class='error'>{$file}</span></td>".
+								"<td valign='top'>{$filesNWPerms[$i]}</td>".
+								"<td valign='top'>".$mod_strings['ERR_UW_CANNOT_DETERMINE_USER']."</td>".
+								"<td valign='top'>".$mod_strings['ERR_UW_CANNOT_DETERMINE_GROUP']."</td>".
+							  "</tr>";
             }
         } else {
             if (!is_writable($file)) {
                 logThis('File ['.$file.'] not writable - saving for display');
                 // don't warn yet - we're going to use this to check against replacement files
                 $filesNotWritable[$i] = $file;
-                $filesNWPerms[$i] = substr(sprintf('%o', fileperms($file)), -4);
+                $filesNWPerms[$i] = substr(sprintf('%o',fileperms($file)), -4);
                 $owner = posix_getpwuid(fileowner($file));
                 $group = posix_getgrgid(filegroup($file));
                 $filesOut .= "<tr>".
-                                "<td valign='top'><span class='error'>{$file}</span></td>".
-                                "<td valign='top'>{$filesNWPerms[$i]}</td>".
-                                "<td valign='top'>".$owner['name']."</td>".
-                                "<td valign='top'>".$group['name']."</td>".
-                              "</tr>";
+								"<td valign='top'><span class='error'>{$file}</span></td>".
+								"<td valign='top'>{$filesNWPerms[$i]}</td>".
+								"<td valign='top'>".$owner['name']."</td>".
+								"<td valign='top'>".$group['name']."</td>".
+							  "</tr>";
             }
         }
         $i++;

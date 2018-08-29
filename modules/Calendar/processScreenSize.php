@@ -11,3 +11,4 @@ if ($_SESSION['screen_height'] != $_POST['height'] || $_SESSION['screen_width'] 
     $_SESSION['screen_height'] = $_POST['height'];
     $_SESSION['screen_width'] = $_POST['width'];
 }
+

@@ -3,7 +3,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/**
+/*********************************************************************************
  * SugarCRM is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2010 SugarCRM Inc.
  *
@@ -36,13 +36,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * SugarCRM" logo. If the display of the logo is not reasonably feasible for
  * technical reasons, the Appropriate Legal Notices must display the words
  * "Powered by SugarCRM".
- */
+ ********************************************************************************/
 
 require_once('include/MVC/View/views/view.detail.php');
 
 class AccountsViewDetail extends ViewDetail
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -50,7 +50,7 @@ class AccountsViewDetail extends ViewDetail
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function AccountsViewDetail()
+    function AccountsViewDetail()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -70,7 +70,7 @@ class AccountsViewDetail extends ViewDetail
      * include/SugarFields/Fields/Address/DetailView.tpl (default).  If it's a English U.S.
      * locale then it'll use file include/SugarFields/Fields/Address/en_us.DetailView.tpl.
      */
-    public function display()
+    function display()
     {
         if (empty($this->bean->id)) {
             global $app_strings;
@@ -81,7 +81,7 @@ class AccountsViewDetail extends ViewDetail
         formLetter::DVPopupHtml('Accounts');
 
         $this->dv->process();
-        
+		
         if (ACLController::checkAccess('Contacts', 'edit', true)) {
             $push_billing = $this->generatePushCode('billing');
             $push_shipping = $this->generatePushCode('shipping');
@@ -100,14 +100,14 @@ class AccountsViewDetail extends ViewDetail
         echo $this->dv->display();
     }
 
-    public function generatePushCode($param)
+    function generatePushCode($param)
     {
         global $mod_strings;
         $address_fields = array('street', 'city', 'state', 'postalcode','country');
 
         $html = '<input class="button" title="' . $mod_strings['LBL_PUSH_CONTACTS_BUTTON_LABEL'] .
-             '" type="button" onclick=\'open_contact_popup("Contacts", 600, 600, "&account_name=' .
-             $this->bean->name . '&html=change_address';
+		     '" type="button" onclick=\'open_contact_popup("Contacts", 600, 600, "&account_name=' .
+		     $this->bean->name . '&html=change_address';
 
         foreach ($address_fields as $value) {
             $field_name = $param.'_address_'.$value;
@@ -118,3 +118,4 @@ class AccountsViewDetail extends ViewDetail
         return $html;
     }
 }
+

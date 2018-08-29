@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/tabs.php');
@@ -50,37 +49,37 @@ class SearchForm
       * SearchForm Template to use (xtpl)
       * @var string
       */
-    public $tpl;
+    var $tpl;
     /**
      * SearchField meta data array to use. Populated from moduleDir/metadata/SearchFields
      * @var array
      */
-    public $searchFields;
+    var $searchFields;
     /**
      * Seed bean to use
      * @var bean
      */
-    public $bean;
+    var $bean;
     /**
      * Module the search from is for
      * @var string
      */
-    public $module;
+    var $module;
     /**
      * meta data for the tabs to display
      * @var array
      */
-    public $tabs;
+    var $tabs;
     /**
      * XTPL object
      * @var object
      */
-    public $xtpl;
+    var $xtpl;
     /**
      * Use to determine whether or not to show the saved search options
      * @var boolean
      */
-    public $showSavedSearchOptions = true;
+    var $showSavedSearchOptions = true;
 
     /**
      * loads SearchFields MetaData, sets member variables
@@ -90,7 +89,7 @@ class SearchForm
      * @param string $tpl template to use, defaults to moduleDir/SearchForm.html
      *
      */
-    public function __construct($module, &$seedBean, $tpl = null)
+    function __construct($module, &$seedBean, $tpl = null)
     {
         global $app_strings;
 
@@ -131,7 +130,7 @@ class SearchForm
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function SearchForm($module, &$seedBean, $tpl = null)
+    function SearchForm($module, &$seedBean, $tpl = null)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -149,7 +148,7 @@ class SearchForm
      * @param string $switchVar variable to use in switch statement
      * @param bool $addAllBeanFields true to process at all bean fields
      */
-    public function populateFromArray(&$array, $switchVar = null, $addAllBeanFields = true)
+    function populateFromArray(&$array, $switchVar = null, $addAllBeanFields = true)
     {
 
        //CL Bug:33176
@@ -173,7 +172,7 @@ class SearchForm
                     }
                     if ($addAllBeanFields) {
                         foreach ($this->bean->field_name_map as $key => $params) {
-                            if (in_array($key . '_basic', $arrayKeys) && !in_array($key, $searchFieldsKeys)) {
+                            if (in_array($key . '_basic' , $arrayKeys) && !in_array($key, $searchFieldsKeys)) {
                                 $this->searchFields[$key] = array('query_type' => 'default',
                                                                   'value'      => $array[$key . '_basic']);
                             }
@@ -228,7 +227,7 @@ class SearchForm
      * @param string $switchVar variable to use in switch statement
      * @param bool $addAllBeanFields true to process at all bean fields
      */
-    public function populateFromRequest($switchVar = null, $addAllBeanFields = true)
+    function populateFromRequest($switchVar = null, $addAllBeanFields = true)
     {
         $this->populateFromArray($_REQUEST, $switchVar, $addAllBeanFields);
     }
@@ -238,7 +237,7 @@ class SearchForm
      * The fuction will returns an array of filter conditions.
      *
      */
-    public function generateSearchWhere($add_custom_fields = false, $module='')
+    function generateSearchWhere($add_custom_fields = false, $module='')
     {
         global $timedate;
         $values = $this->searchFields;
@@ -371,7 +370,7 @@ class SearchForm
                             $where .= " OR ";
                         }
                         switch ($operator) {
-                            case 'subquery':
+                        	case 'subquery':
                                 $in = 'IN';
                                 if (isset($parms['subquery_in_clause'])) {
                                     if (!is_array($parms['subquery_in_clause'])) {
@@ -404,7 +403,7 @@ class SearchForm
                                     $where .= "{$db_field} $in ({$parms['subquery']} '{$field_value}%')";
                                 }
 
-                                break;
+    	                    	break;
                             case 'like':
                                 $where .=  $db_field . " like ".$this->bean->db->quoted($field_value.'%');
                                 break;
@@ -419,7 +418,7 @@ class SearchForm
                                     $field_value = explode('<>', $field_value);
                                 }
                                 $where .= "(". $db_field . " >= ".$this->bean->db->quoted($field_value[0]) .
-                                    " AND " .$db_field . " <= ".$this->bean->db->quoted($field_value[1]).")";
+                                	" AND " .$db_field . " <= ".$this->bean->db->quoted($field_value[1]).")";
                                 break;
                         }
                     }
@@ -444,9 +443,9 @@ class SearchForm
      *
      * @return string html
      */
-    public function displayTabs($currentKey)
+    function displayTabs($currentKey)
     {
-        $GLOBALS['log']->debug('SearchForm.php->displayTabs(): tabs='.print_r($this->tabs, true));
+        $GLOBALS['log']->debug('SearchForm.php->displayTabs(): tabs='.print_r($this->tabs,true));
 
         $tabPanel = new SugarWidgetTabs($this->tabs, $currentKey, 'SUGAR.searchForm.searchFormSelect');
 
@@ -487,7 +486,7 @@ class SearchForm
      * sets up the search forms, populates the preset values
      *
      */
-    public function setup()
+    function setup()
     {
         global $mod_strings, $app_strings, $app_list_strings, $theme, $timedate;
         $GLOBALS['log']->debug('SearchForm.php->setup()');
@@ -535,9 +534,9 @@ class SearchForm
             }
         }
         if (!empty($_REQUEST['assigned_user_id'])) {
-            $this->xtpl->assign("USER_FILTER", get_select_options_with_id(get_user_array(false), $_REQUEST['assigned_user_id']));
+            $this->xtpl->assign("USER_FILTER", get_select_options_with_id(get_user_array(FALSE), $_REQUEST['assigned_user_id']));
         } else {
-            $this->xtpl->assign("USER_FILTER", get_select_options_with_id(get_user_array(false), ''));
+            $this->xtpl->assign("USER_FILTER", get_select_options_with_id(get_user_array(FALSE), ''));
         }
 
         // handle my items only
@@ -552,13 +551,13 @@ class SearchForm
      * @param string $view which view is currently being displayed
      *
      */
-    public function displayHeader($view)
+    function displayHeader($view)
     {
         global $current_user;
         $GLOBALS['log']->debug('SearchForm.php->displayHeader()');
         $header_text = '';
         if (is_admin($current_user) && $_REQUEST['module'] != 'DynamicLayout' && !empty($_SESSION['editinplace'])) {
-            $header_text = "<a href='index.php?action=index&module=DynamicLayout&from_action=SearchForm&from_module=".$_REQUEST['module'] ."'>".SugarThemeRegistry::current()->getImage("EditLayout", "border='0' align='bottom'", null, null, '.gif', 'Edit Layout')."</a>";
+            $header_text = "<a href='index.php?action=index&module=DynamicLayout&from_action=SearchForm&from_module=".$_REQUEST['module'] ."'>".SugarThemeRegistry::current()->getImage("EditLayout","border='0' align='bottom'",null,null,'.gif','Edit Layout')."</a>";
         }
 
         echo $header_text . $this->displayTabs($this->module . '|' . $view);
@@ -579,7 +578,7 @@ class SearchForm
      * @param string $saved_views_text body of the saved views tab
      *
      */
-    public function displayWithHeaders($view, $basic_search_text = '', $advanced_search_text = '', $saved_views_text = '')
+    function displayWithHeaders($view, $basic_search_text = '', $advanced_search_text = '', $saved_views_text = '')
     {
         $GLOBALS['log']->debug('SearchForm.php->displayWithHeaders()');
         $this->displayHeader($view);
@@ -599,7 +598,7 @@ class SearchForm
      *
      * @return string html of contents
      */
-    public function displayBasic($header = true, $return = false)
+    function displayBasic($header = true, $return = false)
     {
         global $current_user;
 
@@ -617,8 +616,9 @@ class SearchForm
         } else {
             if ($return) {
                 return $text;
+            } else {
+                echo $text;
             }
-            echo $text;
         }
     }
 
@@ -630,7 +630,7 @@ class SearchForm
      *
      * @return string html of contents
      */
-    public function displayAdvanced($header = true, $return = false, $listViewDefs='', $lv='')
+    function displayAdvanced($header = true, $return = false, $listViewDefs='', $lv='')
     {
         global $current_user, $current_language;
         $GLOBALS['log']->debug('SearchForm.php->displayAdvanced()');
@@ -658,8 +658,9 @@ class SearchForm
         } else {
             if ($return) {
                 return $text;
+            } else {
+                echo $text;
             }
-            echo $text;
         }
     }
 
@@ -671,7 +672,7 @@ class SearchForm
      *
      * @return string html of contents
      */
-    public function displaySavedViews($listViewDefs, $lv, $header = true, $return = false)
+    function displaySavedViews($listViewDefs, $lv, $header = true, $return = false)
     {
         global $current_user;
 
@@ -690,7 +691,7 @@ class SearchForm
      *
      * @return string html of contents
      */
-    public function getButtons()
+    function getButtons()
     {
         global $app_strings;
 

@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2016 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/Dashlets/DashletGeneric.php');
@@ -47,16 +46,16 @@ require_once('include/externalAPI/ExternalAPIFactory.php');
 
 class SugarFeedDashlet extends DashletGeneric
 {
-    public $displayRows = 15;
+    var $displayRows = 15;
 
-    public $categories;
+    var $categories;
 
-    public $userfeed_created;
+    var $userfeed_created;
 
-    public $selectedCategories = array();
+    var $selectedCategories = array();
 
 
-    public function __construct($id, $def = null)
+    function __construct($id, $def = null)
     {
         global $current_user, $app_strings, $app_list_strings;
 
@@ -72,9 +71,9 @@ class SugarFeedDashlet extends DashletGeneric
         $replacements = array();
         $replacements[] = '';
         $replacements[] = '';
-        $this->idjs = preg_replace($pattern, $replacements, $this->id);
+        $this->idjs = preg_replace($pattern,$replacements,$this->id);
         // Add in some default categories.
-        $this->categories['ALL'] = translate('LBL_ALL', 'SugarFeed');
+        $this->categories['ALL'] = translate('LBL_ALL','SugarFeed');
         // Need to get the rest of the active SugarFeed modules
         $module_list = SugarFeed::getActiveFeedModules();
 
@@ -85,14 +84,14 @@ class SugarFeedDashlet extends DashletGeneric
         foreach ($module_list as $module) {
             if ($module == 'UserFeed') {
                 // Fake module, need to translate specially
-                $this->categories[$module] = translate('LBL_USER_FEED', 'SugarFeed');
+                $this->categories[$module] = translate('LBL_USER_FEED','SugarFeed');
             } else {
                 $this->categories[$module] = $app_list_strings['moduleList'][$module];
             }
         }
 
         // Need to add the external api's here
-        $this->externalAPIList = ExternalAPIFactory::getModuleDropDown('SugarFeed', true);
+        $this->externalAPIList = ExternalAPIFactory::getModuleDropDown('SugarFeed',true);
         if (!is_array($this->externalAPIList)) {
             $this->externalAPIList = array();
         }
@@ -143,7 +142,7 @@ class SugarFeedDashlet extends DashletGeneric
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function SugarFeedDashlet($id, $def = null)
+    function SugarFeedDashlet($id, $def = null)
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -154,7 +153,7 @@ class SugarFeedDashlet extends DashletGeneric
         self::__construct($id, $def);
     }
 
-    public function process($lvsParams = array(), $id = null)
+    function process($lvsParams = array(), $id = null)
     {
         global $current_user;
 
@@ -216,14 +215,14 @@ class SugarFeedDashlet extends DashletGeneric
                 continue;
             }
 
-            if (in_array($module, $this->externalAPIList)) {
+            if (in_array($module,$this->externalAPIList)) {
                 $external_modules[] = $module;
             }
-            if (ACLAction::getUserAccessLevel($current_user->id, $module, 'view') <= ACL_ALLOW_NONE) {
+            if (ACLAction::getUserAccessLevel($current_user->id,$module,'view') <= ACL_ALLOW_NONE) {
                 // Not enough access to view any records, don't add it to any lists
                 continue;
             }
-            if (ACLAction::getUserAccessLevel($current_user->id, $module, 'view') == ACL_ALLOW_OWNER) {
+            if (ACLAction::getUserAccessLevel($current_user->id,$module,'view') == ACL_ALLOW_OWNER) {
                 $owner_modules[] = $module;
             } else {
                 $regular_modules[] = $module;
@@ -249,12 +248,12 @@ class SugarFeedDashlet extends DashletGeneric
                 $all_modules = array_merge($regular_modules, $owner_modules, $admin_modules);
                 $module_limiter = " sugarfeed.related_module in ('" . implode("','", $all_modules) . "')";
             } elseif (count($owner_modules) > 0
-                ) {
+				) {
                 $module_limiter = " ((sugarfeed.related_module IN ('".implode("','", $regular_modules)."') "
-                    .") ";
+					.") ";
                 if (count($owner_modules) > 0) {
                     $module_limiter .= "OR (sugarfeed.related_module IN('".implode("','", $owner_modules)."') AND sugarfeed.assigned_user_id = '".$current_user->id."' "
-                        .") ";
+						.") ";
                 }
                 $module_limiter .= ")";
             }
@@ -265,19 +264,13 @@ class SugarFeedDashlet extends DashletGeneric
 
             $where .= $module_limiter;
 
-            $this->lvs->setup(
-                $this->seedBean,
-                $this->displayTpl,
-                $where,
-                $lvsParams,
-                0,
-                $this->displayRows,
+            $this->lvs->setup($this->seedBean, $this->displayTpl, $where , $lvsParams, 0, $this->displayRows,
                               array('name',
                                     'description',
                                     'date_entered',
                                     'created_by',
                                     /* BEGIN - SECURITY GROUPS */
-                                    //related_module now included but keep this here just in case
+									//related_module now included but keep this here just in case
                                     'related_module',
                                     'related_id',
                                     /* END - SECURITY GROUPS */
@@ -286,18 +279,17 @@ class SugarFeedDashlet extends DashletGeneric
 
 
                                     'link_url',
-                                    'link_type')
-            );
+                                    'link_type'));
 
             foreach ($this->lvs->data['data'] as $row => $data) {
-                $this->lvs->data['data'][$row]['NAME'] = str_replace("{this.CREATED_BY}", get_assigned_user_name($this->lvs->data['data'][$row]['CREATED_BY']), $data['NAME']);
+                $this->lvs->data['data'][$row]['NAME'] = str_replace("{this.CREATED_BY}",get_assigned_user_name($this->lvs->data['data'][$row]['CREATED_BY']),$data['NAME']);
 
                 //Translate the SugarFeeds labels if necessary.
-                preg_match('/\{([^\^ }]+)\.([^\}]+)\}/', $this->lvs->data['data'][$row]['NAME'], $modStringMatches);
+                preg_match('/\{([^\^ }]+)\.([^\}]+)\}/', $this->lvs->data['data'][$row]['NAME'] ,$modStringMatches);
                 if (count($modStringMatches) == 3 && $modStringMatches[1] == 'SugarFeed' && !empty($data['RELATED_MODULE'])) {
                     $modKey = $modStringMatches[2];
                     $modString = translate($modKey, $modStringMatches[1]);
-                    if (strpos($modString, '{0}') === false || !isset($GLOBALS['app_list_strings']['moduleListSingular'][$data['RELATED_MODULE']])) {
+                    if (strpos($modString, '{0}') === FALSE || !isset($GLOBALS['app_list_strings']['moduleListSingular'][$data['RELATED_MODULE']])) {
                         continue;
                     }
 
@@ -332,9 +324,9 @@ class SugarFeedDashlet extends DashletGeneric
 
         foreach ($external_modules as $apiName) {
             $api = ExternalAPIFactory::loadAPI($apiName);
-            if ($api !== false) {
+            if ($api !== FALSE) {
                 // FIXME: Actually calculate the oldest sugar feed we can see, once we get an API that supports this sort of filter.
-                $reply = $api->getLatestUpdates(0, $fetchRecordCount);
+                $reply = $api->getLatestUpdates(0,$fetchRecordCount);
                 if ($reply['success'] && count($reply['messages']) > 0) {
                     array_splice($resortQueue, count($resortQueue), 0, $reply['messages']);
                 } elseif (!$reply['success']) {
@@ -344,13 +336,13 @@ class SugarFeedDashlet extends DashletGeneric
         }
 
         if (count($feedErrors) > 0) {
-            $this->lvs->ss->assign('feedErrors', $feedErrors);
+            $this->lvs->ss->assign('feedErrors',$feedErrors);
         }
 
         // If we need to resort, get to work!
         foreach ($this->lvs->data['data'] as $normalMessage) {
-            list($user_date, $user_time) = explode(' ', $normalMessage['DATE_ENTERED']);
-            list($db_date, $db_time) = $td->to_db_date_time($user_date, $user_time);
+            list($user_date,$user_time) = explode(' ',$normalMessage['DATE_ENTERED']);
+            list($db_date,$db_time) = $td->to_db_date_time($user_date,$user_time);
 
             $unix_timestamp = strtotime($db_date.' '.$db_time);
 
@@ -364,17 +356,17 @@ class SugarFeedDashlet extends DashletGeneric
             return $a["sort_key"] < $b["sort_key"];
         };
 
-        usort($resortQueue, $function);
+        usort($resortQueue,$function);
 
         // Trim it down to the necessary number of records
         $numRecords = count($resortQueue);
         $numRecords = $numRecords - $this->lvs->data['pageData']['offsets']['current'];
-        $numRecords = min($this->displayRows, $numRecords);
+        $numRecords = min($this->displayRows,$numRecords);
 
         $this->lvs->data['data'] = $resortQueue;
     }
 
-    public function deleteUserFeed()
+    function deleteUserFeed()
     {
         if (!empty($_REQUEST['record'])) {
             $feed = new SugarFeed();
@@ -384,41 +376,33 @@ class SugarFeedDashlet extends DashletGeneric
             }
         }
     }
-    public function pushUserFeed()
+    function pushUserFeed()
     {
         if (!empty($_REQUEST['text']) || (!empty($_REQUEST['link_url']) && !empty($_REQUEST['link_type']))) {
             $text = htmlspecialchars($_REQUEST['text']);
             //allow for bold and italic user tags
-            $text = preg_replace('/&amp;lt;(\/*[bi])&amp;gt;/i', '<$1>', $text);
-            SugarFeed::pushFeed(
-                $text,
-                'UserFeed',
-                $GLOBALS['current_user']->id,
-                                $GLOBALS['current_user']->id,
-                                $_REQUEST['link_type'],
-                $_REQUEST['link_url']
+            $text = preg_replace('/&amp;lt;(\/*[bi])&amp;gt;/i','<$1>', $text);
+            SugarFeed::pushFeed($text, 'UserFeed', $GLOBALS['current_user']->id,
+								$GLOBALS['current_user']->id,
+                                $_REQUEST['link_type'], $_REQUEST['link_url']
                                 );
         }
     }
 
-    public function pushUserFeedReply()
+    function pushUserFeedReply()
     {
         if (!empty($_REQUEST['text'])&&!empty($_REQUEST['parentFeed'])) {
             $text = htmlspecialchars($_REQUEST['text']);
             //allow for bold and italic user tags
-            $text = preg_replace('/&amp;lt;(\/*[bi])&amp;gt;/i', '<$1>', $text);
-            SugarFeed::pushFeed(
-                $text,
-                'SugarFeed',
-                $_REQUEST['parentFeed'],
-                                $GLOBALS['current_user']->id,
-                                '',
-                ''
+            $text = preg_replace('/&amp;lt;(\/*[bi])&amp;gt;/i','<$1>', $text);
+            SugarFeed::pushFeed($text, 'SugarFeed', $_REQUEST['parentFeed'],
+								$GLOBALS['current_user']->id,
+                                '', ''
                                 );
         }
     }
 
-    public function displayOptions()
+    function displayOptions()
     {
         global $app_strings;
         global $app_list_strings;
@@ -461,7 +445,7 @@ class SugarFeedDashlet extends DashletGeneric
      * @return
      * @param $req Object
      */
-    public function saveOptions($req)
+    function saveOptions($req)
     {
         global $sugar_config, $timedate, $current_user, $theme;
         $options = array();
@@ -489,7 +473,7 @@ class SugarFeedDashlet extends DashletGeneric
     }
 
 
-    public function sugarFeedDisplayScript()
+    function sugarFeedDisplayScript()
     {
         // Forces the quicksearch to reload anytime the dashlet gets refreshed
         return '<script type="text/javascript">
@@ -500,7 +484,7 @@ enableQS(false);
      *
      * @return javascript including QuickSearch for SugarFeeds
      */
-    public function displayScript()
+    function displayScript()
     {
         require_once('include/QuickSearchDefaults.php');
         $ss = new Sugar_Smarty();
@@ -517,7 +501,7 @@ enableQS(false);
      *
      * @return the fully rendered dashlet
      */
-    public function display()
+    function display()
     {
         $listview = parent::display();
 
@@ -526,8 +510,9 @@ enableQS(false);
             if ($matches[1] == "this") {
                 $var = $matches[2];
                 return $class->$var;
+            } else {
+                return translate($matches[2], $matches[1]);
             }
-            return translate($matches[2], $matches[1]);
         };
 
         $listview = preg_replace_callback('/\{([^\^ }]+)\.([^\}]+)\}/', $function, $listview);
@@ -552,8 +537,8 @@ enableQS(false);
                 LoggerManager::getLogger()->warn('SugarFeedDashlet::display error: $GLOBALS[app_list_strings][moduleListSingular][$alt] is undefined');
             }
             
-            $altString = 'alt="'.translate('LBL_VIEW', 'SugarFeed').' '.$moduleListSingularAlt.'"';
-            $listview = preg_replace('/REPLACE_ALT/', $altString, $listview, 1);
+            $altString = 'alt="'.translate('LBL_VIEW','SugarFeed').' '.$moduleListSingularAlt.'"';
+            $listview = preg_replace('/REPLACE_ALT/', $altString, $listview,1);
         }
 
 
@@ -568,7 +553,7 @@ enableQS(false);
      * @return the title and the user post form
      * @param $text Object
      */
-    public function getHeader($text='')
+    function getHeader($text='')
     {
         return parent::getHeader($text) . $this->getPostForm().$this->getDisabledWarning().$this->sugarFeedDisplayScript().'<div class="sugarFeedDashlet"><div id="contentScroller'.$this->idjs.'">';
     }
@@ -578,32 +563,33 @@ enableQS(false);
      *
      * @return a warning message if the sugar feed system is not enabled currently
      */
-    public function getDisabledWarning()
+    function getDisabledWarning()
     {
         /* Check to see if the sugar feed system is enabled */
         if (! $this->shouldDisplay()) {
             // The Sugar Feeds are disabled, populate the warning message
-            return translate('LBL_DASHLET_DISABLED', 'SugarFeed');
+            return translate('LBL_DASHLET_DISABLED','SugarFeed');
+        } else {
+            return '';
         }
-        return '';
     }
 
     /**
      *
      * @return the form for users posting custom messages to the feed stream
      */
-    public function getPostForm()
+    function getPostForm()
     {
         global $current_user;
 
-        if ((!empty($this->selectedCategories) && !in_array('UserFeed', $this->selectedCategories))
-            ) {
+        if ((!empty($this->selectedCategories) && !in_array('UserFeed',$this->selectedCategories))
+			) {
             // The user feed system isn't enabled, don't let them post notes
             return '';
         }
         $user_name = ucfirst($GLOBALS['current_user']->user_name);
-        $moreimg = SugarThemeRegistry::current()->getImage('advanced_search', 'onclick="toggleDisplay(\'more_' . $this->id . '\'); toggleDisplay(\'more_img_'.$this->id.'\'); toggleDisplay(\'less_img_'.$this->id.'\');"', null, null, '.gif', translate('LBL_SHOW_MORE_OPTIONS', 'SugarFeed'));
-        $lessimg = SugarThemeRegistry::current()->getImage('basic_search', 'onclick="toggleDisplay(\'more_' . $this->id . '\'); toggleDisplay(\'more_img_'.$this->id.'\'); toggleDisplay(\'less_img_'.$this->id.'\');"', null, null, '.gif', translate('LBL_HIDE_OPTIONS', 'SugarFeed'));
+        $moreimg = SugarThemeRegistry::current()->getImage('advanced_search' , 'onclick="toggleDisplay(\'more_' . $this->id . '\'); toggleDisplay(\'more_img_'.$this->id.'\'); toggleDisplay(\'less_img_'.$this->id.'\');"',null,null,'.gif',translate('LBL_SHOW_MORE_OPTIONS','SugarFeed'));
+        $lessimg = SugarThemeRegistry::current()->getImage('basic_search' , 'onclick="toggleDisplay(\'more_' . $this->id . '\'); toggleDisplay(\'more_img_'.$this->id.'\'); toggleDisplay(\'less_img_'.$this->id.'\');"',null,null,'.gif',translate('LBL_HIDE_OPTIONS','SugarFeed'));
         $ss = new Sugar_Smarty();
         $ss->assign('LBL_TO', translate('LBL_TO', 'SugarFeed'));
         $ss->assign('LBL_POST', translate('LBL_POST', 'SugarFeed'));
@@ -624,7 +610,7 @@ enableQS(false);
         $linkTypesIn = SugarFeed::getLinkTypes();
         $linkTypes = array();
         foreach ($linkTypesIn as $key => $value) {
-            $linkTypes[$key] = translate('LBL_LINK_TYPE_'.$value, 'SugarFeed');
+            $linkTypes[$key] = translate('LBL_LINK_TYPE_'.$value,'SugarFeed');
         }
         $ss->assign('link_types', $linkTypes);
 
@@ -634,18 +620,19 @@ enableQS(false);
     }
 
     // This is called from the include/MySugar/DashletsDialog/DashletsDialog.php and determines if we should display the SugarFeed dashlet as an option or not
-    public static function shouldDisplay()
+    static function shouldDisplay()
     {
         $admin = new Administration();
         $admin->retrieveSettings();
 
         if (!isset($admin->settings['sugarfeed_enabled']) || $admin->settings['sugarfeed_enabled'] != '1') {
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
 
-    public function check_enabled($type)
+    function check_enabled($type)
     {
         $db = DBManagerFactory::getInstance();
         $query = "SELECT * FROM config where name = 'module_" .$type . "' and value =  1;";

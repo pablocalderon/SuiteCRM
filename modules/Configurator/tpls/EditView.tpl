@@ -1,12 +1,11 @@
 {*
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -17,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -35,9 +34,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 
@@ -277,6 +276,41 @@
   </td>
   </tr>
  </table>
+
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view">
+	<tr>
+		<th align="left" scope="row" colspan="4"><h4>{$MOD.LBL_GOOGLE_AUTH_TITLE}</h4></th>
+	</tr>
+	<tr>
+		<td width="25%" scope="row" valign='middle'>
+			{$MOD.LBL_GOOGLE_AUTH_JSON}&nbsp{sugar_help text=$MOD.LBL_GOOGLE_AUTH_JSON_HELP}
+		</td>
+		<td id="google_json" width="75%" align="left"  valign='middle' colspan='3'>
+			<script type='text/javascript'>
+				{literal}
+				var openGoogleJson = function(event) {
+					var input = event.target;
+					var reader = new FileReader();
+					var parent_td = document.getElementById('google_json');
+					reader.onload = function(){
+						console.log(reader.result.substring(0, 1024));
+						var json_input = document.getElementById("google_auth_json");
+						if (json_input == null) {
+							var json_input_text = document.createElement('span');
+							json_input_text.innerHTML = '<input type="hidden" id="google_auth_json" name="google_auth_json" />';
+							parent_td.appendChild(json_input_text);
+						}
+						document.getElementById('google_auth_json').value = btoa(reader.result.substring(0, 1024));
+					};
+					reader.readAsText(input.files[0]);
+				};
+				{/literal}
+			</script>
+			JSON file is: <span style="color:{$GOOGLE_JSON_CONF_COLOR}">{$GOOGLE_JSON_CONF}</span><input type="file" accept="text/plain" onchange="openGoogleJson(event)">
+		</td>
+	</tr>
+</table>
+
 
 
 <table width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view">

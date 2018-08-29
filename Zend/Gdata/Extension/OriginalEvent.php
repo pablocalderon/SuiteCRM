@@ -47,6 +47,7 @@ require_once 'Zend/Gdata/Extension/When.php';
  */
 class Zend_Gdata_Extension_OriginalEvent extends Zend_Gdata_Extension
 {
+
     protected $_rootElement = 'originalEvent';
     protected $_id = null;
     protected $_href = null;
@@ -136,4 +137,6 @@ class Zend_Gdata_Extension_OriginalEvent extends Zend_Gdata_Extension
         $this->_when = $value;
         return $this;
     }
+
+
 }

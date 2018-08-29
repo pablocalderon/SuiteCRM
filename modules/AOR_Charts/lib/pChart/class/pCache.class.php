@@ -16,12 +16,12 @@
  /* pData class definition */
  class pCache
  {
-     public $CacheFolder;
-     public $CacheIndex;
-     public $CacheDB;
+     var $CacheFolder;
+     var $CacheIndex;
+     var $CacheDB;
 
      /* Class creator */
-     public function pCache($Settings="")
+     function pCache($Settings="")
      {
          $CacheFolder	= isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
          $CacheIndex	= isset($Settings["CacheIndex"]) ? $Settings["CacheIndex"] : "index.db";
@@ -40,7 +40,7 @@
      }
 
      /* Flush the cache contents */
-     public function flush()
+     function flush()
      {
          if (file_exists($this->CacheFolder."/".$this->CacheIndex)) {
              unlink($this->CacheFolder."/".$this->CacheIndex);
@@ -53,38 +53,38 @@
      }
 
      /* Return the MD5 of the data array to clearly identify the chart */
-     public function getHash($Data, $Marker="")
+     function getHash($Data,$Marker="")
      {
          return(md5($Marker.serialize($Data->Data)));
      }
 
      /* Write the generated picture to the cache */
-     public function writeToCache($ID, $pChartObject)
+     function writeToCache($ID,$pChartObject)
      {
          /* Compute the paths */
-         $TemporaryFile = $this->CacheFolder."/tmp_".rand(0, 1000).".png";
+         $TemporaryFile = $this->CacheFolder."/tmp_".rand(0,1000).".png";
          $Database      = $this->CacheFolder."/".$this->CacheDB;
          $Index         = $this->CacheFolder."/".$this->CacheIndex;
 
          /* Flush the picture to a temporary file */
-         imagepng($pChartObject->Picture, $TemporaryFile);
+         imagepng($pChartObject->Picture ,$TemporaryFile);
 
          /* Retrieve the files size */
          $PictureSize = filesize($TemporaryFile);
          $DBSize      = filesize($Database);
 
          /* Save the index */
-         $Handle = fopen($Index, "a");
+         $Handle = fopen($Index,"a");
          fwrite($Handle, $ID.",".$DBSize.",".$PictureSize.",".time().",0      \r\n");
          fclose($Handle);
 
          /* Get the picture raw contents */
-         $Handle = fopen($TemporaryFile, "r");
-         $Raw    = fread($Handle, $PictureSize);
+         $Handle = fopen($TemporaryFile,"r");
+         $Raw    = fread($Handle,$PictureSize);
          fclose($Handle);
 
          /* Save the picture in the solid database file */
-         $Handle = fopen($Database, "a");
+         $Handle = fopen($Database,"a");
          fwrite($Handle, $Raw);
          fclose($Handle);
 
@@ -93,21 +93,21 @@
      }
 
      /* Remove object older than the specified TS */
-     public function removeOlderThan($Expiry)
+     function removeOlderThan($Expiry)
      {
          $this->dbRemoval(array("Expiry"=>$Expiry));
      }
 
      /* Remove an object from the cache */
-     public function remove($ID)
+     function remove($ID)
      {
          $this->dbRemoval(array("Name"=>$ID));
      }
 
      /* Remove with specified criterias */
-     public function dbRemoval($Settings)
+     function dbRemoval($Settings)
      {
-         $ID     = isset($Settings["Name"]) ? $Settings["Name"] : null;
+         $ID     = isset($Settings["Name"]) ? $Settings["Name"] : NULL;
          $Expiry = isset($Settings["Expiry"]) ? $Settings["Expiry"] : -(24*60*60);
          $TS     = time()-$Expiry;
 
@@ -118,9 +118,9 @@
          $IndexTemp    = $this->CacheFolder."/".$this->CacheIndex.".tmp";
 
          /* Single file removal */
-         if ($ID != null) {
+         if ($ID != NULL) {
              /* Retrieve object informations */
-             $Object = $this->isInCache($ID, true);
+             $Object = $this->isInCache($ID,TRUE);
 
              /* If it's not in the cache DB, go away */
              if (!$Object) {
@@ -145,9 +145,9 @@
          /* Remove the selected ID from the database */
          while (!feof($IndexHandle)) {
              $Entry    = fgets($IndexHandle, 4096);
-             $Entry    = str_replace("\r", "", $Entry);
-             $Entry    = str_replace("\n", "", $Entry);
-             $Settings = preg_split("/,/", $Entry);
+             $Entry    = str_replace("\r","",$Entry);
+             $Entry    = str_replace("\n","",$Entry);
+             $Settings = preg_split("/,/",$Entry);
 
              if ($Entry != "") {
                  $PicID       = $Settings[0];
@@ -160,9 +160,9 @@
                      $CurrentPos  = ftell($DBTempHandle);
                      fwrite($IndexTempHandle, $PicID.",".$CurrentPos.",".$PicSize.",".$GeneratedTS.",".$Hits."\r\n");
 
-                     fseek($DBHandle, $DBPos);
-                     $Picture = fread($DBHandle, $PicSize);
-                     fwrite($DBTempHandle, $Picture);
+                     fseek($DBHandle,$DBPos);
+                     $Picture = fread($DBHandle,$PicSize);
+                     fwrite($DBTempHandle,$Picture);
                  }
              }
          }
@@ -178,11 +178,11 @@
          unlink($Index);
 
          /* Swap the temp & prod DB */
-         rename($DatabaseTemp, $Database);
-         rename($IndexTemp, $Index);
+         rename($DatabaseTemp,$Database);
+         rename($IndexTemp,$Index);
      }
 
-     public function isInCache($ID, $Verbose=false, $UpdateHitsCount=false)
+     function isInCache($ID,$Verbose=FALSE,$UpdateHitsCount=FALSE)
      {
          /* Compute the paths */
          $Index = $this->CacheFolder."/".$this->CacheIndex;
@@ -193,7 +193,7 @@
              $IndexPos = ftell($Handle);
              $Entry = fgets($Handle, 4096);
              if ($Entry != "") {
-                 $Settings = preg_split("/,/", $Entry);
+                 $Settings = preg_split("/,/",$Entry);
                  $PicID    = $Settings[0];
                  if ($PicID == $ID) {
                      fclose($Handle);
@@ -206,94 +206,95 @@
                      if ($UpdateHitsCount) {
                          $Hits++;
                          if (strlen($Hits) < 7) {
-                             $Hits = $Hits.str_repeat(" ", 7-strlen($Hits));
+                             $Hits = $Hits.str_repeat(" ",7-strlen($Hits));
                          }
 
                          $Handle = @fopen($Index, "r+");
-                         fseek($Handle, $IndexPos);
+                         fseek($Handle,$IndexPos);
                          fwrite($Handle, $PicID.",".$DBPos.",".$PicSize.",".$GeneratedTS.",".$Hits."\r\n");
                          fclose($Handle);
                      }
 
                      if ($Verbose) {
                          return(array("DBPos"=>$DBPos,"PicSize"=>$PicSize,"GeneratedTS"=>$GeneratedTS,"Hits"=>$Hits));
+                     } else {
+                         return(TRUE);
                      }
-                     return(true);
                  }
              }
          }
          fclose($Handle);
 
          /* Picture isn't in the cache */
-         return(false);
+         return(FALSE);
      }
 
      /* Automatic output method based on the calling interface */
-     public function autoOutput($ID, $Destination="output.png")
+     function autoOutput($ID,$Destination="output.png")
      {
          if (php_sapi_name() == "cli") {
-             $this->saveFromCache($ID, $Destination);
+             $this->saveFromCache($ID,$Destination);
          } else {
              $this->strokeFromCache($ID);
          }
      }
 
-     public function strokeFromCache($ID)
+     function strokeFromCache($ID)
      {
          /* Get the raw picture from the cache */
          $Picture = $this->getFromCache($ID);
 
          /* Do we have a hit? */
-         if ($Picture == null) {
-             return(false);
+         if ($Picture == NULL) {
+             return(FALSE);
          }
 
          header('Content-type: image/png');
          echo $Picture;
 
-         return(true);
+         return(TRUE);
      }
 
-     public function saveFromCache($ID, $Destination)
+     function saveFromCache($ID,$Destination)
      {
          /* Get the raw picture from the cache */
          $Picture = $this->getFromCache($ID);
 
          /* Do we have a hit? */
-         if ($Picture == null) {
-             return(false);
+         if ($Picture == NULL) {
+             return(FALSE);
          }
 
          /* Flush the picture to a file */
-         $Handle = fopen($Destination, "w");
-         fwrite($Handle, $Picture);
+         $Handle = fopen($Destination,"w");
+         fwrite($Handle,$Picture);
          fclose($Handle);
 
          /* All went fine */
-         return(true);
+         return(TRUE);
      }
 
-     public function getFromCache($ID)
+     function getFromCache($ID)
      {
          /* Compute the path */
          $Database = $this->CacheFolder."/".$this->CacheDB;
 
          /* Lookup for the picture in the cache */
-         $CacheInfo = $this->isInCache($ID, true, true);
+         $CacheInfo = $this->isInCache($ID,TRUE,TRUE);
 
          /* Not in the cache */
          if (!$CacheInfo) {
-             return(null);
+             return(NULL);
          }
 
-         /* Get the database extended information */
+         /* Get the database extended information */     
          $DBPos   = $CacheInfo["DBPos"];
          $PicSize = $CacheInfo["PicSize"];
 
          /* Extract the picture from the solid cache file */
          $Handle = @fopen($Database, "r");
-         fseek($Handle, $DBPos);
-         $Picture = fread($Handle, $PicSize);
+         fseek($Handle,$DBPos);
+         $Picture = fread($Handle,$PicSize);
          fclose($Handle);
 
          /* Return back the raw picture data */

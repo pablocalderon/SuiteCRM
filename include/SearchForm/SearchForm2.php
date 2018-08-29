@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -50,36 +50,36 @@ require_once('include/EditView/EditView2.php');
 
 class SearchForm
 {
-    public $seed = null;
-    public $module = '';
-    public $action = 'index';
-    public $searchdefs = array();
-    public $listViewDefs = array();
-    public $lv;
-    public $th;
-    public $tpl;
-    public $view = 'SearchForm';
-    public $displayView = 'basic_search';
-    public $formData;
-    public $fieldDefs;
-    public $customFieldDefs;
-    public $tabs;
-    public $parsedView = 'basic';
+    var $seed = null;
+    var $module = '';
+    var $action = 'index';
+    var $searchdefs = array();
+    var $listViewDefs = array();
+    var $lv;
+    var $th;
+    var $tpl;
+    var $view = 'SearchForm';
+    var $displayView = 'basic_search';
+    var $formData;
+    var $fieldDefs;
+    var $customFieldDefs;
+    var $tabs;
+    var $parsedView = 'basic';
     //may remove
-    public $searchFields;
-    public $displaySavedSearch = true;
+    var $searchFields;
+    var $displaySavedSearch = true;
     //show the advanced tab
-    public $showAdvanced = true;
+    var $showAdvanced = true;
     //show the basic tab
-    public $showBasic = true;
+    var $showBasic = true;
     //array of custom tab to show declare in searchdefs (no custom tab if false)
-    public $showCustom = false;
+    var $showCustom = false;
     // nb of tab to show
-    public $nbTabs = 0;
+    var $nbTabs = 0;
     // hide saved searches drop and down near the search button
-    public $showSavedSearchesOptions = true;
+    var $showSavedSearchesOptions = true;
 
-    public $displayType = 'searchView';
+    var $displayType = 'searchView';
 
     /**
      * @var array
@@ -124,7 +124,7 @@ class SearchForm
         return $this->savedSearchData;
     }
 
-    public function setup($searchdefs, $searchFields = array(), $tpl = 'SubpanelSearchFormGeneric.tpl', $displayView = 'basic_search', $listViewDefs = array())
+    function setup($searchdefs, $searchFields = array(), $tpl = 'SubpanelSearchFormGeneric.tpl', $displayView = 'basic_search', $listViewDefs = array())
     {
         $this->searchdefs = isset($searchdefs[$this->module]) ? $searchdefs[$this->module] : null;
         $this->tpl = $tpl;
@@ -170,7 +170,7 @@ class SearchForm
         }
     }
 
-    public function display($header = true)
+    function display($header = true)
     {
         global $theme, $timedate, $current_user, $sugar_config;
         $header_txt = '';
@@ -199,10 +199,8 @@ class SearchForm
         if ($this->nbTabs > 1) {
             $this->th->ss->assign('TABS', $this->_displayTabs($this->module . '|' . $this->displayView));
         }
-        $this->th->ss->assign(
-            'searchTableColumnCount',
-            ((isset($this->searchdefs['templateMeta']['maxColumns']) ? $this->searchdefs['templateMeta']['maxColumns'] : 2) * 2) - 1
-        );
+        $this->th->ss->assign('searchTableColumnCount',
+            ((isset($this->searchdefs['templateMeta']['maxColumns']) ? $this->searchdefs['templateMeta']['maxColumns'] : 2) * 2) - 1);
         $this->th->ss->assign('fields', $this->fieldDefs);
         $this->th->ss->assign('customFields', $this->customFieldDefs);
         $this->th->ss->assign('formData', $this->formData);
@@ -491,7 +489,7 @@ class SearchForm
         return false;
     }
 
-    public function displaySavedSearch($orderBySelectOnly = false)
+    function displaySavedSearch($orderBySelectOnly = false)
     {
         $savedSearch = new SavedSearch($this->listViewDefs[$this->module], $this->lv->data['pageData']['ordering']['orderBy'], $this->lv->data['pageData']['ordering']['sortOrder']);
         $ret = $savedSearch->getForm($this->module, false, $orderBySelectOnly);
@@ -501,11 +499,11 @@ class SearchForm
     }
 
 
-    public function displaySavedSearchSelect()
+    function displaySavedSearchSelect()
     {
         $savedSearch = new SavedSearch(
-            $this->listViewDefs[$this->module],
-            isset($this->lv->data['pageData']['ordering']['orderBy']) ? $this->lv->data['pageData']['ordering']['orderBy'] : null,
+            $this->listViewDefs[$this->module], 
+            isset($this->lv->data['pageData']['ordering']['orderBy']) ? $this->lv->data['pageData']['ordering']['orderBy'] : null, 
             isset($this->lv->data['pageData']['ordering']['sortOrder']) ? $this->lv->data['pageData']['ordering']['sortOrder'] : null
         );
         $savedSearchSelect = $savedSearch->getSelect($this->module, $savedSearchData);
@@ -522,7 +520,7 @@ class SearchForm
      *
      * @return string html
      */
-    public function _displayTabs($currentKey)
+    function _displayTabs($currentKey)
     {
         if (isset($_REQUEST['saved_search_select']) && $_REQUEST['saved_search_select'] != '_none') {
             $saved_search = loadBean('SavedSearch');
@@ -559,7 +557,7 @@ class SearchForm
     /*
     * Generate the data
     */
-    public function _build_field_defs()
+    function _build_field_defs()
     {
         $this->formData = array();
         $this->fieldDefs = array();
@@ -671,7 +669,7 @@ class SearchForm
      * @param string $switchVar variable to use in switch statement
      * @param bool $addAllBeanFields true to process at all bean fields
      */
-    public function populateFromArray(&$array, $switchVar = null, $addAllBeanFields = true)
+    function populateFromArray(&$array, $switchVar = null, $addAllBeanFields = true)
     {
         if ((!empty($array['searchFormTab']) || !empty($switchVar)) && !empty($this->searchFields)) {
             $arrayKeys = array_keys($array);
@@ -781,7 +779,7 @@ class SearchForm
      * @param string $switchVar variable to use in switch statement
      * @param bool $addAllBeanFields true to process at all bean fields
      */
-    public function populateFromRequest($switchVar = null, $addAllBeanFields = true)
+    function populateFromRequest($switchVar = null, $addAllBeanFields = true)
     {
         $this->populateFromArray($_REQUEST, $switchVar, $addAllBeanFields);
     }
@@ -992,20 +990,22 @@ class SearchForm
                 if (!empty($parms['my_items'])) {
                     if ($parms['value'] == false) {
                         continue;
+                    } else {
+                        //my items is checked.
+                        global $current_user;
+                        $field_value = $db->quote($current_user->id);
+                        $operator = '=';
                     }
-                    //my items is checked.
-                    global $current_user;
-                    $field_value = $db->quote($current_user->id);
-                    $operator = '=';
                 } elseif (!empty($parms['closed_values']) && is_array($parms['closed_values'])) {
                     if ($parms['value'] == false) {
                         continue;
+                    } else {
+                        $field_value = '';
+                        foreach ($parms['closed_values'] as $closed_value) {
+                            $field_value .= "," . $db->quoted($closed_value);
+                        }
+                        $field_value = substr($field_value, 1);
                     }
-                    $field_value = '';
-                    foreach ($parms['closed_values'] as $closed_value) {
-                        $field_value .= "," . $db->quoted($closed_value);
-                    }
-                    $field_value = substr($field_value, 1);
                 } elseif (!empty($parms['checked_only']) && $parms['value'] == false) {
                     continue;
                 }

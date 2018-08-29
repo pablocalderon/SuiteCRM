@@ -47,32 +47,32 @@ require_once('include/MassUpdate.php');
 
 class ListViewDisplay
 {
-    public static $listViewCounter = 0;
+    static $listViewCounter = 0;
 
-    public $show_mass_update_form = false;
-    public $show_action_dropdown = true;
+    var $show_mass_update_form = false;
+    var $show_action_dropdown = true;
 
     /**
      * @var bool Show Bulk Action button as Delete link
      */
-    public $show_action_dropdown_as_delete = false;
+    var $show_action_dropdown_as_delete = false;
 
-    public $rowCount;
-    public $mass = null;
-    public $seed;
-    public $multi_select_popup;
-    public $lvd;
-    public $moduleString;
-    public $export = true;
-    public $multiSelect = true;
-    public $mailMerge = true;
-    public $should_process = true;
-    public $show_plus = false;
+    var $rowCount;
+    var $mass = null;
+    var $seed;
+    var $multi_select_popup;
+    var $lvd;
+    var $moduleString;
+    var $export = true;
+    var $multiSelect = true;
+    var $mailMerge = true;
+    var $should_process = true;
+    var $show_plus = false;
     /*
      * Used in view.popup.php. Sometimes there are fields on the search form that are not referenced in the listviewdefs. If this
      * is the case, then the filterFields will be set and the related fields will not be referenced when calling create_new_list_query.
      */
-    public $mergeDisplayColumns = false;
+    var $mergeDisplayColumns = false;
     public $actionsMenuExtraItems = array();
 
     /**
@@ -81,7 +81,7 @@ class ListViewDisplay
     public function __construct()
     {
         $this->lvd = new ListViewData();
-        $this->searchColumns = array() ;
+        $this->searchColumns = array () ;
     }
 
     /**
@@ -99,7 +99,7 @@ class ListViewDisplay
     }
 
 
-    public function shouldProcess($moduleDir)
+    function shouldProcess($moduleDir)
     {
         $searching = false;
         $sessionSearchQuery = "{$moduleDir}2_QUERY_QUERY";
@@ -108,10 +108,10 @@ class ListViewDisplay
         }
         if (!empty($GLOBALS['sugar_config']['save_query']) && $GLOBALS['sugar_config']['save_query'] == 'populate_only') {
             if (empty($GLOBALS['displayListView'])
-                    && (!empty($_REQUEST['clear_query'])
-                        || $_REQUEST['module'] == $moduleDir
-                            && ((empty($_REQUEST['query']) || $_REQUEST['query'] == 'MSI')
-                                && (!$searching)))) {
+		            && (!empty($_REQUEST['clear_query'])
+		                || $_REQUEST['module'] == $moduleDir
+		                    && ((empty($_REQUEST['query']) || $_REQUEST['query'] == 'MSI')
+		                        && (!$searching)))) {
                 $_SESSION['last_search_mod'] = $_REQUEST['module'] ;
                 $this->should_process = false;
                 return false;
@@ -137,7 +137,7 @@ class ListViewDisplay
         $params['handleMassupdate'] = true by default, have massupdate.php handle massupdates?
      * @param string:'id' $id_field
      */
-    public function setup($seed, $file, $where, $params = array(), $offset = 0, $limit = -1, $filter_fields = array(), $id_field = 'id', $id = null)
+    function setup($seed, $file, $where, $params = array(), $offset = 0, $limit = -1,  $filter_fields = array(), $id_field = 'id', $id = null)
     {
         $this->should_process = true;
         if (isset($seed->module_dir) && !$this->shouldProcess($seed->module_dir)) {
@@ -169,7 +169,7 @@ class ListViewDisplay
         return true;
     }
 
-    public function setupFilterFields($filter_fields = array())
+    function setupFilterFields($filter_fields = array())
     {
         // create filter fields based off of display columns
         if (empty($filter_fields) || $this->mergeDisplayColumns) {
@@ -216,7 +216,7 @@ class ListViewDisplay
      * @param string $htmlVar html string to be passed back and forth
      * @return bool
      */
-    public function process($file, $data, $htmlVar)
+    function process($file, $data, $htmlVar)
     {
         $this->rowCount = count($data['data']);
         if (!isset($data['pageData']['bean'])) {
@@ -249,7 +249,7 @@ class ListViewDisplay
      * @return string select link html
      * @param echo Bool set true if you want it echo'd, set false to have contents returned
      */
-    public function buildSelectLink($id = 'select_link', $total=0, $pageTotal=0, $location="top")
+    function buildSelectLink($id = 'select_link', $total=0, $pageTotal=0, $location="top")
     {
         global $app_strings;
         if ($pageTotal < 0) {
@@ -297,14 +297,8 @@ class ListViewDisplay
         global $app_strings;
         global $mod_strings;
 
-        $closeText = SugarThemeRegistry::current()->getImage(
-            'close_inline',
-            'border=0',
-            null,
-            null,
-            ".gif",
-            $app_strings['LBL_CLOSEINLINE']
-        );
+        $closeText = SugarThemeRegistry::current()->getImage('close_inline', 'border=0', null, null, ".gif",
+            $app_strings['LBL_CLOSEINLINE']);
         $moreDetailImage = SugarThemeRegistry::current()->getImageURL('MoreDetail.png');
         $menuItems = array();
 
@@ -325,7 +319,7 @@ class ListViewDisplay
         } else {
             // delete
             if (
-                ACLController::checkAccess($this->seed->module_dir, 'delete', true)
+                ACLController::checkAccess($this->seed->module_dir,'delete',true)
                 && $this->delete
             ) {
                 if ($this->show_action_dropdown_as_delete) {
@@ -345,8 +339,8 @@ class ListViewDisplay
             $mass->setSugarBean($this->seed);
             if (
                 (
-                    ACLController::checkAccess($this->seed->module_dir, 'edit', true)
-                    && ACLController::checkAccess($this->seed->module_dir, 'massupdate', true)
+                    ACLController::checkAccess($this->seed->module_dir,'edit',true)
+                    && ACLController::checkAccess($this->seed->module_dir,'massupdate',true)
                 )
                 && $this->showMassupdateFields && $mass->doMassUpdateFieldsExistForFocus()
             ) {
@@ -365,14 +359,14 @@ class ListViewDisplay
             // add to target list
             if (
                 $this->targetList
-                && ACLController::checkAccess('ProspectLists', 'edit', true)
+                && ACLController::checkAccess('ProspectLists','edit',true)
             ) {
                 $menuItems[] = $this->buildTargetList($location);
             }
 
             // export
             if (
-                ACLController::checkAccess($this->seed->module_dir, 'export', true)
+                ACLController::checkAccess($this->seed->module_dir,'export',true)
                 && $this->export
             ) {
                 $menuItems[] = $this->buildExportLink($location);
@@ -509,7 +503,7 @@ class ListViewDisplay
      *
      * @return string select object span
      */
-    public function buildSelectedObjectsSpan($echo = true, $total=0)
+    function buildSelectedObjectsSpan($echo = true, $total=0)
     {
         global $app_strings;
 
@@ -524,12 +518,12 @@ class ListViewDisplay
         return $selectedObjectSpan;
     }
     /**
-     * Builds the mail merge link
-     * The link can be disabled by setting module level duplicate_merge property to false
-     * in the moudle's vardef file.
-     *
-     * @return string HTML
-     */
+	 * Builds the mail merge link
+	 * The link can be disabled by setting module level duplicate_merge property to false
+	 * in the moudle's vardef file.
+	 *
+	 * @return string HTML
+	 */
     protected function buildMergeDuplicatesLink($loc = 'top')
     {
         global $app_strings, $dictionary;
@@ -553,10 +547,10 @@ class ListViewDisplay
         return "";
     }
     /**
-     * Builds the mail merge link
-     *
-     * @return string HTML
-     */
+	 * Builds the mail merge link
+	 *
+	 * @return string HTML
+	 */
     protected function buildMergeLink(array $modules_array = null, $loc = 'top')
     {
         if (empty($modules_array)) {
@@ -573,8 +567,8 @@ class ListViewDisplay
         if ($user_merge == 'on' && isset($admin->settings['system_mailmerge_on']) && $admin->settings['system_mailmerge_on'] && !empty($modules_array[$module_dir])) {
             return "<a href='javascript:void(0)'  " .
                     "id='merge_listview_". $loc ."'"  .
-                    'onclick="if (document.MassUpdate.select_entire_list.value==1){document.location.href=\'index.php?action=index&module=MailMerge&entire=true\'} else {return sListView.send_form(true, \'MailMerge\',\'index.php\',\''.$app_strings['LBL_LISTVIEW_NO_SELECTED'].'\');}">' .
-                    $app_strings['LBL_MAILMERGE'].'</a>';
+					'onclick="if (document.MassUpdate.select_entire_list.value==1){document.location.href=\'index.php?action=index&module=MailMerge&entire=true\'} else {return sListView.send_form(true, \'MailMerge\',\'index.php\',\''.$app_strings['LBL_LISTVIEW_NO_SELECTED'].'\');}">' .
+					$app_strings['LBL_MAILMERGE'].'</a>';
         }
         return $str;
     }
@@ -657,7 +651,7 @@ class ListViewDisplay
 			}
 			open_popup('ProspectLists','600','400','',true,false,{ 'call_back_function':'set_return_and_save_targetlist','form_name':'targetlist_form','field_to_name_array':{'id':'prospect_list'} } );
 EOF;
-        $js = str_replace(array("\r","\n"), '', $js);
+        $js = str_replace(array("\r","\n"),'',$js);
         return "<a href='javascript:void(0)' class=\"parent-dropdown-action-handler\" id=\"targetlist_listview_". $loc ." \" onclick=\"$js\">{$app_strings['LBL_ADD_TO_PROSPECT_LIST_BUTTON_LABEL']}</a>";
     }
     /**
@@ -688,9 +682,9 @@ EOF;
         $select_entire_list = ($massUpdateRun) ? 0 : (isset($_POST['select_entire_list']) ? $_POST['select_entire_list'] : (isset($_REQUEST['select_entire_list']) ? $_REQUEST['select_entire_list'] : 0));
 
         $str .= "<textarea style='display: none' name='uid'>{$uids}</textarea>\n" .
-                "<input type='hidden' name='select_entire_list' value='{$select_entire_list}'>\n".
-                "<input type='hidden' name='{$this->moduleString}' value='0'>\n".
-                "<input type='hidden' name='show_plus' value='{$this->show_plus}'>\n";
+				"<input type='hidden' name='select_entire_list' value='{$select_entire_list}'>\n".
+				"<input type='hidden' name='{$this->moduleString}' value='0'>\n".
+		        "<input type='hidden' name='show_plus' value='{$this->show_plus}'>\n";
         return $str;
     }
 

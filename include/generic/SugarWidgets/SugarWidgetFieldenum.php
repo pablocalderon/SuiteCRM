@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 class SugarWidgetFieldEnum extends SugarWidgetReportField
@@ -96,7 +95,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
 
     public function queryFilterone_of($layout_def)
     {
-        $arr = array();
+        $arr = array ();
         foreach ($layout_def['input_name0'] as $value) {
             $arr[] = $this->reporter->db->quoted($value);
         }
@@ -106,7 +105,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
 
     public function queryFilternot_one_of($layout_def)
     {
-        $arr = array();
+        $arr = array ();
         foreach ($layout_def['input_name0'] as $value) {
             $arr[] = $this->reporter->db->quoted($value);
         }
@@ -115,7 +114,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
         return $this->_get_column_select($layout_def)." NOT IN (".$str.")\n";
     }
 
-    public function & displayList(&$layout_def)
+    function & displayList(&$layout_def)
     {
         if (!empty($layout_def['column_key'])) {
             $field_def = $this->reporter->all_fields[$layout_def['column_key']];
@@ -125,7 +124,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
         $cell = $this->displayListPlain($layout_def);
         $str = $cell;
         global $sugar_config;
-        if (isset($sugar_config['enable_inline_reports_edit']) && $sugar_config['enable_inline_reports_edit']) {
+        if (isset ($sugar_config['enable_inline_reports_edit']) && $sugar_config['enable_inline_reports_edit']) {
             $module = $this->reporter->all_fields[$layout_def['column_key']]['module'];
             $name = $layout_def['name'];
             $layout_def['name'] = 'id';
@@ -149,7 +148,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
         }
         return $str;
     }
-    public function & displayListPlain($layout_def)
+    function & displayListPlain($layout_def)
     {
         if (!empty($layout_def['column_key'])) {
             $field_def = $this->reporter->all_fields[$layout_def['column_key']];
@@ -157,7 +156,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
             $field_def = $layout_def['fields'];
         }
 
-        if (!empty($layout_def['table_key']) &&(empty($field_def['fields']) || empty($field_def['fields'][0]) || empty($field_def['fields'][1]))) {
+        if (!empty($layout_def['table_key']) &&(empty ($field_def['fields']) || empty ($field_def['fields'][0]) || empty ($field_def['fields'][1]))) {
             $value = $this->_get_list_value($layout_def);
         } elseif (!empty($layout_def['name']) && !empty($layout_def['fields'])) {
             $key = strtoupper($layout_def['name']);
@@ -179,16 +178,16 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
         }
         if (is_array($cell)) {
 
-            //#22632
+			//#22632
             $value = unencodeMultienum($value);
             $cell=array();
             foreach ($value as $val) {
-                $returnVal = translate($field_def['options'], $field_def['module'], $val);
+                $returnVal = translate($field_def['options'],$field_def['module'],$val);
                 if (!is_array($returnVal)) {
-                    array_push($cell, translate($field_def['options'], $field_def['module'], $val));
+                    array_push($cell, translate($field_def['options'],$field_def['module'],$val));
                 }
             }
-            $cell = implode(", ", $cell);
+            $cell = implode(", ",$cell);
         }
         return $cell;
     }
@@ -196,7 +195,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
     public function queryOrderBy($layout_def)
     {
         $field_def = $this->reporter->all_fields[$layout_def['column_key']];
-        if (!empty($field_def['sort_on'])) {
+        if (!empty ($field_def['sort_on'])) {
             $order_by = $layout_def['table_alias'].".".$field_def['sort_on'];
         } else {
             $order_by = $this->_get_column_select($layout_def);
@@ -213,7 +212,7 @@ class SugarWidgetFieldEnum extends SugarWidgetReportField
             require_once($beanFiles[$bean_name]);
             $list = $field_def['function']();
         }
-        if (empty($layout_def['sort_dir']) || $layout_def['sort_dir'] == 'a') {
+        if (empty ($layout_def['sort_dir']) || $layout_def['sort_dir'] == 'a') {
             $order_dir = "ASC";
         } else {
             $order_dir = "DESC";

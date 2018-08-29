@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -46,16 +46,16 @@ require_once('include/charts/Charts.php');
 
 class Chart_outcome_by_month
 {
-    public $modules = array('Opportunities');
-    public $order = 0;
-    public function __construct()
+    var $modules = array('Opportunities');
+    var $order = 0;
+    function __construct()
     {
     }
 
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function Chart_outcome_by_month()
+    function Chart_outcome_by_month()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -67,7 +67,7 @@ class Chart_outcome_by_month
     }
 
 
-    public function draw($extra_tools)
+    function draw($extra_tools)
     {
         global $app_list_strings, $current_language, $sugar_config, $currentModule, $action, $theme;
         $current_module_strings = return_module_language($current_language, 'Charts');
@@ -137,14 +137,14 @@ class Chart_outcome_by_month
         $id_hash = '1';
         if (isset($ids)) {
             sort($ids);
-            $id_hash = crc32(implode('', $ids));
+            $id_hash = crc32(implode('',$ids));
             if ($id_hash < 0) {
                 $id_hash = $id_hash * -1;
             }
         }
         $GLOBALS['log']->debug("ids is:");
         $GLOBALS['log']->debug($ids);
-        $id_md5 = substr(md5($current_user->id), 0, 9);
+        $id_md5 = substr(md5($current_user->id),0,9);
 
 
         // cn: format date_start|end to user's preferred
@@ -161,11 +161,11 @@ class Chart_outcome_by_month
 
 
         global $app_strings;
-        $tools='<div align="right"><a href="index.php?module='.$currentModule.'&action='. $action .'&obm_refresh=true" class="tabFormAdvLink">'.SugarThemeRegistry::current()->getImage('refresh', 'border="0" align="absmiddle"', null, null, '.gif', $mod_strings['LBL_REFRESH']).'&nbsp;'.$current_module_strings['LBL_REFRESH'].'</a>&nbsp;&nbsp;<a href="javascript: toggleDisplay(\'outcome_by_month_edit\');" class="tabFormAdvLink">'.SugarThemeRegistry::current()->getImage('edit', 'border="0" align="absmiddle"', null, null, '.gif', $mod_strings['LBL_EDIT']).'&nbsp;'. $current_module_strings['LBL_EDIT'].'</a>&nbsp;&nbsp;'.$extra_tools.'</div>'; ?>
-	<?php echo '<span onmouseover="this.style.cursor=\'move\'" id="chart_handle_' . $this->order . '">' . get_form_header($current_module_strings['LBL_YEAR_BY_OUTCOME'], $tools, false) . '</span>'; ?>
+        $tools='<div align="right"><a href="index.php?module='.$currentModule.'&action='. $action .'&obm_refresh=true" class="tabFormAdvLink">'.SugarThemeRegistry::current()->getImage('refresh','border="0" align="absmiddle"', null,null,'.gif',$mod_strings['LBL_REFRESH']).'&nbsp;'.$current_module_strings['LBL_REFRESH'].'</a>&nbsp;&nbsp;<a href="javascript: toggleDisplay(\'outcome_by_month_edit\');" class="tabFormAdvLink">'.SugarThemeRegistry::current()->getImage('edit','border="0" align="absmiddle"',null,null,'.gif',$mod_strings['LBL_EDIT']).'&nbsp;'. $current_module_strings['LBL_EDIT'].'</a>&nbsp;&nbsp;'.$extra_tools.'</div>'; ?>
+	<?php echo '<span onmouseover="this.style.cursor=\'move\'" id="chart_handle_' . $this->order . '">' . get_form_header($current_module_strings['LBL_YEAR_BY_OUTCOME'],$tools,false) . '</span>'; ?>
 
 <?php
-    $cal_lang = "en";
+	$cal_lang = "en";
         $cal_dateformat = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
 
         if (empty($_SESSION['obm_ids'])) {
@@ -187,10 +187,10 @@ class Chart_outcome_by_month
 <tr>
 	<td valign='top' nowrap ><b><?php echo $current_module_strings['LBL_YEAR']?></b><br><span class="dateFormat"><?php echo $app_strings['NTC_YEAR_FORMAT']?></span></td>
 	<td valign='top' ><input class="text" name="obm_year" size='12' maxlength='10' id='obm_year'  value='<?php if (isset($date_start)) {
-            echo substr($date_start, 0, 4);
+            echo substr($date_start,0,4);
         } ?>'>&nbsp;&nbsp;</td>
 	<td valign='top'><b><?php echo $current_module_strings['LBL_USERS']; ?></b></td>
-	<td valign='top'><select name="obm_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(false), $ids); ?></select></td>
+	<td valign='top'><select name="obm_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(false),$ids); ?></select></td>
 	<td align="right" valign="top"><input class="button" onclick="return verify_chart_data_outcome_by_month();" type="submit" title="<?php echo $app_strings['LBL_SELECT_BUTTON_TITLE']; ?>" value="<?php echo $app_strings['LBL_SELECT_BUTTON_LABEL']?>" /><input class="button" onClick="javascript: toggleDisplay('outcome_by_month_edit');" type="button" title="<?php echo $app_strings['LBL_CANCEL_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_CANCEL_BUTTON_KEY']; ?>" value="<?php echo $app_strings['LBL_CANCEL_BUTTON_LABEL']?>"/></td>
 </tr>
 </table>
@@ -200,16 +200,16 @@ class Chart_outcome_by_month
 </p>
 <?php
 // draw chart
-echo "<p align='center'>".$this->gen_xml($date_start, $date_end, $ids, $cache_file_name, $refresh, $current_module_strings)."</p>";
+echo "<p align='center'>".$this->gen_xml($date_start, $date_end, $ids, $cache_file_name, $refresh,$current_module_strings)."</p>";
         echo "<P align='center'><span class='chartFootnote'>".$current_module_strings['LBL_MONTH_BY_OUTCOME_DESC']."</span></P>"; ?>
 
 
 <?php
-    if (file_exists($cache_file_name)) {
-        $file_date = $timedate->asUser($timedate->fromTimestamp(filemtime($cache_file_name)));
-    } else {
-        $file_date = '';
-    } ?>
+	if (file_exists($cache_file_name)) {
+	    $file_date = $timedate->asUser($timedate->fromTimestamp(filemtime($cache_file_name)));
+	} else {
+	    $file_date = '';
+	} ?>
 
 <span class='chartFootnote'>
 <p align="right"><i><?php  echo $current_module_strings['LBL_CREATED_ON'].' '.$file_date; ?></i></p>
@@ -258,7 +258,7 @@ echo get_validate_chart_js();
                 foreach ($user_id as $the_id) {
                     $id[] = "'".$the_id."'";
                 }
-                $ids = join(",", $id);
+                $ids = join(",",$id);
                 $where .= "opportunities.assigned_user_id IN ($ids) ";
             }
 
@@ -268,10 +268,10 @@ echo get_validate_chart_js();
 
             $opp = new Opportunity();
             //build the where clause for the query that matches $date_start and $date_end
-            $where .= "AND opportunities.date_closed >= ".db_convert("'".$date_start."'", 'date')." AND opportunities.date_closed <= ".db_convert("'".$date_end."'", 'date')." AND opportunities.deleted=0";
-            $query = "SELECT sales_stage,".db_convert('opportunities.date_closed', 'date_format', array("'%Y-%m'"), array("'YYYY-MM'"))." as m, sum(amount_usdollar/1000) as total, count(*) as opp_count FROM opportunities ";
+            $where .= "AND opportunities.date_closed >= ".db_convert("'".$date_start."'",'date')." AND opportunities.date_closed <= ".db_convert("'".$date_end."'",'date')." AND opportunities.deleted=0";
+            $query = "SELECT sales_stage,".db_convert('opportunities.date_closed','date_format',array("'%Y-%m'"),array("'YYYY-MM'"))." as m, sum(amount_usdollar/1000) as total, count(*) as opp_count FROM opportunities ";
             $query .= "WHERE ".$where;
-            $query .= " GROUP BY sales_stage,".db_convert('opportunities.date_closed', 'date_format', array("'%Y-%m'"), array("'YYYY-MM'"))."ORDER BY m";
+            $query .= " GROUP BY sales_stage,".db_convert('opportunities.date_closed','date_format',array("'%Y-%m'"),array("'YYYY-MM'"))."ORDER BY m";
             //Now do the db queries
             //query for opportunity data that matches $datay and $user
             //_pp($query);
@@ -332,7 +332,7 @@ echo get_validate_chart_js();
                     arsort($salesStages);
                     foreach ($salesStages as $outcome=>$outcome_translation) {
                         if (isset($monthArr[$month][$outcome])) {
-                            $fileContents .= '               <bar id="'.$outcome.'" totalSize="'.array_sum($monthArr[$month][$outcome]['total']).'" altText="'.$month.': '.format_number(array_sum($monthArr[$month][$outcome]['opp_count']), 0, 0).' '.$current_module_strings['LBL_OPPS_WORTH'].' '.currency_format_number(array_sum($monthArr[$month][$outcome]['total']), array('currency_symbol' => true)).$current_module_strings['LBL_OPP_THOUSANDS'].' '.$current_module_strings['LBL_OPPS_OUTCOME'].' '.$outcome_translation.'" url="index.php?module=Opportunities&action=index&date_closed='.$month.'&sales_stage='.urlencode($outcome).'&query=true&searchFormTab=advanced_search"/>'."\n";
+                            $fileContents .= '               <bar id="'.$outcome.'" totalSize="'.array_sum($monthArr[$month][$outcome]['total']).'" altText="'.$month.': '.format_number(array_sum($monthArr[$month][$outcome]['opp_count']), 0, 0).' '.$current_module_strings['LBL_OPPS_WORTH'].' '.currency_format_number(array_sum($monthArr[$month][$outcome]['total']),array('currency_symbol' => true)).$current_module_strings['LBL_OPP_THOUSANDS'].' '.$current_module_strings['LBL_OPPS_OUTCOME'].' '.$outcome_translation.'" url="index.php?module=Opportunities&action=index&date_closed='.$month.'&sales_stage='.urlencode($outcome).'&query=true&searchFormTab=advanced_search"/>'."\n";
                         }
                     }
                     $fileContents .= '          </dataRow>'."\n";
@@ -350,7 +350,7 @@ echo get_validate_chart_js();
             $i=0;
             asort($salesStages);
             foreach ($salesStages as $outcome=>$outcome_translation) {
-                $color = generate_graphcolor($outcome, $i);
+                $color = generate_graphcolor($outcome,$i);
                 $fileContents .= '          <mapping id="'.$outcome.'" name="'.$outcome_translation.'" color="'.$color.'"/>'."\n";
                 $i++;
             }
@@ -371,11 +371,11 @@ echo get_validate_chart_js();
             //echo $fileContents;
             save_xml_file($cache_file_name, $fileContents);
         }
-        $return = create_chart('vBarF', $cache_file_name);
+        $return = create_chart('vBarF',$cache_file_name);
         return $return;
     }
 
-    public function constructQuery()
+    function constructQuery()
     {
         global $current_user;
         global $timedate;
@@ -440,7 +440,7 @@ echo get_validate_chart_js();
             foreach ($user_id as $the_id) {
                 $id[] = "'".$the_id."'";
             }
-            $ids = join(",", $id);
+            $ids = join(",",$id);
             $where .= "opportunities.assigned_user_id IN ($ids) ";
         }
 
@@ -450,14 +450,14 @@ echo get_validate_chart_js();
 
         $opp = new Opportunity();
         //build the where clause for the query that matches $date_start and $date_end
-        $where .= "AND opportunities.date_closed >= ".db_convert("'".$date_start."'", 'date')." AND opportunities.date_closed <= ".db_convert("'".$date_end."'", 'date')." AND opportunities.deleted=0";
-        $query = "SELECT sales_stage,".db_convert('opportunities.date_closed', 'date_format', array("'%Y-%m'"), array("'YYYY-MM'"))." as m, sum(amount_usdollar/1000) as total, count(*) as opp_count FROM opportunities ";
+        $where .= "AND opportunities.date_closed >= ".db_convert("'".$date_start."'",'date')." AND opportunities.date_closed <= ".db_convert("'".$date_end."'",'date')." AND opportunities.deleted=0";
+        $query = "SELECT sales_stage,".db_convert('opportunities.date_closed','date_format',array("'%Y-%m'"),array("'YYYY-MM'"))." as m, sum(amount_usdollar/1000) as total, count(*) as opp_count FROM opportunities ";
         $query .= "WHERE ".$where;
-        $query .= " GROUP BY sales_stage,".db_convert('opportunities.date_closed', 'date_format', array("'%Y-%m'"), array("'YYYY-MM'"))."ORDER BY m";
+        $query .= " GROUP BY sales_stage,".db_convert('opportunities.date_closed','date_format',array("'%Y-%m'"),array("'YYYY-MM'"))."ORDER BY m";
         return $query;
     }
 
-    public function constructGroupBy()
+    function constructGroupBy()
     {
         return array( 'm', 'sales_stage', );
     }

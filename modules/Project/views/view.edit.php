@@ -1,12 +1,11 @@
 <?php
 
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -17,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -35,15 +34,15 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('include/json_config.php');
 
 class ProjectViewEdit extends ViewEdit
 {
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
@@ -51,7 +50,7 @@ class ProjectViewEdit extends ViewEdit
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function ProjectViewEdit()
+    function ProjectViewEdit()
     {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
         if (isset($GLOBALS['log'])) {
@@ -63,16 +62,16 @@ class ProjectViewEdit extends ViewEdit
     }
 
 
-    public function display()
+    function display()
     {
         global $json;
-        
+		
         $this->bean->is_template = 0;
         $this->ev->ss->assign("is_template", 0);
-        
+ 		
         $json = getJSONobj();
         $json_config = new json_config();
-        if (isset($this->bean->json_id) && !empty($this->bean->json_id)) {
+        if (isset($this->bean->json_id) && !empty ($this->bean->json_id)) {
             $javascript = $json_config->get_static_json_server(false, true, 'Project', $this->bean->json_id);
         } else {
             $this->bean->json_id = $this->bean->id;
@@ -86,3 +85,4 @@ class ProjectViewEdit extends ViewEdit
         parent::display();
     }
 }
+

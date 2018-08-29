@@ -2,13 +2,12 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +18,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +36,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 define('CONNECTOR_DISPLAY_CONFIG_FILE', 'custom/modules/Connectors/metadata/display_config.php');
 require_once('include/connectors/ConnectorFactory.php');
@@ -283,7 +282,7 @@ class ConnectorUtils
                 //define connectors if it doesn't exist or is not an array
                 if (!isset($connectors) || !is_array($connectors)) {
                     $connectors = array();
-                    $err_str = string_format($GLOBALS['app_strings']['ERR_CONNECTOR_NOT_ARRAY'], array($src4));
+                    $err_str = string_format($GLOBALS['app_strings']['ERR_CONNECTOR_NOT_ARRAY'],array($src4));
                     $GLOBALS['log']->error($err_str);
                 }
 
@@ -420,8 +419,9 @@ class ConnectorUtils
                 $sources[$id] = self::getConnector($id);
             }
             return $sources;
+        } else {
+            return array();
         }
-        return array();
     }
 
     /**
@@ -482,7 +482,7 @@ class ConnectorUtils
             mkdir_recursive("custom/modules/{$module}/metadata");
         }
 
-        if (!write_array_to_file('viewdefs', $viewdefs, "custom/modules/{$module}/metadata/detailviewdefs.php")) {
+        if (!write_array_to_file('viewdefs', $viewdefs,  "custom/modules/{$module}/metadata/detailviewdefs.php")) {
             $GLOBALS['log']->fatal("Cannot update file custom/modules/{$module}/metadata/detailviewdefs.php");
             return false;
         }
@@ -516,9 +516,9 @@ class ConnectorUtils
                     if (!file_exists($metadata_file)) {
                         $GLOBALS['log']->info("Unable to update metadata file for module: {$module}");
                         continue;
+                    } else {
+                        require($metadata_file);
                     }
-                    require($metadata_file);
-                    
 
                     $insertConnectorButton = true;
 
@@ -582,7 +582,7 @@ class ConnectorUtils
                         mkdir_recursive("custom/modules/{$module}/metadata");
                     }
 
-                    if (!write_array_to_file('viewdefs', $viewdefs, "custom/modules/{$module}/metadata/detailviewdefs.php")) {
+                    if (!write_array_to_file('viewdefs', $viewdefs,  "custom/modules/{$module}/metadata/detailviewdefs.php")) {
                         $GLOBALS['log']->fatal("Cannot update file custom/modules/{$module}/metadata/detailviewdefs.php");
                         return false;
                     }
@@ -660,7 +660,7 @@ class ConnectorUtils
                                 $viewdefs[$module]['DetailView']['panels'][$panel_id][$row_id][$field_id] = $field;
                             }
                         } else {
-                            $viewdefs[$module]['DetailView']['panels'][$panel_id][$row_id][$field_id] = array('name'=>$field, 'displayParams'=>array('enableConnectors'=>true, 'module'=>$module, 'connectors' => array(0 => $source_id)));
+                            $viewdefs[$module]['DetailView']['panels'][$panel_id][$row_id][$field_id] = array ('name'=>$field, 'displayParams'=>array('enableConnectors'=>true, 'module'=>$module, 'connectors' => array(0 => $source_id)));
                         }
                         return true;
                     }
@@ -698,7 +698,7 @@ class ConnectorUtils
                             $viewdefs[$module]['DetailView']['panels'][$panel_id][$row_id][$field_id] = $field;
                         }
                     } else {
-                        $viewdefs[$module]['DetailView']['panels'][$panel_id][$row_id][$field_id] = array('name'=>$field, 'displayParams'=>array('enableConnectors'=>true, 'module'=>$module, 'connectors' => array(0 => $source_id)));
+                        $viewdefs[$module]['DetailView']['panels'][$panel_id][$row_id][$field_id] = array ('name'=>$field, 'displayParams'=>array('enableConnectors'=>true, 'module'=>$module, 'connectors' => array(0 => $source_id)));
                     }
                     return true;
                 } //foreach
@@ -763,9 +763,10 @@ class ConnectorUtils
         } elseif (file_exists("modules/Connectors/connectors/sources/{$dir}/language/{$lang}")) {
             require("modules/Connectors/connectors/sources/{$dir}/language/{$lang}");
             return !empty($connector_strings) ? $connector_strings : array();
+        } else {
+            $GLOBALS['log']->error("Unable to locate language string file for source {$source_id}");
+            return array();
         }
-        $GLOBALS['log']->error("Unable to locate language string file for source {$source_id}");
-        return array();
     }
 
     /**

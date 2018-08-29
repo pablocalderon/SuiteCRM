@@ -22,11 +22,11 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author SalesAgility Ltd <support@salesagility.com>
+ * @author Salesagility Ltd <support@salesagility.com>
  */
 class templateParser
 {
-    public static function parse_template($string, $bean_arr)
+    static function parse_template($string, $bean_arr)
     {
         foreach ($bean_arr as $bean_name => $bean_id) {
             $focus = BeanFactory::getBean($bean_name, $bean_id);
@@ -46,7 +46,7 @@ class templateParser
         return $string;
     }
 
-    public function parse_template_bean($string, $key, &$focus)
+    function parse_template_bean($string, $key, &$focus)
     {
         global $app_strings, $sugar_config;
         $repl_arr = array();
