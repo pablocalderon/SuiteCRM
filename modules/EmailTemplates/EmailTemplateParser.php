@@ -42,6 +42,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+include_once('include/utils.php');
+
 class EmailTemplateParser
 {
     /**
@@ -140,7 +142,8 @@ class EmailTemplateParser
 
         if ($matches !== 0) {
             foreach ($variables[0] as $variable) {
-                $attributeValue = str_replace($variable, $this->getValueFromBean($variable), $attributeValue);
+                $value = $this->getValueFromBean($variable);
+                $attributeValue = str_replace($variable, $value, $attributeValue);
             }
         }
 
@@ -157,6 +160,9 @@ class EmailTemplateParser
      */
     private function getValueFromBean($variable)
     {
+        global $mod_strings;
+        global $app_strings;
+
         $charVariable = chr(36);
         $charUnderscore = chr(95);
 
@@ -179,7 +185,14 @@ class EmailTemplateParser
         }
 
         if ($this->module instanceof $moduleName && property_exists($this->module, $attribute)) {
-            return $this->module->$attribute;
+
+            $label = '';
+
+            $fieldDefs = $this->module->field_defs;
+            $attributeLBL = $fieldDefs[$attribute]['vname'];
+            $displayLabel = translate($attributeLBL, $this->module->module_name);
+
+            return $displayLabel;
         }
 
         $GLOBALS['log']->warn(sprintf(
