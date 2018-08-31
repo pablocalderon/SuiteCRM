@@ -217,6 +217,8 @@ class StateCheckerConfig
                 self::$autoRun;
         
         self::$saveTraces =
+            $sugar_config['state_checker']['save_traces'] = true;
+
             isset($sugar_config['state_checker']['save_traces']) ?
                 $sugar_config['state_checker']['save_traces'] :
                 self::$saveTraces;
