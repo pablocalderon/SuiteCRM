@@ -92,7 +92,7 @@ class templateParser
                     $link = $secureLink;
                     $repl_arr[$key . "_" . $fieldName] = '<img src="' . $link . '" width="'.$field_def['width'].'" height="'.$field_def['height'].'"/>';
                 } else {
-                    $repl_arr[$key . "_" . $fieldName] = $focus->$fieldName;
+                    $repl_arr[$key . "_" . $fieldName] = (isset($focus->$fieldName) ? $focus->$fieldName : false);
                 }
             }
         } // end foreach()
@@ -126,9 +126,10 @@ class templateParser
                     $sep = get_number_seperators();
                     $value = rtrim(rtrim(format_number($value), '0'), $sep[1]) . $app_strings['LBL_PERCENTAGE_SYMBOL'];
             }
-            if ($focus->field_defs[$name][dbType] == 'datetime' &&
-                (strpos($name, 'date') > 0 || strpos($name, 'expiration') > 0) ) {
-                if ($value != '') {
+            if (isset($focus->field_defs[$name]['dbType']) && $focus->field_defs[$name]['dbType'] == 'datetime' && (isset($name)) && (strpos($name,
+                        'date') > 0 || strpos($name, 'expiration') > 0)
+            ) {
+                if (!empty($value)) {
                     $dt = explode(' ', $value);
                     $value = $dt[0];
                 }
@@ -149,5 +150,3 @@ class templateParser
         return $string;
     }
 }
-
-?>
