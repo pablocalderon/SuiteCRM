@@ -95,7 +95,7 @@ class templateParser
                     $repl_arr[$key . "_" . $fieldName] = (isset($focus->$fieldName) ? $focus->$fieldName : false);
 
                     if (!isset($focus->$fieldName)) {
-                        LoggerManager::getLogger()->warn('PDF Template property does not exist: ' $fieldName);
+                        LoggerManager::getLogger()->warn('PDF Template property does not exist: ' . $fieldName);
                     }
                 }
             }
