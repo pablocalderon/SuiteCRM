@@ -392,12 +392,15 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
         $GLOBALS['log']->fatal("ldap_rdn_lookup admin_user" . $admin_user);
         $GLOBALS['log']->fatal("ldap_rdn_lookup admin_password" . $admin_password);
 
-
         $user_attr = $GLOBALS['ldap_config']->settings['ldap_login_attr'];
         $bind_attr = $GLOBALS['ldap_config']->settings['ldap_bind_attr'];
         $port = $GLOBALS['ldap_config']->settings['ldap_port'];
-		if(!$port)
-			$port = DEFAULT_PORT;
+		if(!$port) {
+            $port = DEFAULT_PORT;
+        }
+        $GLOBALS['log']->fatal("ldap_rdn_lookup host" . $server);
+        $GLOBALS['log']->fatal("ldap_rdn_lookup port" . $port);
+
         $ldapconn = ldap_connect($server, $port);
         $error = ldap_errno($ldapconn);
         if($this->loginError($error)){
