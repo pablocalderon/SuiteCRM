@@ -75,6 +75,7 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
         $ldapconn = ldap_connect($server, $port);
         $error = ldap_errno($ldapconn);
         if ($this->loginError($error)) {
+            $GLOBALS['log']->fatal("First login error");
             return '';
         }
         @ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
