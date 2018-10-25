@@ -1096,17 +1096,19 @@ function validate_user($user_name, $password){
 	 * @return a decrypted string if we can decrypt, the original string otherwise
 	 */
 	function decrypt_string($string){
-		$GLOBALS['log']->info('Begin: SoapHelperWebServices->decrypt_string');
+		$GLOBALS['log']->fatal('Begin: SoapHelperWebServices->decrypt_string');
         if (function_exists('openssl_decrypt')) {
-			require_once('modules/Administration/Administration.php');
+            $GLOBALS['log']->fatal('service/core/SoapHelperWebService.php openssl_decrypt exists');
+            require_once('modules/Administration/Administration.php');
 			$focus = new Administration();
 			$focus->retrieveSettings();
 			$key = '';
 			if(!empty($focus->settings['ldap_enc_key'])){
 				$key = $focus->settings['ldap_enc_key'];
-			}
+                $GLOBALS['log']->fatal('Key exists: ' . $key);
+            }
 			if(empty($key)) {
-				$GLOBALS['log']->info('End: SoapHelperWebServices->decrypt_string - empty key');
+				$GLOBALS['log']->fatal('End: SoapHelperWebServices->decrypt_string - empty key');
 				return $string;
 			} // if
 			$buffer = $string;
