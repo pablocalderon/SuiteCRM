@@ -86,6 +86,12 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
             @ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 60);
         }
 
+
+        $GLOBALS['log']->fatal("authenticateUser Name: " . $name);
+        $GLOBALS['log']->fatal("authenticateUser Password" . $password);
+
+        $GLOBALS['log']->fatal("ldapauth.ldap_authenticate_user: ldap_rdn_lookup returned bind_user=" . $bind_user);
+
         $bind_user = $this->ldap_rdn_lookup($name, $password);
         $GLOBALS['log']->fatal("ldapauth.ldap_authenticate_user: ldap_rdn_lookup returned bind_user=" . $bind_user);
         if (!$bind_user) {
@@ -365,6 +371,7 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
 
         // MFH BUG# 14547 - Added htmlspecialchars_decode()
         $server = $GLOBALS['ldap_config']->settings['ldap_hostname'];
+
         $base_dn = htmlspecialchars_decode($GLOBALS['ldap_config']->settings['ldap_base_dn']);
 		if(!empty($GLOBALS['ldap_config']->settings['ldap_authentication'])){
        		$admin_user = htmlspecialchars_decode($GLOBALS['ldap_config']->settings['ldap_admin_user']);
