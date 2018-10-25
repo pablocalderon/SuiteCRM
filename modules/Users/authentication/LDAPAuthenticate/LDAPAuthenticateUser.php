@@ -88,7 +88,7 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
 
 
         $GLOBALS['log']->fatal("authenticateUser Name: " . $name);
-        $GLOBALS['log']->fatal("authenticateUser Password" . $password);
+        $GLOBALS['log']->fatal("authenticateUser Password " . $password);
 
         $GLOBALS['log']->fatal("ldapauth.ldap_authenticate_user: ldap_rdn_lookup returned bind_user=" . $bind_user);
 
@@ -372,14 +372,27 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
         // MFH BUG# 14547 - Added htmlspecialchars_decode()
         $server = $GLOBALS['ldap_config']->settings['ldap_hostname'];
 
+        $GLOBALS['log']->fatal("ldap_rdn_lookup Server " . $server);
+
+
         $base_dn = htmlspecialchars_decode($GLOBALS['ldap_config']->settings['ldap_base_dn']);
-		if(!empty($GLOBALS['ldap_config']->settings['ldap_authentication'])){
+
+
+        $GLOBALS['log']->fatal("ldap_rdn_lookup Base DN " . $base_dn);
+
+        if(!empty($GLOBALS['ldap_config']->settings['ldap_authentication'])){
        		$admin_user = htmlspecialchars_decode($GLOBALS['ldap_config']->settings['ldap_admin_user']);
         	$admin_password = htmlspecialchars_decode($GLOBALS['ldap_config']->settings['ldap_admin_password']);
 		}else{
 			$admin_user = '';
         	$admin_password = '';
 		}
+
+
+        $GLOBALS['log']->fatal("ldap_rdn_lookup admin_user" . $admin_user);
+        $GLOBALS['log']->fatal("ldap_rdn_lookup admin_password" . $admin_password);
+
+
         $user_attr = $GLOBALS['ldap_config']->settings['ldap_login_attr'];
         $bind_attr = $GLOBALS['ldap_config']->settings['ldap_bind_attr'];
         $port = $GLOBALS['ldap_config']->settings['ldap_port'];
