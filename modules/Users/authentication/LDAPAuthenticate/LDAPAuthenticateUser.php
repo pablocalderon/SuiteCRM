@@ -398,7 +398,7 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
         	return false;
 		}
         if (!$bind) {
-        	   $GLOBALS['log']->warn("ldapauth.ldap_rdn_lookup: Could not bind with admin user, trying to bind anonymously");
+        	   $GLOBALS['log']->fatal("ldapauth.ldap_rdn_lookup: Could not bind with admin user, trying to bind anonymously");
             $bind = @ldap_bind($ldapconn);
              $error = ldap_errno($ldapconn);
 
@@ -406,7 +406,7 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
         		return false;
 			}
             if (!$bind) {
-            		$GLOBALS['log']->warn("ldapauth.ldap_rdn_lookup: Could not bind anonymously, returning username");
+            		$GLOBALS['log']->fatal("ldapauth.ldap_rdn_lookup: Could not bind anonymously, returning username");
             		return $user_name;
             }
         }
@@ -414,8 +414,8 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
 		// If we get here we were able to bind somehow
         $search_filter = $this->getUserNameFilter($user_name);
 
-        $GLOBALS['log']->info("ldapauth.ldap_rdn_lookup: Bind succeeded, searching for $user_attr=$user_name");
-        $GLOBALS['log']->debug("ldapauth.ldap_rdn_lookup: base_dn:$base_dn , search_filter:$search_filter");
+        $GLOBALS['log']->fatal("ldapauth.ldap_rdn_lookup: Bind succeeded, searching for $user_attr=$user_name");
+        $GLOBALS['log']->fatal("ldapauth.ldap_rdn_lookup: base_dn:$base_dn , search_filter:$search_filter");
 
         $result = @ldap_search($ldapconn, $base_dn , $search_filter, array("dn", $bind_attr));
          $error = ldap_errno($ldapconn);
@@ -430,7 +430,7 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
         }
         ldap_unbind($ldapconn);
 
-        $GLOBALS['log']->info("ldapauth.ldap_rdn_lookup: Search result:\nldapauth.ldap_rdn_lookup: " . count($info));
+        $GLOBALS['log']->fatal("ldapauth.ldap_rdn_lookup: Search result:\nldapauth.ldap_rdn_lookup: " . count($info));
 
         if ($bind_attr == "dn") {
         		$found_bind_user = $info[0]['dn'];
@@ -438,7 +438,7 @@ class LDAPAuthenticateUser extends SugarAuthenticateUser{
             	$found_bind_user = $info[0][strtolower($bind_attr)][0];
         }
 
-        $GLOBALS['log']->info("ldapauth.ldap_rdn_lookup: found_bind_user=" . $found_bind_user);
+        $GLOBALS['log']->fatal("ldapauth.ldap_rdn_lookup: found_bind_user=" . $found_bind_user);
 
         if (!empty($found_bind_user)) {
             return $found_bind_user;
