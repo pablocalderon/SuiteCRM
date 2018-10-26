@@ -68,6 +68,7 @@ before_script:
   - ./vendor/bin/codecept build
 
 script:
+  - sonar-scanner
   # Run the wizard installer
   - echo "using install wizard"
   - ./vendor/bin/codecept run install --env travis-ci-hub -f -vvv -d
