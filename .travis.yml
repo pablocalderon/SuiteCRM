@@ -14,6 +14,12 @@ jobs:
         if: type IN (pull_request) OR branch in (master, develop, hotfix)
         php: 7.0
         script: ./vendor/bin/codecept run install --env travis-ci-hub -f -vvv -d; ./vendor/bin/robo -vvv code:coverage; cat codeception.yml; bash <(curl -s https://codecov.io/bash) -f tests/_output/coverage.xml
+        addons:
+          sonarcloud:
+            organization: "dillon-brown-github"
+            token:
+              secure: "YTl7berUTWAiX+MuUO5sdj7f+p6BLE19/ZkBVBNEvTgNQr/9fMS9j0uULmFQ2DDyudhuuyNF8UOtnZXeyd5z7FvnmwriBQWeO+sYzZTO+UPBf37gurA8v0AD+T0dOUTe0f3Uq0g4I4ESm94Ux1JgfikyzABedBnku2IbRLHz18Kz2Lny7QQzMSVNHLikIQ4ZuoQht8bi+fS4a9i18Fj/nfWdYMhiHB9Oy/vu0ykjCkwTOZE2HMgljpHo2V+648nqAp5w6Z41KgXM/W8JB/yg5DY2ny5xDhwT67qvEhzMezUUQ3KiOJy46ILYa4dOshq4w7PTxWihXCB5cCiqI6uUc0NzgYBx+QCbixPZ6lB0qqkzAaMpGV9qdTGhpHEjneAiikfJcerAjuJIhkYfTCxyhZtLkANsVr+GrTMJq0/LqJAdrXysPRuynzoFVnayDTBqPR+1EBgIT00H1csvkq4JRyLJ74SnZlvG3m2Y4x7wKA0GcUzMSY9r39eC54zv6nHkgWwwZH185Vlcr7UvOMMD1SuodulT18k2baaWAcuWcxq6gG1omn0NQ2cuFLXcoA6W+raTHSCLbCIXWId7NO23A5rfIQrqy9Ieso4DKhh87RPeIaSSdumezqgSuQykoHij9zoqj9EKohnR1NE2ONoQx3S5vNbfhPyQo5oO+y4hcP8="
+
 sudo: required
 dist: trusty
 services:
@@ -66,7 +72,7 @@ script:
   - echo "using install wizard"
   - ./vendor/bin/codecept run install --env travis-ci-hub -f -vvv -d
   - ./build/push_output.sh
-  
+
   # Run the unit tests
   - ./vendor/bin/codecept run unit --steps -f -vvv -d
   # Install OAuth2 demo data
