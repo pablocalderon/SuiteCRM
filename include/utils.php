@@ -3203,6 +3203,8 @@ function check_php_version($sys_php_version = '')
     }
 
     // Everything else is fair gamereturn 1;
+	
+	// Test
 }
 
 /**
