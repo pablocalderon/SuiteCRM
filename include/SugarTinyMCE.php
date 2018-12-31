@@ -53,9 +53,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * PHP wrapper class for Javascript driven TinyMCE WYSIWYG HTML editor
  */
 class SugarTinyMCE {
-	var $jsroot = "include/javascript/tiny_mce/";
-	var $customConfigFile = 'custom/include/tinyButtonConfig.php';
-	var $customDefaultConfigFile = 'custom/include/tinyMCEDefaultConfig.php';
+	var $jsroot = "vendor/tinymce/tinymce/";
 	var $buttonConfigs = array(
 			'default' => array(
 						'buttonConfig' => "code,help,separator,bold,italic,underline,strikethrough,separator,justifyleft,justifycenter,justifyright,
@@ -98,7 +96,7 @@ class SugarTinyMCE {
 	    'plugins' => 'advhr,insertdatetime,table,preview,paste,searchreplace,directionality',
 		'elements'	=> '',
         'extended_valid_elements' => 'style[dir|lang|media|title|type],hr[class|width|size|noshade],@[class|style]',
-        'content_css' => 'include/javascript/tiny_mce/themes/advanced/skins/default/content.css',
+        'content_css' => 'vendor/tinymce/tinymce/themes/advanced/skins/default/content.css',
 
 	);
 
@@ -127,7 +125,7 @@ class SugarTinyMCE {
 		$config = $this->defaultConfig;
 		//include tinymce lang file
         $lang = substr($GLOBALS['current_language'], 0, 2);
-        if(file_exists('include/javascript/tiny_mce/langs/'.$lang.'.js'))
+        if(file_exists('vendor/tinymce/tinymce/langs/'.$lang.'.js'))
         {
 			$config['language'] = $lang;
         }
@@ -146,7 +144,7 @@ class SugarTinyMCE {
 				$instantiateCall .= "tinyMCE.execCommand('mceAddControl', false, document.getElementById('{$instance}'));\n";
 			}
 		}
-		$path = getJSPath('include/javascript/tiny_mce/tiny_mce.js');
+		$path = getJSPath('vendor/tinymce/tinymce.js');
 		$ret =<<<eoq
 <script type="text/javascript" language="Javascript" src="$path"></script>
 <script type="text/javascript" language="Javascript">
@@ -193,7 +191,7 @@ eoq;
         $config = $this->defaultConfig;
         //include tinymce lang file
         $lang = substr($GLOBALS['current_language'], 0, 2);
-        if(file_exists('include/javascript/tiny_mce/langs/'.$lang.'.js'))
+        if(file_exists('vendor/tinymce/tinymce/langs/'.$lang.'.js'))
 			$config['language'] = $lang;
 		$config['theme_advanced_buttons1'] = $this->buttonConfigs[$type]['buttonConfig'];
        	$config['theme_advanced_buttons2'] = $this->buttonConfigs[$type]['buttonConfig2'];
