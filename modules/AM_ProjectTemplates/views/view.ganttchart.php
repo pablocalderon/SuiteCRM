@@ -26,8 +26,9 @@ require_once('include/MVC/View/views/view.detail.php');
 class AM_ProjectTemplatesViewGanttChart extends ViewDetail {
 
     //Constructor
-    public function __construct() {
-        parent::SugarView();
+    public function __construct()
+    {
+        parent::__construct();
     }
 
 
