@@ -42,11 +42,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-include_once('modules/Emails/EmailException.php');
-require_once('include/SugarPHPMailer.php');
-require_once 'include/UploadFile.php';
-require_once 'include/UploadMultipleFiles.php';
-
+require_once __DIR__ . '/EmailFromValidator.php';
+include_once __DIR__ . '/EmailException.php';
+require_once __DIR__ . '/../../include/SugarPHPMailer.php';
+require_once __DIR__ . '/../../include/UploadFile.php';
+require_once __DIR__ . '/../../include/UploadMultipleFiles.php';
 require_once __DIR__ . '/NonGmailSentFolderHandler.php';
 
 
@@ -403,11 +403,15 @@ class Email extends Basic
     public $notes;
 
     /**
+     * Should be a From Address (From Name should be stored in $FromName class variable)
+     *
      * @var string
      */
     public $From;
 
     /**
+     * Should be a From Name (From Address should be stored in $From class variable)
+     *
      * @var string
      */
     public $FromName;
@@ -1588,7 +1592,7 @@ class Email extends Basic
             }
 
             $GLOBALS['log']->debug('-------------------------------> Email called save()');
-            
+
             if (empty($this->date_sent_received)) {
                 global $timedate;
 
@@ -1604,6 +1608,13 @@ class Email extends Basic
 
             if ((!isset($this->date_sent_received) || !$this->date_sent_received) && in_array($this->status, ['sent', 'replied'])) {
                 $this->date_sent_received = TimeDate::getInstance()->nowDb();
+            }
+
+            $validator = new EmailFromValidator();
+            if (!$validator->isValid($this)) {
+                $errors = $validator->getErrorsAsText();
+                $details = "Details:\n{$errors['messages']}\ncodes:{$errors['codes']}";
+                LoggerManager::getLogger()->error("Saving Email with invalid From name and/or Address. $details");
             }
 
             $id = parent::save($check_notify);
@@ -3078,6 +3089,20 @@ class Email extends Basic
         ////	END I18N TRANSLATION
         ///////////////////////////////////////////////////////////////////////
 
+        $validator = new EmailFromValidator();
+        if (!$validator->isValid($this)) {
+
+            // if an email is invalid before sending,
+            // maybe at this point sould "return false;" because the email having
+            // invalid from address and/or name but we will trying to send it..
+            // and we should log the problem at least:
+
+            // (needs EmailFromValidation and EmailFromFixer.. everywhere where from name and/or from email address get a value)
+
+            $errors = $validator->getErrorsAsText();
+            $details = "Details:\n{$errors['messages']}\ncodes:{$errors['codes']}\n{$mail->ErrorInfo}";
+            LoggerManager::getLogger()->error("Invalid email from address or name detected before sending. $details");
+        }
         if ($mail->send()) {
             ///////////////////////////////////////////////////////////////////
             ////	INBOUND EMAIL HANDLING
@@ -4695,15 +4720,19 @@ eoq;
             isset($sugar_config['email_enable_auto_send_opt_in'])
             && $sugar_config['email_enable_auto_send_opt_in']
         ) {
-            /** @var \EmailAddress $emailAddress */
+            /** @var EmailAddress $emailAddress */
             $emailAddresses = BeanFactory::getBean('EmailAddresses');
             $emailAddress = $emailAddresses->retrieve($id);
 
             if (
                 $emailAddress !== null
                 && $emailAddress->getConfirmedOptInState() != EmailAddress::COI_STAT_CONFIRMED_OPT_IN
-                && empty($emailAddress->confirm_opt_in_sent_date)) {
-                $this->sendOptInEmail($emailAddress);
+                && empty($emailAddress->confirm_opt_in_sent_date)
+            ) {
+                $ret = $this->sendOptInEmail($emailAddress);
+                if (!$ret) {
+                    LoggerManager::getLogger()->error('Error sending opt-in email to: ' . $emailAddress);
+                }
             }
         }
 
@@ -4721,6 +4750,8 @@ eoq;
     private function sendOptInEmail(EmailAddress $emailAddress)
     {
         global $app_strings;
+
+        LoggerManager::getLogger()->deprecated(__FUNCTION__ . ' is deprecated.');
 
         $ret = false;
 
@@ -4795,9 +4826,7 @@ eoq;
             } else {
                 $emailAddress->confirm_opt_in_sent_date = $now;
             }
-            $emailAddress->save();
-
-            $ret = true;
+            $ret = $emailAddress->save();
         }
 
         return $ret;
