@@ -39,6 +39,8 @@
 
 error_reporting(E_ALL);
 
+$test = $nonexisting;
+
 /* bootstrap composer's autoloader */
 require_once __DIR__ . '/../vendor/autoload.php';
 
