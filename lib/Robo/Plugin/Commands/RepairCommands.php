@@ -62,7 +62,7 @@ class RepairCommands extends \Robo\Tasks
 
         $this->say('Starting Quick Repair and Rebuild');
         $repair = new \RepairAndClear();
-        $repair->repairAndClearAll(['clearAll'], ['All Modules']);
+        $repair->repairAndClearAll(['clearAll'], ['All Modules'], false, false);
         $this->say('Completed Quick Repair and Rebuild!');
     }
 
