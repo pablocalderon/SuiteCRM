@@ -53,7 +53,7 @@ trait CliRunnerTrait
      */
     protected function bootstrap()
     {
-        global $current_language, $app_list_strings, $sugar_config;
+        global $current_language, $app_list_strings, $sugar_config, $current_user;
 
         if (!defined('sugarEntry')) {
             define('sugarEntry', true);
@@ -72,6 +72,8 @@ trait CliRunnerTrait
         require $root . 'config_override.php';
         require_once $root . 'include/entryPoint.php';
 
+        ob_start();
+        $current_user->is_admin = '1';
         $current_language = 'en_us';
         $app_list_strings = return_app_list_strings_language($current_language);
         $sugar_config['resource_management']['default_limit'] = 999999;

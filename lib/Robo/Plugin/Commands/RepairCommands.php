@@ -56,16 +56,44 @@ class RepairCommands extends \Robo\Tasks
     /**
      * Repairs and rebuilds DB, Extensions, Vardefs, SuiteCRM Dashlets etc.
      */
-    public function quickRepair()
+    public function repairQuick()
     {
-        ob_start();
-        global $current_user;
         $this->bootstrap();
-        $current_user->getSystemUser();
 
         $this->say('Starting Quick Repair and Rebuild');
         $repair = new \RepairAndClear();
         $repair->repairAndClearAll(['clearAll'], ['All Modules']);
-        $this->say('Quick Repair and Rebuild!');
+        $this->say('Completed Quick Repair and Rebuild!');
+    }
+
+    /**
+     *  Expands certain char, varchar and text columns in database (MSSQL ONLY)
+     */
+    public function repairExpandColumnWidth()
+    {
+        global $mod_strings;
+
+        $this->bootstrap();
+        $this->say('Starting Expand Column Width');
+        require_once 'modules/Administration/expandDatabase.php';
+        $this->say('Completed Expand Column Width!');
+    }
+
+    /**
+     * Rebuilds .htaccess to limit access to certain files directly
+     */
+    public function repairHtaccess()
+    {
+        $this->bootstrap();
+        $this->say('Starting Rebuild .htaccess');
+
+        $htaccess =  '.htaccess';
+
+        if (file_exists($htaccess) && filesize($htaccess) && is_writable($htaccess)) {
+            require_once 'modules/Administration/UpgradeAccess.php';
+            $this->say('Completed Rebuild .htaccess!');
+        } else {
+           $this->say('.htaccess is not writable');
+        }
     }
 }

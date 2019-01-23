@@ -48,6 +48,7 @@ global $sugar_config;
 $ignoreCase = (substr_count(strtolower($_SERVER['SERVER_SOFTWARE']), 'apache/2') > 0) ? '(?i)' : '';
 $htaccess_file = getcwd() . "/.htaccess";
 $contents = '';
+$oldContents = '';
 $basePath = parse_url($sugar_config['site_url'], PHP_URL_PATH);
 if (empty($basePath)) {
     $basePath = '/';
@@ -98,7 +99,7 @@ if (file_exists($htaccess_file)) {
             $skip = true;
         }
         if (!$skip) {
-            $oldcontents .= $line;
+            $oldContents .= $line;
         }
         if (preg_match('/\s*#\s*END\s*SUGARCRM\s*RESTRICTIONS/i', $line)) {
             $skip = false;
@@ -117,7 +118,7 @@ if (!$status) {
 }
 
 // new content should be prepended to the file
-file_put_contents($htaccess_file, $oldcontents, FILE_APPEND);
+file_put_contents($htaccess_file, $oldContents, FILE_APPEND);
 
 // cn: bug 9365 - security for filesystem
 $uploadDir = '';
