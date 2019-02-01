@@ -84,5 +84,5 @@ if(preg_match('/^[0-9A-Za-z\-]*$/', $track))
 else
 {
 	sugar_cleanup();
-}
+
 exit;
