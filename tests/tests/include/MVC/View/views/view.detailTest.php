@@ -10,7 +10,7 @@ class ViewDetailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushGlobals();
         
-        // test 
+        // test
         
         //execute the contructor and check for the Object type and type attribute
         $view = new ViewDetail();
@@ -31,9 +31,9 @@ class ViewDetailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushGlobals();
         
-        // test 
+        // test
         
-        //execute the method with required attributes preset, it will initialize the dv(detail view) attribute. 
+        //execute the method with required attributes preset, it will initialize the dv(detail view) attribute.
         $view = new ViewDetail();
         $view->module = 'Users';
         $view->bean = new User();
@@ -64,7 +64,7 @@ class ViewDetailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushGlobals();
         
-        // test 
+        // test
 
         //execute the method with essential parameters set. it should return some html.
         $view = new ViewDetail();

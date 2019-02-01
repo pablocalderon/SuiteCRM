@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -39,7 +41,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 
 
-$connector_strings = array (
+$connector_strings = array(
     'LBL_GET_STARTED' => 'Get Started!',
     'LBL_TOS0' => 'I agree to InsideView\'s  ',
     'LBL_TOS1' => 'Terms of Use',
@@ -52,5 +54,3 @@ $connector_strings = array (
     'LBL_ENGAGE' => 'Engage Customers',
     'LBL_ENGAGE_SUB' => 'with conversation starters',
 );
-
-?>

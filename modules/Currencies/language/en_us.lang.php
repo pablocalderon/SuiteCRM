@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -46,7 +48,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
   'LBL_MODULE_NAME' => 'Currencies',
   'LBL_LIST_FORM_TITLE' => 'Currencies',
   'LBL_CURRENCY' => 'Currency',
@@ -74,14 +76,11 @@ $mod_strings = array (
   'LNK_NEW_TASK' => 'Create Task',
   'NTC_DELETE_CONFIRMATION' => 'Are you sure you want to delete this record? Any record using this currency will be converted to the system default currency when they are accessed. It may be better to set the status to inactive.',
   'LBL_BELOW_MIN' => 'Conversion rate has to be above 0',
-  'currency_status_dom' => 
-  array (
+  'currency_status_dom' =>
+  array(
     'Active' => 'Active',
     'Inactive' => 'Inactive',
   ),
   'LBL_CREATED_BY' => 'Created By',
-	'LBL_EDIT_LAYOUT' => 'Edit Layout' /*for 508 compliance fix*/,
+    'LBL_EDIT_LAYOUT' => 'Edit Layout' /*for 508 compliance fix*/,
 );
-
-
-?>

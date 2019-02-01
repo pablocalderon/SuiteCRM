@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -46,7 +48,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 
  
-$mod_strings = array (
+$mod_strings = array(
     'LBL_GOOD_FILE' => 'Import File Read Successfully',
     'LBL_RECORDS_SKIPPED_DUE_TO_ERROR' => 'rows were not imported due to error',
     'LBL_UPDATE_SUCCESSFULLY' => 'records updated successfully',
@@ -234,7 +236,7 @@ $mod_strings = array (
     'LBL_NO_LINES' => 'There were no lines detected in your import file. Please make sure there are no empty lines in your file and try again.',
     'LBL_FILE_ALREADY_BEEN_OR' => 'The import file has already been processed or does not exist',
     'LBL_SUCCESS' => 'Success:',
-	'LBL_FAILURE' => 'Import Failed:',
+    'LBL_FAILURE' => 'Import Failed:',
     'LBL_SUCCESSFULLY' => 'Successfully imported',
     'LBL_LAST_IMPORT_UNDONE' => 'The import was undone.',
     'LBL_NO_IMPORT_TO_UNDO' => 'There was no import to undo.',
@@ -301,7 +303,7 @@ $mod_strings = array (
     'LBL_IMPORT_RECORDS_OF' => 'of',
     'LBL_IMPORT_RECORDS_TO' => 'to',
     'LBL_CURRENCY' => 'Currency:',
-	'LBL_CURRENCY_SIG_DIGITS' => 'Currency Significant Digits',
+    'LBL_CURRENCY_SIG_DIGITS' => 'Currency Significant Digits',
     'LBL_NUMBER_GROUPING_SEP' => '1000s separator:',
     'LBL_DECIMAL_SEP' => 'Decimal symbol:',
     'LBL_LOCALE_DEFAULT_NAME_FORMAT' => 'Name Display Format',
@@ -369,4 +371,3 @@ $mod_strings = array (
 );
 
 global $timedate;
-?>

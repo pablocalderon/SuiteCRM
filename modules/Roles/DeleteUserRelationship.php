@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -61,4 +63,3 @@ $header_URL = "Location: index.php?action={$_REQUEST['return_action']}&module={$
 $GLOBALS['log']->debug("about to post header URL of: $header_URL");
 
 header($header_URL);
-?>

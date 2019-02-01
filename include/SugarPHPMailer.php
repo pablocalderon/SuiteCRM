@@ -96,7 +96,6 @@ class SugarPHPMailer extends PHPMailer
         // cn: gmail fix
         $this->protocol = ($this->oe->mail_smtpssl == 1) ? 'ssl://' : $this->protocol;
         $this->SMTPAutoTLS = false;
-
     }
 
     /**
@@ -211,7 +210,6 @@ class SugarPHPMailer extends PHPMailer
 
             // HTML email RFC compliance
             if ($this->ContentType === 'text/html' && strpos($this->Body, '<html') === false) {
-
                 $langHeader = get_language_header();
 
                 $head = <<<eoq
@@ -227,7 +225,6 @@ eoq;
             }
 
             $this->FromName = $locale->translateCharset(trim($this->FromName), 'UTF-8', $OBCharset);
-
         }
     }
 
@@ -406,5 +403,4 @@ eoq;
 
         return false;
     }
-
 } // end class definition

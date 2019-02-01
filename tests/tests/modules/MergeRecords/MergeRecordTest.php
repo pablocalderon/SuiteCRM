@@ -24,7 +24,6 @@ class MergeRecordTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         
         $mergeRecord = new MergeRecord();
         //$mergeRecord->save();
-
     }
 
     public function testretrieve()
@@ -249,7 +248,6 @@ class MergeRecordTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // clean up
         
         $state->popGlobals();
-
     }
 
     public function testbean_implements()
@@ -395,6 +393,5 @@ class MergeRecordTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $actual = $mergeRecord->generate_where_statement($clauses);
 
         $this->assertSame($expected, $actual);
-
     }
 }

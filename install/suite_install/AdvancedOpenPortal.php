@@ -1,7 +1,6 @@
 <?php
 function install_aop()
 {
-
     require_once('modules/EmailTemplates/EmailTemplate.php');
     global $sugar_config;
     $sugar_config['aop']['enable_portal'] = false;
@@ -23,7 +22,6 @@ function install_aop()
     write_array_to_file('sugar_config', $sugar_config, 'config.php');
 
     installAOPHooks();
-
 }
 
 function installAOPHooks()

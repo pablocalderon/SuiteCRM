@@ -21,7 +21,6 @@ class AOW_ProcessedTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testbean_implements()
     {
-
         $aowProcessed = new AOW_Processed();
         $this->assertEquals(false, $aowProcessed->bean_implements('')); //test with blank value
         $this->assertEquals(false, $aowProcessed->bean_implements('test')); //test with invalid value

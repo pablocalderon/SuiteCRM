@@ -28,37 +28,40 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/AOS_Products/AOS_Products_sugar.php');
-class AOS_Products extends AOS_Products_sugar {
-
-	function __construct(){
-		parent::__construct();
-	}
+class AOS_Products extends AOS_Products_sugar
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function AOS_Products(){
+    public function AOS_Products()
+    {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
+        if (isset($GLOBALS['log'])) {
             $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
+        } else {
             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
         }
         self::__construct();
     }
 
 
-	function save($check_notify=false){
+    public function save($check_notify=false)
+    {
         require_once('modules/AOS_Products_Quotes/AOS_Utils.php');
 
         perform_aos_save($this);
 
-	    parent::save($check_notify);
+        parent::save($check_notify);
     }
 
-	public function getCustomersPurchasedProductsQuery() {
-		$query = "
+    public function getCustomersPurchasedProductsQuery()
+    {
+        $query = "
  			SELECT * FROM (
  				SELECT
 					aos_quotes.*,
@@ -81,8 +84,6 @@ class AOS_Products extends AOS_Products_sugar {
 			) AS aos_quotes
 
 		";
-		return $query;
-	}
-
+        return $query;
+    }
 }
-?>

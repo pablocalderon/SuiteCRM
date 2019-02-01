@@ -556,8 +556,11 @@ class MssqlManager extends DBManager
                             $newSQL = "SELECT TOP $countVar * FROM
                                         (
                                             SELECT ROW_NUMBER()
-                                                OVER (ORDER BY " . preg_replace('/^' . $dist_str . '\s+/', '',
-                                    $this->returnOrderBy($sql, $orderByMatch[3])) . ') AS row_number,
+                                                OVER (ORDER BY " . preg_replace(
+                                '/^' . $dist_str . '\s+/',
+                                '',
+                                    $this->returnOrderBy($sql, $orderByMatch[3])
+                            ) . ') AS row_number,
                                                 count(*) counter, ' . $distinctSQLARRAY[0] . '
                                                 ' . $distinctSQLARRAY[1] . '
                                                 group by ' . $grpByStr . "
@@ -614,7 +617,6 @@ class MssqlManager extends DBManager
         }
 
         return $newSQL;
-
     }
 
 
@@ -979,7 +981,8 @@ class MssqlManager extends DBManager
 
         $this->checkConnection();
         $result = $this->getOne(
-            "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME=" . $this->quoted($tableName));
+            "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME=" . $this->quoted($tableName)
+        );
 
         return !empty($result);
     }
@@ -1129,6 +1132,7 @@ class MssqlManager extends DBManager
                 } else {
                     return 'LEFT(CONVERT(varchar(10),' . $string . ',120),10)';
                 }
+                // no break
             case 'ifnull':
                 if (empty($additional_parameters_string)) {
                     $additional_parameters_string = ",''";
@@ -1149,7 +1153,7 @@ class MssqlManager extends DBManager
                 return "DATEADD({$additional_parameters[1]},{$additional_parameters[0]},$string)";
             case 'add_time':
                 return "DATEADD(hh, {$additional_parameters[0]}, DATEADD(mi, {$additional_parameters[1]}, $string))";
-            case 'add_tz_offset' :
+            case 'add_tz_offset':
                 $getUserUTCOffset = $GLOBALS['timedate']->getUserUTCOffset();
                 $operation = $getUserUTCOffset < 0 ? '-' : '+';
 
@@ -1674,24 +1678,24 @@ EOQ;
 
         if (empty($fieldDef['len'])) {
             switch ($fieldDef['type']) {
-                case 'bit'      :
-                case 'bool'     :
+                case 'bit':
+                case 'bool':
                     $fieldDef['len'] = '1';
                     break;
-                case 'smallint' :
+                case 'smallint':
                     $fieldDef['len'] = '2';
                     break;
-                case 'float'    :
+                case 'float':
                     $fieldDef['len'] = '8';
                     break;
-                case 'varchar'  :
-                case 'nvarchar' :
+                case 'varchar':
+                case 'nvarchar':
                     $fieldDef['len'] = $this->isTextType($fieldDef['dbType']) ? 'max' : '255';
                     break;
-                case 'image'    :
+                case 'image':
                     $fieldDef['len'] = '2147483647';
                     break;
-                case 'ntext'    :
+                case 'ntext':
                     $fieldDef['len'] = '2147483646';
                     break;   // Note: this is from legacy code, don't know if this is correct
             }

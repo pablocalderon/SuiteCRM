@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -53,11 +55,14 @@ $default = 'index.php?module=Emails&action=ListView&assigned_user_id='.$current_
 $e = new Email();
 
 // my inbox
-if(ACLController::checkAccess('Emails', 'edit', true)) {
-	$module_menu[] = array('index.php?module=Emails&action=index', $mod_strings['LNK_VIEW_MY_INBOX'],"List","Emails");
+if (ACLController::checkAccess('Emails', 'edit', true)) {
+    $module_menu[] = array('index.php?module=Emails&action=index', $mod_strings['LNK_VIEW_MY_INBOX'],"List","Emails");
 }
 // create email template
-if(ACLController::checkAccess('EmailTemplates', 'edit', true)) $module_menu[] = array("index.php?module=EmailTemplates&action=EditView&return_module=EmailTemplates&return_action=DetailView", $mod_strings['LNK_NEW_EMAIL_TEMPLATE'],"Create","Emails");
+if (ACLController::checkAccess('EmailTemplates', 'edit', true)) {
+    $module_menu[] = array("index.php?module=EmailTemplates&action=EditView&return_module=EmailTemplates&return_action=DetailView", $mod_strings['LNK_NEW_EMAIL_TEMPLATE'],"Create","Emails");
+}
 // email templates
-if(ACLController::checkAccess('EmailTemplates', 'list', true)) $module_menu[] = array("index.php?module=EmailTemplates&action=index", $mod_strings['LNK_EMAIL_TEMPLATE_LIST'],"View_Email_Templates", 'Emails');
-?>
+if (ACLController::checkAccess('EmailTemplates', 'list', true)) {
+    $module_menu[] = array("index.php?module=EmailTemplates&action=index", $mod_strings['LNK_EMAIL_TEMPLATE_LIST'],"View_Email_Templates", 'Emails');
+}

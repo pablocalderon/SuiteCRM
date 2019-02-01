@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /**
  * Products, Quotations & Invoices modules.
  * Extensions to SugarCRM
@@ -25,17 +27,15 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * @author Salesagility Ltd <info@salesagility.com>
  */
 
-function perform_aos_save($focus){
-
-    foreach($focus->field_defs as $field){
-
+function perform_aos_save($focus)
+{
+    foreach ($focus->field_defs as $field) {
         $fieldName = $field['name'];
         $fieldNameDollar = $field['name'].'_usdollar';
 
-        if(isset($focus->field_defs[$fieldNameDollar])){
-
+        if (isset($focus->field_defs[$fieldNameDollar])) {
             $focus->$fieldNameDollar = '';
-            if(!number_empty($focus->field_defs[$field['name']])){
+            if (!number_empty($focus->field_defs[$field['name']])) {
                 $currency = new Currency();
                 
                 $currencyId = null;
@@ -56,7 +56,6 @@ function perform_aos_save($focus){
 
                 $amountToConvert = $fieldValue;
                 if (!amountToConvertIsDatabaseValue($focus, $fieldName)) {
-                    
                     $amountToConvert = null;
                     $fieldName = null;
                     if (isset($focus->$fieldName)) {
@@ -65,14 +64,11 @@ function perform_aos_save($focus){
                     } else {
                         LoggerManager::getLogger()->error('Filedname is not defined for class ' . get_class($focus));
                     }
-                    
                 }
 
                 $focus->$fieldNameDollar = $currency->convertToDollar($amountToConvert);
             }
-
         }
-
     }
 }
 

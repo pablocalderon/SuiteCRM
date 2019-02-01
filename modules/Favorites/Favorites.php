@@ -129,7 +129,7 @@ class Favorites extends Basic
         $i = 0;
         while ($row = $db->fetchByAssoc($result)) {
             $bean = BeanFactory::getBean($row['parent_type'], $row['parent_id']);
-            if($bean) {
+            if ($bean) {
                 $return_array[$i]['item_summary'] = $bean->name;
                 $return_array[$i]['item_summary_short'] = to_html(getTrackerSubstring($bean->name));
                 $return_array[$i]['id'] = $row['parent_id'];
@@ -145,7 +145,6 @@ class Favorites extends Basic
 
                 ++$i;
             }
-
         }
 
         return $return_array;
@@ -160,7 +159,7 @@ class Favorites extends Basic
         switch ($interface) {
             case 'ACL':
                 return false;
-            default :
+            default:
                 return false;
         }
     }

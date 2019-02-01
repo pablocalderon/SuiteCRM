@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -45,5 +47,3 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 //defines the call and meeting status.  Values are keys, not translated strings
 $open_status[] = "Planned";
-
-?>

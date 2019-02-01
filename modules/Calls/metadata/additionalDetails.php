@@ -49,4 +49,3 @@ function additionalDetailsCall($fields = array(), SugarBean $bean = null, $param
 {
     return additional_details($fields, $bean, $params);
 }
-

@@ -41,31 +41,25 @@ require_once 'modules/ModuleBuilder/Module/StudioModule.php' ;
 
 class StudioModuleFactory
 {
-	protected static $loadedMods = array();
+    protected static $loadedMods = array();
 
     public static function getStudioModule($module)
-	{
-		if (!empty(self::$loadedMods[$module]))
+    {
+        if (!empty(self::$loadedMods[$module])) {
             return self::$loadedMods[$module];
+        }
 
         $studioModClass = "{$module}StudioModule";
-		if (file_exists("custom/modules/{$module}/{$studioModClass}.php"))
-		{
-			require_once "custom/modules/{$module}/{$studioModClass}.php";
-			$sm = new $studioModClass($module);
-
-		} else if (file_exists("modules/{$module}/{$studioModClass}.php"))
-		{
-			require_once "modules/{$module}/{$studioModClass}.php";
-			$sm = new $studioModClass($module);
-
-		}
-		else 
-		{
-			$sm = new StudioModule($module);
-		}
+        if (file_exists("custom/modules/{$module}/{$studioModClass}.php")) {
+            require_once "custom/modules/{$module}/{$studioModClass}.php";
+            $sm = new $studioModClass($module);
+        } elseif (file_exists("modules/{$module}/{$studioModClass}.php")) {
+            require_once "modules/{$module}/{$studioModClass}.php";
+            $sm = new $studioModClass($module);
+        } else {
+            $sm = new StudioModule($module);
+        }
         self::$loadedMods[$module] = $sm;
         return $sm;
-	}
+    }
 }
-?>

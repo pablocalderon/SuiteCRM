@@ -316,7 +316,6 @@ class SugarBean
             }
 
             if (isset($GLOBALS['dictionary'][$this->object_name]) && !$this->disable_vardefs) {
-                
                 $dictionaryObjectFields = null;
                 if (isset($dictionary[$this->object_name]['fields'])) {
                     $dictionaryObjectFields = $dictionary[$this->object_name]['fields'];
@@ -363,12 +362,12 @@ class SugarBean
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function SugarBean(){
+    public function SugarBean()
+    {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
+        if (isset($GLOBALS['log'])) {
             $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
+        } else {
             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
         }
         self::__construct();
@@ -431,6 +430,7 @@ class SugarBean
                         if (isset($this->$field)) {
                             break;
                         }
+                        // no break
                     default:
                         if (isset($value['default']) && $value['default'] !== '') {
                             $this->$field = htmlentities($value['default'], ENT_QUOTES, 'UTF-8');
@@ -629,8 +629,7 @@ class SugarBean
         $max = -1,
         $show_deleted = 0,
         $subpanel_def = null
-    )
-    {
+    ) {
         $secondary_queries = array();
         global $layout_edit_mode;
 
@@ -710,7 +709,7 @@ class SugarBean
                 $subquery['select'] = substr($subquery['select'], 0, strlen($subquery['select']) - 1);
 
                 // Find related email address for sub panel ordering
-                if( $order_by && isset($subpanel_def->panel_definition['list_fields'][$order_by]['widget_class']) &&
+                if ($order_by && isset($subpanel_def->panel_definition['list_fields'][$order_by]['widget_class']) &&
                     $subpanel_def->panel_definition['list_fields'][$order_by]['widget_class'] == 'SubPanelEmailLink' &&
                     !in_array($order_by, array_keys($subquery['query_fields']))) {
                     $relatedBeanTable = $subpanel_def->table_name;
@@ -814,7 +813,6 @@ class SugarBean
      */
     protected static function build_sub_queries_for_union($subpanel_list, $subpanel_def, $parentbean, $order_by)
     {
-
         global $beanList;
         $subqueries = array();
         foreach ($subpanel_list as $this_subpanel) {
@@ -929,8 +927,8 @@ class SugarBean
         $where = '',
         $subpanel_def = null,
         $query_row_count = '',
-        $secondary_queries = array())
-    {
+        $secondary_queries = array()
+    ) {
         $db = DBManagerFactory::getInstance('listviews');
         /**
          * if the row_offset is set to 'end' go to the end of the list
@@ -1251,7 +1249,8 @@ class SugarBean
             foreach ($this->field_defs as $field => $properties) {
                 if (
                 (
-                    !empty($properties['Audited']) || !empty($properties['audited']))
+                    !empty($properties['Audited']) || !empty($properties['audited'])
+                )
                 ) {
                     $this->audit_enabled_fields[$field] = $properties;
                 }
@@ -1931,7 +1930,8 @@ class SugarBean
                 '',
                 '',
                 '',
-                $this->in_workflow);
+                $this->in_workflow
+            );
         }
 
         if (isset($this->custom_fields)) {
@@ -2089,7 +2089,7 @@ class SugarBean
                 case 'encrypt':
                     $this->$field = $this->encrpyt_before_save($this->$field);
                     break;
-                default :
+                default:
                     //do nothing
             }
             if ($reformatted) {
@@ -2428,11 +2428,13 @@ class SugarBean
                 //Determine if the parent field has changed.
                 if (
                     //First check if the fetched row parent existed and now we no longer have one
-                    (!empty($this->fetched_row[$typeField]) && !empty($this->fetched_row[$idField])
+                    (
+                        !empty($this->fetched_row[$typeField]) && !empty($this->fetched_row[$idField])
                         && (empty($this->$typeField) || empty($this->$idField))
                     ) ||
                     //Next check if we have one now that doesn't match the fetch row
-                    (!empty($this->$typeField) && !empty($this->$idField) &&
+                    (
+                        !empty($this->$typeField) && !empty($this->$idField) &&
                         (empty($this->fetched_row[$typeField]) || empty($this->fetched_row[$idField])
                             || $this->fetched_row[$idField] != $this->$idField)
                     ) ||
@@ -2767,7 +2769,7 @@ class SugarBean
         if (in_array('set_notification_body', get_class_methods($this))) {
             $xtpl = $this->set_notification_body($xtpl, $this);
         } else {
-            $xtpl->assign("OBJECT", translate('LBL_MODULE_NAME',$this->module_name));
+            $xtpl->assign("OBJECT", translate('LBL_MODULE_NAME', $this->module_name));
             $template_name = "Default";
         }
         if (!empty($_SESSION["special_notification"]) && $_SESSION["special_notification"]) {
@@ -2802,7 +2804,7 @@ class SugarBean
 
         // Improve the text version of the email with some "reverse linkification",
         // making "<a href=link>text</a>" links readable as "text [link]"
-        $tempBody = preg_replace(  '/<a href=([\"\']?)(.*?)\1>(.*?)<\/a>/', "\\3 [\\2]", $tempBody);
+        $tempBody = preg_replace('/<a href=([\"\']?)(.*?)\1>(.*?)<\/a>/', "\\3 [\\2]", $tempBody);
 
         // all the other HTML tags get removed from the text version:
         $notify_mail->AltBody = strip_tags($tempBody);
@@ -3169,12 +3171,10 @@ class SugarBean
                 }
             }
 
-            if ($this->is_relate_field($field))
-            {
+            if ($this->is_relate_field($field)) {
                 $linkField = $data['link'];
                 $this->load_relationship($linkField);
-                if(!empty($this->$linkField))
-                {
+                if (!empty($this->$linkField)) {
                     $params = array();
                     if (empty($join_type)) {
                         $params['join_type'] = ' LEFT JOIN ';
@@ -4294,7 +4294,6 @@ class SugarBean
                          ($this->object_name == $related_module && $this->$id_name != $this->id))
                     ) {
                         if (!empty($this->$id_name) && isset($this->$name)) {
-
                             $mod = BeanFactory::getBean($related_module, $this->$id_name);
                             if ($mod) {
                                 if (!empty($field['rname'])) {
@@ -4386,9 +4385,15 @@ class SugarBean
      *
      * Internal function, do not override.
      */
-    public function get_related_list($child_seed, $related_field_name, $order_by = "", $where = "",
-                                     $row_offset = 0, $limit = -1, $max = -1)
-    {
+    public function get_related_list(
+        $child_seed,
+        $related_field_name,
+        $order_by = "",
+        $where = "",
+                                     $row_offset = 0,
+        $limit = -1,
+        $max = -1
+    ) {
         global $layout_edit_mode;
 
         if (isset($layout_edit_mode) && $layout_edit_mode) {
@@ -4736,7 +4741,7 @@ class SugarBean
      */
     public function deleteFiles()
     {
-        if (!$this->id || !$this->haveFiles() ) {
+        if (!$this->id || !$this->haveFiles()) {
             return true;
         }
         $files = $this->getFiles();
@@ -5014,8 +5019,7 @@ class SugarBean
                 elseif (((!empty($value['type']) && ($value['type'] == 'enum' || $value['type'] == 'radioenum'))) && empty($value['function'])) {
                     if (!empty($value['options']) && !empty($app_list_strings[$value['options']][$this->$field])) {
                         $return_array[$cache[$field]] = $app_list_strings[$value['options']][$this->$field];
-                    }
-                    elseif (!empty($value['options']) && !empty($mod_strings[$value['options']][$this->$field])) {
+                    } elseif (!empty($value['options']) && !empty($mod_strings[$value['options']][$this->$field])) {
                         $return_array[$cache[$field]] = $mod_strings[$value['options']][$this->$field];
                     } else {
                         $return_array[$cache[$field]] = $this->$field;
@@ -5515,7 +5519,6 @@ class SugarBean
     public function auditBean($isUpdate)
     {
         if ($this->is_AuditEnabled() && $isUpdate) {
-
             $auditDataChanges = $this->db->getAuditDataChanges($this);
 
             if (!empty($auditDataChanges)) {

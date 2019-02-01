@@ -10,7 +10,7 @@ class ViewImportvcardTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushGlobals();
         
-        // test 
+        // test
         
         //execute the contructor and check for the Object type and type attribute
         $view = new ViewImportvcard();
@@ -30,7 +30,7 @@ class ViewImportvcardTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushGlobals();
         
-        // test 
+        // test
         
 
         //execute the method with essential parameters set. it should return some html.

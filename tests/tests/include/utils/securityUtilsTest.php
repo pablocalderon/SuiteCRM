@@ -53,7 +53,6 @@ class security_utilsTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testquery_user_has_roles()
     {
-        
         $this->markTestIncomplete('environment dependency');
 
         //execute the method and test it it returns expected contents
@@ -79,7 +78,7 @@ class security_utilsTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $expected = array(
                 'Bugs' => 'Bugs',
                 'ResourceCalendar' => 'ResourceCalendar',
-				'AOBH_BusinessHours' => 'AOBH_BusinessHours',
+                'AOBH_BusinessHours' => 'AOBH_BusinessHours',
                 'AOR_Scheduled_Reports' => 'AOR_Scheduled_Reports',
                 'SecurityGroups' => 'SecurityGroups',
         );

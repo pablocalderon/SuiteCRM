@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -46,7 +48,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
    'LBL_YOURS' => 'Yours',
    'LBL_IN_DATABASE' => 'In Database',
    'LBL_CONFLICT_EXISTS' => 'A Conflict Exists For - ',
@@ -56,5 +58,3 @@ $mod_strings = array (
    'LBL_NO_LOCKED_OBJECTS' => 'No Locked Objects',
    
 );
-
-?>

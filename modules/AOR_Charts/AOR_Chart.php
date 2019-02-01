@@ -255,7 +255,7 @@ class AOR_Chart extends Basic
     }
 
     /**
-     * 
+     *
      * @param type $labels
      * @return boolean Returns TRUE if colours successfully changed. FALSE on error and using colour defaults.
      */
@@ -522,12 +522,12 @@ EOF;
         if (!is_array($dataArray)||count($dataArray) < 1) {
             return "<h3>$this->noDataMessage</h3>";
         }
-/*
-        if($chartHeight > 400)
-            $chartHeight = 400;
-        if($chartWidth > 600)
-            $chartWidth = 400;
-*/
+        /*
+                if($chartHeight > 400)
+                    $chartHeight = 400;
+                if($chartWidth > 600)
+                    $chartWidth = 400;
+        */
         $html = '';
         $html .= "<canvas id='$chartId' width='$chartWidth' height='$chartHeight' class='resizableCanvas'></canvas>";
         $html .= <<<EOF

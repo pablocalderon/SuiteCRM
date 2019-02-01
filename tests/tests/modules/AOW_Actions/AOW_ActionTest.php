@@ -51,7 +51,6 @@ class AOW_ActionTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testbean_implements()
     {
-
         $aowAction = new AOW_Action();
         $this->assertEquals(false, $aowAction->bean_implements('')); //test with blank value
         $this->assertEquals(false, $aowAction->bean_implements('test')); //test with invalid value

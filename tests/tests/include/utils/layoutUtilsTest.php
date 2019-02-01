@@ -40,7 +40,6 @@ class layout_utilsTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $this->assertContains('Users', $html2);
         $this->assertContains('Users Home', $html2);
         $this->assertGreaterThan(strlen($html2), strlen($html1));
-
     }
 
     public function testgetClassicModuleTitle()

@@ -2,8 +2,7 @@
 
 class MeetingTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
-    
-    protected function storeStateAll() 
+    protected function storeStateAll()
     {
         // save state
         
@@ -24,7 +23,7 @@ class MeetingTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         return $state;
     }
     
-    protected function restoreStateAll($state) 
+    protected function restoreStateAll($state)
     {
         // clean up
         
@@ -40,7 +39,6 @@ class MeetingTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state->popTable('meetings');
         $state->popTable('aod_indexevent');
         $state->popTable('inbound_email_autoreply');
-        
     }
     
     public function testMeeting()
@@ -198,13 +196,12 @@ class MeetingTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // clean up
         
         $this->restoreStateAll($state);
-        
     }
 
     public function testcreate_export_query()
     {
         $this->markTestIncomplete('environment dependecy');
-//        
+//
 //        $meeting = new Meeting();
 //
 //        //test with empty string params
@@ -216,7 +213,6 @@ class MeetingTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 //        $expected = 'SELECT meetings.*, users.user_name as assigned_user_name  ,meetings_cstm.jjwg_maps_address_c,meetings_cstm.jjwg_maps_geocode_status_c,meetings_cstm.jjwg_maps_lat_c,meetings_cstm.jjwg_maps_lng_c FROM meetings   LEFT JOIN users ON meetings.assigned_user_id=users.id  LEFT JOIN meetings_cstm ON meetings.id = meetings_cstm.id_c  where users.user_name="" AND meetings.deleted=0';
 //        $actual = $meeting->create_export_query('meetings.id', 'users.user_name=""');
 //        $this->assertSame($expected, $actual);
-        
     }
 
     public function testfill_in_additional_detail_fields()
@@ -613,7 +609,6 @@ class MeetingTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // clean up
         
         $this->restoreStateAll($state);
-        
     }
 
     public function testgetMeetingTypeOptions()
@@ -633,6 +628,5 @@ class MeetingTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // clean up
         
         $this->restoreStateAll($state);
-        
     }
 }

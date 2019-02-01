@@ -21,7 +21,6 @@ class NoteTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testsafeAttachmentName()
     {
-
         $note = new Note();
 
         //test with valid file name

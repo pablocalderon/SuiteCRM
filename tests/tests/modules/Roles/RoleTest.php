@@ -2,8 +2,7 @@
 
 class RoleTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
-    
-    protected function storeStateAll() 
+    protected function storeStateAll()
     {
         // save state
         
@@ -14,13 +13,12 @@ class RoleTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         return $state;
     }
     
-    protected function restoreStateAll($state) 
+    protected function restoreStateAll($state)
     {
         // clean up
         
         $state->popGlobals();
         $state->popTable('roles_users');
-        
     }
     
     public function testRole()
@@ -111,7 +109,7 @@ class RoleTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $role->id = 1;
         $mod_ids = array('Accounts', 'Leads');
 
-        //test set_module_relationship. 
+        //test set_module_relationship.
         //creates related records
         $role->set_module_relationship($role->id, $mod_ids, 1);
 
@@ -119,7 +117,7 @@ class RoleTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $result = $role->query_modules();
         $this->assertGreaterThanOrEqual(2, count($result));
 
-        //test clear_module_relationship method 
+        //test clear_module_relationship method
         $this->clear_module_relationship($role->id);
         
         // clean up
@@ -166,7 +164,7 @@ class RoleTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $role->set_user_relationship($role->id, $user_ids, 1);
 
         //get the related records count
-        $result = $role->check_user_role_count('1');        
+        $result = $role->check_user_role_count('1');
         $this->assertGreaterThanOrEqual(1, count((array)$result));
 
         //get the related records count
@@ -207,21 +205,21 @@ class RoleTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testquery_user_allowed_modules()
     {
         $this->markTestIncomplete('Incorrect state hash (in PHPUnitTest): Hash doesn\'t match at key "database::roles_users".');
-//        
+//
 //        // save state
-//        
+//
 //        $state = new SuiteCRM\StateSaver();
 //        $state->pushTable('roles_users');
-//        
+//
 //        // test
 //
 //        $role = new Role();
 //
 //        $result = $role->query_user_allowed_modules('1');
 //        $this->assertTrue(is_array($result));
-//        
+//
 //        // clean up
-//        
+//
 //        $state->popTable('roles_users');
     }
 

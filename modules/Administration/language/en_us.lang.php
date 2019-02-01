@@ -1,5 +1,7 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -1274,12 +1276,11 @@ $mod_strings = array(
 
     'LBL_BUSINESS_HOURS' => 'Business hours',
     'LBL_BUSINESS_HOURS_DESC' => "Manage Business Hours",
-	'LBL_BUSINESS_HOURS_FROM' => 'From',
-	'LBL_BUSINESS_HOURS_TO' => 'To',
-	'LBL_BUSINESS_HOURS_OPEN' => "Open",
+    'LBL_BUSINESS_HOURS_FROM' => 'From',
+    'LBL_BUSINESS_HOURS_TO' => 'To',
+    'LBL_BUSINESS_HOURS_OPEN' => "Open",
 
-	'LBL_LIST_SYMBOL' => "List Symbol",
-	'LBL_LIST_RATE' => "List Rate",
+    'LBL_LIST_SYMBOL' => "List Symbol",
+    'LBL_LIST_RATE' => "List Rate",
 
 );
-

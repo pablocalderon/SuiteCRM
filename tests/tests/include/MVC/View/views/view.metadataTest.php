@@ -25,7 +25,7 @@ class ViewMetadataTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisplaySelect()
     {
-        // save state 
+        // save state
         
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -90,7 +90,7 @@ class ViewMetadataTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisplay()
     {
-        // save state 
+        // save state
         
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();

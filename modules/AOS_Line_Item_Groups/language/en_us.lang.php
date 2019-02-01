@@ -4,7 +4,7 @@
  * Extensions to SugarCRM
  * @package Advanced OpenSales for SugarCRM
  * @copyright SalesAgility Ltd http://www.salesagility.com
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -23,7 +23,7 @@
  * @author Salesagility Ltd <support@salesagility.com>
  */
 
-$mod_strings = array (
+$mod_strings = array(
     'LBL_ID' => 'ID',
     'LBL_MODULE_NAME' => 'Groups',
     'LBL_DATE_ENTERED' => 'Date Created',
@@ -48,4 +48,3 @@ $mod_strings = array (
 
     'AOS_PRODUCT_QUOTES' => 'Product Quotes',
 );
-?>

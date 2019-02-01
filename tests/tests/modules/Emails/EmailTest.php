@@ -209,15 +209,15 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $email = new Email();
 
         //test with required parametr set
-        $this->assertEquals(true,  $email->isDraftEmail(array('saveDraft' => '1')));
+        $this->assertEquals(true, $email->isDraftEmail(array('saveDraft' => '1')));
 
         //test with one of required attribute set
         $email->type = 'draft';
-        $this->assertEquals(false,  $email->isDraftEmail(array()));
+        $this->assertEquals(false, $email->isDraftEmail(array()));
 
         //test with both of required attribute set
         $email->status = 'draft';
-        $this->assertEquals(true,  $email->isDraftEmail(array()));
+        $this->assertEquals(true, $email->isDraftEmail(array()));
         
         // clean up
         
@@ -272,9 +272,9 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $this->markTestIncomplete('Not testing sending email currently');
         /*
     	$email = new Email();
-    	
+
     	$result = $email->sendEmailTest('mail.someserver.com', 25, 425, false, '', '', 'admin@email.com', 'abc@email.com', 'smtp', 'admin');
-    	
+
     	$expected = array( "status"=>false, "errorMessage"=> "Error:SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting");
     	$this->assertSame($expected, $result);
     	*/
@@ -283,19 +283,19 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testemail2Send()
     {
         $this->markTestIncomplete('Not testing sending email currently');
-    /*	$email = new Email();
-    	
-    	$_REQUEST['sendSubject'] = "test subject";
-    	$_REQUEST['sendDescription'] = "test text"; 
-    	$_REQUEST['fromAccount'] = "from@email.com";		
-    	$_REQUEST['setEditor']  = 1;
-    	$_REQUEST['description_html']  = "test html";
-    	$_REQUEST['sendTo'] = "abc@email.com";
-    
-    	$result = $email->email2Send($_REQUEST);
-    	
-    	$this->assertEquals(false, $result);
-    */
+        /*	$email = new Email();
+
+        	$_REQUEST['sendSubject'] = "test subject";
+        	$_REQUEST['sendDescription'] = "test text";
+        	$_REQUEST['fromAccount'] = "from@email.com";
+        	$_REQUEST['setEditor']  = 1;
+        	$_REQUEST['description_html']  = "test html";
+        	$_REQUEST['sendTo'] = "abc@email.com";
+
+        	$result = $email->email2Send($_REQUEST);
+
+        	$this->assertEquals(false, $result);
+        */
     }
 
     public function testsend()
@@ -303,15 +303,15 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $this->markTestIncomplete('Not testing sending email currently');
         /*
     	$email = new Email();
-    	
+
     	$email->to_addrs_arr = array('email' =>'abc@xyz.com', 'display' => 'abc');
     	$email->cc_addrs_arr = array('email' =>'abc@xyz.com', 'display' => 'abc');
     	$email->bcc_addrs_arr = array('email' =>'abc@xyz.com', 'display' => 'abc');
-    	
+
     	$email->from_addr = "abc@xyz.com";
     	$email->from_name = "abc";
     	$email->reply_to_name = "xyz";
-    	
+
     	$result = $email->send();
     	$this->assertEquals(false, $result);
     	*/
@@ -433,7 +433,7 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
         $email->saveEmailAddresses();
 
-        //retrieve and verify that email addresses were saved properly 
+        //retrieve and verify that email addresses were saved properly
         $email->retrieveEmailAddresses();
 
         $this->assertNotSame(false, strpos($email->from_addr, 'from_test@email.com'));
@@ -611,7 +611,6 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state->popTable('eapm');
         $state->popTable('notes');
         $state->popTable('aod_indexevent');
-        
     }
 
     public function testcleanEmails()
@@ -836,7 +835,7 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $actual = $email->u_get_clear_form_js('', '', '');
         $this->assertSame($expected, $actual);
 
-        //with valid params 
+        //with valid params
         $expected = "\n		<script type=\"text/javascript\" language=\"JavaScript\"><!-- Begin\n			function clear_form(form) {\n				var newLoc = \"index.php?action=\" + form.action.value + \"&module=\" + form.module.value + \"&query=true&clear_query=true&type=out&assigned_user_id=1\";\n				if(typeof(form.advanced) != \"undefined\"){\n					newLoc += \"&advanced=\" + form.advanced.value;\n				}\n				document.location.href= newLoc;\n			}\n		//  End --></script>";
         $actual = $email->u_get_clear_form_js('out', '', '1');
         $this->assertSame($expected, $actual);
@@ -954,7 +953,7 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $email->description_html = 'some html text with <b>sign</b>';
         $email->description = 'some text with sign';
 
-        //test for strings with signature present  
+        //test for strings with signature present
         $sig = array('signature_html' => 'sign', 'signature' => 'sign');
         $result = $email->hasSignatureInBody($sig);
         $this->assertEquals(true, $result);
@@ -1309,7 +1308,6 @@ class EmailTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
             if ($expectedKey == 'CREATE_RELATED') {
                 $this->assertRegExp($expected[$expectedKey], $actual[$expectedKey]);
             } else {
-                
                 if (!isset($expected[$expectedKey])) {
                     $expected[$expectedKey] = null;
                 }

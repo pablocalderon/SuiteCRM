@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -72,8 +74,8 @@ class FreeTDSManager extends MssqlManager
             'relate'   => 'nvarchar',
             'multienum'=> 'nvarchar(max)',
             'html'     => 'nvarchar(max)',
-			'longhtml' => 'text',
-    		'datetime' => 'datetime',
+            'longhtml' => 'text',
+            'datetime' => 'datetime',
             'datetimecombo' => 'datetime',
             'time'     => 'datetime',
             'bool'     => 'bit',
@@ -88,18 +90,18 @@ class FreeTDSManager extends MssqlManager
             'url'      => 'nvarchar',
             'encrypt'  => 'nvarchar',
             'file'     => 'nvarchar',
-	        'decimal_tpl' => 'decimal(%d, %d)',
+            'decimal_tpl' => 'decimal(%d, %d)',
     );
 
     public function query($sql, $dieOnError = false, $msg = '', $suppress = false, $keepResult = false)
     {
-		global $app_strings;
-        if(is_array($sql)) {
+        global $app_strings;
+        if (is_array($sql)) {
             return $this->queryArray($sql, $dieOnError, $msg, $suppress);
         }
 
-		$sql = $this->_appendN($sql);
-		return parent::query($sql, $dieOnError, $msg, $suppress, $keepResult);
+        $sql = $this->_appendN($sql);
+        return parent::query($sql, $dieOnError, $msg, $suppress, $keepResult);
     }
 
     /**

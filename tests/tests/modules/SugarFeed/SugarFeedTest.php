@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 class SugarFeedTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
@@ -156,7 +156,7 @@ class SugarFeedTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         //test fetchReplies method
         $this->fetchReplies();
 
-        //mark the record as deleted 
+        //mark the record as deleted
         $sugarFeed->mark_deleted($sugarFeed->id);
         
         // clean up

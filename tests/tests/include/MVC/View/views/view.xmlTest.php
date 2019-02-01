@@ -16,7 +16,7 @@ class ViewXMLTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testdisplay()
     {
 
-        //execute the method and check for rexcetions. it should return some html. 
+        //execute the method and check for rexcetions. it should return some html.
         $view = new ViewXML();
 
         try {

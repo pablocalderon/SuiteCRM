@@ -42,7 +42,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-$mod_strings = array (
+$mod_strings = array(
   'LBL_MODULE_NAME' => 'Employees',
   'LBL_MODULE_TITLE' => 'Employees: Home',
   'LBL_SEARCH_FORM_TITLE' => 'Employee Search',
@@ -127,7 +127,7 @@ $mod_strings = array (
   'LBL_DELETE_USER_CONFIRM' => 'This Employee is also a User. Deleting the Employee record will also delete the User record, and the User will no longer be able to access the application. Do you want to proceed with deleting this record?',
   'LBL_DELETE_EMPLOYEE_CONFIRM' => 'Are you sure you want to delete this employee?',
   'LBL_ONLY_ACTIVE' => 'Active Employees',
-	'LBL_SELECT' => 'Select' /*for 508 compliance fix*/,
+    'LBL_SELECT' => 'Select' /*for 508 compliance fix*/,
   'LBL_AUTHENTICATE_ID' => 'Authentication Id',
   'LBL_EXT_AUTHENTICATE' => 'External Authentication',
   'LBL_GROUP_USER' => 'Group User',

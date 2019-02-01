@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -64,20 +66,22 @@ class PipelineBySalesStageDashlet extends DashletGenericChart
     public function __construct(
         $id,
         array $options = null
-    )
-    {
+    ) {
         global $timedate;
 
-        if(empty($options['pbss_date_start']))
+        if (empty($options['pbss_date_start'])) {
             $options['pbss_date_start'] = $timedate->nowDbDate();
+        }
 
-        if(empty($options['pbss_date_end']))
+        if (empty($options['pbss_date_end'])) {
             $options['pbss_date_end'] = $timedate->asDbDate($timedate->getNow()->modify("+6 months"));
+        }
 
-        if(empty($options['title']))
+        if (empty($options['title'])) {
             $options['title'] = translate('LBL_RGraph_PIPELINE_FORM_TITLE', 'Home');
+        }
 
-        parent::__construct($id,$options);
+        parent::__construct($id, $options);
     }
 
     /**
@@ -87,11 +91,13 @@ class PipelineBySalesStageDashlet extends DashletGenericChart
     {
         global $app_list_strings;
 
-        if (!empty($this->pbss_sales_stages) && count($this->pbss_sales_stages) > 0)
-            foreach ($this->pbss_sales_stages as $key)
+        if (!empty($this->pbss_sales_stages) && count($this->pbss_sales_stages) > 0) {
+            foreach ($this->pbss_sales_stages as $key) {
                 $selected_datax[] = $key;
-        else
+            }
+        } else {
             $selected_datax = array_keys($app_list_strings['sales_stage_dom']);
+        }
 
         $this->_searchFields['pbss_sales_stages']['options'] = $app_list_strings['sales_stage_dom'];
         $this->_searchFields['pbss_sales_stages']['input_name0'] = $selected_datax;
@@ -152,8 +158,7 @@ class PipelineBySalesStageDashlet extends DashletGenericChart
         //<canvas id='test123'  width='$chartWidth' height='$chartHeight'>[No canvas support]</canvas>
 
         //Check for an empty array
-        if(!is_array($chartReadyData['data'])||count($chartReadyData['data']) < 1)
-        {
+        if (!is_array($chartReadyData['data'])||count($chartReadyData['data']) < 1) {
             return "<h3 class='noGraphDataPoints'>$this->noDataMessage</h3>";
         }
 
@@ -251,10 +256,9 @@ EOD;
      * @param  $query string
      * @return array
      */
-    function getChartData(
+    public function getChartData(
         $query
-    )
-    {
+    ) {
         global $app_list_strings, $db;
 
         $data = array();
@@ -270,20 +274,20 @@ EOD;
                 $datax[$key] = $app_list_strings['sales_stage_dom'][$key];
                 $selected_datax[] = $key;
             }
-        }
-        else {
+        } else {
             $datax = $app_list_strings['sales_stage_dom'];
             $selected_datax = array_keys($app_list_strings['sales_stage_dom']);
         }
 
         $result = $db->query($query);
-        while($row = $db->fetchByAssoc($result, false))
+        while ($row = $db->fetchByAssoc($result, false)) {
             $temp_data[] = $row;
+        }
 
         // reorder and set the array based on the order of selected_datax
-        foreach($selected_datax as $sales_stage){
-            foreach($temp_data as $key => $value){
-                if ($value['sales_stage'] == $sales_stage){
+        foreach ($selected_datax as $sales_stage) {
+            foreach ($temp_data as $key => $value) {
+                if ($value['sales_stage'] == $sales_stage) {
                     $value['sales_stage'] = $app_list_strings['sales_stage_dom'][$value['sales_stage']];
                     $value['key'] = $sales_stage;
                     $value['value'] = $value['sales_stage'];
@@ -327,22 +331,21 @@ EOD;
                     FROM users,opportunities  ";
         $query .= " WHERE opportunities.date_closed >= ". db_convert("'".$this->pbss_date_start."'", 'date').
             " AND opportunities.date_closed <= ".db_convert("'".$this->pbss_date_end."'", 'date') .
-            $query .= " WHERE opportunities.date_closed >= ". db_convert("'".$this->pbss_date_start."'",'date').
-                " AND opportunities.date_closed <= ".db_convert("'".$this->pbss_date_end."'",'date') .
+            $query .= " WHERE opportunities.date_closed >= ". db_convert("'".$this->pbss_date_start."'", 'date').
+                " AND opportunities.date_closed <= ".db_convert("'".$this->pbss_date_end."'", 'date') .
                 " AND opportunities.assigned_user_id = users.id  AND opportunities.deleted=0 ";
         $query .= " GROUP BY opportunities.sales_stage";
         return $query;
     }
 
-    protected function prepareChartData($data,$currency_symbol, $thousands_symbol)
+    protected function prepareChartData($data, $currency_symbol, $thousands_symbol)
     {
         //return $data;
         $chart['labels']=array();
         $chart['data']=array();
         $chart['keys']=array();
         $total = 0;
-        foreach($data as $i)
-        {
+        foreach ($data as $i) {
             //$chart['labelsAndValues'][]=$i['key'].' ('.$currency.(int)$i['total'].')';
             $chart['labelsAndValues'][]=$this->resizeLabel($i['value']).' ('.$currency_symbol.(int)$i['total'].$thousands_symbol.')';
             $chart['labels'][]=$i['value'];
@@ -356,13 +359,10 @@ EOD;
 
     protected function resizeLabel($label)
     {
-        if(strlen($label) < $this->maxLabelSizeBeforeTotal)
+        if (strlen($label) < $this->maxLabelSizeBeforeTotal) {
             return $label;
-        else
-            return substr($label,0,$this->maxLabelSizeBeforeTotal).$this->labelReplacementString;
-
+        } else {
+            return substr($label, 0, $this->maxLabelSizeBeforeTotal).$this->labelReplacementString;
+        }
     }
-
-
-
 }

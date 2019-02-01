@@ -2,8 +2,7 @@
 
 class TrackerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
-    
-    protected function storeStateAll() 
+    protected function storeStateAll()
     {
         // save state
         
@@ -13,12 +12,11 @@ class TrackerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         return $state;
     }
     
-    protected function restoreStateAll($state) 
+    protected function restoreStateAll($state)
     {
         // clean up
         
         $state->popGlobals();
-        
     }
     
     public function testTracker()
@@ -116,11 +114,11 @@ class TrackerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     {
         $this->markTestIncomplete('Undefined variable: _SESSION');
 //        // save state
-//        
+//
 //        $state = $this->storeStateAll();
-//        
+//
 //        // test
-//        
+//
 //
 //        //test without setting headerDisplayed
 //        Tracker::logPage();
@@ -130,9 +128,9 @@ class TrackerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 //        $GLOBALS['app']->headerDisplayed = 1;
 //        Tracker::logPage();
 //        $this->assertEquals(time(), $_SESSION['lpage']);
-//        
+//
 //        // clean up
-//        
+//
 //        $this->restoreStateAll($state);
     }
 }

@@ -19,7 +19,6 @@ class CampaignLogTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testget_list_view_data()
     {
-
         $campaignLog = new CampaignLog();
 
         //execute the method and verify it returns an array

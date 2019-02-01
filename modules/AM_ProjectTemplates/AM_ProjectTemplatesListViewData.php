@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -45,27 +47,27 @@ require_once('include/EditView/SugarVCR.php');
  * Data set for ListView
  * @api
  */
-class AM_ProjectTemplatesListViewData extends ListViewData{
+class AM_ProjectTemplatesListViewData extends ListViewData
+{
 
 
-	/**
-	 * generates the additional details span to be retrieved via ajax
-	 *
-	 * @param GUID id id of the record
-	 * @return array string to attach to field
-	 */
-	function getAdditionalDetailsAjax($id)
+    /**
+     * generates the additional details span to be retrieved via ajax
+     *
+     * @param GUID id id of the record
+     * @return array string to attach to field
+     */
+    public function getAdditionalDetailsAjax($id)
     {
         global $app_strings;
 
         $jscalendarImage = SugarThemeRegistry::current()->getImageURL('info_inline.gif');
-		$jsdetailviewImage = SugarThemeRegistry::current()->getImageURL('detailview.gif');
+        $jsdetailviewImage = SugarThemeRegistry::current()->getImageURL('detailview.gif');
 
         $extra = "<span id='aadspan_" . $id . "' "
                 . "onclick=\"location.href='index.php?module=AM_ProjectTemplates&action=DetailView&record=". $id ."'\" "
-				. " style='position: relative;'><!--not_in_theme!--><img vertical-align='middle' class='info' border='0' alt='".$app_strings['LBL_ADDITIONAL_DETAILS']."' src='$jsdetailviewImage'></span>";
+                . " style='position: relative;'><!--not_in_theme!--><img vertical-align='middle' class='info' border='0' alt='".$app_strings['LBL_ADDITIONAL_DETAILS']."' src='$jsdetailviewImage'></span>";
 
         //return array('fieldToAddTo' => $this->additionalDetailsFieldToAdd, 'string' => $extra);
-	}
-
+    }
 }

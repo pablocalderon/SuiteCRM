@@ -2,20 +2,19 @@
 
 class SchedulersJobTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
-    
     protected $state;
     
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         
         $this->state = new \SuiteCRM\StateSaver();
         $this->state->pushTable('aod_index');
         $this->state->pushGlobals();
-        
     }
     
-    protected function tearDown() {
-        
+    protected function tearDown()
+    {
         $this->state->popTable('aod_index');
         $this->state->popGlobals();
         
@@ -43,7 +42,6 @@ class SchedulersJobTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheck_date_relationships_load()
     {
-
         $schedulersJob = new SchedulersJob();
         $schedulersJob->execute_time = '2015-01-01 00:00:00';
 
@@ -68,7 +66,7 @@ class SchedulersJobTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testfireUrl()
     {
         $this->markTestIncomplete("fireUrl('https://suitecrm.com/'); <- doesnt works in travis");
-//        
+//
 //        $schedulersJob = new SchedulersJob();
 //
 //        //test with invalid param
@@ -148,7 +146,6 @@ class SchedulersJobTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testonFailureRetry()
     {
-
         $this->markTestIncomplete('method has no implementation: logic hooks not defined');
         
         $schedulersJob = new SchedulersJob();
@@ -164,7 +161,6 @@ class SchedulersJobTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testonFinalFailure()
     {
-
         $this->markTestIncomplete('method has no implementation: logic hooks not defined');
         
         $schedulersJob = new SchedulersJob();
@@ -247,7 +243,7 @@ class SchedulersJobTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     {
 
         //test with invalid job id
-        $result = SchedulersJob::runJobId('1','');
+        $result = SchedulersJob::runJobId('1', '');
         $this->assertEquals('Job 1 not found.', $result);
 
         //test with valid job id

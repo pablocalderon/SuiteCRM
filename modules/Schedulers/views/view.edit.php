@@ -63,11 +63,11 @@ class SchedulersViewEdit extends ViewEdit
     }
 
     /**
-	 * @see SugarView::_getModuleTitleListParam()
-	 */
-	protected function _getModuleTitleListParam($browserTitle = false)
-	{
-	    global $mod_strings;
+     * @see SugarView::_getModuleTitleListParam()
+     */
+    protected function _getModuleTitleListParam($browserTitle = false)
+    {
+        global $mod_strings;
 
         return "<a href='index.php?module=Schedulers&action=index'>" . $mod_strings['LBL_MODULE_TITLE'] . "</a>";
     }
@@ -139,13 +139,13 @@ class SchedulersViewEdit extends ViewEdit
             // We have a "BASIC" type of hour setting
             $this->ss->assign('basic_interval', $exInterval[1]);
             $this->ss->assign('basic_period', 'hour');
-            // Minutes
+        // Minutes
         } elseif (strpos($exInterval[0], '*/') !== false && $exInterval[1] == '*') {
             // we have a "BASIC" type of min setting
             $exMins = explode('/', $exInterval[0]);
             $this->ss->assign('basic_interval', $exMins[1]);
             $this->ss->assign('basic_period', 'min');
-            // We've got an advanced time setting
+        // We've got an advanced time setting
         } else {
             $this->ss->assign('basic_interval', 12);
             $this->ss->assign('basic_period', 'hour');

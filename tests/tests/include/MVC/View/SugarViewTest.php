@@ -4,7 +4,6 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
     public function testinit()
     {
-
         $SugarView = new SugarView();
 
         //execute the method and check if it works and doesn't throws an exception
@@ -135,7 +134,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetJavascriptValidation()
     {
-        //check if it returns any text i-e JS code    	
+        //check if it returns any text i-e JS code
         $js = SugarView::getJavascriptValidation();
         $this->assertGreaterThan(0, strlen($js));
     }
@@ -182,8 +181,6 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetMenu()
     {
-
-
         $SugarView = new SugarView();
 
         //execute the method and check if it works and throws an exception if no module is provided
@@ -193,7 +190,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     		//check first with invalid value and test if it throws an exception
     		$menu = $SugarView->getMenu();
     		//$this->assertTrue(is_array($menu));
-    		 
+
     	} catch (Exception $e) {
     		$this->assertTrue(TRUE);
     		//$this->fail("\nException: " . get_class($e) . ": " . $e->getMessage() . "\nin " . $e->getFile() . ':' . $e->getLine() . "\nTrace:\n" . $e->getTraceAsString() . "\n");

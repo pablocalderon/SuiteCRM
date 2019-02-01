@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -41,7 +43,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  
 
 
-$mod_strings = array (
+$mod_strings = array(
   'LBL_MODULE_NAME' => 'History',
   'LBL_MODULE_TITLE' => 'History: Home',
   'LBL_SEARCH_FORM_TITLE' => 'History Search',
@@ -102,17 +104,15 @@ $mod_strings = array (
   'LBL_LIST_LAST_MODIFIED' => 'Last Modified',
   'NTC_NONE_SCHEDULED' => 'None scheduled.',
   'appointment_filter_dom' => array(
-  	 'today' => 'today'
-  	,'tomorrow' => 'tomorrow'
-  	,'this Saturday' => 'this week'
-  	,'next Saturday' => 'next week'
-  	,'last this_month' => 'this month'
-  	,'last next_month' => 'next month'
+     'today' => 'today'
+    ,'tomorrow' => 'tomorrow'
+    ,'this Saturday' => 'this week'
+    ,'next Saturday' => 'next week'
+    ,'last this_month' => 'this month'
+    ,'last next_month' => 'next month'
   ),
   'LNK_IMPORT_NOTES'=>'Import Notes',
   'NTC_NONE'=>'None',
-	'LBL_ACCEPT_THIS'=>'Accept?',
-	'LBL_DEFAULT_SUBPANEL_TITLE' => 'History',
+    'LBL_ACCEPT_THIS'=>'Accept?',
+    'LBL_DEFAULT_SUBPANEL_TITLE' => 'History',
 );
-
-?>

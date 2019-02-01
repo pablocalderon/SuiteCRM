@@ -23,7 +23,6 @@ class ProspectTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testfill_in_additional_list_fields()
     {
-
         $prospect = new Prospect();
 
         $prospect->salutation = 'mr';
@@ -81,7 +80,6 @@ class ProspectTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         } catch (Exception $e) {
             $this->fail("\nException: " . get_class($e) . ": " . $e->getMessage() . "\nin " . $e->getFile() . ':' . $e->getLine() . "\nTrace:\n" . $e->getTraceAsString() . "\n");
         }
-
     }
 
     public function testbean_implements()

@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -39,16 +41,15 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  ********************************************************************************/
 
 
-$mod_strings = array ( 
-	'LBL_MODULE_NAME'			=> 'Groups',
-	'LBL_GROUP_NAME'			=> 'Group Name:',
-	'LBL_DESCRIPTION'			=> 'Description:',
-	'LBL_TEAM'					=> 'Team:',
-	// ListView
-	'LBL_LIST_TITLE'			=> 'Groups',
-	// Links
-	'LNK_ALL_GROUPS'			=> 'All Groups',
-	'LNK_NEW_GROUP'				=> 'Create Group',
-	'LNK_CONVERT_USER'			=> 'Convert User to Group', 
+$mod_strings = array(
+    'LBL_MODULE_NAME'			=> 'Groups',
+    'LBL_GROUP_NAME'			=> 'Group Name:',
+    'LBL_DESCRIPTION'			=> 'Description:',
+    'LBL_TEAM'					=> 'Team:',
+    // ListView
+    'LBL_LIST_TITLE'			=> 'Groups',
+    // Links
+    'LNK_ALL_GROUPS'			=> 'All Groups',
+    'LNK_NEW_GROUP'				=> 'Create Group',
+    'LNK_CONVERT_USER'			=> 'Convert User to Group',
 );
-?>

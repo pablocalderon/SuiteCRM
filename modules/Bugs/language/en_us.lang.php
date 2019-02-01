@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -46,7 +48,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
   'LBL_MODULE_NAME' => 'Bugs',
   'LBL_MODULE_TITLE' => 'Bug Tracker: Home',
   'LBL_MODULE_ID' => 'Bugs',
@@ -111,12 +113,12 @@ $mod_strings = array (
   'LBL_DOCUMENTS_SUBPANEL_TITLE' => 'Documents',
   'LBL_SYSTEM_ID' => 'System ID',
   'LBL_LIST_ASSIGNED_TO_NAME' => 'Assigned User',
-	'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
+    'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
 
-	'LBL_BUG_INFORMATION' => 'OVERVIEW',
+    'LBL_BUG_INFORMATION' => 'OVERVIEW',
 
     //For export labels
-	'LBL_FOUND_IN_RELEASE_NAME' => 'Found In Release Name',
+    'LBL_FOUND_IN_RELEASE_NAME' => 'Found In Release Name',
     'LBL_PORTAL_VIEWABLE' => 'Portal Viewable',
     'LBL_EXPORT_ASSIGNED_USER_NAME' => 'Assigned User Name',
     'LBL_EXPORT_ASSIGNED_USER_ID' => 'Assigned User ID',
@@ -126,4 +128,3 @@ $mod_strings = array (
 
 
   );
-?>

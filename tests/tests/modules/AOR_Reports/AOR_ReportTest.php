@@ -159,7 +159,6 @@ class AOR_ReportTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // clean up
         
         $state->popGlobals();
-        
     }
 
     public function testbuild_report_html()
@@ -225,7 +224,6 @@ class AOR_ReportTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testbuild_report_csv()
     {
-
         $this->markTestIncomplete('Can Not be implemented');
 
         //this method uses exit so it cannot be tested
@@ -296,7 +294,7 @@ class AOR_ReportTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         //test with type relationship and verify that it retunrs expected results
         $expected = array('join' => array('accounts_contacts' => "LEFT JOIN accounts_contacts `accounts|accounts_contacts` ON `accounts`.id=`accounts|accounts_contacts`.account_id AND `accounts|accounts_contacts`.deleted=0\n\nLEFT JOIN contacts `accounts_contacts` ON `accounts_contacts`.id=`accounts|accounts_contacts`.contact_id AND `accounts_contacts`.deleted=0\n"),
             'id_select' => array('accounts_contacts' => '`accounts_contacts`.id AS \'accounts_contacts_id\''),
-            'id_select_group' => array ('accounts_contacts' => '`accounts_contacts`.id'));
+            'id_select_group' => array('accounts_contacts' => '`accounts_contacts`.id'));
         $actual = $aor_Report->build_report_query_join('contacts', 'accounts_contacts', 'accounts', new Account(), 'relationship', array());
         $this->assertSame($expected, $actual);
     }

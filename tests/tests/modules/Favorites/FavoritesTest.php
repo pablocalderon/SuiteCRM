@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 class FavoritesTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
@@ -19,7 +19,6 @@ class FavoritesTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdeleteFavorite()
     {
-
         $favorites = new Favorites();
 
         //testing with an empty ID

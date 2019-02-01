@@ -226,7 +226,7 @@ class MergeRecord extends SugarBean
     public function bean_implements($interface)
     {
         switch ($interface) {
-            case 'ACL' :
+            case 'ACL':
                 return true;
             default:
                 return false;
@@ -286,7 +286,6 @@ class MergeRecord extends SugarBean
             $searchTypeString = $key.'SearchType';
 
             if (isset($search_params[$searchFieldString])) {
-                
                 $searchParamSearchTypeString = null;
                 if (isset($search_params[$searchTypeString])) {
                     $searchParamSearchTypeString = $search_params[$searchTypeString];

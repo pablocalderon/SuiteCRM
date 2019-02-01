@@ -2,8 +2,8 @@
 
 
 class SecurityGroupTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
-{  
-    protected function storeStateAll() 
+{
+    protected function storeStateAll()
     {
         // save state
         
@@ -15,14 +15,13 @@ class SecurityGroupTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         return $state;
     }
     
-    protected function restoreStateAll($state) 
+    protected function restoreStateAll($state)
     {
         // clean up
         
         $state->popGlobals();
         $state->popTable('securitygroups_records');
         $state->popTable('securitygroups');
-        
     }
     
     public function testSecurityGroup()

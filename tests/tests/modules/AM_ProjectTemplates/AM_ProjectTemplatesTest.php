@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 
 class AM_ProjectTemplatesTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
@@ -30,6 +30,5 @@ class AM_ProjectTemplatesTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstra
         // clean up
         
         $state->popTable('aod_index');
-        
     }
 }

@@ -41,32 +41,36 @@
  * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
  */
 require_once('modules/OutboundEmailAccounts/OutboundEmailAccounts_sugar.php');
-class OutboundEmailAccounts extends OutboundEmailAccounts_sugar {
+class OutboundEmailAccounts extends OutboundEmailAccounts_sugar
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-	function __construct(){
-		parent::__construct();
-	}
+    public function save($check_notify = false)
+    {
+        if (!$this->mail_smtppass && $this->id) {
+            $bean = new OutboundEmailAccounts();
+            $bean->retrieve($this->id);
+            $this->mail_smtppass = $bean->mail_smtppass;
+        }
+        $this->mail_smtppass = $this->mail_smtppass ? blowfishEncode(blowfishGetKey('OutBoundEmail'), $this->mail_smtppass) : null;
+        $results = parent::save($check_notify);
+        return $results;
+    }
 
-	public function save($check_notify = false) {
-		if(!$this->mail_smtppass && $this->id) {
-			$bean = new OutboundEmailAccounts();
-			$bean->retrieve($this->id);
-			$this->mail_smtppass = $bean->mail_smtppass;
-		}
-		$this->mail_smtppass = $this->mail_smtppass ? blowfishEncode(blowfishGetKey('OutBoundEmail'), $this->mail_smtppass) : null;
-		$results = parent::save($check_notify);
-		return $results;
-	}
+    public function retrieve($id = -1, $encode = true, $deleted = true)
+    {
+        $results = parent::retrieve($id, $encode, $deleted);
+        $this->mail_smtppass = $this->mail_smtppass ? blowfishDecode(blowfishGetKey('OutBoundEmail'), $this->mail_smtppass) : null;
+        return $results;
+    }
 
-	public function retrieve($id = -1, $encode = true, $deleted = true) {
-		$results = parent::retrieve($id, $encode, $deleted);
-		$this->mail_smtppass = $this->mail_smtppass ? blowfishDecode(blowfishGetKey('OutBoundEmail'), $this->mail_smtppass) : null;
-		return $results;
-	}
-
-	public static function getPasswordChange() {
-		global $mod_strings;
-		$html = <<<HTML
+    public static function getPasswordChange()
+    {
+        global $mod_strings;
+        $html = <<<HTML
 <script type="text/javascript">
 var passwordToggle = function(elem, sel) {
 	$(sel).show();
@@ -79,28 +83,30 @@ var passwordToggle = function(elem, sel) {
 <a href="javascript:;" onclick="passwordToggle(this, '#password_toggle');">{$mod_strings['LBL_CHANGE_PASSWORD']}</a>
 
 HTML;
-		return $html;
-	}
+        return $html;
+    }
 
-	public static function getEmailProviderChooser($focus, $name, $value, $view) {
-		global $app_strings, $mod_strings;
-		$ss = new Sugar_Smarty();
-		$ss->assign('APP', $app_strings);
-		$ss->assign('MOD', $mod_strings);
-		$ss->assign('mail_smtptype', $focus->mail_smtptype);
-		$html = $ss->fetch('modules/OutboundEmailAccounts/smtpPreselection.tpl');
-		return $html;
-	}
+    public static function getEmailProviderChooser($focus, $name, $value, $view)
+    {
+        global $app_strings, $mod_strings;
+        $ss = new Sugar_Smarty();
+        $ss->assign('APP', $app_strings);
+        $ss->assign('MOD', $mod_strings);
+        $ss->assign('mail_smtptype', $focus->mail_smtptype);
+        $html = $ss->fetch('modules/OutboundEmailAccounts/smtpPreselection.tpl');
+        return $html;
+    }
 
-	public static function getSendTestEmailBtn() {
-		global $app_strings, $current_user;
-		$APP = $app_strings;
-		$CURRENT_USER_EMAIL = $current_user->email1;
-		$admin = new Administration();
-		$admin->retrieveSettings();
-		$adminNotifyFromAddress = $admin->settings['notify_fromaddress'];
-		$adminNotifyFromName = $admin->settings['notify_fromname'];
-		$html = <<<HTML
+    public static function getSendTestEmailBtn()
+    {
+        global $app_strings, $current_user;
+        $APP = $app_strings;
+        $CURRENT_USER_EMAIL = $current_user->email1;
+        $admin = new Administration();
+        $admin->retrieveSettings();
+        $adminNotifyFromAddress = $admin->settings['notify_fromaddress'];
+        $adminNotifyFromName = $admin->settings['notify_fromname'];
+        $html = <<<HTML
 			<input type="button" class="button" value="{$APP['LBL_EMAIL_TEST_OUTBOUND_SETTINGS']}" onclick="testOutboundSettings();">
 			<script type="text/javascript" src="cache/include/javascript/sugar_grp_yui_widgets.js"></script>
 			<script type="text/javascript">
@@ -221,8 +227,6 @@ HTML;
 				</div>
 			</div>
 HTML;
-		return $html;
-	}
-	
+        return $html;
+    }
 }
-?>

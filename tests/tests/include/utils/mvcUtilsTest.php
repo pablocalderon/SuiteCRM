@@ -51,7 +51,7 @@ class mvc_utilsTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         global $sugar_config;
         $ajaxUIDisabled = isset($sugar_config['disableAjaxUI']) && $sugar_config['disableAjaxUI'];
 
-        if(!$ajaxUIDisabled) {
+        if (!$ajaxUIDisabled) {
             $this->assertSame('?action=ajaxui#ajaxUILoc=', ajaxLink(''));
             $testModules = array(
                 'Calendar',
@@ -95,9 +95,9 @@ class mvc_utilsTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
                 'OAuthKeys'
             );
             $bannedModules = ajaxBannedModules();
-            foreach($testModules as $module) {
+            foreach ($testModules as $module) {
                 $uri = "index.php?module=$module&action=detail&record=1";
-                if(!in_array($module, $bannedModules)) {
+                if (!in_array($module, $bannedModules)) {
                     $this->assertSame("?action=ajaxui#ajaxUILoc=" . urlencode($uri), ajaxLink($uri));
                 } else {
                     $this->assertSame($uri, ajaxLink($uri));

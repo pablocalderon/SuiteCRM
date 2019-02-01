@@ -294,7 +294,6 @@ class OpportunityTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // clean up
         
         $state->popGlobals();
-
     }
 
     public function testget_account_detail()
@@ -307,7 +306,6 @@ class OpportunityTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetCurrencyType()
     {
-
         $this->markTestIncomplete('This method has no implementation');
 
         //execute the method and test if it works and does not throws an exception.

@@ -84,7 +84,6 @@ if (isset($_REQUEST['loginErrorMessage'])) {
         $sugar_smarty->assign('LOGIN_ERROR_MESSAGE', $mod_strings[$_REQUEST['loginErrorMessage']]);
     } else {
         if (isset($app_strings[$_REQUEST['loginErrorMessage']])) {
-
             $sugar_smarty->assign('LOGIN_ERROR_MESSAGE', $app_strings[$_REQUEST['loginErrorMessage']]);
         }
     }
@@ -171,7 +170,6 @@ if (
     !empty($admin->settings['captcha_private_key']) &&
     !empty($admin->settings['captcha_public_key'])
 ) {
-
     $captcha_privatekey = $admin->settings['captcha_private_key'];
     $captcha_publickey = $admin->settings['captcha_public_key'];
     $captcha_js .=
@@ -226,7 +224,6 @@ if (
 		</tr>';
     $sugar_smarty->assign('CAPTCHA', $Captcha);
     echo $captcha_js;
-
 } else {
     echo '<script>
 		function validateAndSubmit(){generatepwd();}

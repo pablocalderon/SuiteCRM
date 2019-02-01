@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 class AOD_IndexTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
@@ -34,7 +34,6 @@ class AOD_IndexTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testisEnabled()
     {
-
         $aod_index = new AOD_Index();
 
         //execute the method and verify that it returns true
@@ -49,8 +48,8 @@ class AOD_IndexTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $aod_index->id = 1;
         $aod_index->location = 'modules/AOD_Index/Index/Index';
 
-         //execute the method with parameters and verify that it returns true
-         $hits = $aod_index->find('/');
+        //execute the method with parameters and verify that it returns true
+        $hits = $aod_index->find('/');
         $this->assertTrue(is_array($hits));
     }
 
@@ -82,7 +81,7 @@ class AOD_IndexTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $aod_index = new AOD_Index();
         $result = $aod_index->getIndex();
 
-        //execute the method and verify it returns a different instance of samme type 
+        //execute the method and verify it returns a different instance of samme type
         $this->assertInstanceOf('AOD_Index', $result);
         $this->assertNotSame($aod_index, $result);
     }

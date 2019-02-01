@@ -11,7 +11,7 @@ class CampaignTrackerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushTable('campaign_trkrs');
         
-        // test 
+        // test
         
         //execute the contructor and check for the Object type and  attributes
         $campaignTracker = new CampaignTracker();
@@ -36,7 +36,7 @@ class CampaignTrackerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushTable('campaign_trkrs');
         
-        // test 
+        // test
         
         $campaignTracker = new CampaignTracker();
 
@@ -67,7 +67,7 @@ class CampaignTrackerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushTable('campaign_trkrs');
         
-        // test 
+        // test
         
         $campaignTracker = new CampaignTracker();
 
@@ -91,7 +91,7 @@ class CampaignTrackerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $state = new SuiteCRM\StateSaver();
         $state->pushTable('campaign_trkrs');
         
-        // test 
+        // test
         
         $campaignTracker = new CampaignTracker();
 

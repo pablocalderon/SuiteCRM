@@ -5,7 +5,7 @@
  * @package Advanced OpenSales for SugarCRM
  * @subpackage Products
  * @copyright SalesAgility Ltd http://www.salesagility.com
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -23,7 +23,7 @@
  *
  * @author Greg Soper <greg.soper@salesagility.com>
  */
-$mod_strings = array (
+$mod_strings = array(
     'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
     'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
     'LBL_ID' => 'ID',
@@ -209,4 +209,3 @@ $mod_strings = array (
     'LBL_AOS_PRODUCT_QUOTES' => 'Product Quotes',
     'LBL_AOS_QUOTES_PROJECT' => 'Quotes: Project',
 );
-?>

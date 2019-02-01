@@ -1,6 +1,6 @@
 <?php
 
-$mod_strings = array (
+$mod_strings = array(
   'LBL_ALL_MODULES'=>'All',//rost fix
   'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
   'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
@@ -52,7 +52,7 @@ $mod_strings = array (
   'LBL_POPUP_SELECT' => 'Use Creator Group Select',
   'LBL_POPUP_SELECT_DESC' => 'When a record is created by a user in more than one group show a group selection panel on the create screen. Otherwise inherit that one group.',
   'LBL_FILTER_USER_LIST' => 'Filter User List',
-  'LBL_FILTER_USER_LIST_DESC' => "Non-admin users can only assign to users in the same group(s)",  
+  'LBL_FILTER_USER_LIST_DESC' => "Non-admin users can only assign to users in the same group(s)",
   
   'LBL_DEFAULT_GROUP_TITLE' => 'Default Groups for New Records',
   'LBL_ADD_BUTTON_LABEL' => 'Add',
@@ -91,4 +91,3 @@ $mod_strings = array (
   'LBL_PRIMARY_GROUP' => 'Primary Group',
 
 );
-?>

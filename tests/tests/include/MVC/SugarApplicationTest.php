@@ -19,24 +19,24 @@ class SugarApplicationTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     {
         $this->markTestIncomplete('session_destroy(): Trying to destroy uninitialized session');
 //        //cannot test this method as it uses die which stops execution of php unit as well
-//        
+//
 //        $SugarApplication = new SugarApplication();
 //        $SugarApplication->controller = new SugarController();
-//        
+//
 //        try {
 //            $SugarApplication->loadUser();
-//        } 
+//        }
 //        catch (Exception $e) {
 //            $this->fail("\nException: " . get_class($e) . ": " . $e->getMessage() . "\nin " . $e->getFile() . ':' . $e->getLine() . "\nTrace:\n" . $e->getTraceAsString() . "\n");
 //        }
-//        
+//
 //        $this->assertTrue(TRUE);
-//        
+//
     }
 
     public function testACLFilter()
     {
-        // save state 
+        // save state
         
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -96,7 +96,7 @@ class SugarApplicationTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testpreProcess()
     {
-        // save state 
+        // save state
         
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -189,7 +189,6 @@ class SugarApplicationTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testcheckDatabaseVersion()
     {
-
         $SugarApplication = new SugarApplication();
 
         //execute the method with false parameter and check for false returned as it cannot connect to DB.
@@ -228,7 +227,7 @@ class SugarApplicationTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testloadGlobals()
     {
-        // save state 
+        // save state
         
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();
@@ -294,13 +293,13 @@ class SugarApplicationTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         //execute the method and check if it works and doesn't throws an exception
         try {
             ob_start();
-        
+
             $SugarApplication->redirect();
-        
+
             $renderedContent = ob_get_contents();
             ob_end_clean();
             $this->assertGreaterThan(0,strlen($renderedContent));
-             
+
         } catch (Exception $e) {
             $this->fail("\nException: " . get_class($e) . ": " . $e->getMessage() . "\nin " . $e->getFile() . ':' . $e->getLine() . "\nTrace:\n" . $e->getTraceAsString() . "\n");
         }
@@ -319,14 +318,14 @@ class SugarApplicationTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetErrorMessages()
     {
-        //execute the method and check if it returns a array. 
+        //execute the method and check if it returns a array.
         $errorMessages = SugarApplication::getErrorMessages();
         $this->assertTrue(is_array($errorMessages));
     }
 
     public function testsetCookie()
     {
-        // save state 
+        // save state
         
         $state = new \SuiteCRM\StateSaver();
         $state->pushGlobals();

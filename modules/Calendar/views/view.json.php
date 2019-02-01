@@ -39,11 +39,10 @@
 
 require_once('include/MVC/View/SugarView.php');
 
-class CalendarViewJson extends SugarView 
+class CalendarViewJson extends SugarView
 {
-
     public function display()
-    {    
+    {
         if (!isset($this->view_object_map['jsonData']) || !is_array($this->view_object_map['jsonData'])) {
             $GLOBALS['log']->fatal("JSON data has not been passed from Calendar controller");
             sugar_cleanup(true);
@@ -55,5 +54,3 @@ class CalendarViewJson extends SugarView
         echo json_encode($jsonData);
     }
 }
-
-?>

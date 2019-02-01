@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -48,8 +50,8 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	CANCEL HANDLING
-if(!isset($_REQUEST['record']) || empty($_REQUEST['record'])) {
-	header("Location: index.php?module=Emails&action=index");
+if (!isset($_REQUEST['record']) || empty($_REQUEST['record'])) {
+    header("Location: index.php?module=Emails&action=index");
 }
 ////	CANCEL HANDLING
 ///////////////////////////////////////////////////////////////////////////////
@@ -68,72 +70,71 @@ $email_type	= 'archived';
 
 ///////////////////////////////////////////////////////////////////////////////
 ////	TO HANDLE 'NEXT FREE'
-if(!empty($_REQUEST['next_free']) && $_REQUEST['next_free'] == true) {
-	$_REQUEST['record'] = $focus->getNextFree();
+if (!empty($_REQUEST['next_free']) && $_REQUEST['next_free'] == true) {
+    $_REQUEST['record'] = $focus->getNextFree();
 }
 ////	END 'NEXT FREE'
 ///////////////////////////////////////////////////////////////////////////////
 
 if (isset($_REQUEST['offset']) or isset($_REQUEST['record'])) {
-	$result = $detailView->processSugarBean("EMAIL", $focus, $offset);
-	if($result == null) {
-	    sugar_die($app_strings['ERROR_NO_RECORD']);
-	}
-	$focus=$result;
+    $result = $detailView->processSugarBean("EMAIL", $focus, $offset);
+    if ($result == null) {
+        sugar_die($app_strings['ERROR_NO_RECORD']);
+    }
+    $focus=$result;
 } else {
-	header("Location: index.php?module=Emails&action=index");
-	die();
+    header("Location: index.php?module=Emails&action=index");
+    die();
 }
 
 /* if the Email status is draft, say as a saved draft to a Lead/Case/etc.,
  * don't show detail view. go directly to EditView */
-if($focus->status == 'draft') {
-	//header('Location: index.php?module=Emails&action=EditView&record='.$_REQUEST['record']);
-	//die();
+if ($focus->status == 'draft') {
+    //header('Location: index.php?module=Emails&action=EditView&record='.$_REQUEST['record']);
+    //die();
 }
 
 // ACL Access Check
-if (!$focus->ACLAccess('DetailView')){
-	ACLController::displayNoAccess(true);
-	sugar_cleanup(true);
+if (!$focus->ACLAccess('DetailView')) {
+    ACLController::displayNoAccess(true);
+    sugar_cleanup(true);
 }
 
 //needed when creating a new email with default values passed in
 if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) {
-	$focus->contact_name = $_REQUEST['contact_name'];
+    $focus->contact_name = $_REQUEST['contact_name'];
 }
 if (isset($_REQUEST['contact_id']) && is_null($focus->contact_id)) {
-	$focus->contact_id = $_REQUEST['contact_id'];
+    $focus->contact_id = $_REQUEST['contact_id'];
 }
 if (isset($_REQUEST['opportunity_name']) && is_null($focus->parent_name)) {
-	$focus->parent_name = $_REQUEST['opportunity_name'];
+    $focus->parent_name = $_REQUEST['opportunity_name'];
 }
 if (isset($_REQUEST['opportunity_id']) && is_null($focus->parent_id)) {
-	$focus->parent_id = $_REQUEST['opportunity_id'];
+    $focus->parent_id = $_REQUEST['opportunity_id'];
 }
 if (isset($_REQUEST['account_name']) && is_null($focus->parent_name)) {
-	$focus->parent_name = $_REQUEST['account_name'];
+    $focus->parent_name = $_REQUEST['account_name'];
 }
 if (isset($_REQUEST['account_id']) && is_null($focus->parent_id)) {
-	$focus->parent_id = $_REQUEST['account_id'];
+    $focus->parent_id = $_REQUEST['account_id'];
 }
 
 // un/READ flags
 if (!empty($focus->status)) {
-	// "Read" flag for InboundEmail
-	if($focus->status == 'unread') {
-		// creating a new instance here to avoid data corruption below
-		$e = new Email();
-		$e->retrieve($focus->id);
-		$e->status = 'read';
-		$e->save();
-		$email_type = $e->status;
-	} else {
-		$email_type = $focus->status;
-	}
-
+    // "Read" flag for InboundEmail
+    if ($focus->status == 'unread') {
+        // creating a new instance here to avoid data corruption below
+        $e = new Email();
+        $e->retrieve($focus->id);
+        $e->status = 'read';
+        $e->save();
+        $email_type = $e->status;
+    } else {
+        $email_type = $focus->status;
+    }
 } elseif (!empty($_REQUEST['type'])) {
-	$email_type = $_REQUEST['type'];
+    $email_type = $_REQUEST['type'];
 }
 
 
@@ -144,20 +145,20 @@ echo "\n<p>\n";
 $GLOBALS['log']->info("Email detail view");
 $show_forward = true;
 if ($email_type == 'archived') {
-	echo getClassicModuleTitle('Emails', array($mod_strings['LBL_ARCHIVED_EMAIL'],$focus->name), true);
-	$xtpl=new XTemplate ('modules/Emails/DetailView.html');
+    echo getClassicModuleTitle('Emails', array($mod_strings['LBL_ARCHIVED_EMAIL'],$focus->name), true);
+    $xtpl=new XTemplate('modules/Emails/DetailView.html');
 } else {
-	$xtpl=new XTemplate ('modules/Emails/DetailViewSent.html');
-	if($focus->type == 'out') {
-		echo getClassicModuleTitle('Emails', array($mod_strings['LBL_SENT_MODULE_NAME'],$focus->name), true);
-		//$xtpl->assign('DISABLE_REPLY_BUTTON', 'NONE');
-	} elseif ($focus->type == 'draft') {
-		$xtpl->assign('DISABLE_FORWARD_BUTTON', 'NONE');
+    $xtpl=new XTemplate('modules/Emails/DetailViewSent.html');
+    if ($focus->type == 'out') {
+        echo getClassicModuleTitle('Emails', array($mod_strings['LBL_SENT_MODULE_NAME'],$focus->name), true);
+    //$xtpl->assign('DISABLE_REPLY_BUTTON', 'NONE');
+    } elseif ($focus->type == 'draft') {
+        $xtpl->assign('DISABLE_FORWARD_BUTTON', 'NONE');
         $show_forward = false;
-		echo getClassicModuleTitle('Emails', array($mod_strings['LBL_LIST_FORM_DRAFTS_TITLE'],$focus->name), true);
-	} elseif($focus->type == 'inbound') {
-		echo getClassicModuleTitle('Emails', array($mod_strings['LBL_INBOUND_TITLE'],$focus->name), true);
-	}
+        echo getClassicModuleTitle('Emails', array($mod_strings['LBL_LIST_FORM_DRAFTS_TITLE'],$focus->name), true);
+    } elseif ($focus->type == 'inbound') {
+        echo getClassicModuleTitle('Emails', array($mod_strings['LBL_INBOUND_TITLE'],$focus->name), true);
+    }
 }
 echo "\n</p>\n";
 
@@ -170,47 +171,45 @@ $start = $focus->getStartPage($uri);
 $ret_mod = '';
 $ret_action = '';
 if (isset($_REQUEST['return_id'])) { // coming from a subpanel, return_module|action is not set
-	$xtpl->assign('RETURN_ID', $_REQUEST['return_id']);
-	if (isset($_REQUEST['return_module'])){
+    $xtpl->assign('RETURN_ID', $_REQUEST['return_id']);
+    if (isset($_REQUEST['return_module'])) {
         $xtpl->assign('RETURN_MODULE', $_REQUEST['return_module']);
         $ret_mod = $_REQUEST['return_module'];
-    }
-	else {
+    } else {
         $xtpl->assign('RETURN_MODULE', 'Emails');
         $ret_mod = 'Emails';
     }
-	if (isset($_REQUEST['return_action'])){
+    if (isset($_REQUEST['return_action'])) {
         $xtpl->assign('RETURN_ACTION', $_REQUEST['return_action']);
         $ret_action = $_REQUEST['return_action'];
-    }
-	else {
+    } else {
         $xtpl->assign('RETURN_ACTION', 'DetailView');
         $ret_action = 'DetailView';
     }
 }
 
-if(isset($start['action']) && !empty($start['action'])) {
+if (isset($start['action']) && !empty($start['action'])) {
     $xtpl->assign('DELETE_RETURN_ACTION', $start['action']);
 } else {
     $start['action'] = '';
 }
-if(isset($start['module']) && !empty($start['module'])) {
+if (isset($start['module']) && !empty($start['module'])) {
     $xtpl->assign('DELETE_RETURN_MODULE', $start['module']);
 } else {
     $start['module'] = '';
 }
-if(isset($start['record']) && !empty($start['record'])) {
+if (isset($start['record']) && !empty($start['record'])) {
     $xtpl->assign('DELETE_RETURN_ID', $start['record']);
 } else {
     $start['record'] = '';
 }
 // this is to support returning to My Inbox
-if(isset($start['type']) && !empty($start['type'])) {
+if (isset($start['type']) && !empty($start['type'])) {
     $xtpl->assign('DELETE_RETURN_TYPE', $start['type']);
 } else {
     $start['type'] = '';
 }
-if(isset($start['assigned_user_id']) && !empty($start['assigned_user_id'])) {
+if (isset($start['assigned_user_id']) && !empty($start['assigned_user_id'])) {
     $xtpl->assign('DELETE_RETURN_ASSIGNED_USER_ID', $start['assigned_user_id']);
 } else {
     $start['assigned_user_id'] = '';
@@ -224,10 +223,10 @@ if(isset($start['assigned_user_id']) && !empty($start['assigned_user_id'])) {
 
 // DEFAULT TO TEXT IF NO HTML CONTENT:
 $html = trim(from_html($focus->description_html));
-if(empty($html)) {
-	$xtpl->assign('SHOW_PLAINTEXT', 'true');
+if (empty($html)) {
+    $xtpl->assign('SHOW_PLAINTEXT', 'true');
 } else {
-	$xtpl->assign('SHOW_PLAINTEXT', 'false');
+    $xtpl->assign('SHOW_PLAINTEXT', 'false');
 }
 $show_subpanels=true;
 //if the email is of type campaign, process the macros...using the values stored in the relationship table.
@@ -236,8 +235,8 @@ if ($focus->type=='campaign' and !empty($_REQUEST['parent_id']) and !empty($_REQ
     $show_subpanels=false;
     $parent_id=$_REQUEST['parent_id'];
 
-	// cn: bug 14300 - emails_beans schema refactor - fixing query
-	$query="SELECT * FROM emails_beans WHERE email_id='{$focus->db->quote($focus->id)}' AND bean_id='{$focus->db->quote($parent_id)}' AND bean_module = '{$focus->db->quote($_REQUEST['parent_module'])}' " ;
+    // cn: bug 14300 - emails_beans schema refactor - fixing query
+    $query="SELECT * FROM emails_beans WHERE email_id='{$focus->db->quote($focus->id)}' AND bean_id='{$focus->db->quote($parent_id)}' AND bean_module = '{$focus->db->quote($_REQUEST['parent_module'])}' " ;
 
     $res=$focus->db->query($query);
     $row=$focus->db->fetchByAssoc($res);
@@ -252,9 +251,9 @@ if ($focus->type=='campaign' and !empty($_REQUEST['parent_id']) and !empty($_REQ
             $m_keys=array_keys($macro_values);
             $m_values=array_values($macro_values);
 
-            $focus->name = str_replace($m_keys,$m_values,$focus->name);
-            $focus->description = str_replace($m_keys,$m_values,$focus->description);
-            $focus->description_html = str_replace($m_keys,$m_values,$focus->description_html);
+            $focus->name = str_replace($m_keys, $m_values, $focus->name);
+            $focus->description = str_replace($m_keys, $m_values, $focus->description);
+            $focus->description_html = str_replace($m_keys, $m_values, $focus->description_html);
             if (!empty($macro_values['sugar_to_email_address'])) {
                 $focus->to_addrs=$macro_values['sugar_to_email_address'];
             }
@@ -263,8 +262,8 @@ if ($focus->type=='campaign' and !empty($_REQUEST['parent_id']) and !empty($_REQ
 }
 //if not empty or set to test (from test campaigns)
 if (!empty($focus->parent_type) && $focus->parent_type !='test') {
-	$xtpl->assign('PARENT_MODULE', $focus->parent_type);
-	$xtpl->assign('PARENT_TYPE_UNTRANSLATE', $focus->parent_type);
+    $xtpl->assign('PARENT_MODULE', $focus->parent_type);
+    $xtpl->assign('PARENT_TYPE_UNTRANSLATE', $focus->parent_type);
     $xtpl->assign('PARENT_TYPE', $app_list_strings['record_type_display'][$focus->parent_type] . ':');
 }
 
@@ -274,12 +273,12 @@ $cc_addr = !empty($focus->cc_addrs_names) ? htmlspecialchars($focus->cc_addrs_na
 $bcc_addr = !empty($focus->bcc_addrs_names) ? htmlspecialchars($focus->bcc_addrs_names, ENT_COMPAT, 'UTF-8') : nl2br($focus->bcc_addrs);
 
 $parent_link = $focus->parent_name;
-if($focus->parent_id != '' & $focus->parent_type != ''){
-	$parent_link = '<a class="tabDetailViewDFLink" href="index.php?module='.$focus->parent_type.'&action=DetailView&record='.$focus->parent_id.'">'.$focus->parent_name.'</a>';
+if ($focus->parent_id != '' & $focus->parent_type != '') {
+    $parent_link = '<a class="tabDetailViewDFLink" href="index.php?module='.$focus->parent_type.'&action=DetailView&record='.$focus->parent_id.'">'.$focus->parent_name.'</a>';
 }
 $assign_link = $focus->assigned_user_name;
-if($focus->assigned_user_id != '' & $focus->assigned_user_name != ''){
-	$assign_link = '<a class="tabDetailViewDFLink" href="index.php?module=Users&action=DetailView&record='.$focus->assigned_user_id.'">'.$focus->assigned_user_name.'</a>';
+if ($focus->assigned_user_id != '' & $focus->assigned_user_name != '') {
+    $assign_link = '<a class="tabDetailViewDFLink" href="index.php?module=Users&action=DetailView&record='.$focus->assigned_user_id.'">'.$focus->assigned_user_name.'</a>';
 }
 $xtpl->assign('MOD', $mod_strings);
 $xtpl->assign('APP', $app_strings);
@@ -306,19 +305,19 @@ $xtpl->assign('DATE_SENT', $focus->date_entered);
 $xtpl->assign('EMAIL_NAME', 'RE: '.$focus->name);
 $xtpl->assign("TAG", $focus->listviewACLHelper());
 
-$show_raw = FALSE;
-if(!empty($focus->raw_source)) {
+$show_raw = false;
+if (!empty($focus->raw_source)) {
     $xtpl->assign("RAW_METADATA", $focus->id);
-    $show_raw = TRUE;
+    $show_raw = true;
 }
 
-if(!empty($focus->reply_to_email)) {
-	$replyTo = "
+if (!empty($focus->reply_to_email)) {
+    $replyTo = "
 		<tr>
         <td class=\"tabDetailViewDL\"><slot>".$mod_strings['LBL_REPLY_TO_NAME']."</slot></td>
         <td colspan=3 class=\"tabDetailViewDF\"><slot>".$focus->reply_to_email."</slot></td>
         </tr>";
- 	$xtpl->assign("REPLY_TO", $replyTo);
+    $xtpl->assign("REPLY_TO", $replyTo);
 }
 
 
@@ -354,7 +353,7 @@ EOD
 );
 
 // Bug #52046: Disable the 'Show Raw' link where it does not need to be shown.
-if($show_raw) {
+if ($show_raw) {
     $buttons[] = <<<EOD
         <input type="button" name="button" class="button"
             id="rawButton"
@@ -377,8 +376,8 @@ $xtpl->assign("ACTION_BUTTON", $action_button);
 /////////
 ///Using action menu (new UI) instead of buttons for Sent Email DetailView.
 $buttons_sent_email = array();
-if($show_forward){
-$buttons_sent_email[] = <<<EOD
+if ($show_forward) {
+    $buttons_sent_email[] = <<<EOD
             <input title="{$mod_strings['LBL_BUTTON_FORWARD']}"
 					class="button" onclick="this.form.return_module.value='{$ret_mod}';
 											this.form.return_action.value='{$ret_action}';
@@ -428,7 +427,7 @@ $buttons_sent_email[] = <<<EOD
 			>
 EOD;
 
-if($show_raw) {
+if ($show_raw) {
     $buttons_sent_email[] = <<<EOD
             <input type="button" name="button" class="button"
 				id="rawButton"
@@ -457,12 +456,15 @@ $xtpl->assign("JS_VARS", $jsVars);
 
 
 // ADMIN EDIT
-if(is_admin($GLOBALS['current_user']) && $_REQUEST['module'] != 'DynamicLayout' && !empty($_SESSION['editinplace'])){
-	$xtpl->assign("ADMIN_EDIT","<a href='index.php?action=index&module=DynamicLayout&from_action=".$_REQUEST['action'] ."&from_module=".$_REQUEST['module'] ."&record=".$_REQUEST['record']. "'>".SugarThemeRegistry::current()->getImage("EditLayout","border='0' align='bottom'",null,null,'.gif',$mod_strings['LBL_EDIT_LAYOUT'])."</a>");
+if (is_admin($GLOBALS['current_user']) && $_REQUEST['module'] != 'DynamicLayout' && !empty($_SESSION['editinplace'])) {
+    $xtpl->assign("ADMIN_EDIT", "<a href='index.php?action=index&module=DynamicLayout&from_action=".$_REQUEST['action'] ."&from_module=".$_REQUEST['module'] ."&record=".$_REQUEST['record']. "'>".SugarThemeRegistry::current()->getImage("EditLayout", "border='0' align='bottom'", null, null, '.gif', $mod_strings['LBL_EDIT_LAYOUT'])."</a>");
 }
 
-if(isset($_REQUEST['offset']) && !empty($_REQUEST['offset'])) { $offset = $_REQUEST['offset']; }
-else $offset = 1;
+if (isset($_REQUEST['offset']) && !empty($_REQUEST['offset'])) {
+    $offset = $_REQUEST['offset'];
+} else {
+    $offset = 1;
+}
 $detailView->processListNavigation($xtpl, "EMAIL", $offset, false);
 
 
@@ -471,7 +473,7 @@ $detailView->processListNavigation($xtpl, "EMAIL", $offset, false);
 require_once('modules/DynamicFields/templates/Files/DetailView.php');
 $do_open = true;
 if ($do_open) {
-	$xtpl->parse("main.open_source");
+    $xtpl->parse("main.open_source");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -482,20 +484,21 @@ $note = new Note();
 $where = "notes.parent_id='{$focus->id}'";
 //take in account if this is from campaign and the template id is stored in the macros.
 
-if(isset($macro_values) && isset($macro_values['email_template_id'])){
+if (isset($macro_values) && isset($macro_values['email_template_id'])) {
     $where = "notes.parent_id='{$macro_values['email_template_id']}'";
 }
 $notes_list = $note->get_full_list("notes.name", $where, true);
 
-if(! isset($notes_list)) {
-	$notes_list = array();
+if (! isset($notes_list)) {
+    $notes_list = array();
 }
 
 $attachments = '';
-for($i=0; $i<count($notes_list); $i++) {
-	$the_note = $notes_list[$i];
-	if(!empty($the_note->filename))
-    	$attachments .= "<a href=\"index.php?entryPoint=download&id=".$the_note->id."&type=Notes\">".$the_note->name."</a><br />";
+for ($i=0; $i<count($notes_list); $i++) {
+    $the_note = $notes_list[$i];
+    if (!empty($the_note->filename)) {
+        $attachments .= "<a href=\"index.php?entryPoint=download&id=".$the_note->id."&type=Notes\">".$the_note->name."</a><br />";
+    }
     $focus->cid2Link($the_note->id, $the_note->file_mime_type);
 }
 
@@ -519,4 +522,3 @@ if ($show_subpanels) {
     $subpanel = new SubPanelTiles($focus, 'Emails');
     echo $subpanel->display();
 }
-?>

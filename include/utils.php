@@ -259,8 +259,10 @@ function get_sugar_config_defaults()
             'debug' => 0,
             'ssl' => false, ),
         'default_action' => 'index',
-        'default_charset' => return_session_value_or_default('default_charset',
-            'UTF-8'),
+        'default_charset' => return_session_value_or_default(
+            'default_charset',
+            'UTF-8'
+        ),
         'default_currency_name' => return_session_value_or_default('default_currency_name', 'US Dollar'),
         'default_currency_symbol' => return_session_value_or_default('default_currency_symbol', '$'),
         'default_currency_iso4217' => return_session_value_or_default('default_currency_iso4217', 'USD'),
@@ -270,8 +272,10 @@ function get_sugar_config_defaults()
         'default_date_format' => 'm/d/Y',
         'default_locale_name_format' => 's f l',
         'default_export_charset' => 'UTF-8',
-        'default_language' => return_session_value_or_default('default_language',
-            'en_us'),
+        'default_language' => return_session_value_or_default(
+            'default_language',
+            'en_us'
+        ),
         'default_module' => 'Home',
         'default_password' => '',
         'default_permissions' => array(
@@ -285,8 +289,10 @@ function get_sugar_config_defaults()
         'default_user_is_admin' => false,
         'default_user_name' => '',
         'disable_export' => false,
-        'disable_persistent_connections' => return_session_value_or_default('disable_persistent_connections',
-            'false'),
+        'disable_persistent_connections' => return_session_value_or_default(
+            'disable_persistent_connections',
+            'false'
+        ),
         'display_email_template_variable_chooser' => false,
         'display_inbound_email_buttons' => false,
         'dump_slow_queries' => false,
@@ -311,8 +317,10 @@ function get_sugar_config_defaults()
             'default_limit' => 1000,
         ),
         'require_accounts' => true,
-        'rss_cache_time' => return_session_value_or_default('rss_cache_time',
-            '10800'),
+        'rss_cache_time' => return_session_value_or_default(
+            'rss_cache_time',
+            '10800'
+        ),
         'save_query' => 'all',
         'showDetailData' => true, // if true, read-only ACL fields will still appear on EditViews as non-editable
         'showThemePicker' => true,
@@ -1990,7 +1998,8 @@ function clean_xss($str, $cleanImg = true)
     $matches = array_merge($matches, xss_check_pattern($javascript_regex, $str));
 
     if ($cleanImg) {
-        $matches = array_merge($matches,
+        $matches = array_merge(
+            $matches,
             xss_check_pattern($imgsrc_regex, $str)
         );
     }
@@ -2358,13 +2367,16 @@ function clear_register_value($category, $name)
 // this function cleans id's when being imported
 function convert_id($string)
 {
-    return preg_replace_callback('|[^A-Za-z0-9\-]|',
+    return preg_replace_callback(
+        '|[^A-Za-z0-9\-]|',
         create_function(
         // single quotes are essential here,
         // or alternative escape all $ as \$
             '$matches',
             'return ord($matches[0]);'
-        ), $string);
+        ),
+        $string
+    );
 }
 
 /**
@@ -2878,7 +2890,7 @@ function skype_formatted($number)
     } else {
         return substr($number, 0, 1) == '+' || substr($number, 0, 2) == '00' || substr($number, 0, 3) == '011';
     }
-//	return substr($number, 0, 1) == '+' || substr($number, 0, 2) == '00' || substr($number, 0, 2) == '011';
+    //	return substr($number, 0, 1) == '+' || substr($number, 0, 2) == '00' || substr($number, 0, 2) == '011';
 }
 
 function format_skype($number)
@@ -3494,8 +3506,10 @@ function return_bytes($val)
         // The 'G' modifier is available since PHP 5.1.0
         case 'g':
             $val *= 1024;
+            // no break
         case 'm':
             $val *= 1024;
+            // no break
         case 'k':
             $val *= 1024;
     }
@@ -4454,14 +4468,20 @@ function html_entity_decode_utf8($string)
     // replace numeric entities
     //php will have issues with numbers with leading zeros, so do not include them in what we send to code2utf.
 
-    $string = preg_replace_callback('~&#x0*([0-9a-f]+);~i',
+    $string = preg_replace_callback(
+        '~&#x0*([0-9a-f]+);~i',
         function ($matches) {
             return code2utf(hexdec($matches[1]));
-        }, $string);
-    $string = preg_replace_callback('~&#0*([0-9]+);~',
+        },
+        $string
+    );
+    $string = preg_replace_callback(
+        '~&#0*([0-9]+);~',
         function ($matches) {
             return code2utf($matches[1]);
-        }, $string);
+        },
+        $string
+    );
 
     // replace literal entities
     if (!isset($trans_tbl)) {
@@ -4956,8 +4976,11 @@ function verify_image_file($path, $jpeg = false)
         }
 
         fclose($fp);
-        if (preg_match("/<(\?php|html|!doctype|script|body|head|plaintext|table|img |pre(>| )|frameset|iframe|object|link|base|style|font|applet|meta|center|form|isindex)/i",
-            $data, $m)) {
+        if (preg_match(
+            "/<(\?php|html|!doctype|script|body|head|plaintext|table|img |pre(>| )|frameset|iframe|object|link|base|style|font|applet|meta|center|form|isindex)/i",
+            $data,
+            $m
+        )) {
             $GLOBALS['log']->fatal("Found {$m[0]} in $path, not allowing upload");
 
             return false;

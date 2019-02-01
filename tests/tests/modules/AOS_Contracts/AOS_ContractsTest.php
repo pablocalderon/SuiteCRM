@@ -38,7 +38,7 @@ class AOS_ContractsTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
         $aosContracts->save();
 
-        //test for record ID to verify that record is saved 
+        //test for record ID to verify that record is saved
         $this->assertTrue(isset($aosContracts->id));
         $this->assertEquals(36, strlen($aosContracts->id));
 
@@ -63,7 +63,7 @@ class AOS_ContractsTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $aosContracts = new AOS_Contracts();
         $aosContracts->name = 'test';
 
-        //test createReminder() 
+        //test createReminder()
         $aosContracts->createReminder();
 
         //verify record ID to check that record is saved
@@ -79,7 +79,7 @@ class AOS_ContractsTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $call->retrieve($aosContracts->call_id);
         $this->assertAttributeEquals('Accounts', 'parent_type', $call);
 
-        //delete the call and verify that this record cannot be retrieved anymore.		
+        //delete the call and verify that this record cannot be retrieved anymore.
         $aosContracts->deleteCall();
         $call->retrieve($aosContracts->call_id);
         $this->assertEquals(null, $result);

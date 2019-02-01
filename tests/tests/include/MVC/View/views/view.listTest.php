@@ -143,7 +143,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         
         // test
         
-        //test without any REQUEST parameters set. it will set searchform attribute to a searchform object. 
+        //test without any REQUEST parameters set. it will set searchform attribute to a searchform object.
         $view1 = new ViewList();
         $view1->module = 'Users';
         $view1->prepareSearchForm();
@@ -237,7 +237,7 @@ class ViewListTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         ob_end_clean();
         $this->assertGreaterThan(0, strlen($renderedContent1));
 
-        //test with bean, seed and other arrtibutes set. it shuold return html. 
+        //test with bean, seed and other arrtibutes set. it shuold return html.
         $view->bean = new User();
         $view->seed = new User();
         $view->module = 'Users';

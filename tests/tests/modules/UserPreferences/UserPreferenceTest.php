@@ -204,6 +204,5 @@ class UserPreferenceTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $current_user->retrieve('1');
 
         //UserPreference::updateAllUserPrefs("test","test val");
-
     }
 }

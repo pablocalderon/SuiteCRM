@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -67,8 +69,8 @@ $limit			= 10;
 ////	OUTPUT
 ///////////////////////////////////////////////////////////////////////////////
 echo $focus->rolloverStyle;
-$ListView->initNewXTemplate('modules/Emails/ListViewHome.html',$current_mod_strings);
-$ListView->xTemplateAssign('ATTACHMENT_HEADER', SugarThemeRegistry::current()->getImage('attachment',"","","",'.gif',$mod_strings['LBL_ATTACHMENT']));
+$ListView->initNewXTemplate('modules/Emails/ListViewHome.html', $current_mod_strings);
+$ListView->xTemplateAssign('ATTACHMENT_HEADER', SugarThemeRegistry::current()->getImage('attachment', "", "", "", '.gif', $mod_strings['LBL_ATTACHMENT']));
 $ListView->setHeaderTitle($display_title);
 $ListView->setQuery($where, '', 'date_sent, date_entered DESC', "EMAIL");
 $ListView->setAdditionalDetails();
@@ -77,4 +79,3 @@ $ListView->processListView($focus, 'main', 'EMAIL');
 //echo $focus->quickCreateJS();
 
 $sugar_config['list_max_entries_per_page'] = $currentMax;
-?>

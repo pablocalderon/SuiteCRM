@@ -62,7 +62,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
     $_POST['client_id_address'] = query_client_ip();
     $campaign = new Campaign();
     $campaign_id = $campaign->db->quote($_POST['campaign_id']);
-    if(!isValidId($campaign_id)) {
+    if (!isValidId($campaign_id)) {
         throw new RuntimeException('Invalid ID requested in Person Capture');
     }
     $camp_query = "select name,id from campaigns where id='$campaign_id'";
@@ -119,10 +119,9 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
         //As form base items are not necessarily in place for the custom classes that extend Person, cannot use
         //the hendleSave method of the formbase
         if (!empty($person)) {
-
             $filteredFieldsFromPersonBean = filterFieldsFromBeans(array($person));
             $possiblePersonCaptureFields = array('campaign_id', 'assigned_user_id');
-            foreach($filteredFieldsFromPersonBean[0]->fields as $field) {
+            foreach ($filteredFieldsFromPersonBean[0]->fields as $field) {
                 $possiblePersonCaptureFields[] = $field[1];
             }
 
@@ -139,7 +138,6 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                         $GLOBALS['log']->warn('Trying to set a non-valid field via WebToPerson Form: ' . $k);
                     }
                 }
-
             }
         }
 

@@ -20,7 +20,6 @@ class CampaignTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testlist_view_parse_additional_sections()
     {
-        
         $this->markTestIncomplete('Undefined index: ASSIGNED_USER_NAME');
 
         $campaign = new Campaign();
@@ -259,7 +258,7 @@ class CampaignTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         $actual = $campaign->get_queue_items();
         $this->assertSame($expected, $actual);
 
-        //with parameters		
+        //with parameters
         $expected = "SELECT emailman.* ,\n					campaigns.name as campaign_name,\n					email_marketing.name as message_name,\n					(CASE related_type\n						WHEN 'Contacts' THEN LTRIM(RTRIM(CONCAT(IFNULL(contacts.first_name,''),'&nbsp;',IFNULL(contacts.last_name,''))))\n						WHEN 'Leads' THEN LTRIM(RTRIM(CONCAT(IFNULL(leads.first_name,''),'&nbsp;',IFNULL(leads.last_name,''))))\n						WHEN 'Accounts' THEN accounts.name\n						WHEN 'Users' THEN LTRIM(RTRIM(CONCAT(IFNULL(users.first_name,''),'&nbsp;',IFNULL(users.last_name,''))))\n						WHEN 'Prospects' THEN LTRIM(RTRIM(CONCAT(IFNULL(prospects.first_name,''),'&nbsp;',IFNULL(prospects.last_name,''))))\n					END) recipient_name FROM emailman\n		            LEFT JOIN users ON users.id = emailman.related_id and emailman.related_type ='Users'\n					LEFT JOIN contacts ON contacts.id = emailman.related_id and emailman.related_type ='Contacts'\n					LEFT JOIN leads ON leads.id = emailman.related_id and emailman.related_type ='Leads'\n					LEFT JOIN accounts ON accounts.id = emailman.related_id and emailman.related_type ='Accounts'\n					LEFT JOIN prospects ON prospects.id = emailman.related_id and emailman.related_type ='Prospects'\n					LEFT JOIN prospect_lists ON prospect_lists.id = emailman.list_id\n                    LEFT JOIN email_addr_bean_rel ON email_addr_bean_rel.bean_id = emailman.related_id and emailman.related_type = email_addr_bean_rel.bean_module and email_addr_bean_rel.primary_address = 1 and email_addr_bean_rel.deleted=0\n					LEFT JOIN campaigns ON campaigns.id = emailman.campaign_id\n					LEFT JOIN email_marketing ON email_marketing.id = emailman.marketing_id INNER JOIN (select min(id) as id from emailman  em GROUP BY users.id  ) secondary\n			           on emailman.id = secondary.id	WHERE  emailman.campaign_id = '' AND emailman.deleted=0 AND marketing_id ='1'  AND  emailman.deleted=0";
         $actual = $campaign->get_queue_items(array('EMAIL_MARKETING_ID_VALUE' => 1, 'group_by' => 'users.id'));
         $this->assertSame($expected, $actual);

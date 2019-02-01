@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -38,167 +40,167 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  ********************************************************************************/
 
-$searchFields['Accounts'] = array (
-  'name' => 
-  array (
+$searchFields['Accounts'] = array(
+  'name' =>
+  array(
     'query_type' => 'default',
   ),
-  'account_type' => 
-  array (
+  'account_type' =>
+  array(
     'query_type' => 'default',
     'options' => 'account_type_dom',
     'template_var' => 'ACCOUNT_TYPE_OPTIONS',
   ),
-  'industry' => 
-  array (
+  'industry' =>
+  array(
     'query_type' => 'default',
     'options' => 'industry_dom',
     'template_var' => 'INDUSTRY_OPTIONS',
   ),
-  'annual_revenue' => 
-  array (
+  'annual_revenue' =>
+  array(
     'query_type' => 'default',
   ),
-  'address_street' => 
-  array (
+  'address_street' =>
+  array(
     'query_type' => 'default',
-    'db_field' => 
-    array (
+    'db_field' =>
+    array(
       0 => 'billing_address_street',
       1 => 'shipping_address_street',
     ),
   ),
-  'address_city' => 
-  array (
+  'address_city' =>
+  array(
     'query_type' => 'default',
-    'db_field' => 
-    array (
+    'db_field' =>
+    array(
       0 => 'billing_address_city',
       1 => 'shipping_address_city',
     ),
     'vname' => 'LBL_CITY',
   ),
-  'address_state' => 
-  array (
+  'address_state' =>
+  array(
     'query_type' => 'default',
-    'db_field' => 
-    array (
+    'db_field' =>
+    array(
       0 => 'billing_address_state',
       1 => 'shipping_address_state',
     ),
     'vname' => 'LBL_STATE',
   ),
-  'address_postalcode' => 
-  array (
+  'address_postalcode' =>
+  array(
     'query_type' => 'default',
-    'db_field' => 
-    array (
+    'db_field' =>
+    array(
       0 => 'billing_address_postalcode',
       1 => 'shipping_address_postalcode',
     ),
     'vname' => 'LBL_POSTAL_CODE',
   ),
-  'address_country' => 
-  array (
+  'address_country' =>
+  array(
     'query_type' => 'default',
-    'db_field' => 
-    array (
+    'db_field' =>
+    array(
       0 => 'billing_address_country',
       1 => 'shipping_address_country',
     ),
     'vname' => 'LBL_COUNTRY',
   ),
-  'rating' => 
-  array (
+  'rating' =>
+  array(
     'query_type' => 'default',
   ),
-  'phone' => 
-  array (
+  'phone' =>
+  array(
     'query_type' => 'default',
-    'db_field' => 
-    array (
+    'db_field' =>
+    array(
       0 => 'phone_office',
     ),
     'vname' => 'LBL_ANY_PHONE',
   ),
-  'email' => 
-  array (
+  'email' =>
+  array(
     'query_type' => 'default',
     'operator' => 'subquery',
     'subquery' => 'SELECT eabr.bean_id FROM email_addr_bean_rel eabr JOIN email_addresses ea ON (ea.id = eabr.email_address_id) WHERE eabr.deleted=0 AND ea.email_address LIKE',
-    'db_field' => 
-    array (
+    'db_field' =>
+    array(
       0 => 'id',
     ),
     'vname' => 'LBL_ANY_EMAIL',
   ),
-  'website' => 
-  array (
+  'website' =>
+  array(
     'query_type' => 'default',
   ),
-  'ownership' => 
-  array (
+  'ownership' =>
+  array(
     'query_type' => 'default',
   ),
-  'employees' => 
-  array (
+  'employees' =>
+  array(
     'query_type' => 'default',
   ),
-  'sic_code' => 
-  array (
+  'sic_code' =>
+  array(
     'query_type' => 'default',
   ),
-  'ticker_symbol' => 
-  array (
+  'ticker_symbol' =>
+  array(
     'query_type' => 'default',
   ),
-  'current_user_only' => 
-  array (
+  'current_user_only' =>
+  array(
     'query_type' => 'default',
-    'db_field' => 
-    array (
+    'db_field' =>
+    array(
       0 => 'assigned_user_id',
     ),
     'my_items' => true,
     'vname' => 'LBL_CURRENT_USER_FILTER',
     'type' => 'bool',
   ),
-  'assigned_user_id' => 
-  array (
+  'assigned_user_id' =>
+  array(
     'query_type' => 'default',
   ),
-  'range_date_entered' => 
-  array (
-    'query_type' => 'default',
-    'enable_range_search' => true,
-    'is_date_field' => true,
-  ),
-  'start_range_date_entered' => 
-  array (
+  'range_date_entered' =>
+  array(
     'query_type' => 'default',
     'enable_range_search' => true,
     'is_date_field' => true,
   ),
-  'end_range_date_entered' => 
-  array (
+  'start_range_date_entered' =>
+  array(
     'query_type' => 'default',
     'enable_range_search' => true,
     'is_date_field' => true,
   ),
-  'range_date_modified' => 
-  array (
+  'end_range_date_entered' =>
+  array(
     'query_type' => 'default',
     'enable_range_search' => true,
     'is_date_field' => true,
   ),
-  'start_range_date_modified' => 
-  array (
+  'range_date_modified' =>
+  array(
     'query_type' => 'default',
     'enable_range_search' => true,
     'is_date_field' => true,
   ),
-  'end_range_date_modified' => 
-  array (
+  'start_range_date_modified' =>
+  array(
+    'query_type' => 'default',
+    'enable_range_search' => true,
+    'is_date_field' => true,
+  ),
+  'end_range_date_modified' =>
+  array(
     'query_type' => 'default',
     'enable_range_search' => true,
     'is_date_field' => true,

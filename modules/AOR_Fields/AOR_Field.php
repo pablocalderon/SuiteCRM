@@ -73,7 +73,7 @@ class AOR_Field extends Basic
     public $group_display;
     public $aor_report_id;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -81,26 +81,24 @@ class AOR_Field extends Basic
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function AOR_Field(){
+    public function AOR_Field()
+    {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
+        if (isset($GLOBALS['log'])) {
             $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
+        } else {
             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
         }
         self::__construct();
     }
 
 
-    function save_lines($post_data, $parent, $key = '')
+    public function save_lines($post_data, $parent, $key = '')
     {
-
         require_once('modules/AOW_WorkFlow/aow_utils.php');
 
         $line_count = count($post_data[$key . 'field']);
         for ($i = 0; $i < $line_count; ++$i) {
-            
             if (!isset($post_data[$key . 'deleted'][$i])) {
                 LoggerManager::getLogger()->warn('AOR Field trying to save lines but POST data does not contains the key "' . $key . 'deleted' . '" at index: ' . $i);
             }
@@ -131,7 +129,7 @@ class AOR_Field extends Basic
                         if ($field_name != 'group_display' && isset($post_data[$key . $field_name][$i])) {
                             if (is_array($post_data[$key . $field_name][$i])) {
                                 $post_data[$key . $field_name][$i] = base64_encode(serialize($post_data[$key . $field_name][$i]));
-                            } else if ($field_name == 'value') {
+                            } elseif ($field_name == 'value') {
                                 $post_data[$key . $field_name][$i] = fixUpFormatting($_REQUEST['report_module'], $field->field, $post_data[$key . $field_name][$i]);
                             }
                             if ($field_name == 'module_path') {
@@ -145,7 +143,6 @@ class AOR_Field extends Basic
                     } else {
                         throw new Exception('illegal type in post data at key ' . $key . $field_name . ' ' . gettype($post_data[$key . $field_name]));
                     }
-
                 }
                 if (trim($field->field) != '') {
                     $field->aor_report_id = $parent->id;
@@ -154,5 +151,4 @@ class AOR_Field extends Basic
             }
         }
     }
-
 }

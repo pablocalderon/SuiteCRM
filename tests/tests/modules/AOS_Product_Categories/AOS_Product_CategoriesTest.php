@@ -1,8 +1,8 @@
 <?php
 
 class AOS_Product_CategoriesTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
-{    
-    protected function storeStateAll() 
+{
+    protected function storeStateAll()
     {
 
         // save state
@@ -21,7 +21,7 @@ class AOS_Product_CategoriesTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbs
         return $state;
     }
     
-    protected function restoreStateAll($state) 
+    protected function restoreStateAll($state)
     {
 
         // clean up
@@ -34,7 +34,6 @@ class AOS_Product_CategoriesTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbs
         $state->popTable('aos_product_categories');
         $state->popTable('emails');
         $state->popTable('aod_indexevent');
-        
     }
     
     public function testAOS_Product_Categories()

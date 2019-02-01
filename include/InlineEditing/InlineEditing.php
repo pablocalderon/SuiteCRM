@@ -46,7 +46,7 @@ function getEditFieldHTML($module, $fieldname, $aow_field, $view = 'EditView', $
 {
     global $current_language, $app_strings, $app_list_strings, $current_user, $beanFiles, $beanList;
 
-    $bean = BeanFactory::getBean($module,$id);
+    $bean = BeanFactory::getBean($module, $id);
 
     if (!checkAccess($bean)) {
         return false;
@@ -140,7 +140,7 @@ function getEditFieldHTML($module, $fieldname, $aow_field, $view = 'EditView', $
         // Remove all the copyright comments
         $contents = preg_replace('/\{\*[^\}]*?\*\}/', '', $contents);
         // remove extra wrong javascript which breaks auto complete on flexi relationship parent fields
-        $contents = preg_replace("/<script language=\"javascript\">if\(typeof sqs_objects == \'undefined\'\){var sqs_objects = new Array;}sqs_objects\[\'EditView_parent_name\'\].*?<\/script>/","",$contents);
+        $contents = preg_replace("/<script language=\"javascript\">if\(typeof sqs_objects == \'undefined\'\){var sqs_objects = new Array;}sqs_objects\[\'EditView_parent_name\'\].*?<\/script>/", "", $contents);
 
 
         if ($view == 'EditView' && ($vardef['type'] == 'relate' || $vardef['type'] == 'parent')) {
@@ -341,12 +341,12 @@ function saveField($field, $id, $module, $value)
             $bean->$field = $value;
         }
 
-        $check_notify = FALSE;
+        $check_notify = false;
 
         if (isset($bean->fetched_row['assigned_user_id']) && $field == "assigned_user_name") {
             $old_assigned_user_id = $bean->fetched_row['assigned_user_id'];
             if (!empty($value) && ($old_assigned_user_id != $value) && ($value != $current_user->id)) {
-                $check_notify = TRUE;
+                $check_notify = true;
             }
         }
 
@@ -420,7 +420,6 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
 
     //If field is of type date time, datetimecombo or date
     if ($vardef['type'] == "datetimecombo" || $vardef['type'] == "datetime" || $vardef['type'] == "date") {
-
         if ($method != "close") {
             if ($method != "save") {
                 $value = convertDateUserToDB($value);
@@ -432,7 +431,7 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
             }
             // create utc date (as it's utc in db)
             // use the calculated datetime_format
-            $datetime = DateTime::createFromFormat($datetime_format, $value,new DateTimeZone('UTC'));
+            $datetime = DateTime::createFromFormat($datetime_format, $value, new DateTimeZone('UTC'));
 
             $value = $datetime->format($datetime_format);
         }
@@ -495,9 +494,9 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
         }
 
         if ($vardef['ext2']) {
-            $value .= getFieldValueFromModule($fieldName,$vardef['ext2'],$record);
+            $value .= getFieldValueFromModule($fieldName, $vardef['ext2'], $record);
         } elseif (!empty($vardef['rname']) || $vardef['name'] == "related_doc_name") {
-            $value .= getFieldValueFromModule($fieldName,$vardef['module'],$record);
+            $value .= getFieldValueFromModule($fieldName, $vardef['module'], $record);
         } else {
             $value .= $name;
         }
@@ -515,8 +514,9 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
     if ($vardef['type'] == "currency") {
         if ($_REQUEST['view'] != "DetailView") {
             $value = currency_format_number($value);
-        } else
+        } else {
             $value = format_number($value);
+        }
     }
     if ($vardef['type'] == "date" && $method == "save") {
         $value = substr($value, 0, strlen($value) - 6);
@@ -556,4 +556,3 @@ function checkAccess($bean)
         return false;
     }
 }
-

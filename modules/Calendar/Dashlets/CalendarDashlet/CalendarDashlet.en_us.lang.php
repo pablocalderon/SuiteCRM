@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -40,7 +42,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 
 $dashletStrings['CalendarDashlet'] = array(
-					'LBL_TITLE'            => 'My Calendar',
+                    'LBL_TITLE'            => 'My Calendar',
                          'LBL_DESCRIPTION'      => 'Calendar dashlet',
                          'LBL_CONFIGURE_TITLE'  => 'Title',
                          'LBL_CONFIGURE_VIEW'  => 'View',
@@ -51,4 +53,3 @@ $dashletStrings['CalendarDashlet'] = array(
                          'LBL_VIEW_MONTH' => 'Month',
 
 );
-?>

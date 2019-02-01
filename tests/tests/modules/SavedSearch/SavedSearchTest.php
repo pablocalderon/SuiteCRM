@@ -2,8 +2,7 @@
 
 class SavedSearchTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 {
-    
-    protected function storeStateAll() 
+    protected function storeStateAll()
     {
         // save state
         
@@ -15,14 +14,13 @@ class SavedSearchTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         return $state;
     }
     
-    protected function restoreStateAll($state) 
+    protected function restoreStateAll($state)
     {
         // clean up
         
         $state->popGlobals();
         $state->popTable('roles_users');
         $state->popTable('saved_search');
-        
     }
     
     public function testSavedSearch()
@@ -125,7 +123,7 @@ class SavedSearchTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 //
 //        //test handleDelete method
 //        $this->handleDelete($savedSearch->id);
-//            
+//
         
         
         // clean up
@@ -229,9 +227,9 @@ class SavedSearchTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testhandleRedirect()
     {
         $this->markTestIncomplete('method uses die');
-//        
+//
 //        $savedSearch = new SavedSearch();
-//        
+//
 //        $search_query = '&orderBy=&sortOrder=&query=&searchFormTab=&showSSDIV=';
 //
 //        //$savedSearch->handleRedirect("Leads", $search_query, 1, 'true');
@@ -279,7 +277,7 @@ class SavedSearchTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
         //verify thhat Request parameters are set
         $this->assertEquals('Accounts', $_REQUEST['search_module']);
-        $this->assertEquals('test text',  $_REQUEST['description']);
+        $this->assertEquals('test text', $_REQUEST['description']);
         $this->assertEquals('some content', $_REQUEST['test_content']);
         
         // clean up

@@ -89,8 +89,10 @@ function zip_dir($zip_dir, $zip_archive)
         return false;
     }
     $zip = new ZipArchive();
-    $zip->open(UploadFile::realpath($zip_archive),
-        ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE); // we need realpath here for PHP streams support
+    $zip->open(
+        UploadFile::realpath($zip_archive),
+        ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE
+    ); // we need realpath here for PHP streams support
     $path = UploadFile::realpath($zip_dir);
     $chop = strlen($path) + 1;
     $dir = new RecursiveDirectoryIterator($path);
@@ -122,8 +124,10 @@ function zip_dir($zip_dir, $zip_archive)
 function zip_files_list($zip_file, $file_list, $prefix = '')
 {
     $archive = new ZipArchive();
-    $res = $archive->open(UploadFile::realpath($zip_file),
-        ZipArchive::CREATE | ZipArchive::OVERWRITE); // we need realpath here for PHP streams support
+    $res = $archive->open(
+        UploadFile::realpath($zip_file),
+        ZipArchive::CREATE | ZipArchive::OVERWRITE
+    ); // we need realpath here for PHP streams support
     if ($res !== true) {
         $GLOBALS['log']->fatal("Unable to open zip file, check directory permissions: $zip_file");
 

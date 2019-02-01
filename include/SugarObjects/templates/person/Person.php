@@ -146,7 +146,6 @@ class Person extends Basic
             isset($app_list_strings[$this->field_defs['salutation']['options']]) &&
             isset($app_list_strings[$this->field_defs['salutation']['options']][$this->salutation])
         ) {
-
             $salutation = $app_list_strings[$this->field_defs['salutation']['options']][$this->salutation];
         } // if
 
@@ -255,7 +254,7 @@ class Person extends Basic
     ) {
         parent::populateRelatedBean($newBean);
 
-        if ($newBean instanceOf Company) {
+        if ($newBean instanceof Company) {
             $newBean->phone_fax = $this->phone_fax;
             $newBean->phone_office = $this->phone_work;
             $newBean->phone_alternate = $this->phone_other;
@@ -331,5 +330,4 @@ class Person extends Basic
 
         return $query;
     }
-
 }

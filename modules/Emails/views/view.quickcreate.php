@@ -1,6 +1,8 @@
 <?php
 //FILE SUGARCRM flav=pro || flav=sales
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -42,7 +44,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 require_once('include/MVC/View/views/view.quickcreate.php');
 require_once('modules/Emails/EmailUI.php');
 
-class EmailsViewQuickcreate extends ViewQuickcreate 
+class EmailsViewQuickcreate extends ViewQuickcreate
 {
     /**
      * @see ViewQuickcreate::display()
@@ -50,15 +52,16 @@ class EmailsViewQuickcreate extends ViewQuickcreate
     public function display()
     {
         $userPref = $GLOBALS['current_user']->getPreference('email_link_type');
-		$defaultPref = $GLOBALS['sugar_config']['email_default_client'];
-		if($userPref != '')
-			$client = $userPref;
-		else
-			$client = $defaultPref;
-		
-        if ( $client == 'sugar' ) {
+        $defaultPref = $GLOBALS['sugar_config']['email_default_client'];
+        if ($userPref != '') {
+            $client = $userPref;
+        } else {
+            $client = $defaultPref;
+        }
+        
+        if ($client == 'sugar') {
             $eUi = new EmailUI();
-            if(!empty($this->bean->id) && !in_array($this->bean->object_name,array('EmailMan')) ) {
+            if (!empty($this->bean->id) && !in_array($this->bean->object_name, array('EmailMan'))) {
                 $fullComposeUrl = "index.php?module=Emails&action=Compose&parent_id={$this->bean->id}&parent_type={$this->bean->module_dir}";
                 $composeData = array('parent_id'=>$this->bean->id, 'parent_type' => $this->bean->module_dir);
             } else {
@@ -66,7 +69,7 @@ class EmailsViewQuickcreate extends ViewQuickcreate
                 $composeData = array('parent_id'=>'', 'parent_type' => '');
             }
             
-            $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreate($composeData, $fullComposeUrl); 
+            $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreate($composeData, $fullComposeUrl);
             $json_obj = getJSONobj();
             $opts = $json_obj->decode($j_quickComposeOptions);
             $opts['menu_id'] = 'dccontent';
@@ -74,15 +77,14 @@ class EmailsViewQuickcreate extends ViewQuickcreate
             $ss = new Sugar_Smarty();
             $ss->assign('json_output', $json_obj->encode($opts));
             $ss->display('modules/Emails/templates/dceMenuQuickCreate.tpl');
-        }
-        else {
+        } else {
             $emailAddress = '';
-            if(!empty($this->bean->id) && !in_array($this->bean->object_name,array('EmailMan'))
-                && !is_null($this->bean->emailAddress) ) {
+            if (!empty($this->bean->id) && !in_array($this->bean->object_name, array('EmailMan'))
+                && !is_null($this->bean->emailAddress)) {
                 $emailAddress = $this->bean->emailAddress->getPrimaryAddress($this->bean);
             }
             echo "<script>document.location.href='mailto:$emailAddress';lastLoadedMenu=undefined;DCMenu.closeOverlay();</script>";
             die();
         }
-    } 
+    }
 }

@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -43,7 +45,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 
 
-$mod_strings = array (
+$mod_strings = array(
 'LBL_EDIT_LAYOUT'=>'Edit Layout',
 'LBL_EDIT_ROWS'=>'Edit Rows',
 'LBL_EDIT_COLUMNS'=>'Edit Columns',
@@ -189,18 +191,18 @@ $mod_strings = array (
 'ERROR_SP_UPLOADED'=>'Please ensure that you are uploading a css style sheet.',
 'LBL_SP_PREVIEW'=>'Here is a preview of what your style sheet will look like',
 
-	'LBL_SAVE' => 'Save' /*for 508 compliance fix*/,
-	'LBL_UNDO' => 'Undo' /*for 508 compliance fix*/,
-	'LBL_REDO' => 'Redo' /*for 508 compliance fix*/,
-	'LBL_INLINE' => 'Inline' /*for 508 compliance fix*/,
-	'LBL_DELETE' => 'Delete' /*for 508 compliance fix*/,
-	'LBL_ADD_FIELD' => 'Add Field' /*for 508 compliance fix*/,
-	'LBL_MAXIMIZE' => 'Maximize' /*for 508 compliance fix*/,
-	'LBL_MINIMIZE' => 'Minimize' /*for 508 compliance fix*/,
-	'LBL_PUBLISH' => 'Publish' /*for 508 compliance fix*/,
-	'LBL_ADDROWS' => 'Add Rows' /*for 508 compliance fix*/,
-	'LBL_ADDFIELD' => 'Add Field' /*for 508 compliance fix*/,
-	'LBL_EDIT' => 'Edit' /*for 508 compliance fix*/,
+    'LBL_SAVE' => 'Save' /*for 508 compliance fix*/,
+    'LBL_UNDO' => 'Undo' /*for 508 compliance fix*/,
+    'LBL_REDO' => 'Redo' /*for 508 compliance fix*/,
+    'LBL_INLINE' => 'Inline' /*for 508 compliance fix*/,
+    'LBL_DELETE' => 'Delete' /*for 508 compliance fix*/,
+    'LBL_ADD_FIELD' => 'Add Field' /*for 508 compliance fix*/,
+    'LBL_MAXIMIZE' => 'Maximize' /*for 508 compliance fix*/,
+    'LBL_MINIMIZE' => 'Minimize' /*for 508 compliance fix*/,
+    'LBL_PUBLISH' => 'Publish' /*for 508 compliance fix*/,
+    'LBL_ADDROWS' => 'Add Rows' /*for 508 compliance fix*/,
+    'LBL_ADDFIELD' => 'Add Field' /*for 508 compliance fix*/,
+    'LBL_EDIT' => 'Edit' /*for 508 compliance fix*/,
 
 'LBL_LANGUAGE_TOOLTIP' => 'Select the language to edit.',
 'LBL_SINGULAR' => 'Singular Label',
@@ -208,4 +210,3 @@ $mod_strings = array (
 'LBL_RENAME_MOD_SAVE_HELP' => 'Click <b>Save</b> to apply the changes.'
 
 );
-?>

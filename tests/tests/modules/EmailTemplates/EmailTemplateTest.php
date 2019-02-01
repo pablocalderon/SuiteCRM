@@ -20,7 +20,6 @@ class EmailTemplateTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgenerateFieldDefsJS()
     {
-
         $emailTemplate = new EmailTemplate();
 
         //execute the method and verify that it retunrs expected results

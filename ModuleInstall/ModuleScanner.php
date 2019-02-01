@@ -433,14 +433,11 @@ class ModuleScanner
         echo "'''Default Extensions'''<br>";
         foreach ($this->validExt as $b) {
             echo '#' . $b . '<br>';
-
         }
         echo "'''Default Black Listed Functions'''<br>";
         foreach ($this->blackList as $b) {
             echo '#' . $b . '<br>';
-
         }
-
     }
 
     /**
@@ -468,7 +465,6 @@ class ModuleScanner
         }
 
         foreach ($params as $param => $constName) {
-
             if (!$disableConfigOverride && isset($this->config[$param]) && is_array($this->config[$param])) {
                 $this->{$param} = array_merge($this->{$param}, $this->config[$param]);
             }
@@ -516,7 +512,6 @@ class ModuleScanner
         }
 
         return in_array($pi['extension'], $this->validExt);
-
     }
 
     public function isConfigFile($file)
@@ -554,8 +549,6 @@ class ModuleScanner
                 $this->scanDir($next);
             } else {
                 $issues = $this->scanFile($next);
-
-
             }
         }
 
@@ -622,6 +615,7 @@ class ModuleScanner
                 switch ($token[0]) {
                     case '`':
                         $issues['backtick'] = translate('ML_INVALID_FUNCTION') . " '`'";
+                        // no break
                     case '(':
                         if ($checkFunction) {
                             $issues[] = $possibleIssue;
@@ -693,8 +687,8 @@ class ModuleScanner
                             if (in_array($token[1], $this->blackListExempt)) {
                                 break;
                             }
-
                         }
+                        // no break
                     case T_VARIABLE:
                         $checkFunction = true;
                         $possibleIssue = translate('ML_INVALID_FUNCTION') . ' ' . $token[1] . '()';
@@ -709,7 +703,6 @@ class ModuleScanner
                     $lastToken = $token;
                 }
             }
-
         }
         if (!empty($issues)) {
             $this->issues['file'][$file] = $issues;
@@ -866,7 +859,6 @@ class ModuleScanner
         if (is_file($to) && $this->sugarFileExists($to)) {
             $this->issues['copy'][$from] = translate('ML_OVERRIDE_CORE_FILES') . '(' . $to . ')';
         }
-
     }
 
 
@@ -890,11 +882,16 @@ class ModuleScanner
      **/
     public function displayIssues($package = 'Package')
     {
-        echo '<h2>' . str_replace('{PACKAGE}', $package,
-                translate('ML_PACKAGE_SCANNING')) . '</h2><BR><h2 class="error">' .
-            translate('ML_INSTALLATION_FAILED') . '</h2><br><p>' . str_replace('{PACKAGE}',
+        echo '<h2>' . str_replace(
+            '{PACKAGE}',
+            $package,
+                translate('ML_PACKAGE_SCANNING')
+        ) . '</h2><BR><h2 class="error">' .
+            translate('ML_INSTALLATION_FAILED') . '</h2><br><p>' . str_replace(
+                '{PACKAGE}',
                 $package,
-                translate('ML_PACKAGE_NOT_CONFIRM')) . '</p><ul><li>' .
+                translate('ML_PACKAGE_NOT_CONFIRM')
+            ) . '</p><ul><li>' .
             translate('ML_OBTAIN_NEW_PACKAGE') . '<li>' . translate('ML_RELAX_LOCAL') .
             '</ul></p><br>' . translate('ML_SUGAR_LOADING_POLICY') .
             ' <a href=" http://kb.sugarcrm.com/custom/module-loader-restrictions-for-sugar-open-cloud/">' .
@@ -921,12 +918,10 @@ class ModuleScanner
                 echo "</div>";
             }
             echo '</div>';
-
         }
         echo "<br><input class='button' 
 onclick='document.location.href=\"index.php?module=Administration&action=UpgradeWizard&view=module\"' 
 type='button' value=\"" . translate('LBL_UW_BTN_BACK_TO_MOD_LOADER') . "\" />";
-
     }
 
     /**
@@ -955,7 +950,6 @@ type='button' value=\"" . translate('LBL_UW_BTN_BACK_TO_MOD_LOADER') . "\" />";
 
         return false;
     }
-
 }
 
 /**

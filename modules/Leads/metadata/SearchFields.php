@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -37,29 +39,29 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  ********************************************************************************/
-$searchFields['Leads'] = 
-    array (
+$searchFields['Leads'] =
+    array(
         'first_name' => array( 'query_type'=>'default'),
         'last_name'=> array('query_type'=>'default'),
         'search_name'=> array('query_type'=>'default','db_field'=>array('first_name','last_name'),'force_unifiedsearch'=>true),
         'account_name'=> array('query_type'=>'default','db_field'=>array('leads.account_name')),
-		/*'acc_name_from_accounts' => array('query_type'=>'default','related_field'=>'account_name'),*/
+        /*'acc_name_from_accounts' => array('query_type'=>'default','related_field'=>'account_name'),*/
         'lead_source'=> array('query_type'=>'default','operator'=>'=', 'options'=>'lead_source_dom', 'template_var' => 'LEAD_SOURCE_OPTIONS'),
         'do_not_call'=> array('query_type'=>'default', 'operator'=>'=', 'input_type' => 'checkbox'),
         'phone'=> array('query_type'=>'default','db_field'=>array('phone_mobile','phone_work','phone_other','phone_fax','phone_home')),
-		'email'=> array(
-			'query_type' => 'default',
-			'operator' => 'subquery',
-			'subquery' => 'SELECT eabr.bean_id FROM email_addr_bean_rel eabr JOIN email_addresses ea ON (ea.id = eabr.email_address_id) WHERE eabr.deleted=0 AND ea.email_address LIKE',
-			'db_field' => array(
-				'id',
-			),
-		),	
+        'email'=> array(
+            'query_type' => 'default',
+            'operator' => 'subquery',
+            'subquery' => 'SELECT eabr.bean_id FROM email_addr_bean_rel eabr JOIN email_addresses ea ON (ea.id = eabr.email_address_id) WHERE eabr.deleted=0 AND ea.email_address LIKE',
+            'db_field' => array(
+                'id',
+            ),
+        ),
         'favorites_only' => array(
             'query_type'=>'format',
             'operator' => 'subquery',
-			'checked_only' => true,
-			'subquery' => "SELECT favorites.parent_id FROM favorites
+            'checked_only' => true,
+            'subquery' => "SELECT favorites.parent_id FROM favorites
 			                    WHERE favorites.deleted = 0
 			                        and favorites.parent_type = 'Leads'
 			                        and favorites.assigned_user_id = '{1}'",
@@ -74,20 +76,19 @@ $searchFields['Leads'] =
         'current_user_only'=> array('query_type'=>'default','db_field'=>array('assigned_user_id'),'my_items'=>true, 'vname' => 'LBL_CURRENT_USER_FILTER', 'type' => 'bool'),
         'assigned_user_id'=> array('query_type'=>'default'),
         'status'=> array('query_type'=>'default', 'options'=>'lead_status_dom', 'template_var' => 'STATUS_OPTIONS'),
-		'open_only' => array(
-			'query_type'=>'default',
-			'db_field'=>array('status'),
-			'operator'=>'not in',
-			'closed_values' => array('Dead', 'Recycled', 'Converted'),
-			'type'=>'bool',
-		),
-		//Range Search Support 
-	    'range_date_entered' => array ('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
-	    'start_range_date_entered' => array ('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
-	    'end_range_date_entered' => array ('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
-	    'range_date_modified' => array ('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
-	    'start_range_date_modified' => array ('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
-        'end_range_date_modified' => array ('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),	
-	    //Range Search Support 				
+        'open_only' => array(
+            'query_type'=>'default',
+            'db_field'=>array('status'),
+            'operator'=>'not in',
+            'closed_values' => array('Dead', 'Recycled', 'Converted'),
+            'type'=>'bool',
+        ),
+        //Range Search Support
+        'range_date_entered' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+        'start_range_date_entered' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+        'end_range_date_entered' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+        'range_date_modified' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+        'start_range_date_modified' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+        'end_range_date_modified' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+        //Range Search Support
     );
-?>

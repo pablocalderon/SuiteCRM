@@ -21,7 +21,6 @@ class vCalTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testget_summary_text()
     {
-
         $vcal = new vCal();
 
         //test without setting name
@@ -34,7 +33,6 @@ class vCalTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testfill_in_additional_list_fields()
     {
-
         $this->markTestIncomplete('method has no implementation');
         
         $vcal = new vCal();
@@ -50,7 +48,6 @@ class vCalTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testfill_in_additional_detail_fields()
     {
-
         $this->markTestIncomplete('method has no implementation');
         
         $vcal = new vCal();
@@ -66,7 +63,6 @@ class vCalTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testget_list_view_data()
     {
-
         $this->markTestIncomplete('method has no implementation');
         
         $vcal = new vCal();

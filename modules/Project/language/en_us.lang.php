@@ -1,5 +1,7 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -80,10 +82,10 @@ $mod_strings = array(
     'LBL_ACCOUNT_SUBPANEL_TITLE' => 'Accounts',
     'LBL_OPPORTUNITY_SUBPANEL_TITLE' => 'Opportunities',
     'LBL_QUOTE_SUBPANEL_TITLE' => 'Quotes',
-	'LBL_PROJECT_PREDECESSOR_NONE' => 'None',
-	'LBL_ALL_PROJECTS' => 'All Projects',
-	'LBL_ALL_USERS' => 'All Users',
-	'LBL_ALL_CONTACTS' => 'All Contacts',
+    'LBL_PROJECT_PREDECESSOR_NONE' => 'None',
+    'LBL_ALL_PROJECTS' => 'All Projects',
+    'LBL_ALL_USERS' => 'All Users',
+    'LBL_ALL_CONTACTS' => 'All Contacts',
 
     // quick create label
     'LBL_NEW_FORM_TITLE' => 'New Project',
@@ -178,41 +180,40 @@ $mod_strings = array(
     'LBL_UNASSIGNED' => 'Unassigned',
     'LBL_PROJECT_USERS_1_FROM_USERS_TITLE' => 'Resources',
 
-	'LBL_EMAIL' => 'Email',
-	'LBL_PHONE' => 'Phone Office:',
-	'LBL_ADD_BUTTON'=> 'Add',
-	'LBL_ADD_INVITEE' => 'Add Resource',
-	'LBL_FIRST_NAME' => 'First Name',
-	'LBL_LAST_NAME' => 'Last Name',
-	'LBL_SEARCH_BUTTON'=> 'Search',
-	'LBL_EMPTY_SEARCH_RESULT' => 'Sorry, no results were found. Please create an invitee below.',
-	'LBL_CREATE_INVITEE' => 'Create a Resource',
-	'LBL_CREATE_CONTACT' => 'As Contact',
-	'LBL_CREATE_AND_ADD' => 'Create & Add',
-	'LBL_CANCEL_CREATE_INVITEE' => 'Cancel',
-	'LBL_NO_ACCESS' => 'You have no access to create $module',
-	'LBL_SCHEDULING_FORM_TITLE' => 'Resource List',
-	'LBL_REMOVE' => 'Remove',
-	'LBL_VIEW_DETAIL' => 'View Details',
-	'LBL_OVERRIDE_BUSINESS_HOURS' => 'Consider Working days',
+    'LBL_EMAIL' => 'Email',
+    'LBL_PHONE' => 'Phone Office:',
+    'LBL_ADD_BUTTON'=> 'Add',
+    'LBL_ADD_INVITEE' => 'Add Resource',
+    'LBL_FIRST_NAME' => 'First Name',
+    'LBL_LAST_NAME' => 'Last Name',
+    'LBL_SEARCH_BUTTON'=> 'Search',
+    'LBL_EMPTY_SEARCH_RESULT' => 'Sorry, no results were found. Please create an invitee below.',
+    'LBL_CREATE_INVITEE' => 'Create a Resource',
+    'LBL_CREATE_CONTACT' => 'As Contact',
+    'LBL_CREATE_AND_ADD' => 'Create & Add',
+    'LBL_CANCEL_CREATE_INVITEE' => 'Cancel',
+    'LBL_NO_ACCESS' => 'You have no access to create $module',
+    'LBL_SCHEDULING_FORM_TITLE' => 'Resource List',
+    'LBL_REMOVE' => 'Remove',
+    'LBL_VIEW_DETAIL' => 'View Details',
+    'LBL_OVERRIDE_BUSINESS_HOURS' => 'Consider Working days',
 
-	'LBL_PROJECTS_SEARCH' => 'Search Projects',
-	'LBL_USERS_SEARCH' => 'Search Users',
-	'LBL_CONTACTS_SEARCH' => 'Select  Contacts',
-	'LBL_RESOURCE_CHART_SEARCH_BUTTON' => 'Search',
-	
-	'LBL_CHART_TYPE' => 'Type',
-	'LBL_CHART_WEEKLY' => 'Weekly',
-	'LBL_CHART_MONTHLY' => 'Monthly',	
-	'LBL_CHART_QUARTERLY' => 'Quarterly',
+    'LBL_PROJECTS_SEARCH' => 'Search Projects',
+    'LBL_USERS_SEARCH' => 'Search Users',
+    'LBL_CONTACTS_SEARCH' => 'Select  Contacts',
+    'LBL_RESOURCE_CHART_SEARCH_BUTTON' => 'Search',
+    
+    'LBL_CHART_TYPE' => 'Type',
+    'LBL_CHART_WEEKLY' => 'Weekly',
+    'LBL_CHART_MONTHLY' => 'Monthly',
+    'LBL_CHART_QUARTERLY' => 'Quarterly',
 
-	'LBL_RESOURCE_CHART_MONTH' => 'Month',
-	'LBL_RESOURCE_CHART_QUARTER' => 'Quarter',
- 	'LBL_ALL_RESOURCES' => 'All Resources',
+    'LBL_RESOURCE_CHART_MONTH' => 'Month',
+    'LBL_RESOURCE_CHART_QUARTER' => 'Quarter',
+    'LBL_ALL_RESOURCES' => 'All Resources',
 
- 	'LBL_PROJECT_CONTACTS_1_FROM_CONTACTS_TITLE' => 'Project Contacts from Contacts Title',
- 	'LBL_AM_PROJECTTEMPLATES_PROJECT_1_FROM_PROJECT_TITLE' => 'Project Templates: Project from Project Title',
- 	'LBL_AOS_QUOTES_PROJECT' => 'Quotes: Project',
+    'LBL_PROJECT_CONTACTS_1_FROM_CONTACTS_TITLE' => 'Project Contacts from Contacts Title',
+    'LBL_AM_PROJECTTEMPLATES_PROJECT_1_FROM_PROJECT_TITLE' => 'Project Templates: Project from Project Title',
+    'LBL_AOS_QUOTES_PROJECT' => 'Quotes: Project',
 
 );
-?>

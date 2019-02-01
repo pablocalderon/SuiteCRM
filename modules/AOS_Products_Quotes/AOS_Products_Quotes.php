@@ -42,8 +42,7 @@ require_once('modules/AOS_Products_Quotes/AOS_Products_Quotes_sugar.php');
 
 class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
 {
-
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -51,25 +50,23 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    function AOS_Products_Quotes(){
+    public function AOS_Products_Quotes()
+    {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
+        if (isset($GLOBALS['log'])) {
             $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
+        } else {
             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
         }
         self::__construct();
     }
 
 
-    function save_lines($post_data, $parent, $groups = array(), $key = '')
+    public function save_lines($post_data, $parent, $groups = array(), $key = '')
     {
-
         $line_count = isset($post_data[$key . 'name']) ? count($post_data[$key . 'name']) : 0;
         $j = 0;
         for ($i = 0; $i < $line_count; ++$i) {
-
             if (!isset($post_data[$key . 'deleted'][$i])) {
                 LoggerManager::getLogger()->warn('AOS Product Quotes trying to save lines but POST data does not contains the key "' . $key . 'deleted' . '" at index: ' . $i);
             }
@@ -88,7 +85,6 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
                     }
                 }
                 if (isset($post_data[$key . 'group_number'][$i])) {
-                    
                     $grpId = null;
                     if (!isset($groups[$post_data[$key . 'group_number'][$i]])) {
                         LoggerManager::getLogger()->warn('AOS Products Quotes trying to save lines but POST data does not contains the key "' . $key . 'deleted' . '" at index: ' . $i);
@@ -117,7 +113,7 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
         }
     }
 
-    function save($check_notify = FALSE)
+    public function save($check_notify = false)
     {
         require_once('modules/AOS_Products_Quotes/AOS_Utils.php');
         perform_aos_save($this);
@@ -127,9 +123,8 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar
     /**
      * @param $parent SugarBean
      */
-    function mark_lines_deleted($parent)
+    public function mark_lines_deleted($parent)
     {
-
         require_once('modules/Relationships/Relationship.php');
         $product_quotes = $parent->get_linked_beans('aos_products_quotes', $this->object_name);
         foreach ($product_quotes as $product_quote) {

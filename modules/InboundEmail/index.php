@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -50,5 +52,3 @@ echo getClassicModuleTitle('InboundEmail', array($mod_strings['LBL_MODULE_TITLE'
 
 //echo getClassicModuleTitle($mod_strings['LBL_MODULE_TITLE'], array($mod_strings['LBL_MODULE_TITLE'],$mod_strings['LBL_HOME']), true);
 require_once('modules/InboundEmail/ListView.php');
-
-?>

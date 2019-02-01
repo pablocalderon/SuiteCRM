@@ -23,7 +23,7 @@
  */
 
 
-$mod_strings = array (
+$mod_strings = array(
   'LBL_ID' => 'ID',
   'LBL_DATE_ENTERED' => 'Date Created',
   'LBL_DATE_MODIFIED' => 'Date Modified',

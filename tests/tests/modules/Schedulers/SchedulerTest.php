@@ -4,8 +4,8 @@ require_once 'include/SugarQueue/SugarJobQueue.php';
 require_once 'install/install_utils.php';
 
 class SchedulerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
-{    
-    protected function storeStateAll() 
+{
+    protected function storeStateAll()
     {
         // save state
         
@@ -17,14 +17,13 @@ class SchedulerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         return $state;
     }
     
-    protected function restoreStateAll($state) 
+    protected function restoreStateAll($state)
     {
         // clean up
         
         $state->popGlobals();
         $state->popTable('schedulers');
         $state->popTable('job_queue');
-        
     }
 
     public function testderiveDBDateTimes()
@@ -162,7 +161,6 @@ class SchedulerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         // clean up
         
         $this->restoreStateAll($state);
-        
     }
 
 
@@ -303,7 +301,7 @@ class SchedulerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
         
         $scheduler = new Scheduler();
 
-        //execute the method and capture the echo output 
+        //execute the method and capture the echo output
         ob_start();
 
         $scheduler->displayCronInstructions();
@@ -392,13 +390,13 @@ class SchedulerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     public function testfill_in_additional_detail_fields()
     {
         $this->markTestIncomplete('method has no implementation');
-//        
+//
 //        // save state
-//        
+//
 //        $state = $this->storeStateAll();
-//        
+//
 //        // test
-//        
+//
 //        $scheduler = new Scheduler();
 //
 //        //execute the method and test if it works and does not throws an exception.
@@ -408,9 +406,9 @@ class SchedulerTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 //        } catch (Exception $e) {
 //            $this->fail("\nException: " . get_class($e) . ": " . $e->getMessage() . "\nin " . $e->getFile() . ':' . $e->getLine() . "\nTrace:\n" . $e->getTraceAsString() . "\n");
 //        }
-//        
+//
 //        // clean up
-//        
+//
 //        $this->restoreStateAll($state);
     }
 

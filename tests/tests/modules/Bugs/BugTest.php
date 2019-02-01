@@ -21,7 +21,6 @@ class BugTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testget_summary_text()
     {
-
         $bug = new Bug();
 
         //test without setting name
@@ -176,7 +175,7 @@ class BugTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     }
 
     public function testsave()
-    {	
+    {
         
         // save state
         

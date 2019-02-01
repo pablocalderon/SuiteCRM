@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -40,14 +42,14 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 
 
-$mod_strings = array (
+$mod_strings = array(
     'LBL_OAUTH_REQUEST' => "Request Token",
     'LBL_OAUTH_AUTHORIZE' => "Authorize Token",
-	'LBL_OAUTH_CONSUMERREQ' => "Authorize token from consumer <b>%s</b>?",
+    'LBL_OAUTH_CONSUMERREQ' => "Authorize token from consumer <b>%s</b>?",
     'LBL_OAUTH_ROLE' => "Token role",
-	'LBL_OAUTH_VALIDATION' => "Verification code",
-  	'LBL_ASSIGNED_TO_NAME' => 'User',
-  	'LBL_ID' => 'ID',
+    'LBL_OAUTH_VALIDATION' => "Verification code",
+    'LBL_ASSIGNED_TO_NAME' => 'User',
+    'LBL_ID' => 'ID',
     'LBL_STATUS' => 'Status',
     'LBL_TS' => 'Timestamp',
     'LBL_LIST_DELETE' => 'Delete Token',

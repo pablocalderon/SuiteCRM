@@ -22,7 +22,6 @@ class ProjectTaskTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testskipParentUpdate()
     {
-
         $projectTask = new ProjectTask();
 
         //test with default parameter value
@@ -35,7 +34,7 @@ class ProjectTaskTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     }
 
     public function testsave()
-    {   
+    {
         // save state
         
         $state = new SuiteCRM\StateSaver();

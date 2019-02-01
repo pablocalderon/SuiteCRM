@@ -162,7 +162,6 @@ class SugarView
             LoggerManager::getLogger()->warn('app_strings is not defined for SugarView smarty initializzation.');
             $this->ss->assign('APP', null);
         }
-        
     }
 
     /**
@@ -218,7 +217,6 @@ class SugarView
                 $_SESSION['alerts_output_timestamp'] = date('U');
                 echo $jsAlertsOutput;
             }
-
         }
 
         if ($this->_getOption('show_subpanels') && !empty($_REQUEST['record'])) {
@@ -624,14 +622,12 @@ class SugarView
 
                 $ss->assign('currentGroupTab', $currentGroupTab);
                 $usingGroupTabs = true;
-
             } else {
                 // Setup the default group tab.
                 $ss->assign('currentGroupTab', $app_strings['LBL_TABGROUP_ALL']);
 
                 $usingGroupTabs = false;
                 $groupTabs[$app_strings['LBL_TABGROUP_ALL']]['modules'] = $fullModuleList;
-
             }
 
             $topTabList = array();
@@ -704,7 +700,6 @@ class SugarView
             // This is here for backwards compatibility, someday, somewhere, it will be able to be removed
             $ss->assign("moduleTopMenu", $groupTabs[$app_strings['LBL_TABGROUP_ALL']]['modules']);
             $ss->assign("moduleExtraMenu", $groupTabs[$app_strings['LBL_TABGROUP_ALL']]['extra']);
-
         }
 
         if (isset($extraTabs) && is_array($extraTabs)) {
@@ -750,12 +745,10 @@ class SugarView
                 }
             }
         }
-
     }
 
     public function getModuleMenuHTML()
     {
-
     }
 
     /**
@@ -832,7 +825,7 @@ class SugarView
 
         // Add in the number formatting styles here as well, we have been handling this with individual modules.
         require_once('modules/Currencies/Currency.php');
-        list ($num_grp_sep, $dec_sep) = get_number_seperators();
+        list($num_grp_sep, $dec_sep) = get_number_seperators();
 
         $the_script =
             "<script type=\"text/javascript\">\n" .
@@ -1177,7 +1170,6 @@ EOHTML;
 
         $trackerManager = TrackerManager::getInstance();
         $trackerManager->save();
-
     }
 
     /**
@@ -1596,13 +1588,12 @@ EOHTML;
             $firstParam = $this->module;
         }
 
-    	$iconPath = $this->getModuleTitleIconPath($this->module);
-    	if($this->action == "ListView" || $this->action == "index") {
-    	    if (!empty($iconPath) && !$browserTitle) {
-    	    	if (SugarThemeRegistry::current()->directionality == "ltr") {
-    	    		return $app_strings['LBL_SEARCH_ALT']."&nbsp;"
-    	    			 . "$firstParam";
-
+        $iconPath = $this->getModuleTitleIconPath($this->module);
+        if ($this->action == "ListView" || $this->action == "index") {
+            if (!empty($iconPath) && !$browserTitle) {
+                if (SugarThemeRegistry::current()->directionality == "ltr") {
+                    return $app_strings['LBL_SEARCH_ALT']."&nbsp;"
+                         . "$firstParam";
                 } else {
                     return "$firstParam" . "&nbsp;" . $app_strings['LBL_SEARCH'];
                 }
@@ -1879,5 +1870,4 @@ EOHTML;
 
         return false;
     }
-
 }

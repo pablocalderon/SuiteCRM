@@ -22,7 +22,6 @@ class AOW_ConditionTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testbean_implements()
     {
-
         $aowCondition = new AOW_Condition();
         $this->assertEquals(false, $aowCondition->bean_implements('')); //test with blank value
         $this->assertEquals(false, $aowCondition->bean_implements('test')); //test with invalid value

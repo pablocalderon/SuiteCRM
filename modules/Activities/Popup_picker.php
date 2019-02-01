@@ -118,14 +118,12 @@ class Popup_Picker
         }
         foreach ($focus->get_linked_fields() as $field => $def) {
             if ($focus->load_relationship($field)) {
-
                 $relTable = BeanFactory::getBean($focus->$field->getRelatedModuleName())->table_name;
                 if (array_key_exists($relTable, $activitiesRels)) {
                     $varname = 'focus_' . $relTable . '_list';
                     $$varname =
                         sugarArrayMerge($$varname, $focus->get_linked_beans($field, $activitiesRels[$relTable]));
                 }
-
             }
         }
 
@@ -387,7 +385,6 @@ class Popup_Picker
                     $history_list[$count]['fileurl'] = UploadFile::get_url($note->filename, $note->id);
                 }
             }
-
         } // end Notes
 
         $xtpl = new XTemplate('modules/Activities/Popup_picker.html');

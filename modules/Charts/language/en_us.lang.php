@@ -1,5 +1,7 @@
 <?php
-if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
@@ -46,13 +48,13 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
     'ERR_NO_OPPS' => 'Please create some Opportunities to see Opportunity graphs.',
     'LBL_ALL_OPPORTUNITIES' => 'Total amount of all opportunities is ',
     'LBL_CHART_TYPE' => 'Chart Type:',
     'LBL_CREATED_ON' => 'Last run on ',
-	'LBL_CLOSE_DATE_START' => 'Expected Close Date - From:',
-	'LBL_CLOSE_DATE_END'   => 'Expected Close Date - To:',
+    'LBL_CLOSE_DATE_START' => 'Expected Close Date - From:',
+    'LBL_CLOSE_DATE_END'   => 'Expected Close Date - To:',
     'LBL_DATE_END' => 'End Date:',
     'LBL_DATE_RANGE_TO' => 'to',
     'LBL_DATE_RANGE' => 'Date range is',
@@ -114,6 +116,3 @@ $mod_strings = array (
     'LBL_CHART_MODULES_USED_DIRECT_REPORTS_30_DAYS' => 'Modules Used By My Direct Reports (Last 30 Days)',
     'LBL_CHART_DCE_ACTIONS_MONTH' => 'DCE Actions By Types (Current Month)',
 );
-
-
-?>

@@ -41,38 +41,37 @@
  * Generic filter
  * @api
  */
-class default_filter {
+class default_filter
+{
+    public $_component;
 
-var $_component;
-
-public function __construct() {
-
-}
+    public function __construct()
+    {
+    }
 
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function default_filter(){
+    public function default_filter()
+    {
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
+        if (isset($GLOBALS['log'])) {
             $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
+        } else {
             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
         }
         self::__construct();
     }
 
 
-public function setComponent($component) {
-   	$this->_component = $component;
-}
+    public function setComponent($component)
+    {
+        $this->_component = $component;
+    }
 
-public function getList($args, $module) {
-	$args = $this->_component->mapInput($args, $module);
-	return $this->_component->getSource()->getList($args, $module);
+    public function getList($args, $module)
+    {
+        $args = $this->_component->mapInput($args, $module);
+        return $this->_component->getSource()->getList($args, $module);
+    }
 }
-
-}
-
-?>
