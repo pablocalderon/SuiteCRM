@@ -182,7 +182,7 @@ $beanFiles['EmailTemplate'] = 'modules/EmailTemplates/EmailTemplate.php';
 $beanFiles['Note'] = 'modules/Notes/Note.php';
 $beanFiles['Call'] = 'modules/Calls/Call.php';
 $beanFiles['Email'] = 'modules/Emails/Email.php';
-$beanFiles['EmailSettings'] = 'modules/Emails/EmailSettings.php';
+$beanFiles['EmailSettings'] = 'modules/EmailSettings/EmailSettings.php';
 $beanFiles['Meeting'] = 'modules/Meetings/Meeting.php';
 $beanFiles['Task'] = 'modules/Tasks/Task.php';
 $beanFiles['User'] = 'modules/Users/User.php';
@@ -549,8 +549,6 @@ $beanFiles['SurveyQuestionOptions'] = 'modules/SurveyQuestionOptions/SurveyQuest
 $modules_exempt_from_availability_check['SurveyQuestionOptions'] = 'SurveyQuestionOptions';
 $report_include_modules['SurveyQuestionOptions'] = 'SurveyQuestionOptions';
 $modInvisList[] = 'SurveyQuestionOptions';
-
-
 
 if (file_exists('include/modules_override.php')) {
     include 'include/modules_override.php';
