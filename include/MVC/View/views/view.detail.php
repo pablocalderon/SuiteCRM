@@ -59,16 +59,6 @@ class ViewDetail extends SugarView
     public $dv;
 
     /**
-     * Constructor
-     *
-     * @see SugarView::SugarView()
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * @see SugarView::preDisplay()
      */
     public function preDisplay()

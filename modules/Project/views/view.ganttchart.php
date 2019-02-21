@@ -25,12 +25,6 @@ if (!defined('sugarEntry') || !sugarEntry)
 require_once('include/MVC/View/views/view.detail.php');
 class ProjectViewGanttChart extends ViewDetail {
 
-    //Constructor
-    public function __construct() {
-        parent::SugarView();
-    }
-
-
     public function display()
     {
         global $mod_strings, $app_list_strings;
