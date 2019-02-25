@@ -6,7 +6,7 @@ cache:
 
 before_script:
   - apt-get update -yqq
-  - apt-get install git -yqq
+  - apt-get install git ext-gd ext-zip ext-intl -yqq
 
   # Install mysql driver
   - docker-php-ext-install pdo_mysql
