@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56a8c41dfcf23e74f04f5787f30801d5",
+    "content-hash": "939f3b8a5f77c69bb88cbdffc6e4c173",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -4111,16 +4111,16 @@
         },
         {
             "name": "jeroendesloovere/vcard",
-            "version": "1.5.0",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeroendesloovere/vcard.git",
-                "reference": "2a0b7dc48e6ee75ca5ff7372e0a7854100d4ed0f"
+                "reference": "21a7341a589d80196a55e1f6317468a93e57c104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeroendesloovere/vcard/zipball/2a0b7dc48e6ee75ca5ff7372e0a7854100d4ed0f",
-                "reference": "2a0b7dc48e6ee75ca5ff7372e0a7854100d4ed0f",
+                "url": "https://api.github.com/repos/jeroendesloovere/vcard/zipball/21a7341a589d80196a55e1f6317468a93e57c104",
+                "reference": "21a7341a589d80196a55e1f6317468a93e57c104",
                 "shasum": ""
             },
             "require": {
@@ -4156,7 +4156,7 @@
                 "php",
                 "vCard"
             ],
-            "time": "2017-06-27T11:49:49+00:00"
+            "time": "2019-03-02T13:21:03+00:00"
         },
         {
             "name": "leafo/scssphp",
@@ -4963,6 +4963,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
