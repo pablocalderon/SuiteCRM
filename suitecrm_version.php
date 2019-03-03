@@ -5,3 +5,5 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 $suitecrm_version = '7.11.2';
 $suitecrm_timestamp = '2019-02-20-17:00:00';
+
+$test = 'test';
