@@ -1,7 +1,36 @@
 <?php
 
-class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
+use SuiteCRM\StateCheckerPHPUnitTestCaseAbstract;
+use SuiteCRM\StateSaver;
+
+class SugarViewTest extends StateCheckerPHPUnitTestCaseAbstract
 {
+    /**
+     *
+     * @var StateSaver
+     */
+    protected $state;
+  
+
+    protected function setUp()
+    {
+        parent::setUp();
+        
+        $this->state = new StateSaver();
+        $this->state->pushGlobals();
+
+//        global $current_user;
+//        get_sugar_config_defaults();
+//        $current_user = new User();
+    }
+    
+    protected function tearDown()
+    {
+        $this->state->popGlobals();
+        
+        parent::tearDown();
+    }
+    
     public function testDisplayJavascriptNotLoginHasDomJS()
     {
         $view = new SugarView();
@@ -126,20 +155,10 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
             $this->assertEquals(SugarView::ERR_EMPTY_SCOPE, $code);
         }
     }
-  
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        global $current_user;
-        get_sugar_config_defaults();
-        $current_user = new User();
-    }
 
     public function testinit()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
@@ -164,7 +183,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     {
         // save state
 
-        $state = new \SuiteCRM\StateSaver();
+        $state = new StateSaver();
         $state->pushTable('tracker');
         $state->pushGlobals();
 
@@ -198,7 +217,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisplayErrors()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
@@ -221,7 +240,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testpreDisplay()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
@@ -243,7 +262,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisplay()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
@@ -265,7 +284,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisplayHeader()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
@@ -295,7 +314,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testgetModuleMenuHTML()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
@@ -317,7 +336,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testincludeClassicFile()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
@@ -347,7 +366,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testdisplayFooter()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
@@ -374,7 +393,7 @@ class SugarViewTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
 
     public function testrenderJavascript()
     {
-        $state = new SuiteCRM\StateSaver();
+        $state = new StateSaver();
         
         
         
