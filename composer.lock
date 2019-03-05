@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56a8c41dfcf23e74f04f5787f30801d5",
+    "content-hash": "983d60b4fc256e9a0e99ec026deeb85a",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -3427,16 +3427,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.4.21",
+            "version": "v3.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "554a59a1ccbaac238a89b19c8e551a556fd0e2ea"
+                "reference": "57f1ce82c997f5a8701b89ef970e36bb657fd09c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/554a59a1ccbaac238a89b19c8e551a556fd0e2ea",
-                "reference": "554a59a1ccbaac238a89b19c8e551a556fd0e2ea",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/57f1ce82c997f5a8701b89ef970e36bb657fd09c",
+                "reference": "57f1ce82c997f5a8701b89ef970e36bb657fd09c",
                 "shasum": ""
             },
             "require": {
@@ -3482,7 +3482,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2019-01-01T13:45:19+00:00"
+            "time": "2019-02-23T15:06:07+00:00"
         },
         {
             "name": "tuupola/slim-jwt-auth",
@@ -4963,6 +4963,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
