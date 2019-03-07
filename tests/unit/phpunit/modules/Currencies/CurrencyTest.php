@@ -291,17 +291,28 @@ class CurrencyTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     {
         $state = new SuiteCRM\StateSaver();
         $state->pushTable('currencies');
-        
+
         //test with view = Default / DetailView
         $this->assertEquals('US Dollars', getCurrencyNameDropDown(null));
 
+        // get currencies name
+        include_once 'modules/Currencies/ListCurrency.php';
+        $currency = new ListCurrency();
+        $currency->lookupCurrencies();
+        $currencies = [];
+        foreach ($currency->list as $curr) {
+            $this->assertNotEmpty($curr->name);
+            $currencies[] = $curr->name;
+        }
+
+        // test if these all shows up on EditView
         //test with view = EditView
-        $expected = $expected = "<select name=\"currency_name\" id=\"currency_name\" />\n<OPTION value='US Dollars'>US Dollars</OPTION></select>";
         $actual = getCurrencyNameDropDown(null, 'currency_name', '', 'EditView');
-        $this->assertSame($expected, $actual);
-        
+        foreach ($currencies as $curr) {
+            $this->assertContains($curr, $actual);
+        }
+
         // clean up
-        
         $state->popTable('currencies');
     }
 
@@ -309,18 +320,28 @@ class CurrencyTest extends SuiteCRM\StateCheckerPHPUnitTestCaseAbstract
     {
         $state = new SuiteCRM\StateSaver();
         $state->pushTable('currencies');
-        
-        //test with view = Default / DetailView
-        $this->assertEquals('US Dollars', getCurrencySymbolDropDown(null));
 
+        //test with view = Default / DetailView
+        $this->assertEquals('US Dollars', getCurrencyNameDropDown(null));
+
+        // get currencies name
+        include_once 'modules/Currencies/ListCurrency.php';
+        $currency = new ListCurrency();
+        $currency->lookupCurrencies();
+        $currencies = [];
+        foreach ($currency->list as $curr) {
+            $this->assertNotEmpty($curr->symbol);
+            $currencies[] = $curr->symbol;
+        }
+
+        // test if these all shows up on EditView
         //test with view = EditView
-        $expected = $expected = "<select name=\"currency_name\" id=\"currency_name\" />\n<OPTION value='\$'>\$</OPTION></select>";
         $actual = getCurrencySymbolDropDown(null, 'currency_name', '', 'EditView');
-        $this->assertSame($expected, $actual);
-        
-        
+        foreach ($currencies as $curr) {
+            $this->assertContains($curr, $actual);
+        }
+
         // clean up
-        
         $state->popTable('currencies');
     }
 }
