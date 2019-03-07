@@ -37,13 +37,12 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
+
 namespace SuiteCRM\Robo\Plugin\Commands;
 
-use SuiteCRM\Utility\OperatingSystem;
-use SuiteCRM\Robo\Traits\RoboTrait;
 use Robo\Task\Base\loadTasks;
-use SuiteCRM\Utility\Paths;
-use Symfony\Component\Yaml\Yaml;
+use SuiteCRM\Robo\Traits\RoboTrait;
+use SuiteCRM\Utility\OperatingSystem;
 
 class CodeCoverageCommands extends \Robo\Tasks
 {
