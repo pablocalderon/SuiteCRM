@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2017 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -255,28 +255,25 @@ function getEditFieldHTML($module, $fieldname, $aow_field, $view = 'EditView', $
         $fieldlist[$fieldname]['value'] = $value;
         $fieldlist[$fieldname]['id_name'] = $aow_field;
         $fieldlist[$fieldname]['name'] = $aow_field . '_display';
-    } else {
-        if (isset($fieldlist[$fieldname]['type']) && ($fieldlist[$fieldname]['type'] == 'datetimecombo' || $fieldlist[$fieldname]['type'] == 'datetime')) {
-            $value = $focus->convertField($value, $fieldlist[$fieldname]);
-            if (!$value) {
-                $value = date($timedate->get_date_time_format());
-            }
-            $fieldlist[$fieldname]['name'] = $aow_field;
-            $fieldlist[$fieldname]['value'] = $value;
-        } else {
-            if (isset($fieldlist[$fieldname]['type']) && ($fieldlist[$fieldname]['type'] == 'date')) {
-                $value = $focus->convertField($value, $fieldlist[$fieldname]);
-                $fieldlist[$fieldname]['name'] = $aow_field;
-                if (empty($value)) {
-                    $value = str_replace("%", "", date($date_format));
-                }
-                $fieldlist[$fieldname]['value'] = $value;
-            } else {
-                $fieldlist[$fieldname]['value'] = $value;
-                $fieldlist[$fieldname]['name'] = $aow_field;
-            }
+    } elseif (isset($fieldlist[$fieldname]['type']) && ($fieldlist[$fieldname]['type'] == 'datetimecombo' || $fieldlist[$fieldname]['type'] == 'datetime' || $fieldlist[$fieldname]['type'] == 'date')) {
+        $value = $focus->convertField($value, $fieldlist[$fieldname]);
+        if (!$value) {
+            $value = date($timedate->get_date_time_format());
         }
+        $fieldlist[$fieldname]['name'] = $aow_field;
+        $fieldlist[$fieldname]['value'] = $value;
+    } elseif (isset($fieldlist[$fieldname]['type']) && ($fieldlist[$fieldname]['type'] == 'date')) {
+        $value = $focus->convertField($value, $fieldlist[$fieldname]);
+        $fieldlist[$fieldname]['name'] = $aow_field;
+        if (empty($value)) {
+            $value = str_replace("%", "", date($date_format));
+        }
+        $fieldlist[$fieldname]['value'] = $value;
+    } else {
+        $fieldlist[$fieldname]['value'] = $value;
+        $fieldlist[$fieldname]['name'] = $aow_field;
     }
+
 
     if ($fieldlist[$fieldname]['type'] == 'currency' && $view != 'EditView') {
         static $sfh;
@@ -428,6 +425,7 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
 
     //If field is of type date time, datetimecombo or date
     if ($vardef['type'] == "datetimecombo" || $vardef['type'] == "datetime" || $vardef['type'] == "date") {
+
         if ($method != "close") {
             if ($method != "save") {
                 $value = convertDateUserToDB($value);
@@ -438,8 +436,9 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
                 $value = $value . ' 00:00:00';
             }
             // create utc date (as it's utc in db)
-            // use the calculated datetime_format
-            $datetime = DateTime::createFromFormat($datetime_format, $value, new DateTimeZone('UTC'));
+            $datetime = DateTime::createFromFormat("Y-m-d H:i:s", $value, new DateTimeZone('UTC'));
+            // convert it to timezone the user uses
+            $datetime = $timedate->tzUser($datetime);
 
             $value = $datetime->format($datetime_format);
         }
@@ -527,6 +526,10 @@ function formatDisplayValue($bean, $value, $vardef, $method = "save")
         } else {
             $value = format_number($value);
         }
+    }
+
+    if ($vardef['type'] == "date" && $method == "save") {
+        $value = substr($value, 0, strlen($value) - 6);
     }
     
     return $value;

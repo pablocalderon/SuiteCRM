@@ -4,7 +4,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -191,7 +191,7 @@ function buildEditField(){
     };
 
     var touchtime = 0;
-    $('.inlineEdit').on('click', function(e) {
+    $(".inlineEdit").dblclick(function(e) {
         if(touchtime == 0) {
             //set first click
             touchtime = new Date().getTime();
@@ -482,7 +482,7 @@ function setValueClose(value){
 
 function saveFieldHTML(field,module,id,value, parent_type) {
     $.ajaxSetup({"async": false});
-    var result = $.post('index.php',
+    var result = $.getJSON('index.php',
       {
           'module': 'Home',
           'action': 'saveHTMLField',
@@ -493,9 +493,9 @@ function saveFieldHTML(field,module,id,value, parent_type) {
           'view' : view,
           'parent_type': parent_type,
           'to_pdf': true
-      }, null, "json"
+      }
     );
-    $.ajaxSetup({"async": true});
+    jaxSetup({"async": true});
     return(result.responseText);
 
 }
