@@ -520,7 +520,7 @@ function loadFieldHTML(field,module,id) {
           'field': field,
           'current_module': module,
           'id': id,
-          'view' : view,
+          'view': view,
           'to_pdf': true
       }
     );
@@ -549,7 +549,7 @@ function loadFieldHTML(field,module,id) {
  * @returns {*}
  */
 
-function loadFieldHTMLValue(field,id,module) {
+function loadFieldHTMLValue(field, id, module) {
     $.ajaxSetup({"async": false});
     var result = $.getJSON('index.php',
       {
@@ -564,7 +564,7 @@ function loadFieldHTMLValue(field,id,module) {
     );
     $.ajaxSetup({"async": true});
 
-    return(result.responseText);
+    return (result.responseText);
 }
 
 /**
@@ -577,7 +577,7 @@ function loadFieldHTMLValue(field,id,module) {
  * @returns {*}
  */
 
-function getValidationRules(field,module,id){
+function getValidationRules(field, module, id) {
     $.ajaxSetup({"async": false});
     var result = $.getJSON('index.php',
       {
@@ -611,7 +611,7 @@ function getValidationRules(field,module,id){
  * @returns {*}
  */
 
-function getRelateFieldJS(field, module, id){
+function getRelateFieldJS(field, module, id) {
     $.ajaxSetup({"async": false});
     var result = $.getJSON('index.php',
       {
