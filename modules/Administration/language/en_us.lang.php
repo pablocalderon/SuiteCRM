@@ -855,7 +855,7 @@ $mod_strings = array(
     'LBL_AOP_JOOMLA_ACCOUNT_CREATION_EMAIL_TEMPLATE' => 'Joomla Support Portal Account Creation Template',
 
     'LBL_AOP_BUSINESS_HOURS_SETTINGS' => 'Business Hours',
-    'LBL_AOP_BUSINESS_HOURS_DESC' => 'Restrict Workflows to launch only in certain days and times',
+    'LBL_AOP_BUSINESS_HOURS_DESC' => 'Restrict \'Only In The Scheduler\' Workflows to launch only in certain days and times',
     'LBL_AOP_OPENING_DAYS' => 'Opening Days',
     'LBL_AOP_OPENING_HOURS' => 'Opening Hours',
     'LBL_AOP_CLOSING_HOURS' => 'Closing Hours',
