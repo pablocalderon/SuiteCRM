@@ -178,6 +178,7 @@ class EntryPointConfirmOptInHandler
         }
         $template = new Sugar_Smarty();
         $template->assign('FOCUS', $this->emailAddress);
+        $template->assign('APP', $GLOBALS['app_strings']);
 
         return $template->fetch('include/EntryPointConfirmOptIn.tpl');
     }

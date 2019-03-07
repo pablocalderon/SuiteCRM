@@ -107,6 +107,7 @@ $mod_strings = array(
     'LBL_CAMPAIGN_ACCOUNTS_SUBPANEL_TITLE' => 'Accounts',
     'LBL_PROSPECT_LIST_SUBPANEL_TITLE' => 'Target List',
     'LBL_EMAIL_MARKETING_SUBPANEL_TITLE' => 'Email Marketing',
+    'LBL_EMAIL_SUCCESS' => 'Success',
     'LNK_NEW_EMAIL_TEMPLATE' => 'Create Email Template',
     'LNK_EMAIL_TEMPLATE_LIST' => 'View Email Templates',
     'LBL_TRACK_BUTTON_TITLE' => 'View Status',
