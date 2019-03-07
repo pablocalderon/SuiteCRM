@@ -246,7 +246,7 @@ $mod_strings = array(
     'LBL_EXTERNAL_DEV_DESC' => 'Migrate custom field structures from one system to another',
     'LBL_EXTERNAL_DEV_TITLE' => 'Migrate Custom Fields',
     'LBL_GLOBAL_SEARCH_SETTINGS' => 'Global Search',
-    'LBL_GLOBAL_SEARCH_SETTINGS_DESC' => 'Configure the global search options for the system',
+    'LBL_GLOBAL_SEARCH_SETTINGS_DESC' => 'Configure the global search options for the system.',
     'LBL_FTS_SETTINGS' => 'Full-Text Search',
     'LBL_FTS_SETTINGS_DESC' => 'Configure the full-text search system.',
     'LBL_GLOBAL_TEAM_DESC' => 'Globally Visible',
@@ -797,9 +797,9 @@ $mod_strings = array(
     'LBL_JJWG_MAPS_ADMIN_GEOCODE_ADDRESSES_TITLE' => 'Geocode Addresses',
     'LBL_JJWG_MAPS_ADMIN_GEOCODE_ADDRESSES_DESC' => 'Geocode your object addreses. This process may take a few minutes!',
     'LBL_JJWG_MAPS_ADMIN_GEOCODING_TEST_TITLE' => 'Geocoding Test',
-    'LBL_JJWG_MAPS_ADMIN_GEOCODING_TEST_DESC' => 'Run a single geocoding test with detailed display results.',
+    'LBL_JJWG_MAPS_ADMIN_GEOCODING_TEST_DESC' => 'Run a single geocoding test with detailed display results',
     'LBL_JJWG_MAPS_ADMIN_ADDRESS_CACHE_TITLE' => 'Address Cache',
-    'LBL_JJWG_MAPS_ADMIN_ADDRESS_CACHE_DESC' => 'Provides access to Address Cache information. This is only cache.',
+    'LBL_JJWG_MAPS_ADMIN_ADDRESS_CACHE_DESC' => 'View currently cached Address information',
 
     // Google Calendar
     'LBL_GOOGLE_CALENDAR_SETTINGS_TITLE' => 'Google Calendar Settings',
@@ -855,7 +855,7 @@ $mod_strings = array(
     'LBL_AOP_JOOMLA_ACCOUNT_CREATION_EMAIL_TEMPLATE' => 'Joomla Support Portal Account Creation Template',
 
     'LBL_AOP_BUSINESS_HOURS_SETTINGS' => 'Business Hours',
-    'LBL_AOP_BUSINESS_HOURS_DESC' => "Restrict 'Only In The Scheduler' Workflows to launch only in certain days and times",
+    'LBL_AOP_BUSINESS_HOURS_DESC' => 'Restrict Workflows to launch only in certain days and times',
     'LBL_AOP_OPENING_DAYS' => 'Opening Days',
     'LBL_AOP_OPENING_HOURS' => 'Opening Hours',
     'LBL_AOP_CLOSING_HOURS' => 'Closing Hours',
